@@ -12,28 +12,29 @@ const iconComponents = require('../../../assets/images/tabbar/components.png');
 
 const tabNavigationData = [
   {
-    name: 'Home',
+    name: 'Toàn bộ TS',
     component: HomeScreen,
     icon: iconHome,
   },
+ 
   {
-    name: 'Calendar',
-    component: CalendarScreen,
-    icon: iconCalendar,
-  },
-  {
-    name: 'Grids',
+    name: 'TS mất',
     component: GridsScreen,
     icon: iconGrids,
   },
   {
-    name: 'Pages',
+    name: 'TS hỏng',
     component: PagesScreen,
     icon: iconPages,
   },
   {
-    name: 'Components',
-    component: ComponentsScreen,
+    name: 'TS thanh lý',
+    component: CalendarScreen,
+    icon: iconCalendar,
+  },
+  {
+    name: 'Khác',
+    component: PagesScreen,
     icon: iconComponents,
   },
 ];

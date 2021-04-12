@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import { 
+import {
   createDrawerNavigator,
   DrawerItem,
   DrawerContentScrollView,
@@ -19,23 +19,39 @@ const iconBlog = require('../../../assets/images/drawer/blog.png')
 
 const drawerData = [
   {
-    name: 'Home',
+    name: 'Quản lý tài sản',
     icon: iconHome,
   },
   {
-    name: 'Calendar',
+    name: 'Quản lý đầu đọc',
     icon: iconCalendar,
   },
   {
-    name: 'Grids',
+    name: 'Giám sát tài sản',
     icon: iconGrids,
   },
   {
-    name: 'Pages',
+    name: 'Quản lý kiểm kê tài sản',
     icon: iconPages,
   },
   {
-    name: 'Components',
+    name: 'Quản lý dự trù mua sắm',
+    icon: iconComponents,
+  },
+  {
+    name: 'Quản lý cảnh báo',
+    icon: iconComponents,
+  },
+  {
+    name: 'Báo cáo',
+    icon: iconComponents,
+  },
+  {
+    name: 'Quản lý danh mục',
+    icon: iconComponents,
+  },
+  {
+    name: 'Quản lý hệ thống',
     icon: iconComponents,
   },
 ];
@@ -44,26 +60,24 @@ const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props) {
   return (
-    <DrawerContentScrollView {...props} style={{padding: 0}}>
-      <View style={styles.avatarContainer}>
-        <Image
-          style={styles.avatar}
-          source={require('../../../assets/images/drawer/user.png')}
-        />
-        <View style={{ paddingLeft: 15 }}>
-          <Text style={styles.userName}>John Doe</Text>
-          <Text style={{ color: '#4BC1FD' }}>Johndoe@gmail.com</Text>
+    <DrawerContentScrollView {...props} style={{ padding: 0 }}>
+      <View style={{ flexDirection: 'column', padding: 5, backgroundColor: '#e1ede9' }}>
+        <Text style={{ fontWeight: '600', fontSize: 25, color: '#444', textAlign: 'center' ,}}> Quản lý tài sản</Text>
+        <Image source={require('../../../assets/images/drawer/user.png')} resizeMode="contain" style={{ margin: 15, width: 60, height: 60, borderRadius: 20, alignSelf: 'center' }} />
+        <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
+          <Text style={{ fontWeight: '600', fontSize: 25, color: '#444', textAlign: 'center' }}>admin</Text>
+          <Text style={{ fontWeight: '200', color: 'black', maxWidth: 200, textAlign: 'center' }}>admin@mobifone.vn</Text>
         </View>
       </View>
       <View style={styles.divider} />
       {drawerData.map((item, idx) => (
         <DrawerItem
-          key={`drawer_item-${idx+1}`}
+          key={`drawer_item-${idx + 1}`}
           label={() => (
             <View
               style={styles.menuLabelFlex}>
               <Image
-                style={{ width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
                 source={item.icon}
               />
               <Text style={styles.menuTitle}>{item.name}</Text>
@@ -77,21 +91,8 @@ function CustomDrawerContent(props) {
         label={() => (
           <View style={styles.menuLabelFlex}>
             <Image
-              style={{ width: 20, height: 20}}
-              source={iconBlog}
-            />
-            <Text style={styles.menuTitle}>Blog</Text>
-          </View>
-        )}
-        onPress={() => props.navigation.navigate('Blog')}
-      />
-      <View style={styles.divider} />
-      <DrawerItem
-        label={() => (
-          <View style={styles.menuLabelFlex}>
-            <Image
-              style={{ width: 20, height: 20}}
-              source={iconSettings} 
+              style={{ width: 20, height: 20 }}
+              source={iconSettings}
             />
             <Text style={styles.menuTitle}>Settings</Text>
           </View>

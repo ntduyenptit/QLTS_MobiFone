@@ -18,7 +18,7 @@ export default class AuthViewContainer extends React.Component {
         console.log(res);
         if (res) {
           //  Alert.alert('SignIn successfully!');
-          this.props.navigation.navigate('HomeScreen');
+          this.props.navigation.navigate('React Native Starter');
           saveToken(res.token);
           // Global.onSignIn(res.user);
           // this.props.navigation.goBack();
