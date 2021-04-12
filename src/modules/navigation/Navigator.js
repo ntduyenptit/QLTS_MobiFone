@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native';
 import {
   createDrawerNavigator,
   DrawerItem,
@@ -64,17 +64,16 @@ const Drawer = createDrawerNavigator();
 function CustomDrawerContent(props) {
   return (
     <View style={styles.container}>
-      <View style={styles.profile}>
-        <Image source={require('../../../assets/images/drawer/user.png')} resizeMode="contain" style={{ margin: 15, width: 60, height: 60, borderRadius: 20, alignSelf: 'center' }} />
-        <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
-          <Text style={{ fontWeight: '200', fontSize: 25, color: 'white', textAlign: 'center' }}>admin</Text>
-          <Text style={{ fontWeight: '200', color: 'white', maxWidth: 200, textAlign: 'center' }}>admin@mobifone.vn</Text>
+      <ImageBackground source={require('../../../assets/images/background.png')} style={styles.backgroundImage}>
+        <View style={styles.profile}>
+          <Image source={require('../../../assets/images/drawer/user.png')} resizeMode="contain" style={{ margin: 15, width: 60, height: 60, borderRadius: 20, alignSelf: 'center' }} />
+          <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
+            <Text style={{ fontWeight: '200', fontSize: 25, color: 'white', textAlign: 'center' }}>admin</Text>
+            <Text style={{ fontWeight: '200', color: 'white', maxWidth: 200, textAlign: 'center' }}>admin@mobifone.vn</Text>
+          </View>
         </View>
-      </View>
+      </ImageBackground>
 
-      <View>
-
-      </View>
       <DrawerContentScrollView {...props} style={styles.drawer}>
         {drawerData.map((item, idx) => (
           <DrawerItem
@@ -92,7 +91,7 @@ function CustomDrawerContent(props) {
             onPress={() => props.navigation.navigate(item.name)}
           />
         ))}
-       
+
       </DrawerContentScrollView>
     </View>
   );
@@ -119,8 +118,12 @@ const styles = StyleSheet.create({
   profile: {
     height: '20%',
     flexDirection: 'column',
-    backgroundColor: '#156ea6'
 
+  },
+  backgroundImage: {
+    width: "100%",
+    
+    resizeMode: "cover",
   },
   drawer: {
     height: '80%',
