@@ -10,7 +10,7 @@ import AvailableInFullVersion from '../../modules/availableInFullVersion/Availab
 // import ChatScreen from '../chat/ChatViewContainer';
 // import MessagesScreen from '../chat/MessagesViewContainer';
 // import ChartsScreen from '../charts/ChartsViewContainer';
-// import AuthScreen from '../auth/AuthViewContainer';
+ import AuthScreen from '../auth/AuthViewContainer';
 
 import { colors, fonts } from '../../styles';
 
@@ -37,6 +37,17 @@ const headerLeftComponent = (props) => {
 const headerBackground = require('../../../assets/images/topBarBg.png');
 
 const StackNavigationData = [
+  {
+    name: 'Auth',
+    component: AuthScreen,
+    headerLeft: headerLeftComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+    },
+  },
   {
     name: 'React Native Starter',
     component: TabNavigator,
@@ -125,17 +136,7 @@ const StackNavigationData = [
       fontSize: 18,
     },
   },
-  {
-    name: 'Auth',
-    component: AvailableInFullVersion,
-    headerLeft: headerLeftComponent,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-    },
-  },
+  
 ]
 
 export default StackNavigationData;
