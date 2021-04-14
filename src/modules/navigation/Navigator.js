@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native';
 import {
   createDrawerNavigator,
@@ -6,7 +6,9 @@ import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
 import { connect } from 'react-redux';
+import Collapsible from 'react-native-collapsible';
 import { createStackNavigator } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-community/async-storage';
 import NavigatorView from './RootNavigation';
 import AuthScreen from '../auth/AuthViewContainer';
@@ -31,10 +33,26 @@ const drawerData = [
   {
     name: 'Quản lý đầu đọc',
     icon: iconCalendar,
+    children: [
+      {
+        name: 'Quản lý đầu đọc di động'
+      },
+      {
+        name: 'Quản lý đầu đọc cố định'
+      }
+    ]
   },
   {
     name: 'Giám sát tài sản',
     icon: iconGrids,
+    children: [
+      {
+        name: 'Giám sát tài sản'
+      },
+      {
+        name: 'Theo dõi kết nối thiết bị'
+      }
+    ]
   },
   {
     name: 'Quản lý kiểm kê tài sản',
@@ -65,7 +83,25 @@ const drawerData = [
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
+function handler(props, children) {
+  return (children.map((item, idx) => (
+    <DrawerItem
+      key={`drawer_item-${idx + 1}`}
+      label={() => (
+        <View
+          style={styles.menuLabelFlex}
+        >
+          <Text style={styles.menuTitle}>{item.name}</Text>
+        </View>
+)}
+      onPress={() => props.navigation.navigate(item.name)}
+    />
+    )
+  ))
+}
+
 function CustomDrawerContent(props) {
+  const [state, setState] = useState({});
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../../../assets/images/background.png')} style={styles.backgroundImage}>
@@ -79,22 +115,54 @@ function CustomDrawerContent(props) {
       </ImageBackground>
 
       <DrawerContentScrollView {...props} style={styles.drawer}>
-        {drawerData.map((item, idx) => (
-          <DrawerItem
-            key={`drawer_item-${idx + 1}`}
-            label={() => (
-              <View
-                style={styles.menuLabelFlex}>
-                <Image
-                  style={{ width: 20, height: 20 }}
-                  source={item.icon}
-                />
-                <Text style={styles.menuTitle}>{item.name}</Text>
-              </View>
+        {drawerData.map((item, idx) => {
+          if (!item.children) {
+            return (
+              <DrawerItem
+                key={`drawer_item-${idx + 1}`}
+                label={() => (
+                  <View
+                    style={styles.menuLabelFlex}
+                  >
+                    <Image
+                      style={{ width: 20, height: 20 }}
+                      source={item.icon}
+                    />
+                    <Text style={styles.menuTitle}>{item.name}</Text>
+                  </View>
             )}
-            onPress={() => props.navigation.navigate(item.name)}
-          />
-        ))}
+                onPress={() => props.navigation.navigate(item.name)}
+              />
+            )
+          }
+          return (
+            <View style={{flex: 1}}>
+              <DrawerItem
+                key={`drawer_item-${idx + 1}`}
+                label={() => (
+                  <View
+                    style={styles.menuLabelFlex}
+                  >
+                    <Image
+                      style={{ width: 20, height: 20 }}
+                      source={item.icon}
+                    />
+                    <Text style={styles.menuTitle}>{item.name}</Text>
+                    {state[item.name] ? (
+                      <Icon name="angle-up" size={20} color='black' />
+                  ) : <Icon name="angle-down" size={20} color='black' />}
+                  </View>
+            )}
+                onPress={() => setState((prevState) => ({ [item.name]: !prevState[item.name] }))}
+              />
+              <Collapsible collapsed={!state[item.name]}>
+                <View style={{flex: 20, paddingLeft: 40}}>
+                  {handler(props, item.children)}
+                </View>
+              </Collapsible>
+            </View>
+          );
+          })}
 
       </DrawerContentScrollView>
     </View>
@@ -125,7 +193,6 @@ const AuthStack = () => (
 );
 
 function App(stateToProps) {
-  console.log('hahaha', stateToProps);
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
@@ -155,7 +222,6 @@ function App(stateToProps) {
 }
 
 function mapStateToProps(state) {
-  console.log('state', state);
   return { isUserLoggedIn: state.userReducer.isLoggedIn }
 }
 
@@ -188,11 +254,13 @@ const styles = StyleSheet.create({
   },
   menuTitle: {
     marginLeft: 10,
-    color: 'black'
+    color: 'black',
+    flex: 1
   },
   menuLabelFlex: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    flex: 1,
   },
   userName: {
     color: '#fff',
