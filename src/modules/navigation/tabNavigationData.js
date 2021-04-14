@@ -1,4 +1,4 @@
-import HomeScreen from '../home/HomeViewContainer';
+import HomeScreen from '../QuanLyTaiSan/QuanLyTaiSanContainer';
 import CalendarScreen from '../calendar/CalendarViewContainer';
 import GridsScreen from '../grids/GridsViewContainer';
 import PagesScreen from '../pages/PagesViewContainer';

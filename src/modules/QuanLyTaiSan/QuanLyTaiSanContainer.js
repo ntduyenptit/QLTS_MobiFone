@@ -1,7 +1,7 @@
 import { compose, withState } from 'recompose';
 
-import HomeScreen from './HomeView';
+import QuanLyTaiSan from './QuanLyTaiSan';
 
 export default compose(withState('isExtended', 'setIsExtended', false))(
-  HomeScreen,
+  QuanLyTaiSan,
 );

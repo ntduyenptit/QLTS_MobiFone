@@ -35,7 +35,7 @@ const headerBackground = require('../../../assets/images/topBarBg.png');
 
 const StackNavigationData = [
   {
-    name: 'React Native Starter',
+    name: 'Quản lý tài sản',
     component: TabNavigator,
     headerLeft: null,
     headerBackground: { source: headerBackground },
@@ -46,7 +46,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Charts',
+    name: 'Quản lý đầu đọc',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
@@ -57,7 +57,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Blog',
+    name: 'Giám sát tài sản',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
@@ -68,7 +68,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Gallery',
+    name: 'Quản lý kiểm kê tài sản',
     component: GalleryScreen,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
@@ -79,7 +79,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Profile',
+    name: 'Quản lý dự trù mua sắm',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
@@ -90,7 +90,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Article',
+    name: 'Quản lý cảnh báo',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
@@ -101,7 +101,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Chat',
+    name: 'Quản lý danh mục',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
@@ -112,7 +112,18 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Messages',
+    name: 'Báo cáo',
+    component: AvailableInFullVersion,
+    headerLeft: headerLeftComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+    },
+  },
+  {
+    name: 'Quản lý hệ thống',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
     headerBackground: { source: headerBackground },
