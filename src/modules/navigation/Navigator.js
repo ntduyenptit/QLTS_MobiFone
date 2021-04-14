@@ -104,7 +104,7 @@ function CustomDrawerContent(props) {
 const DrawerStack = () => (
   <Drawer.Navigator
     drawerStyle={{
-      backgroundColor: '#3C38B1',
+      backgroundColor: 'white',
     }}
     drawerContent={props => <CustomDrawerContent {...props} />}
   >
