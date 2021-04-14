@@ -24,7 +24,7 @@ export default function PagesScreen(props) {
             source={chartIcon}
             style={styles.itemImage}
           />
-          <Text style={styles.itemText}>Charts</Text>
+          <Text style={styles.itemText}>TS đang sử dung</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('Gallery')}
@@ -35,7 +35,7 @@ export default function PagesScreen(props) {
             source={galleryIcon}
             style={styles.itemImage}
           />
-          <Text style={styles.itemText}>Gallery</Text>
+          <Text style={styles.itemText}>TS chưa sử dụng</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('Profile')}
@@ -46,59 +46,35 @@ export default function PagesScreen(props) {
             source={profileIcon}
             style={styles.itemImage}
           />
-          <Text style={styles.itemText}>Profile</Text>
+          <Text style={styles.itemText}>TS sửa chữa/bảo dưỡng</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.row}>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('Chat')}
-          style={styles.item}
+          style={styles.blogItem}
         >
           <Image
             resizeMode="contain"
             source={chatIcon}
             style={styles.itemImage}
           />
-          <Text style={styles.itemText}>Chats</Text>
+          <Text style={styles.itemText}>TS hủy</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('Calendar')}
-          style={styles.item}
+          style={styles.blogItem}
         >
           <Image
             resizeMode="contain"
             source={calendarIcon}
             style={styles.itemImage}
           />
-          <Text style={styles.itemText}>Calendar</Text>
+          <Text style={styles.itemText}>Báo hỏng/mất TS</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Auth')}
-          style={styles.item}
-        >
-          <Image
-            resizeMode="contain"
-            source={loginIcon}
-            tintColor={colors.primary}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>Login</Text>
-        </TouchableOpacity>
+        
       </View>
-      <View style={styles.row}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Blog')}
-          style={styles.blogItem}
-        >
-          <Image
-            resizeMode="contain"
-            source={blogIcon}
-            tintColor={colors.primary}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>Blog</Text>
-        </TouchableOpacity>
-      </View>
+     
     </View>
   );
 }
@@ -139,6 +115,8 @@ const styles = StyleSheet.create({
   itemText: {
     color: colors.primary,
     fontFamily: fonts.primary,
+    justifyContent: 'center',
+    textAlign:'center'
   },
   itemImage: {
     height: 35,
