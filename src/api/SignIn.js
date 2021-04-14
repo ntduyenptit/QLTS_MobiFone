@@ -1,12 +1,10 @@
-//import { localhost } from '../localhost';
+import { baseUrl, headers} from './config';
 
 const logIn = (userNameOrEmailAddress, password) => (
-    fetch(`http://10.6.71.64:9080/api/TokenAuth/Authenticate`, {
+    // eslint-disable-next-line no-undef
+    fetch(`${baseUrl}/TokenAuth/Authenticate`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json'
-        },
+        headers,
         body: JSON.stringify({ userNameOrEmailAddress, password })
     })
     .then(res => res.json())

@@ -2,36 +2,29 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { createStackNavigator, Header } from '@react-navigation/stack';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
-
 import StackNavigationData from './stackNavigationData';
 
 const Stack = createStackNavigator();
 
 export default function NavigatorView(props) {
-  // if (authState.isLoggedIn || authState.hasSkippedLogin) {
-  //     return <AppNavigator />;
-  // }
-  // return <AuthScreen />;
-
-  const headerLeftComponentMenu = () => {
-    return (
-      <TouchableOpacity
-        onPress={() => props.navigation.toggleDrawer()}
-        style={{
+  const headerLeftComponentMenu = () => (
+    <TouchableOpacity
+      onPress={() => props.navigation.toggleDrawer()}
+      style={{
           paddingHorizontal: 16,
           paddingVertical: 12,
         }}
-      >
-        <Image
-          source={require('../../../assets/images/drawer/menu.png')}
-          resizeMode="contain"
-          style={{
+    >
+      <Image
+        source={require('../../../assets/images/drawer/menu.png')}
+        resizeMode="contain"
+        style={{
             height: 20,
           }}
-        />
-      </TouchableOpacity>    
+      />
+    </TouchableOpacity>    
     )
-  }
+
 
   return (
     <Stack.Navigator>
@@ -46,7 +39,7 @@ export default function NavigatorView(props) {
               <Image style={styles.headerImage} source={item.headerBackground.source} />
             ),
             headerTitleStyle: item.headerTitleStyle,
-          }} 
+          }}
         />
       ))}
     </Stack.Navigator>
@@ -60,7 +53,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    width: 100 + '%',
+    width: `${100  }%`,
     height: Header.height,
   },
 });

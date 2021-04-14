@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import { 
+import {
   createDrawerNavigator,
   DrawerItem,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
+import { connect } from 'react-redux';
+import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-community/async-storage';
 import NavigatorView from './RootNavigation';
-
-import AvailableInFullVersion from '../../modules/availableInFullVersion/AvailableInFullVersionViewContainer';
+import AuthScreen from '../auth/AuthViewContainer';
+import { userLogin, userLogout } from '../../redux/actions/user.actions'
 
 const iconHome = require('../../../assets/images/drawer/home.png');
 const iconCalendar = require('../../../assets/images/drawer/calendar.png');
@@ -41,10 +44,11 @@ const drawerData = [
 ];
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 function CustomDrawerContent(props) {
   return (
-    <DrawerContentScrollView {...props} style={{padding: 0}}>
+    <DrawerContentScrollView {...props} style={{ padding: 0 }}>
       <View style={styles.avatarContainer}>
         <Image
           style={styles.avatar}
@@ -58,12 +62,13 @@ function CustomDrawerContent(props) {
       <View style={styles.divider} />
       {drawerData.map((item, idx) => (
         <DrawerItem
-          key={`drawer_item-${idx+1}`}
+          key={`drawer_item-${idx + 1}`}
           label={() => (
             <View
-              style={styles.menuLabelFlex}>
+              style={styles.menuLabelFlex}
+            >
               <Image
-                style={{ width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
                 source={item.icon}
               />
               <Text style={styles.menuTitle}>{item.name}</Text>
@@ -77,7 +82,7 @@ function CustomDrawerContent(props) {
         label={() => (
           <View style={styles.menuLabelFlex}>
             <Image
-              style={{ width: 20, height: 20}}
+              style={{ width: 20, height: 20 }}
               source={iconBlog}
             />
             <Text style={styles.menuTitle}>Blog</Text>
@@ -90,8 +95,8 @@ function CustomDrawerContent(props) {
         label={() => (
           <View style={styles.menuLabelFlex}>
             <Image
-              style={{ width: 20, height: 20}}
-              source={iconSettings} 
+              style={{ width: 20, height: 20 }}
+              source={iconSettings}
             />
             <Text style={styles.menuTitle}>Settings</Text>
           </View>
@@ -102,19 +107,72 @@ function CustomDrawerContent(props) {
   );
 }
 
-export default function App() {
+const DrawerStack = () => (
+  <Drawer.Navigator
+    drawerStyle={{
+      backgroundColor: '#3C38B1',
+    }}
+    drawerContent={props => <CustomDrawerContent {...props} />}
+  >
+    <Drawer.Screen name="Homes" component={NavigatorView} />
+  </Drawer.Navigator>
+);
+
+const AuthStack = () => (
+  <Stack.Navigator
+    initialRouteName="Login"
+    screenOptions={{
+      animationEnabled: false
+    }}
+    headerMode='none'
+  >
+    <Stack.Screen name="Login" component={AuthScreen} />
+  </Stack.Navigator>
+);
+
+function App(stateToProps) {
+  console.log('hahaha', stateToProps);
+  React.useEffect(() => {
+    // Fetch the token from storage then navigate to our appropriate place
+    const bootstrapAsync = async () => {
+      let userToken;
+      try {
+        userToken = await AsyncStorage.getItem('@token');
+        if (userToken !== null) {
+          stateToProps.userLogin({ userToken })
+        }
+      } catch (e) {
+        stateToProps.userLogout()
+      }
+    };
+
+    bootstrapAsync();
+  }, []);
 
   return (
-    <Drawer.Navigator
-      drawerStyle={{
-        backgroundColor: '#3C38B1',
-      }}
-      drawerContent={props => <CustomDrawerContent {...props} />}
-    >
-      <Drawer.Screen name="Homes" component={NavigatorView} />
-    </Drawer.Navigator>
+    <Stack.Navigator headerMode="none">
+      {!stateToProps.isUserLoggedIn ?
+        <Stack.Screen name='Auth' component={AuthStack} />
+          :
+        <Stack.Screen name='App' component={DrawerStack} />
+        }
+    </Stack.Navigator>
   );
 }
+
+function mapStateToProps(state) {
+  console.log('state', state);
+  return { isUserLoggedIn: state.userReducer.isLoggedIn }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userLogin: (token) => dispatch(userLogin(token)),
+    userLogout: () => dispatch(userLogout()),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
 
 const styles = StyleSheet.create({
   menuTitle: {
