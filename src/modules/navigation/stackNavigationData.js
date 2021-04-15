@@ -1,6 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, Image } from 'react-native';
+import { TouchableOpacity, Image,View } from 'react-native';
 
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import TabNavigator from './MainTabNavigator';
 import GalleryScreen from '../gallery/GalleryViewContainer';
 import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVersionViewContainer";
@@ -17,20 +18,34 @@ const headerLeftComponent = (props) => (
   <TouchableOpacity
     onPress={props.onPress}
     style={{
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-      }}
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+    }}
   >
     <Image
       source={require('../../../assets/images/icons/arrow-back.png')}
       resizeMode="contain"
       style={{
-          height: 20,
-        }}
+        height: 20,
+      }}
     />
-  </TouchableOpacity>    
-  )
+  </TouchableOpacity>
+)
 
+const headerRightComponent = (props) => (
+  <TouchableOpacity
+    onPress={props.onPress}
+    style={{
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+    }}
+  >
+    <View style={{ marginTop: 10,  marginLeft: 15, backgroundColor: 'transparent' }}>
+      <Icon name={"search"} color={"white"} size={25} />
+    </View>
+  </TouchableOpacity>
+
+)
 const headerBackground = require('../../../assets/images/topBarBg.png');
 
 const StackNavigationData = [
@@ -38,102 +53,120 @@ const StackNavigationData = [
     name: 'Quản lý tài sản',
     component: TabNavigator,
     headerLeft: null,
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
       color: colors.white,
       fontSize: 18,
+      alignSelf: 'center'
     },
   },
   {
     name: 'Quản lý đầu đọc',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
       color: colors.white,
       fontSize: 18,
+      alignSelf: 'center'
     },
   },
   {
     name: 'Giám sát tài sản',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
       color: colors.white,
       fontSize: 18,
+      alignSelf: 'center'
     },
   },
   {
     name: 'Quản lý kiểm kê tài sản',
     component: GalleryScreen,
     headerLeft: headerLeftComponent,
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
       color: colors.white,
       fontSize: 18,
+      alignSelf: 'center'
     },
   },
   {
     name: 'Quản lý dự trù mua sắm',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
       color: colors.white,
       fontSize: 18,
+      alignSelf: 'center'
     },
   },
   {
     name: 'Quản lý cảnh báo',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
       color: colors.white,
       fontSize: 18,
+      alignSelf: 'center'
     },
   },
   {
     name: 'Quản lý danh mục',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
       color: colors.white,
       fontSize: 18,
+      alignSelf: 'center'
     },
   },
   {
     name: 'Báo cáo',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
       color: colors.white,
       fontSize: 18,
+      alignSelf: 'center'
     },
   },
   {
     name: 'Quản lý hệ thống',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
       color: colors.white,
       fontSize: 18,
+      alignSelf: 'center'
     },
   },
-  
+
 ]
 
 export default StackNavigationData;
