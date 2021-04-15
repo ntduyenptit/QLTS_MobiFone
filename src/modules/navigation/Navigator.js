@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import NavigatorView from './RootNavigation';
 import AuthScreen from '../auth/AuthViewContainer';
 import { userLogin, userLogout } from '../../redux/actions/user.actions';
-import store from '../../redux/store';
+import { store }  from '../../redux/store';
 
 const iconHome = require('../../../assets/images/drawer/quanlytaisan.png');
 const iconCalendar = require('../../../assets/images/drawer/quanlydaudoc.png');

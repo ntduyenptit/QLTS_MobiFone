@@ -1,8 +1,7 @@
-import HomeScreen from '../QuanLyTaiSan/QuanLyTaiSan';
+import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
 import CalendarScreen from '../calendar/CalendarViewContainer';
 import GridsScreen from '../grids/GridsViewContainer';
 import PagesScreen from '../pages/PagesViewContainer';
-import ComponentsScreen from '../components/ComponentsViewContainer';
 
 const iconHome = require('../../../assets/images/tabbar/home.png');
 const iconCalendar = require('../../../assets/images/tabbar/calendar.png');
@@ -13,7 +12,7 @@ const iconComponents = require('../../../assets/images/tabbar/components.png');
 const tabNavigationData = [
   {
     name: 'Toàn bộ TS',
-    component: HomeScreen,
+    component: QuanLyTaiSanScreen,
     icon: iconHome,
   },
  

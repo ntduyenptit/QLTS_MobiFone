@@ -2,35 +2,27 @@ import React, { } from 'react';
 import {
   StyleSheet,
   View,
-  TouchableOpacity,
-  ImageBackground,
-  Dimensions,
-  TextInput
 } from 'react-native';
 
-import { fonts, colors } from '../../styles';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-var { width, height } = Dimensions.get('window');
+import { fonts } from '../../styles';
 
 export default class QuanLyTaiSan extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageWidth: Dimensions.get('window').width,
-      pageHeight: Dimensions.get('window').height,
-      searchText: null,
+      
     };
   }
+
   onSearch = (text) => {
     this.setState({
       searchText: text.length > 0 ? text.toLowerCase() : null
     })
   }
+
   render() {
     return (
-      <View style={styles.container}>
-
-      </View>
+      <View style={styles.container} />
     );
   }
 

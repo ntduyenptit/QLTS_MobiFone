@@ -1,7 +1,5 @@
-import { compose, withState } from 'recompose';
+import { compose } from 'recompose';
 
-import QuanLyTaiSan from './QuanLyTaiSan';
+import QuanLyTaiSanScreen from './QuanLyTaiSan';
 
-export default compose(withState())(
-  QuanLyTaiSan,
-);
+export default compose()(QuanLyTaiSanScreen);

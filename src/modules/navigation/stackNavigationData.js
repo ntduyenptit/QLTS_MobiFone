@@ -41,7 +41,7 @@ const headerRightComponent = (props) => (
     }}
   >
     <View style={{ marginTop: 10,  marginLeft: 15, backgroundColor: 'transparent' }}>
-      <Icon name={"search"} color={"white"} size={25} />
+      <Icon name="search" color="white" size={25} />
     </View>
   </TouchableOpacity>
 
