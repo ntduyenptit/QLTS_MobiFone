@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, ImageBackground } from 'react-native';
-import logIn from '../../api/SignIn';
-import saveToken from '../../api/saveToken';
+import { endPoint } from '../../api/config';
+import createLogin from '../../api/Apis'
+import save from '../../localStorage/saveLogin';
 
 export default class AuthViewContainer extends React.Component {
   constructor(props) {
@@ -13,12 +14,12 @@ export default class AuthViewContainer extends React.Component {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  signIn(email, password) {
-    logIn(email, password)
+  signIn(userNameOrEmailAddress, password) {
+    createLogin(endPoint.login, JSON.stringify({ userNameOrEmailAddress, password }))
       .then(res => {
-        console.log('345',res.result.accessToken);
+        console.log('345',res);
         if (res) {
-          saveToken(res.result.accessToken);
+          save.saveLogin(res.result.accessToken,userNameOrEmailAddress);
           Alert.alert('SignIn successfully!');
           this.props.userLogin(res.result.accessToken);
           // Global.onSignIn(res.user);

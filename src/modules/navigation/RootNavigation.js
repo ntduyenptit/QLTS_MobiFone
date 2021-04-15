@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { createStackNavigator, Header } from '@react-navigation/stack';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import StackNavigationData from './stackNavigationData';
 
 const Stack = createStackNavigator();
@@ -24,13 +24,6 @@ export default function NavigatorView(props) {
       />
     </TouchableOpacity>
   )
-  const headerSerchComponentMenu = () => (
-    <View>
-
-    </View>
-
-  )
-
 
 
   return (

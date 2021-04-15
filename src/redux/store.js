@@ -35,3 +35,4 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, reducer);
 export const store = createStore(persistedReducer, {}, enhancer);
 export const persistor = persistStore(store);
+export default store;

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native';
 import {
@@ -5,14 +6,17 @@ import {
   DrawerItem,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
+// eslint-disable-next-line import/no-unresolved
+import AsyncStorage from '@react-native-community/async-storage';
+
 import Collapsible from 'react-native-collapsible';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AsyncStorage from '@react-native-community/async-storage';
 import NavigatorView from './RootNavigation';
 import AuthScreen from '../auth/AuthViewContainer';
-import { userLogin, userLogout } from '../../redux/actions/user.actions'
+import { userLogin, userLogout } from '../../redux/actions/user.actions';
+import { store }  from '../../redux/store';
 
 const iconHome = require('../../../assets/images/drawer/quanlytaisan.png');
 const iconCalendar = require('../../../assets/images/drawer/quanlydaudoc.png');
@@ -78,6 +82,10 @@ const drawerData = [
     name: 'Quản lý hệ thống',
     icon: iconQuanlyhethong,
   },
+  {
+    name: 'Đăng xuất',
+    icon: iconQuanlyhethong,
+  },
 ];
 
 const Drawer = createDrawerNavigator();
@@ -86,7 +94,7 @@ const Stack = createStackNavigator();
 function handler(props, children) {
   return (children.map((item, idx) => (
     <DrawerItem
-      key={`drawer_item-${idx + 1}`}
+      key={`expand_item-${idx + 1}`}
       label={() => (
         <View
           style={styles.menuLabelFlex}
@@ -102,14 +110,34 @@ function handler(props, children) {
 
 function CustomDrawerContent(props) {
   const [state, setState] = useState({});
+  const [user, setUser] = useState('');
+  const signOut = () => {
+    AsyncStorage.clear();
+    store.dispatch(userLogout());
+  }
+  React.useEffect(() => {
+    // Fetch the token from storage then navigate to our appropriate place
+    const bootstrapAsync = async () => {
+      try {
+        const userNameOrEmailAddress = await AsyncStorage.getItem('@userNameOrEmail');
+        if (userNameOrEmailAddress !== null) {
+          setUser(userNameOrEmailAddress);
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    };
+
+    bootstrapAsync();
+  }, []);
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../../../assets/images/background.png')} style={styles.backgroundImage}>
         <View style={styles.profile}>
           <Image source={require('../../../assets/images/drawer/user.png')} resizeMode="contain" style={{ margin: 15, width: 60, height: 60, borderRadius: 20, alignSelf: 'center' }} />
           <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
-            <Text style={{ fontWeight: '200', fontSize: 25, color: 'white', textAlign: 'center' }}>admin</Text>
-            <Text style={{ fontWeight: '200', color: 'white', maxWidth: 200, textAlign: 'center' }}>admin@mobifone.vn</Text>
+            <Text style={{ fontWeight: '200', fontSize: 25, color: 'white', textAlign: 'center' }}>{user}</Text>
+            <Text style={{ fontWeight: '200', color: 'white', maxWidth: 200, textAlign: 'center' }}>{user}@mobifone.vn</Text>
           </View>
         </View>
       </ImageBackground>
@@ -131,14 +159,16 @@ function CustomDrawerContent(props) {
                     <Text style={styles.menuTitle}>{item.name}</Text>
                   </View>
             )}
-                onPress={() => props.navigation.navigate(item.name)}
+                onPress={() => idx === drawerData.length - 1 ? signOut() : props.navigation.navigate(item.name)}
               />
             )
           }
           return (
-            <View style={{flex: 1}}>
+            <View
+              key={`drawer_children_item-${idx + 1}`} 
+              style={{flex: 1}}
+            >
               <DrawerItem
-                key={`drawer_item-${idx + 1}`}
                 label={() => (
                   <View
                     style={styles.menuLabelFlex}

@@ -1,14 +1,14 @@
 import { baseUrl, headers} from './config';
 
-const logIn = (userNameOrEmailAddress, password) => (
+const createPostMethod = (endPoint, params) => (
     // eslint-disable-next-line no-undef
-    fetch(`${baseUrl}/TokenAuth/Authenticate`, {
+    fetch(`${baseUrl}${endPoint}`, {
         method: 'POST',
         headers,
-        body: JSON.stringify({ userNameOrEmailAddress, password })
+        body: params
     })
     .then(res => res.json())
     .catch(err => console.log(err))
 );
 
-export default logIn;
+export default createPostMethod;
