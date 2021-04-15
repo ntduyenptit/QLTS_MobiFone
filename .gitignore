@@ -63,3 +63,4 @@ jest_coverage
 
 # CocoaPods
 /ios/Pods/
+package-lock.json
