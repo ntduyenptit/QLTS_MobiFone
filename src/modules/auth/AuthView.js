@@ -13,11 +13,9 @@ export default class AuthViewContainer extends React.Component {
     };
   }
 
-  // eslint-disable-next-line class-methods-use-this
   signIn(userNameOrEmailAddress, password) {
     createLogin(endPoint.login, JSON.stringify({ userNameOrEmailAddress, password }))
       .then(res => {
-        console.log('345',res);
         if (res) {
           save.saveLogin(res.result.accessToken,userNameOrEmailAddress);
           Alert.alert('SignIn successfully!');

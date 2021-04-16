@@ -1,5 +1,9 @@
-import { compose } from 'recompose';
+import { compose, lifecycle } from 'recompose';
 
 import QuanLyTaiSanScreen from './QuanLyTaiSan';
 
-export default compose()(QuanLyTaiSanScreen);
+export default compose(lifecycle({
+  componentDidMount() {
+    
+  },
+}),)(QuanLyTaiSanScreen);

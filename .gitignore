@@ -36,9 +36,6 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
-package-lock.json
-yarn.lock
-ios/Podfile.lock
 
 # BUCK
 buck-out/
@@ -64,3 +61,5 @@ jest_coverage
 # CocoaPods
 /ios/Pods/
 package-lock.json
+yarn.lock
+/ios/Podfile.lock
