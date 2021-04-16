@@ -20,7 +20,6 @@ export default class AuthViewContainer extends React.Component {
         console.log('345',res);
         if (res) {
           save.saveLogin(res.result.accessToken,userNameOrEmailAddress);
-          Alert.alert('SignIn successfully!');
           this.props.userLogin(res.result.accessToken);
           // Global.onSignIn(res.user);
           // this.props.navigation.goBack();

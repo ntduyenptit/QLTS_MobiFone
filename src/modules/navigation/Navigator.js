@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import {
   createDrawerNavigator,
   DrawerItem,
@@ -16,27 +16,28 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import NavigatorView from './RootNavigation';
 import AuthScreen from '../auth/AuthViewContainer';
 import { userLogin, userLogout } from '../../redux/actions/user.actions';
-import { store }  from '../../redux/store';
+import { store } from '../../redux/store';
 
-const iconHome = require('../../../assets/images/drawer/quanlytaisan.png');
-const iconCalendar = require('../../../assets/images/drawer/quanlydaudoc.png');
-const iconGrids = require('../../../assets/images/drawer/giamsattaisan.png');
-const iconPages = require('../../../assets/images/drawer/quanlykiemke.png');
-const iconComponents = require('../../../assets/images/drawer/quanlydutrumuasam.png');
-const iconQuanlycanhbao = require('../../../assets/images/drawer/quanlycanhbao.png');
-const iconBaocao = require('../../../assets/images/drawer/baocao.png');
-const iconQuanlydanhmuc = require('../../../assets/images/drawer/quanlydanhmuc.png');
+const iconQuanlytaisan = "home";
+const iconQuanlydaudoc = "barcode";
+const iconGiamsattaisan = "window-restore";
+const iconKiemketaisan = "server";
+const iconDutrumuasam = "shopping-cart";
+const iconQuanlycanhbao = "bell";
+const iconBaocao = "file";
+const iconQuanlydanhmuc = "folder-open";
 
-const iconQuanlyhethong = require('../../../assets/images/drawer/quanlyhethong.png');
+const iconQuanlyhethong = "cogs";
+const iconDangxuat = "sign-out";
 
 const drawerData = [
   {
     name: 'Quản lý tài sản',
-    icon: iconHome,
+    icon: iconQuanlytaisan,
   },
   {
     name: 'Quản lý đầu đọc',
-    icon: iconCalendar,
+    icon: iconQuanlydaudoc,
     children: [
       {
         name: 'Quản lý đầu đọc di động'
@@ -48,7 +49,7 @@ const drawerData = [
   },
   {
     name: 'Giám sát tài sản',
-    icon: iconGrids,
+    icon: iconGiamsattaisan,
     children: [
       {
         name: 'Giám sát tài sản'
@@ -60,11 +61,11 @@ const drawerData = [
   },
   {
     name: 'Quản lý kiểm kê tài sản',
-    icon: iconPages,
+    icon: iconKiemketaisan,
   },
   {
     name: 'Quản lý dự trù mua sắm',
-    icon: iconComponents,
+    icon: iconDutrumuasam,
   },
   {
     name: 'Quản lý cảnh báo',
@@ -73,18 +74,68 @@ const drawerData = [
   {
     name: 'Báo cáo',
     icon: iconBaocao,
+    children: [
+      {
+        name: 'Báo cáo'
+      },
+      {
+        name: 'Báo cáo người dùng'
+      },
+      {
+        name: 'Báo cáo cảnh báo'
+      },
+      {
+        name: 'Đặt lịch xuất báo cáo'
+      },
+      {
+        name: 'Báo cáo thông tin thiết bị RFID'
+      },
+      {
+        name: 'Báo cáo thông tin tài sản'
+      },
+    ]
   },
   {
     name: 'Quản lý danh mục',
     icon: iconQuanlydanhmuc,
+    children: [
+      {
+        name: 'Quản lý danh mục'
+      },
+      {
+        name: 'Quản lý nhà cung cấp'
+      },
+      {
+        name: 'Quản lý vị trí địa lý'
+      },
+      {
+        name: 'Quản lý loại tài sản'
+      },
+      {
+        name: 'Quản lý đơn vị'
+      }
+    ]
   },
   {
     name: 'Quản lý hệ thống',
     icon: iconQuanlyhethong,
-  },
-  {
-    name: 'Đăng xuất',
-    icon: iconQuanlyhethong,
+    children: [
+      {
+        name: 'Quản lý hệ thống'
+      },
+      {
+        name: 'Quản lý người dùng'
+      },
+      {
+        name: 'Quản lý phân quyền'
+      },
+      {
+        name: 'Lịch sử người dùng'
+      },
+      {
+        name: 'Quản lý Mail, Server'
+      }
+    ]
   },
 ];
 
@@ -101,10 +152,10 @@ function handler(props, children) {
         >
           <Text style={styles.menuTitle}>{item.name}</Text>
         </View>
-)}
+      )}
       onPress={() => props.navigation.navigate(item.name)}
     />
-    )
+  )
   ))
 }
 
@@ -152,49 +203,61 @@ function CustomDrawerContent(props) {
                   <View
                     style={styles.menuLabelFlex}
                   >
-                    <Image
-                      style={{ width: 20, height: 20 }}
-                      source={item.icon}
+                    <Icon
+                      name={item.icon}
+                      size={17}
+                      color='#0080FF'
                     />
+
                     <Text style={styles.menuTitle}>{item.name}</Text>
                   </View>
-            )}
-                onPress={() => idx === drawerData.length - 1 ? signOut() : props.navigation.navigate(item.name)}
+                )}
+                onPress={() =>  props.navigation.navigate(item.name)}
               />
             )
           }
           return (
             <View
-              key={`drawer_children_item-${idx + 1}`} 
-              style={{flex: 1}}
+              key={`drawer_children_item-${idx + 1}`}
+              style={{ flex: 1 }}
             >
               <DrawerItem
                 label={() => (
                   <View
                     style={styles.menuLabelFlex}
                   >
-                    <Image
-                      style={{ width: 20, height: 20 }}
-                      source={item.icon}
+                    <Icon
+                      name={item.icon}
+                      size={17}
+                      color='#0080FF'
                     />
                     <Text style={styles.menuTitle}>{item.name}</Text>
                     {state[item.name] ? (
                       <Icon name="angle-up" size={20} color='black' />
-                  ) : <Icon name="angle-down" size={20} color='black' />}
+                    ) : <Icon name="angle-down" size={20} color='black' />}
                   </View>
-            )}
+                )}
                 onPress={() => setState((prevState) => ({ [item.name]: !prevState[item.name] }))}
               />
               <Collapsible collapsed={!state[item.name]}>
-                <View style={{flex: 20, paddingLeft: 40}}>
+                <View style={{ flex: 20, paddingLeft: 30 }}>
                   {handler(props, item.children)}
                 </View>
               </Collapsible>
             </View>
           );
-          })}
-
+        })}
+        <View style ={styles.divider}></View>
+        <TouchableOpacity style={styles.logout} onPress = {signOut}>
+          <Icon
+            name="sign-out"
+            size={17}
+            color='#0080FF'
+          />
+          <Text style = {{marginLeft:15}}>Đăng xuất</Text>
+        </TouchableOpacity>
       </DrawerContentScrollView>
+
     </View>
   );
 }
@@ -244,9 +307,9 @@ function App(stateToProps) {
     <Stack.Navigator headerMode="none">
       {!stateToProps.isUserLoggedIn ?
         <Stack.Screen name='Auth' component={AuthStack} />
-          :
+        :
         <Stack.Screen name='App' component={DrawerStack} />
-        }
+      }
     </Stack.Navigator>
   );
 }
@@ -266,7 +329,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(App)
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    flexDirection: 'column',
   },
   profile: {
     height: '20%',
@@ -275,7 +339,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: "100%",
-    
+
     resizeMode: "cover",
   },
   drawer: {
@@ -297,10 +361,9 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   divider: {
-    borderBottomColor: 'white',
+    borderBottomColor: 'black',
     opacity: 0.2,
     borderBottomWidth: 1,
-    margin: 15,
   },
   avatar: {
     width: 40,
@@ -315,4 +378,10 @@ const styles = StyleSheet.create({
     margin: 20,
     marginBottom: 10
   },
+  logout: {
+    marginTop: 10,
+    marginLeft: 20,
+    marginBottom: 15,
+   flexDirection: 'row',
+  }
 });
