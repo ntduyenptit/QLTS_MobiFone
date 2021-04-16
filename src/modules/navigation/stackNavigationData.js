@@ -32,20 +32,23 @@ const headerLeftComponent = (props) => (
   </TouchableOpacity>
 )
 
-const headerRightComponent = (props) => (
-  <TouchableOpacity
-    onPress={props.onPress}
-    style={{
+function headerRightComponent() {
+  let isOpen = false;
+  return (
+    <TouchableOpacity
+      onPress={() => {isOpen = !isOpen}}
+      style={{
       paddingHorizontal: 16,
       paddingVertical: 12,
     }}
-  >
-    <View style={{ marginTop: 10,  marginLeft: 15, backgroundColor: 'transparent' }}>
-      <Icon name="search" color="white" size={25} />
-    </View>
-  </TouchableOpacity>
+    >
+      <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+        <Icon name="filter" color="white" size={20} />
+      </View>
+    </TouchableOpacity>
+  );
+}
 
-)
 const headerBackground = require('../../../assets/images/topBarBg.png');
 
 const StackNavigationData = [
