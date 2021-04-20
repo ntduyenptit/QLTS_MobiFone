@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import {
   createDrawerNavigator,
   DrawerItem,
@@ -28,7 +28,6 @@ const iconBaocao = "file";
 const iconQuanlydanhmuc = "folder-open";
 
 const iconQuanlyhethong = "cogs";
-const iconDangxuat = "sign-out";
 
 const drawerData = [
   {
@@ -174,6 +173,10 @@ function CustomDrawerContent(props) {
         if (userNameOrEmailAddress !== null) {
           setUser(userNameOrEmailAddress);
         }
+        // const {isShowFilter} = store.getState().filterReducer;
+        // if (isShowFilter) {
+        //   props.navigation.navigate('Filter');
+        // }
       } catch (e) {
         console.log(e)
       }
@@ -247,14 +250,14 @@ function CustomDrawerContent(props) {
             </View>
           );
         })}
-        <View style ={styles.divider}></View>
-        <TouchableOpacity style={styles.logout} onPress = {signOut}>
+        <View style={styles.divider} />
+        <TouchableOpacity style={styles.logout} onPress={signOut}>
           <Icon
             name="sign-out"
             size={17}
             color='#0080FF'
           />
-          <Text style = {{marginLeft:15}}>Đăng xuất</Text>
+          <Text style={{marginLeft:15}}>Đăng xuất</Text>
         </TouchableOpacity>
       </DrawerContentScrollView>
 
@@ -339,7 +342,6 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: "100%",
-
     resizeMode: "cover",
   },
   drawer: {

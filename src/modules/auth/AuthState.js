@@ -7,7 +7,6 @@ const initialState = {
 // Reducer
 
 const userReducer = (state = initialState, action) => {
-  console.log('action 123', action);
   switch (action.type) {
     case USER_LOGIN: {
       const token = action.payload.token.userToken

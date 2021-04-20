@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, ImageBackground } from 'react-native';
 import { endPoint } from '../../api/config';
-import createLogin from '../../api/Apis'
+import { createPostMethodWithoutToken } from '../../api/Apis'
 import save from '../../localStorage/saveLogin';
 
 export default class AuthViewContainer extends React.Component {
@@ -14,7 +14,7 @@ export default class AuthViewContainer extends React.Component {
   }
 
   signIn(userNameOrEmailAddress, password) {
-    createLogin(endPoint.login, JSON.stringify({ userNameOrEmailAddress, password }))
+    createPostMethodWithoutToken(endPoint.login, JSON.stringify({ userNameOrEmailAddress, password }))
       .then(res => {
         if (res) {
           save.saveLogin(res.result.accessToken,userNameOrEmailAddress);

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Animated, SafeAreaView, StatusBar } from 'react-native';
 import LoaderComponent from '../global/LoaderComponent';
 import SearchComponent from '../global/SearchComponent';
+import FilterComponent from '../global/FilterComponent';
 
 const QuanLyTaiSan = () => {
   const [scrollYValue] = useState(new Animated.Value(0));
@@ -103,9 +104,10 @@ const QuanLyTaiSan = () => {
           )}
           contentInsetAdjustmentBehavior="automatic"
         > 
-          {array.map((item) => <LoaderComponent item={item} />)}
+          {LoaderComponent(array)}
         </Animated.ScrollView>
       </SafeAreaView>
+      <FilterComponent />
     </Animated.View>
   );
 };
