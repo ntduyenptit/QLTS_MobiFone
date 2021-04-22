@@ -16,127 +16,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import NavigatorView from './RootNavigation';
 import AuthScreen from '../auth/AuthViewContainer';
 import { userLogin, userLogout } from '../../redux/actions/user.actions';
+import { setCurrentScreen } from '../../redux/actions/screen.actions';
 import { store } from '../../redux/store';
-
-const iconQuanlytaisan = "home";
-const iconQuanlydaudoc = "barcode";
-const iconGiamsattaisan = "window-restore";
-const iconKiemketaisan = "server";
-const iconDutrumuasam = "shopping-cart";
-const iconQuanlycanhbao = "bell";
-const iconBaocao = "file";
-const iconQuanlydanhmuc = "folder-open";
-
-const iconQuanlyhethong = "cogs";
-
-const drawerData = [
-  {
-    name: 'Quản lý tài sản',
-    icon: iconQuanlytaisan,
-  },
-  {
-    name: 'Quản lý đầu đọc',
-    icon: iconQuanlydaudoc,
-    children: [
-      {
-        name: 'Quản lý đầu đọc di động'
-      },
-      {
-        name: 'Quản lý đầu đọc cố định'
-      }
-    ]
-  },
-  {
-    name: 'Giám sát tài sản',
-    icon: iconGiamsattaisan,
-    children: [
-      {
-        name: 'Giám sát tài sản'
-      },
-      {
-        name: 'Theo dõi kết nối thiết bị'
-      }
-    ]
-  },
-  {
-    name: 'Quản lý kiểm kê tài sản',
-    icon: iconKiemketaisan,
-  },
-  {
-    name: 'Quản lý dự trù mua sắm',
-    icon: iconDutrumuasam,
-  },
-  {
-    name: 'Quản lý cảnh báo',
-    icon: iconQuanlycanhbao,
-  },
-  {
-    name: 'Báo cáo',
-    icon: iconBaocao,
-    children: [
-      {
-        name: 'Báo cáo'
-      },
-      {
-        name: 'Báo cáo người dùng'
-      },
-      {
-        name: 'Báo cáo cảnh báo'
-      },
-      {
-        name: 'Đặt lịch xuất báo cáo'
-      },
-      {
-        name: 'Báo cáo thông tin thiết bị RFID'
-      },
-      {
-        name: 'Báo cáo thông tin tài sản'
-      },
-    ]
-  },
-  {
-    name: 'Quản lý danh mục',
-    icon: iconQuanlydanhmuc,
-    children: [
-      {
-        name: 'Quản lý danh mục'
-      },
-      {
-        name: 'Quản lý nhà cung cấp'
-      },
-      {
-        name: 'Quản lý vị trí địa lý'
-      },
-      {
-        name: 'Quản lý loại tài sản'
-      },
-      {
-        name: 'Quản lý đơn vị'
-      }
-    ]
-  },
-  {
-    name: 'Quản lý hệ thống',
-    icon: iconQuanlyhethong,
-    children: [
-      {
-        name: 'Quản lý hệ thống'
-      },
-      {
-        name: 'Quản lý người dùng'
-      },
-      {
-        name: 'Quản lý phân quyền'
-      },
-      {
-        name: 'Lịch sử người dùng'
-      },
-      {
-        name: 'Quản lý Mail, Server'
-      }
-    ]
-  },
-];
+import { drawerData } from '../../api/config'; 
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -215,7 +97,10 @@ function CustomDrawerContent(props) {
                     <Text style={styles.menuTitle}>{item.name}</Text>
                   </View>
                 )}
-                onPress={() =>  props.navigation.navigate(item.name)}
+                onPress={() =>  {
+                  store.dispatch(setCurrentScreen(item.name))
+                  props.navigation.navigate(item.name)
+                }}
               />
             )
           }

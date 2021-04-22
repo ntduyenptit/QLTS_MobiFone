@@ -99,7 +99,7 @@ const QuanLyTaiSan = () => {
           }}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
-            // { useNativeDriver: true },
+            { useNativeDriver: true },
             () => { },          // Optional async listener
           )}
           contentInsetAdjustmentBehavior="automatic"

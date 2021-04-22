@@ -3,7 +3,6 @@ import { TouchableOpacity, Image,View } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import TabNavigator from './MainTabNavigator';
-import { screens } from '../../api/config'
 import GalleryScreen from '../gallery/GalleryViewContainer';
 import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVersionViewContainer";
 
@@ -35,26 +34,23 @@ const headerLeftComponent = (props) => (
   </TouchableOpacity>
 )
 
-function headerRightComponent(screenName) {
-  console.log('props ABC: ', store.getState().filterReducer.isShowFilter);
-  return(
-    <TouchableOpacity
-      onPress={() => {
+const headerRightComponent = () => (
+  <TouchableOpacity
+    onPress={() => {
         if (!store.getState().filterReducer.isShowFilter) {
-          store.dispatch(showFilter(screenName));
+          store.dispatch(showFilter());
         }
       }}
-      style={{
+    style={{
       paddingHorizontal: 16,
       paddingVertical: 12,
     }}
-    >
-      <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-        <Icon name="filter" color="white" size={20} />
-      </View>
-    </TouchableOpacity>
-  );
-}
+  >
+    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+      <Icon name="filter" color="white" size={20} />
+    </View>
+  </TouchableOpacity>
+  )
 
 const headerBackground = require('../../../assets/images/topBarBg.png');
 
@@ -63,7 +59,7 @@ const StackNavigationData = [
     name: 'Quản lý tài sản',
     component: TabNavigator,
     headerLeft: null,
-    headerRight: headerRightComponent(screens.qlts),
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -76,7 +72,7 @@ const StackNavigationData = [
     name: 'Quản lý đầu đọc',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
-    headerRight: headerRightComponent(screens.qldd),
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -89,7 +85,7 @@ const StackNavigationData = [
     name: 'Giám sát tài sản',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
-    headerRight: headerRightComponent(screens.gsts),
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -102,7 +98,7 @@ const StackNavigationData = [
     name: 'Quản lý kiểm kê tài sản',
     component: GalleryScreen,
     headerLeft: headerLeftComponent,
-    headerRight: headerRightComponent(screens.qlkkts),
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -115,7 +111,7 @@ const StackNavigationData = [
     name: 'Quản lý dự trù mua sắm',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
-    headerRight: headerRightComponent(screens.qldtms),
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -128,7 +124,7 @@ const StackNavigationData = [
     name: 'Quản lý cảnh báo',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
-    headerRight: headerRightComponent(screens.qlcb),
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -141,7 +137,7 @@ const StackNavigationData = [
     name: 'Quản lý danh mục',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
-    headerRight: headerRightComponent(screens.qldm),
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -154,7 +150,7 @@ const StackNavigationData = [
     name: 'Báo cáo',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
-    headerRight: headerRightComponent(screens.bc),
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -167,7 +163,7 @@ const StackNavigationData = [
     name: 'Quản lý hệ thống',
     component: AvailableInFullVersion,
     headerLeft: headerLeftComponent,
-    headerRight: headerRightComponent(screens.qlht),
+    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,

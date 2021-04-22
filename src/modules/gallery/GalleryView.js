@@ -7,7 +7,7 @@ import { GridRow } from '../../components';
 
 export default function GalleryScreen(props) {
   const _keyExtractor = item =>
-    item.id ? `${item.id}` : `${item[0] && item[0].id}`;
+    item.id ? `${item.id}` : `${item[0] && item[0].id.toString()}`;
 
   const _renderItem = ({ item, index }) => {
     if (index === 0) {

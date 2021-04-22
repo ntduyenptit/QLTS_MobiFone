@@ -5,7 +5,13 @@ import gallery from '../modules/gallery/GalleryState';
 import app from '../modules/AppState';
 import calendar from '../modules/calendar/CalendarState';
 import userReducer from '../modules/auth/AuthState';
-import { filterReducer, filterDataReducer } from '../modules/global/GlobalState';
+import { 
+  filterReducer, 
+  filterDVQLDataReducer,
+  filterLTSDataReducer,
+  filterMSDDataReducer,
+  filterNCCDataReducer,
+  currentScreenReducer } from '../modules/global/GlobalState';
 
 export default combineReducers({
   // ## Generator Reducers
@@ -14,5 +20,9 @@ export default combineReducers({
   calendar,
   userReducer,
   filterReducer,
-  filterDataReducer
+  filterDVQLDataReducer,
+  filterLTSDataReducer,
+  filterMSDDataReducer,
+  filterNCCDataReducer,
+  currentScreenReducer
 });
