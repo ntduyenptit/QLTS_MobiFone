@@ -23,13 +23,14 @@ function LoaderComponent({ item }) {
       secondaryColor="#ecebeb"
     >
       <View style={styles.listItem}>
-        <Text style={{ xjustifyContent: "center", alignItems: "center", marginLeft: 20 }}>{item.loaiTS}</Text>
-        <View style={{ justifyContent: "center", alignItems: "center", height: 50, width: deviceWidth / 2 }} >
-          <Text style={{ fontWeight: "bold", textAlign: "center" }}>{item.name}</Text>
+        <Icon style={{ justifyContent: "flex-start", alignItems: "flex-start" }} name="circle" color='#0080FF' size={15} />
+        <View style={styles.infor} >
+          <Text style={{fontWeight: "bold"} }>EPC: {item.maTS}</Text>
+          <Text >{item.name}</Text>
           <Text>{item.position}</Text>
         </View>
         <TouchableOpacity
-          style={{ height: 50, width: 50, justifyContent: "center", alignItems: "center", marginLeft: 20 }}
+          style={{ height: 40, width: 20, justifyContent: "center", alignItems: "flex-end", marginLeft: 5 }}
           onPress={() => navigation.navigate(('AvailableInFullVersion'))}
         >
           <Icon name="chevron-right" color='#0080FF' size={15} />
@@ -41,16 +42,24 @@ function LoaderComponent({ item }) {
 
 const styles = StyleSheet.create({
   listItem: {
-    margin: 5,
-    padding: 5,
+    marginLeft: 15,
+    padding: 15,
+    width: "100%",
     backgroundColor: "#FFF",
-    width: "90%",
-    alignSelf: "center",
+    alignSelf: "flex-start",
+    justifyContent: "flex-start",
+    alignItems: "center",
     flexDirection: "row",
     borderRadius: 5,
-    height: 80,
-    justifyContent: "center",
-    alignItems: "center",
+    height: 95,
+  },
+  infor: {
+    marginLeft: 10,
+    justifyContent: "flex-start",
+    alignSelf: "flex-start",
+    height: 50,
+    width: "75%",
+
   }
 });
 
