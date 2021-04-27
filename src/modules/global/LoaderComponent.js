@@ -8,14 +8,14 @@ export const deviceHeight = Dimensions.get('window').height;
 function LoaderComponent(array, props) {
     const items = () => array.map((item, index) => (
       <View key={`loader-component-${index + 1}`} style={styles.listItem}>
-        <Icon style={{ justifyContent: "flex-start", alignItems: "flex-start" }} name="circle" color='#0080FF' size={15} />
+        <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#0080FF' size={15} />
         <View style={styles.infor}>
-          <Text style={{fontWeight: "bold"}}>EPC: {item.maTS}</Text>
-          <Text>{item.name}</Text>
+          <Text style={[{fontWeight: "bold"}, styles.infoText]}>EPC: {item.maTS}</Text>
+          <Text style={styles.infoText}>{item.name}</Text>
           <Text>{item.position}</Text>
         </View>
         <TouchableOpacity
-          style={{ height: 40, width: 20, justifyContent: "center", alignItems: "flex-end", marginLeft: 5 }}
+          style={{ height: 40, width: 20, alignItems: "flex-end"}}
           onPress={() => props.navigation.navigate('Quản lý vị trí địa lý')}
         >
           <Icon name="chevron-right" color='#0080FF' size={15} />
@@ -30,9 +30,9 @@ function LoaderComponent(array, props) {
 
 const styles = StyleSheet.create({
   listItem: {
-    marginLeft: 15,
     padding: 15,
-    width: "100%",
+    flex: 1,
+    width: deviceWidth - 50,
     backgroundColor: "#FFF",
     alignSelf: "flex-start",
     justifyContent: "flex-start",
@@ -46,8 +46,10 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignSelf: "flex-start",
     height: 50,
-    width: "75%",
-
+    width: "85%",
+  },
+  infoText: {
+    paddingBottom: 3
   }
 });
 
