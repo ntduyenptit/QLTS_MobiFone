@@ -1,18 +1,24 @@
 import React from 'react';
-import { Dimensions, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const deviceWidth = Dimensions.get('window').width;
+export const deviceHeight = Dimensions.get('window').height;
 
-function LoaderComponent(array) {
+function LoaderComponent(array, props) {
     const items = () => array.map((item, index) => (
       <View key={`loader-component-${index + 1}`} style={styles.listItem}>
-        <Image source={{uri:item.photo}} style={{width:60, height:60,borderRadius:30}} />
-        <View style={{alignItems:"center", height:50,width:deviceWidth / 2, paddingTop: 10}}>
-          <Text style={{fontWeight:"bold"}}>{item.name}</Text>
+        <Icon style={{ justifyContent: "flex-start", alignItems: "flex-start" }} name="circle" color='#0080FF' size={15} />
+        <View style={styles.infor}>
+          <Text style={{fontWeight: "bold"}}>EPC: {item.maTS}</Text>
+          <Text>{item.name}</Text>
           <Text>{item.position}</Text>
         </View>
-        <TouchableOpacity style={{height:50,width:50, justifyContent:"center",alignItems:"center"}}>
-          <Text style={{color:"green"}}>Call</Text>
+        <TouchableOpacity
+          style={{ height: 40, width: 20, justifyContent: "center", alignItems: "flex-end", marginLeft: 5 }}
+          onPress={() => props.navigation.navigate('Quản lý vị trí địa lý')}
+        >
+          <Icon name="chevron-right" color='#0080FF' size={15} />
         </TouchableOpacity>
       </View>
           ))
@@ -23,17 +29,26 @@ function LoaderComponent(array) {
 }
 
 const styles = StyleSheet.create({
-    listItem:{
-      margin:10,
-      padding:10,
-      backgroundColor:"#FFF",
-      width:"100%",
-      alignSelf:"center",
-      flexDirection:"row",
-      borderRadius:5,
-      height: 100
-    }
-  });
+  listItem: {
+    marginLeft: 15,
+    padding: 15,
+    width: "100%",
+    backgroundColor: "#FFF",
+    alignSelf: "flex-start",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+    borderRadius: 5,
+    height: 95,
+  },
+  infor: {
+    marginLeft: 10,
+    justifyContent: "flex-start",
+    alignSelf: "flex-start",
+    height: 50,
+    width: "75%",
 
+  }
+});
 
 export default LoaderComponent;

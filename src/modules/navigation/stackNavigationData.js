@@ -69,9 +69,22 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý đầu đọc',
+    name: 'Quản lý đầu đọc di động',
     component: AvailableInFullVersion,
-    headerLeft: headerLeftComponent,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Quản lý đầu đọc cố định',
+    component: AvailableInFullVersion,
+    headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -84,7 +97,20 @@ const StackNavigationData = [
   {
     name: 'Giám sát tài sản',
     component: AvailableInFullVersion,
-    headerLeft: headerLeftComponent,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Theo dõi kết nối thiết bị',
+    component: AvailableInFullVersion,
+    headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -97,7 +123,7 @@ const StackNavigationData = [
   {
     name: 'Quản lý kiểm kê tài sản',
     component: GalleryScreen,
-    headerLeft: headerLeftComponent,
+    headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -110,7 +136,7 @@ const StackNavigationData = [
   {
     name: 'Quản lý dự trù mua sắm',
     component: AvailableInFullVersion,
-    headerLeft: headerLeftComponent,
+    headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -123,7 +149,7 @@ const StackNavigationData = [
   {
     name: 'Quản lý cảnh báo',
     component: AvailableInFullVersion,
-    headerLeft: headerLeftComponent,
+    headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -136,7 +162,59 @@ const StackNavigationData = [
   {
     name: 'Quản lý danh mục',
     component: AvailableInFullVersion,
-    headerLeft: headerLeftComponent,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Quản lý nhà cung cấp',
+    component: AvailableInFullVersion,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Quản lý vị trí địa lý',
+    component: AvailableInFullVersion,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Quản lý loại tài sản',
+    component: AvailableInFullVersion,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Quản lý đơn vị',
+    component: AvailableInFullVersion,
+    headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -149,7 +227,72 @@ const StackNavigationData = [
   {
     name: 'Báo cáo',
     component: AvailableInFullVersion,
-    headerLeft: headerLeftComponent,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Báo cáo người dùng',
+    component: AvailableInFullVersion,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Báo cáo cảnh báo',
+    component: AvailableInFullVersion,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Đặt lịch xuất báo cáo',
+    component: AvailableInFullVersion,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Báo cáo thông tin thiết bị RFID',
+    component: AvailableInFullVersion,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Báo cáo thông tin tài sản',
+    component: AvailableInFullVersion,
+    headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -162,7 +305,59 @@ const StackNavigationData = [
   {
     name: 'Quản lý hệ thống',
     component: AvailableInFullVersion,
-    headerLeft: headerLeftComponent,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Quản lý người dùng',
+    component: AvailableInFullVersion,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Quản lý phân quyền',
+    component: AvailableInFullVersion,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Lịch sử người dùng',
+    component: AvailableInFullVersion,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'Quản lý Mail, Server',
+    component: AvailableInFullVersion,
+    headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {

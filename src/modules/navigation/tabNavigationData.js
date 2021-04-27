@@ -1,6 +1,7 @@
 import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
-import CalendarScreen from '../calendar/CalendarViewContainer';
-import GridsScreen from '../grids/GridsViewContainer';
+import QuanLyTaiSanMatScreen from '../quanlytaisan/taisanmat/QuanLyTaiSanMatContainer';
+import QuanLyTSHongScreen from '../quanlytaisan/taisanhong/QuanLyTaiSanHongContainer';
+import QuanLyTSThanhLyScreen from '../quanlytaisan/taisanthanhly/QuanLyTaiSanThanhLyContainer';
 import PagesScreen from '../pages/PagesViewContainer';
 import { screens } from '../../api/config';
 
@@ -19,17 +20,17 @@ const tabNavigationData = [
  
   {
     name: 'TS mất',
-    component: GridsScreen,
+    component: QuanLyTaiSanMatScreen,
     icon: iconGrids,
   },
   {
     name: 'TS hỏng',
-    component: PagesScreen,
+    component: QuanLyTSHongScreen,
     icon: iconPages,
   },
   {
     name: 'TS thanh lý',
-    component: CalendarScreen,
+    component: QuanLyTSThanhLyScreen,
     icon: iconCalendar,
   },
   {
