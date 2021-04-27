@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, View } from "react-native";
-import MultiSelect from 'react-native-multiple-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
+import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { filterType } from '../../global/Config';
 
 const QuanLyTaiSanFilterComponent = (items) => {
@@ -87,6 +87,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
         <Text style={styles.titleText}>Đơn vị quản lý</Text>
         <MultiSelect
           ref={donViQuanLyRef}
+          isTree
           onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
           items={items.DvqlDataFilter}
           IconRenderer={Icon}

@@ -6,6 +6,7 @@
     "react/jsx-filename-extension": "off",
     "react/destructuring-assignment": "off",
     "no-use-before-define": "off",
+    "no-param-reassign": 0,
     "react/prop-types": "off",
     "no-case-declarations": "off",
     "global-require": "off",

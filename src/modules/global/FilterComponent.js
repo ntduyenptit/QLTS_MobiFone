@@ -7,6 +7,7 @@ import { hideFilter } from "../../redux/actions/filter.actions";
 import QuanLyTaiSanFilterComponent from '../quanlytaisan/filter/QuanLyTaiSanFilter';
 
 export const deviceWidth = Dimensions.get('window').width;
+export const deviceHeight = Dimensions.get('window').height;
 
 const getFilterView = (screen) => {
   switch (screen) {
@@ -29,6 +30,9 @@ const FilterComponent = (props) => (
     }}
   >
     <View style={styles.modalView}>
+      <View style={styles.underLine}>
+        <Text style={styles.titleStyle}>Bộ lọc</Text>
+      </View>
       <View style={styles.container}>
         {getFilterView(props.screen)}
       </View>
@@ -36,7 +40,7 @@ const FilterComponent = (props) => (
         style={[styles.button, styles.buttonClose]}
         onPress={() => store.dispatch(hideFilter())}
       >
-        <Text style={styles.textStyle}>Hide Modal</Text>
+        <Text style={styles.textStyle}>Xong</Text>
       </Pressable>
     </View>
   </Modal>
@@ -47,11 +51,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     padding: 10,
-    width: 300
+    width: deviceWidth - 100
   },
   modalView: {
     margin: 20,
-    marginTop: 50,
+    marginTop: 95,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -64,11 +68,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    height: 800,
+    height: deviceHeight - 200,
+  },
+  underLine: {
+    width: '100%',
+    borderBottomColor: 'black',
+    borderBottomWidth: 0.7,
+  },
+  titleStyle: {
+    textAlign: 'center',
+    fontSize: 20,
+    paddingBottom: 10,
+    color: '#2196F3'
   },
   textStyle: {
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
+    color: 'white'
   },
   modalText: {
     marginBottom: 15,
@@ -80,6 +96,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonClose: {
+    width: 100,
     backgroundColor: "#2196F3",
   },
 
