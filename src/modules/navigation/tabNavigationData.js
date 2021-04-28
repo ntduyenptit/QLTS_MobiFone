@@ -1,9 +1,6 @@
 import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
-import QuanLyTaiSanMatScreen from '../quanlytaisan/taisanmat/QuanLyTaiSanMatContainer';
-import QuanLyTSHongScreen from '../quanlytaisan/taisanhong/QuanLyTaiSanHongContainer';
-import QuanLyTSThanhLyScreen from '../quanlytaisan/taisanthanhly/QuanLyTaiSanThanhLyContainer';
 import PagesScreen from '../pages/PagesViewContainer';
-import { screens, tabs } from '../../api/config';
+import { tabs } from '../../api/config';
 
 const iconHome = require('../../../assets/images/tabbar/home.png');
 const iconCalendar = require('../../../assets/images/tabbar/calendar.png');
@@ -19,18 +16,18 @@ const tabNavigationData = [
   },
  
   {
-    name: 'TS mất',
-    component: QuanLyTaiSanMatScreen,
+    name: tabs.tai_san_mat,
+    component: QuanLyTaiSanScreen,
     icon: iconGrids,
   },
   {
-    name: 'TS hỏng',
-    component: QuanLyTSHongScreen,
+    name: tabs.tai_san_hong,
+    component: QuanLyTaiSanScreen,
     icon: iconPages,
   },
   {
-    name: 'TS thanh lý',
-    component: QuanLyTSThanhLyScreen,
+    name: tabs.tai_san_thanh_ly,
+    component: QuanLyTaiSanScreen,
     icon: iconCalendar,
   },
   {
