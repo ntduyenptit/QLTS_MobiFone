@@ -6,6 +6,8 @@ export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
 function LoaderComponent(array, props) {
+  console.log("props LoadComponent: " + props);
+  if (array && array.length > 0) {
     const items = () => array.map((item, index) => (
       <View key={`loader-component-${index + 1}`} style={styles.listItem}>
         <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#0080FF' size={15} />
@@ -21,13 +23,13 @@ function LoaderComponent(array, props) {
           <Icon name="chevron-right" color='#0080FF' size={15} />
         </TouchableOpacity>
       </View>
-          ))
+          )) 
 
     return (
       <View>{items()}</View>
     )
   }
-
+}
 
 const styles = StyleSheet.create({
   listItem: {

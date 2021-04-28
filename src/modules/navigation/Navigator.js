@@ -176,18 +176,55 @@ const AuthStack = () => (
   </Stack.Navigator>
 );
 const headerBackground = require('../../../assets/images/topBarBg.png');
+const headerLeftComponent = (props) => {
+  return (
+    <TouchableOpacity
+      onPress={props.onPress}
+      style={{
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+      }}
+    >
+      <Image
+        source={require('../../../assets/images/icons/arrow-back.png')}
+        resizeMode="contain"
+        style={{
+          height: 20,
+        }}
+      />
+    </TouchableOpacity>    
+  )
+}
 
+const headerRightComponent = () => (
+  <TouchableOpacity
+    // onPress={() => {
+    //     if (!store.getState().filterReducer.isShowFilter) {
+    //       store.dispatch(showFilter());
+    //     }
+    //   }}
+    style={{
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+    }}
+  >
+    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+      <Icon name="ellipsis-v" color="white" size={20} />
+    </View>
+  </TouchableOpacity>
+  )
 const DetailComponentStack = () => (
   <Stack.Navigator
     initialRouteName="Detail"
     screenOptions={{
       animationEnabled: false,
+      headerLeft:  headerLeftComponent,
+      headerRight: headerRightComponent,
       headerBackground: () => (
         <Image style={styles.headerImage} source={headerBackground} />
       ),
       headerTitleStyle: styles.headerTitleStyle
     }}
-    headerMode='screen'
   >
     <Stack.Screen name="Chi tiết tài sản" component={DetailComponentScreen} />
   </Stack.Navigator>

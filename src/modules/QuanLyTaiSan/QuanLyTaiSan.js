@@ -49,7 +49,7 @@ const QuanLyTaiSan = (state) => {
   function LoaderComponentByTab() {
     switch (state.tab) {
       case tabs.toan_bo_tai_san:
-        return LoaderComponent(state.toanbotaisanData);
+        return LoaderComponent(state.toanbotaisanData, state);
       default:
         return (<TouchableOpacity onPress={() => GetToanBoTaiSanData(state.DvqlDataFilter)}><Text>Không có dữ liệu</Text></TouchableOpacity>);
     }
