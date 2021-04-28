@@ -6,13 +6,14 @@ export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
 function LoaderComponent(array, props) {
+  if (array && array.length > 0) {
     const items = () => array.map((item, index) => (
       <View key={`loader-component-${index + 1}`} style={styles.listItem}>
         <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#0080FF' size={15} />
         <View style={styles.infor}>
-          <Text style={[{fontWeight: "bold"}, styles.infoText]}>EPC: {item.maTS}</Text>
-          <Text style={styles.infoText}>{item.name}</Text>
-          <Text>{item.position}</Text>
+          <Text style={[{fontWeight: "bold"}, styles.infoText]}>EPC: {item.maEPC}</Text>
+          <Text style={styles.infoText}>{item.tenTS}</Text>
+          <Text>{item.phongBanQL}</Text>
         </View>
         <TouchableOpacity
           style={{ height: 40, width: 20, alignItems: "flex-end"}}
@@ -26,6 +27,7 @@ function LoaderComponent(array, props) {
     return (
       <View>{items()}</View>
     )
+  }
 }
 
 const styles = StyleSheet.create({

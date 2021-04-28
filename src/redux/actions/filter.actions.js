@@ -1,6 +1,7 @@
 export const FILTER = '[FILTER]';
 export const SHOW_FILTER = `${FILTER} Show filter modal`;
 export const HIDE_FILTER = `${FILTER} Hide filter modal`;
+// get
 export const DVQL_FILTER = `${FILTER} Get DON_VI_QUAN_LY data`;
 export const LTS_FILTER = `${FILTER} Get LOAI_TAI_SAN data`;
 export const NCC_FILTER = `${FILTER} Get NHA_CUNG_CAP data`;

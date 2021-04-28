@@ -1,10 +1,11 @@
 import { SHOW_FILTER, HIDE_FILTER, DVQL_FILTER, LTS_FILTER, NCC_FILTER, MSD_FILTER } from '../../redux/actions/filter.actions'
-import { screens } from '../../api/config';
-import { CURRENT_SCREEN } from '../../redux/actions/screen.actions';
+import { screens, tabs } from '../../api/config';
+import { CURRENT_SCREEN, CURRENT_TAB } from '../../redux/actions/screen.actions';
 
 const initialState = {
     isShowFilter: false,
     screenName: screens.quan_ly_tai_san,
+    tabName: tabs.toan_bo_tai_san,
     dvqlDataFilter: [],
     ltsDataFilter: [],
     nccDataFilter: [],
@@ -44,6 +45,20 @@ export const currentScreenReducer = (state = initialState, action) => {
   }
 }
 
+export const currentTabReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case CURRENT_TAB: {
+      return {
+        tabName: action.payload.tab
+      }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+// get
 export const filterDVQLDataReducer = (state = initialState, action) => {
   switch (action.type) {
     case DVQL_FILTER: {

@@ -67,18 +67,30 @@ const QuanLyTaiSanFilterComponent = (items) => {
     }
   }
 
+  const requestToanBoTaiSanDataByFilter = (params) => {
+
+  }
+
   // selectedChange
   const onSelectedDVQLChange = (newSelectItems) => {
-    setDVQLItems(newSelectItems);
+    setDVQLItems((newSelectItems), () => {
+      requestToanBoTaiSanDataByFilter({'DVQL_Filter': selectedDVQLItems});
+    });
   }
   const onSelectedLTSChange = (newSelectItems) => {
-    setLTSItems(newSelectItems);
+    setLTSItems((newSelectItems), () => {
+      requestToanBoTaiSanDataByFilter({'LTS_Filter': selectedLTSItems});
+    });
   }
   const onSelectedNCCChange = (newSelectItems) => {
-    setNCCItems(newSelectItems);
+    setNCCItems((newSelectItems), () => {
+      requestToanBoTaiSanDataByFilter({'NCC_Filter': selectedNCCItems});
+    });
   }
   const onSelectedMSDChange = (newSelectItems) => {
-    setMSDItems(newSelectItems);
+    setMSDItems((newSelectItems), () => {
+      requestToanBoTaiSanDataByFilter({'MSD_Filter': selectedMSDItems});
+    });
   }
   // end SelectedChange
   return (

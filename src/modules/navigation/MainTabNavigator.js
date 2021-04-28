@@ -4,8 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { colors } from '../../styles';
 
 import tabNavigationData from './tabNavigationData';
-import store from '../../redux/store';
-import { setCurrentScreen } from '../../redux/actions/screen.actions';
+import { store } from '../../redux/store';
+import { setCurrentTab } from '../../redux/actions/screen.actions';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,9 +19,8 @@ export default function BottomTabs() {
           component={item.component}
           listeners={{
             tabPress: e => {
-              const screenName = e.target.substring(0, e.target.indexOf('-')); 
-              console.log(screenName);
-              store.dispatch(setCurrentScreen(screenName))
+              const tabName = e.target.substring(0, e.target.indexOf('-')); 
+              store.dispatch(setCurrentTab(tabName))
             },
           }}
           options={{
