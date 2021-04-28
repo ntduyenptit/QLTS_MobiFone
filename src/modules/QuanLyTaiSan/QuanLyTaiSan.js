@@ -4,7 +4,7 @@ import LoaderComponent from '../global/LoaderComponent';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
 
-const QuanLyTaiSan = () => {
+export default function QuanLyTaiSan(props) {
   const [scrollYValue] = useState(new Animated.Value(0));
   const clampedScroll = Animated.diffClamp(
     Animated.add(
@@ -104,12 +104,10 @@ const QuanLyTaiSan = () => {
           )}
           contentInsetAdjustmentBehavior="automatic"
         > 
-          {LoaderComponent(array)}
+          {LoaderComponent(array,props)}
         </Animated.ScrollView>
       </SafeAreaView>
       <FilterComponent />
     </Animated.View>
   );
 };
-
-export default QuanLyTaiSan;

@@ -6,6 +6,7 @@ export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
 function LoaderComponent(array, props) {
+
     const items = () => array.map((item, index) => (
       <View key={`loader-component-${index + 1}`} style={styles.listItem}>
         <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#0080FF' size={15} />
@@ -16,7 +17,7 @@ function LoaderComponent(array, props) {
         </View>
         <TouchableOpacity
           style={{ height: 40, width: 20, alignItems: "flex-end"}}
-          onPress={() => props.navigation.navigate('Quản lý vị trí địa lý')}
+          onPress={() => props.navigation.navigate('DetailComponent', {paramKey: item}) }
         >
           <Icon name="chevron-right" color='#0080FF' size={15} />
         </TouchableOpacity>

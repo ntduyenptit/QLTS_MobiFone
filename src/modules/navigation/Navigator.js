@@ -15,10 +15,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import NavigatorView from './RootNavigation';
 import AuthScreen from '../auth/AuthViewContainer';
+import DetailComponentScreen from '../global/DetailComponent';
 import { userLogin, userLogout } from '../../redux/actions/user.actions';
 import { setCurrentScreen } from '../../redux/actions/screen.actions';
 import { store } from '../../redux/store';
-import { drawerData } from '../../api/config'; 
+import { drawerData } from '../../api/config';
+import { Header } from 'react-native/Libraries/NewAppScreen';
+import { fonts } from '../../styles';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -97,7 +100,7 @@ function CustomDrawerContent(props) {
                     <Text style={styles.menuTitle}>{item.name}</Text>
                   </View>
                 )}
-                onPress={() =>  {
+                onPress={() => {
                   store.dispatch(setCurrentScreen(item.name))
                   props.navigation.navigate(item.name)
                 }}
@@ -142,7 +145,7 @@ function CustomDrawerContent(props) {
             size={17}
             color='#0080FF'
           />
-          <Text style={{marginLeft:15}}>Đăng xuất</Text>
+          <Text style={{ marginLeft: 15 }}>Đăng xuất</Text>
         </TouchableOpacity>
       </DrawerContentScrollView>
 
@@ -172,7 +175,23 @@ const AuthStack = () => (
     <Stack.Screen name="Login" component={AuthScreen} />
   </Stack.Navigator>
 );
+const headerBackground = require('../../../assets/images/topBarBg.png');
 
+const DetailComponentStack = () => (
+  <Stack.Navigator
+    initialRouteName="Detail"
+    screenOptions={{
+      animationEnabled: false,
+      headerBackground: () => (
+        <Image style={styles.headerImage} source={headerBackground} />
+      ),
+      headerTitleStyle: styles.headerTitleStyle
+    }}
+    headerMode='screen'
+  >
+    <Stack.Screen name="Chi tiết tài sản" component={DetailComponentScreen} />
+  </Stack.Navigator>
+);
 function App(stateToProps) {
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
@@ -197,7 +216,9 @@ function App(stateToProps) {
         <Stack.Screen name='Auth' component={AuthStack} />
         :
         <Stack.Screen name='App' component={DrawerStack} />
+
       }
+      <Stack.Screen name='DetailComponent' component={DetailComponentStack} />
     </Stack.Navigator>
   );
 }
@@ -269,6 +290,21 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 20,
     marginBottom: 15,
-   flexDirection: 'row',
+    flexDirection: 'row',
+  },
+  headerImage: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: `${100}%`,
+    height: Header.height,
+  },
+  headerTitleStyle: {
+    fontFamily: fonts.primaryRegular,
+    color: 'white',
+    fontSize: 18,
+    alignSelf: 'center'
   }
 });

@@ -367,6 +367,7 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
+  
 ]
 
 export default StackNavigationData;
