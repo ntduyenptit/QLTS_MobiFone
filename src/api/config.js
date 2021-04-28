@@ -55,6 +55,9 @@ export const screens = ({
 // Quản lý tabs
 export const tabs = ({
   toan_bo_tai_san: 'Toàn bộ TS',
+  tai_san_mat: 'TS mất',
+  tai_san_hong: 'TS hỏng',
+  tai_san_thanh_ly: 'TS thanh lý',
 })
 
 // Quản lý icon
