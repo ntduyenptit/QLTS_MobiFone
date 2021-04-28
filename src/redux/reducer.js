@@ -5,13 +5,15 @@ import gallery from '../modules/gallery/GalleryState';
 import app from '../modules/AppState';
 import calendar from '../modules/calendar/CalendarState';
 import userReducer from '../modules/auth/AuthState';
+import toanbotaisanReducer from '../modules/quanlytaisan/QuanLyTaiSanState';
 import { 
   filterReducer, 
   filterDVQLDataReducer,
   filterLTSDataReducer,
   filterMSDDataReducer,
   filterNCCDataReducer,
-  currentScreenReducer } from '../modules/global/GlobalState';
+  currentScreenReducer,
+  currentTabReducer } from '../modules/global/GlobalState';
 
 export default combineReducers({
   // ## Generator Reducers
@@ -24,5 +26,7 @@ export default combineReducers({
   filterLTSDataReducer,
   filterMSDDataReducer,
   filterNCCDataReducer,
-  currentScreenReducer
+  currentScreenReducer,
+  currentTabReducer,
+  toanbotaisanReducer
 });

@@ -15,13 +15,13 @@ export const endPoint = ({
   getAllToChucTheoNguoiDung: 'services/app/LookupTable/GetAllToChucTheoNguoiDung',
   getAllTrangThaiTaiSan: 'services/app/LookupTable/GetAllTrangThaiTaiSan',
   getAllNhaCungCap: 'services/app/LookupTable/GetAllNhaCungCap',
-  getAllTinhTrangMaSuDungTaiSan: 'services/app/LookupTable/GetAllTinhTrangMaSuDungTaiSan'
+  getAllTinhTrangMaSuDungTaiSan: 'services/app/LookupTable/GetAllTinhTrangMaSuDungTaiSan',
+  getToanBoTaiSan: 'services/app/ToanBoTaiSan/GetAll',
 });
 
 // Quản lý màn hình
 export const screens = ({
   quan_ly_tai_san: 'Quản lý tài sản',
-  toan_bo_tai_san: 'Toàn bộ TS',
   // quản lý đầu đọc
   quan_ly_dau_doc: 'Quản lý đầu đọc',
   quan_ly_dau_doc_di_dong: 'Quản lý đầu đọc di đông',
@@ -51,6 +51,11 @@ export const screens = ({
   lich_su_nguoi_dung: 'Lịch sử người dùng',
   quan_ly_mail_server: 'Quản lý Mail, Server'
 });
+
+// Quản lý tabs
+export const tabs = ({
+  toan_bo_tai_san: 'Toàn bộ TS',
+})
 
 // Quản lý icon
 export const icons = ({

@@ -1,10 +1,37 @@
 import React, { useState } from 'react';
-import { Animated, SafeAreaView, StatusBar } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Alert, Text } from 'react-native';
+import { connect } from 'react-redux';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import LoaderComponent from '../global/LoaderComponent';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
+import { createGetMethod } from '../../api/Apis';
+import { endPoint, tabs } from '../../api/config';
+import { store } from '../../redux/store';
+import { toanbotaisanGetData } from '../../redux/actions/toanbotaisan.actions';
 
-export default function QuanLyTaiSan(props) {
+export function GetToanBoTaiSanData(datas) {
+  if (datas && datas.length > 0) {
+    let url = `${endPoint.getToanBoTaiSan}?`;
+    datas.forEach(e => {
+      url += `PhongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
+    });
+    url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
+    url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
+    url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
+    createGetMethod(url)
+      .then(res => {
+        if (res) {
+          store.dispatch(toanbotaisanGetData(res));
+        } else {
+          Alert.alert('Lỗi khi load toàn bộ tài sản!');
+        }
+      })
+      .catch(err => console.log(err));
+  }
+}
+
+const QuanLyTaiSan = (state) => {
   const [scrollYValue] = useState(new Animated.Value(0));
   const clampedScroll = Animated.diffClamp(
     Animated.add(
@@ -18,68 +45,16 @@ export default function QuanLyTaiSan(props) {
     0,
     50,
   )
-  const array = [
-    {
-        "name": "Bộ Micro hội thảo LHY-530 (2)",
-        "maTS": "2403000060000000000002F5",
-        "position": "Tầng 8",
-        "color": "https:\/\/images.unsplash.com\/photo-1494790108377-be9c29b29330?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=707b9c33066bf8808c934c8ab394dff6"
-    },
-    {
-        "name": "Màn chiếu Lyscreen",
-        "maTS": "24030000E0000000000002F4",
-        "position": "Tầng 8",
-        "color": "https:\/\/randomuser.me\/api\/portraits\/women\/44.jpg"
-    },
-    {
-      "name": "Màn chiếu Lyscreen",
-      "maTS": "24030000E0000000000002F3",
-      "position": "Tầng 8",
-        "color": "https:\/\/randomuser.me\/api\/portraits\/women\/68.jpg"
-    },
-    {
-      "name": "Màn chiếu Lyscreen",
-      "maTS": "24030000E0000000000002F2",
-      "position": "Tầng 8",
-        "color": "https:\/\/randomuser.me\/api\/portraits\/women\/65.jpg"
-    },
-    {
-      "name": "Màn chiếu Lyscreen",
-      "maTS": "24030000E0000000000002F1",
-      "position": "Tầng 8",
-        "color": "https:\/\/randomuser.me\/api\/portraits\/men\/43.jpg"
-    },
-    {
-      "name": "Màn chiếu Lyscreen",
-      "maTS": "24030000E0000000000002F0",
-      "position": "Tầng 8",
-        "color": "https:\/\/images.pexels.com\/photos\/415829\/pexels-photo-415829.jpeg?h=350&auto=compress&cs=tinysrgb"
-    },
-    {
-      "name": "Màn chiếu Lyscreen",
-      "maTS": "24030000E0000000000002EF",
-      "position": "Tầng 8",
-        "color": "https:\/\/images.unsplash.com\/photo-1507003211169-0a1dd7228f2d?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=a72ca28288878f8404a795f39642a46f"
-    },
-    {
-      "name": "Màn chiếu Lyscreen",
-      "maTS": "2403000130000000000002EE",
-      "position": "Tầng 8",
-        "color": "https:\/\/tinyfac.es\/data\/avatars\/B0298C36-9751-48EF-BE15-80FB9CD11143-500w.jpeg"
-    },
-    {
-      "name": "Màn chiếu Lyscreen",
-      "maTS": "2403000130000000000002ED",
-      "position": "Tầng 8",
-        "color": "https:\/\/randomuser.me\/api\/portraits\/men\/97.jpg"
-    },
-    {
-      "name": "Màn chiếu Lyscreen",
-      "maTS": "2403000060000000000002EC",
-      "position": "Tầng 8",
-        "color": "https:\/\/randomuser.me\/api\/portraits\/women\/26.jpg"
+
+  function LoaderComponentByTab() {
+    switch (state.tab) {
+      case tabs.toan_bo_tai_san:
+        return LoaderComponent(state.toanbotaisanData);
+      default:
+        return (<TouchableOpacity onPress={() => GetToanBoTaiSanData(state.DvqlDataFilter)}><Text>Không có dữ liệu</Text></TouchableOpacity>);
     }
-];
+  }
+
   return (
     <Animated.View>
       <StatusBar barStyle="dark-content" />
@@ -103,11 +78,19 @@ export default function QuanLyTaiSan(props) {
             () => { },          // Optional async listener
           )}
           contentInsetAdjustmentBehavior="automatic"
-        > 
-          {LoaderComponent(array,props)}
+        >
+          {LoaderComponentByTab()}
         </Animated.ScrollView>
       </SafeAreaView>
       <FilterComponent />
     </Animated.View>
   );
 };
+
+const mapStateToProps = state => ({
+  toanbotaisanData: state.toanbotaisanReducer.data,
+  DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
+  tab: state.currentTabReducer.tabName,
+});
+
+export default connect(mapStateToProps)(QuanLyTaiSan);
