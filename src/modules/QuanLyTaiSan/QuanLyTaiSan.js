@@ -82,7 +82,7 @@ export function GetToanBoTaiSanData(datas, tab = tabs.toan_bo_tai_san) {
               break;
           }
         } else {
-          Alert.alert('Lỗi khi load toàn bộ tài sản!');
+          //Alert.alert('Lỗi khi load toàn bộ tài sản!');
         }
       })
       .catch(err => console.log(err));
