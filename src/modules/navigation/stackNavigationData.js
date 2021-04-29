@@ -296,7 +296,7 @@ const StackNavigationData = [
     name: 'Báo cáo thông tin tài sản',
     component: BaoCaoThongTinTS,
     headerLeft: null,
-    headerRight: headerRightComponent,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
