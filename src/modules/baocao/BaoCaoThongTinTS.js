@@ -1,7 +1,7 @@
 import React from 'react'
 import { PieChart } from 'react-native-svg-charts'
 import { Text } from 'react-native-svg'
-import {  StyleSheet,  View } from 'react-native';
+import {    View } from 'react-native';
 import colorDetail from './detailColor';
 class BaoCaoThongTinTS extends React.PureComponent {
 
@@ -85,6 +85,7 @@ class BaoCaoThongTinTS extends React.PureComponent {
                 </View>
               
             </View>
+          
         )
     }
 

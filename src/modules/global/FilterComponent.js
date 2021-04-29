@@ -44,14 +44,14 @@ const FilterComponent = (props) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#eeeee4",
+    backgroundColor: 'white',
     padding: 10,
     width: deviceWidth - 100
   },
   modalView: {
     margin: 20,
     marginTop: 95,
-    backgroundColor: "#eeeee4",
+    backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
     alignItems: "center",

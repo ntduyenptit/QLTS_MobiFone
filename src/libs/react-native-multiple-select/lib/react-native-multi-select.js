@@ -28,8 +28,8 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 const defaultSearchIcon = (
   <Icon
     name="search"
-    size={20}
-    color={colorPack.placeholderTextColor}
+    size={15}
+    color={colorPack.black}
     style={{ marginRight: 10 }}
   />
 );
@@ -37,6 +37,7 @@ const defaultSearchIcon = (
 export default class MultiSelect extends Component {
   static propTypes = {
     isTree: PropTypes.bool,
+    subChildContainerStyle: ViewPropTypes.style,
     single: PropTypes.bool,
     selectedItems: PropTypes.array,
     items: PropTypes.array.isRequired,
@@ -131,7 +132,7 @@ export default class MultiSelect extends Component {
     this.state = {
       selector: false,
       searchTerm: '',
-      expandedMap: {},
+      levelNum: 0,
       listExpanded: [],
     };
   }
@@ -408,13 +409,15 @@ export default class MultiSelect extends Component {
       const index = array.indexOf(level)
       if (index !== -1) {
         array.splice(index, 1);
-        this.setState({ listExpanded: array });
+        this.setState({ listExpanded: array }, () => {
+        });
       }
     }
   }
 
   _getRow = (item, level) => {
     const { selectedItemIconColor, displayKey, styleRowList } = this.props;
+    const { listExpanded } = this.state;
     const { key, children } = item;
     const hasChildren = !!(children && children.length > 0);
     return (
@@ -434,8 +437,9 @@ export default class MultiSelect extends Component {
                   fontSize: 16,
                   paddingTop: 5,
                   paddingBottom: 5,
+                  paddingLeft: level * 10
                 },
-                hasChildren && { fontWeight: "bold", marginLeft: -10 + level },
+                hasChildren && { fontWeight: "bold" },
                 this._itemStyle(item),
                 item.disabled ? { color: 'grey' } : {}
               ]}
@@ -457,7 +461,7 @@ export default class MultiSelect extends Component {
             >
               {hasChildren && (
                 <Icon
-                  name={this.state.listExpanded.find(a => a === level) !== undefined ? 'angle-down' : 'angle-right'}
+                  name={listExpanded.find(a => a === level) !== undefined ? 'angle-down' : 'angle-right'}
                   style={fixStyles.caretIcon}
                   size={20}
                 />
@@ -555,11 +559,14 @@ export default class MultiSelect extends Component {
   };
 
   _renderTree(children, level = 0) {
+    if (level > 0 && this.state.levelNum === 0) {
+      this.setState({ levelNum: level });
+    }
     return children.map((nodeData, index) => {
       const { key, children } = nodeData;
       return (
         <ScrollView
-          style={{ height: 200 }}
+          style={{ height: 'auto' }}
           key={`${key}_${index}`}
         >
           {this._renderNode(nodeData, level)}
@@ -590,7 +597,7 @@ export default class MultiSelect extends Component {
           ]}
         >
           No item to display.
-          </Text>
+        </Text>
       </View>
     );
 
@@ -686,6 +693,7 @@ export default class MultiSelect extends Component {
   render() {
     const {
       isTree,
+      getCollapsedNodeHeight,
       removeSelected,
       selectedItems,
       single,
@@ -713,7 +721,7 @@ export default class MultiSelect extends Component {
       searchIcon,
       items
     } = this.props;
-    const { searchTerm, selector } = this.state;
+    const { searchTerm, selector, levelNum, listExpanded } = this.state;
 
     let renderItems = searchTerm && !isTree ? this._filterItems(searchTerm) : items;
     if (isTree && searchTerm) {
@@ -794,7 +802,7 @@ export default class MultiSelect extends Component {
                 backgroundColor: '#fafafa'
               }}
             >
-              <View style={styleItemsContainer && styleItemsContainer}>
+              <View style={[styleItemsContainer && styleItemsContainer, levelNum > 0 && listExpanded && listExpanded.length > 0 && getCollapsedNodeHeight]}>
                 {this._renderTree(renderItems)}
               </View>
               {!single && !hideSubmitButton && (
@@ -932,11 +940,4 @@ const fixStyles = StyleSheet.create({
   chevronIcon: {
     padding: 10,
   },
-  boderIcon: {
-    width : 30,
-    height: 30,
-    padding: 5,
-     marginLeft: 15,
-    backgroundColor: 'black',
-  }
 });
