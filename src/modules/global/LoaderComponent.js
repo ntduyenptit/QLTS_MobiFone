@@ -14,9 +14,9 @@ function LoaderComponent(array, props) {
       <View key={`loader-component-${index + 1}`} style={styles.listItem}>
         <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#0080FF' size={15} />
         <View style={styles.infor}>
-          <Text style={[{fontWeight: "bold"}, styles.infoText]}>EPC: {item.maEPC ? item.maEPC : item.epcCode}</Text>
-          <Text style={styles.infoText}>{item.tenTS ? item.tenTS : item.tenTaiSan}</Text>
-          <Text>{item.phongBanQL ? item.phongBanQL : item.phongBanQuanLy}</Text>
+          <Text numberOfLines = {1} style={[{fontWeight: "bold"}, styles.infoText]}>EPC: {item.maEPC ? item.maEPC : item.epcCode}</Text>
+          <Text numberOfLines = {1} style={styles.infoText}>{item.tenTS ? item.tenTS : item.tenTaiSan}</Text>
+          <Text numberOfLines = {1}>{item.phongBanQL ? item.phongBanQL : item.phongBanQuanLy}</Text>
         </View>
         <TouchableOpacity
           style={{ height: 40, width: 20, alignItems: "flex-end"}}
@@ -55,9 +55,11 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     height: 50,
     width: "85%",
+
   },
   infoText: {
-    paddingBottom: 3
+    paddingBottom: 3,
+    
   }
 });
 

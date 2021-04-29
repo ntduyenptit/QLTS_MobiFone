@@ -6,6 +6,7 @@ import TabNavigator from './MainTabNavigator';
 import GalleryScreen from '../gallery/GalleryViewContainer';
 import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
 import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVersionViewContainer";
+import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
 
 // import ProfileScreen from '../profile/ProfileViewContainer';
 // import ArticleScreen from '../article/ArticleViewContainer';
@@ -293,7 +294,7 @@ const StackNavigationData = [
   },
   {
     name: 'Báo cáo thông tin tài sản',
-    component: AvailableInFullVersion,
+    component: BaoCaoThongTinTS,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
