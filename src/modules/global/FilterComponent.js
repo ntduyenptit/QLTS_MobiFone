@@ -18,6 +18,8 @@ import QuanLyTaiSanFilterComponent from '../quanlytaisan/filter/QuanLyTaiSanFilt
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
+const keyboardVerticalOffset = Platform.OS === 'ios' ? -200 : 0
+
 const FilterComponent = (props) => (
   <Modal
     animationType="slide"
@@ -28,8 +30,8 @@ const FilterComponent = (props) => (
     }}
   >
     <KeyboardAvoidingView
-      keyboardVerticalOffset={Platform.select({ ios: 0, android: 500 })}
-      behavior="padding"
+      behavior='position' 
+      keyboardVerticalOffset={keyboardVerticalOffset}
       style={styles.modalView}
     >
       <View style={styles.underLine}>
@@ -38,12 +40,14 @@ const FilterComponent = (props) => (
       <View style={styles.container}>
         <QuanLyTaiSanFilterComponent />
       </View>
-      <Pressable
-        style={[styles.button, styles.buttonClose]}
-        onPress={() => store.dispatch(hideFilter())}
-      >
-        <Text style={styles.textStyle}>Xong</Text>
-      </Pressable>
+      <View style={{width: deviceWidth - 100, alignItems: 'center'}}>
+        <Pressable
+          style={[styles.button, styles.buttonClose]}
+          onPress={() => store.dispatch(hideFilter())}
+        >
+          <Text style={styles.textStyle}>Xong</Text>
+        </Pressable>
+      </View>
     </KeyboardAvoidingView>
   </Modal>
 )
@@ -57,7 +61,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    marginTop: 95,
+    marginTop: 80,
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
     height: deviceHeight - 200,
   },
   underLine: {
-    width: '100%',
+    width: deviceWidth - 100,
     borderBottomColor: 'black',
     borderBottomWidth: 0.7,
   },
@@ -96,7 +100,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    marginBottom: 10
+    marginBottom: 10,
   },
   buttonClose: {
     width: 100,
