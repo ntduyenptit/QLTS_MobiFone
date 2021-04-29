@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import TabNavigator from './MainTabNavigator';
 import GalleryScreen from '../gallery/GalleryViewContainer';
 import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVersionViewContainer";
-//import BaoCaoThongTinTS from '..'
+import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
 // import ProfileScreen from '../profile/ProfileViewContainer';
 // import ArticleScreen from '../article/ArticleViewContainer';
 // import ChatScreen from '../chat/ChatViewContainer';
@@ -291,7 +291,7 @@ const StackNavigationData = [
   },
   {
     name: 'Báo cáo thông tin tài sản',
-    component: AvailableInFullVersion,
+    component: BaoCaoThongTinTS,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },

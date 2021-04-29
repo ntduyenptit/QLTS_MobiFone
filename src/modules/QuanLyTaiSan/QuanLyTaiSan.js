@@ -9,6 +9,7 @@ import { createGetMethod } from '../../api/Apis';
 import { endPoint, tabs } from '../../api/config';
 import { store } from '../../redux/store';
 import { toanbotaisanGetData } from '../../redux/actions/toanbotaisan.actions';
+import tabNavigationData from '../navigation/tabNavigationData';
 
 export function GetToanBoTaiSanData(datas) {
   if (datas && datas.length > 0) {
@@ -63,14 +64,16 @@ const QuanLyTaiSan = (state) => {
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
           style={{
-            margin: 20,
-            paddingTop: 55
+            margin: 10,
+            paddingTop: 55,
+            paddingBottom: 15,
           }}
           contentContainerStyle={{
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
-            justifyContent: 'space-around'
+            justifyContent: 'space-around',
+            paddingBottom: 55,
           }}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
