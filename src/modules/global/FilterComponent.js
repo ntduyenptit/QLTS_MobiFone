@@ -1,4 +1,14 @@
-import { Alert, Modal, StyleSheet, Text, Pressable, View, Dimensions } from "react-native";
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform
+} from "react-native";
 import React from 'react';
 import { connect } from "react-redux";
 import { store } from "../../redux/store";
@@ -17,7 +27,11 @@ const FilterComponent = (props) => (
       Alert.alert("Modal has been closed.");
     }}
   >
-    <View style={styles.modalView}>
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={Platform.select({ ios: 0, android: 500 })}
+      behavior="padding"
+      style={styles.modalView}
+    >
       <View style={styles.underLine}>
         <Text style={styles.titleStyle}>Bộ lọc</Text>
       </View>
@@ -30,7 +44,7 @@ const FilterComponent = (props) => (
       >
         <Text style={styles.textStyle}>Xong</Text>
       </Pressable>
-    </View>
+    </KeyboardAvoidingView>
   </Modal>
 )
 
@@ -82,12 +96,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    marginBottom: 10
   },
   buttonClose: {
     width: 100,
     backgroundColor: "#2196F3",
   },
-
+  safeAreaView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 const mapStateToProps = state => ({

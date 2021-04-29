@@ -23,46 +23,46 @@ const QuanLyTaiSanFilterComponent = (items) => {
   const closeMultiSelectIfOpened = (type) => {
     switch (type) {
       case filterType.don_vi_quan_ly:
-        if (loaiTaiSanRef.current.state.selector) {
+        if (loaiTaiSanRef.current && loaiTaiSanRef.current.state.selector) {
           loaiTaiSanRef.current._toggleSelector();
         }
-        if (nhaCungCapRef.current.state.selector) {
+        if (nhaCungCapRef.current && nhaCungCapRef.current.state.selector) {
           nhaCungCapRef.current._toggleSelector();
         };
-        if (maSuDungRef.current.state.selector) {
+        if (maSuDungRef.current && maSuDungRef.current.state.selector) {
           maSuDungRef.current._toggleSelector();
         };
         break;
       case filterType.loai_tai_san:
-        if (donViQuanLyRef.current.state.selector) {
+        if (donViQuanLyRef.current && donViQuanLyRef.current.state.selector) {
           donViQuanLyRef.current._toggleSelector();
         };
-        if (nhaCungCapRef.current.state.selector) {
+        if (nhaCungCapRef.current && nhaCungCapRef.current.state.selector) {
           nhaCungCapRef.current._toggleSelector();
         };
-        if (maSuDungRef.current.state.selector) {
+        if (maSuDungRef.current && maSuDungRef.current.state.selector) {
           maSuDungRef.current._toggleSelector();
         };
         break;
       case filterType.nha_cung_cap:
-        if (donViQuanLyRef.current.state.selector) {
+        if (donViQuanLyRef.current && donViQuanLyRef.current.state.selector) {
           donViQuanLyRef.current._toggleSelector();
         };
-        if (loaiTaiSanRef.current.state.selector) {
+        if (loaiTaiSanRef.current && loaiTaiSanRef.current.state.selector) {
           loaiTaiSanRef.current._toggleSelector();
         }
-        if (maSuDungRef.current.state.selector) {
+        if (maSuDungRef.current && maSuDungRef.current.state.selector) {
           maSuDungRef.current._toggleSelector();
         };
         break;
       case filterType.ma_su_sung:
-        if (donViQuanLyRef.current.state.selector) {
+        if (donViQuanLyRef.current && donViQuanLyRef.current.state.selector) {
           donViQuanLyRef.current._toggleSelector();
         };
-        if (loaiTaiSanRef.current.state.selector) {
+        if (loaiTaiSanRef.current && loaiTaiSanRef.current.state.selector) {
           loaiTaiSanRef.current._toggleSelector();
         }
-        if (nhaCungCapRef.current.state.selector) {
+        if (nhaCungCapRef.current && nhaCungCapRef.current.state.selector) {
           nhaCungCapRef.current._toggleSelector();
         };
         break;
@@ -70,6 +70,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
         break;
     }
   }
+
 
   const requestToanBoTaiSanDataByFilter = (params) => {
 
