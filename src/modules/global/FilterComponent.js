@@ -1,19 +1,12 @@
 import { Alert, Modal, StyleSheet, Text, Pressable, View, Dimensions } from "react-native";
 import React from 'react';
 import { connect } from "react-redux";
-import { screens, tabs } from '../../api/config';
 import { store } from "../../redux/store";
 import { hideFilter } from "../../redux/actions/filter.actions";
 import QuanLyTaiSanFilterComponent from '../quanlytaisan/filter/QuanLyTaiSanFilter';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
-
-const getFilterView = (screen, tab) => {
-  if (screen === screens.quan_ly_tai_san && tab === tabs.toan_bo_tai_san) {
-    return <QuanLyTaiSanFilterComponent />;
-  }
-}
 
 const FilterComponent = (props) => (
   <Modal
@@ -29,7 +22,7 @@ const FilterComponent = (props) => (
         <Text style={styles.titleStyle}>Bộ lọc</Text>
       </View>
       <View style={styles.container}>
-        {getFilterView(props.screen, props.tab)}
+        <QuanLyTaiSanFilterComponent />
       </View>
       <Pressable
         style={[styles.button, styles.buttonClose]}
