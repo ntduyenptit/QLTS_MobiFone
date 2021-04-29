@@ -5,44 +5,40 @@ import {
     View,
     TouchableOpacity,
     Image,
-    Alert,
     ScrollView,
-    FlatList,
-    Button,
 } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-const Stack = createStackNavigator();
-function DetailComponent({ item }) {
-    return (
-        <View style={styles.container}>
-            <ScrollView>
-                <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
-                    <Image style={styles.productImg} source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3v7KDJN7TAoJa5sFaPWcp1HX8JFcpF3z5K3ngz4L6kWoEP7Ca" }} />
-                    <Text style={styles.name}>{item.name}</Text>
-                    <Text style={styles.price}>{item.loaiTS}</Text>
-                    <Text style={styles.description}>
-                            {item.item.position}
-                    </Text>
-                </View>
-                <View style={styles.starContainer}>
-                    <Image style={styles.star} source={{ uri: "https://img.icons8.com/color/40/000000/star.png" }} />
-                </View>
-                <View style={styles.contentColors}>
-                    <TouchableOpacity style={[styles.btnColor, { backgroundColor: "#FF4500" }]}></TouchableOpacity>
-                </View>
-                <View style={styles.contentSize}>
-                    <TouchableOpacity style={styles.btnSize}><Text>XL</Text></TouchableOpacity>
-                </View>
-                <View style={styles.separator}></View>
-                <View style={styles.addToCarContainer}>
-                    <TouchableOpacity style={styles.shareButton} onPress={}>
-                        <Text style={styles.shareButtonText}>Xóa</Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
-        </View>
-    );
+
+function DetailComponent()  {
+       // const { item } = route.params.paramKey;
+        return (
+            <View style={styles.container}>
+                <ScrollView>
+                    <View style={{ alignItems: 'flex-start', marginHorizontal: 30 }}>
+                        <Image  style={styles.productImg} source={require('../../../assets/images/icon.png')} style={styles.iconImage} />
+                        <Text style={styles.name}>{"Mã tài sản: 2403000060000000000002F5"}</Text>
+                        <Text style={styles.price}>{"Tên tài sản: Bộ Micro hội thảo LHY-530 (2)"}</Text>
+                        <Text style={styles.price}>{"Loại tài sản: CCDC QLHC"}</Text>
+                        <Text style={styles.price}>{"Nhà cung cấp: Viettel"}</Text>
+                        <Text style={styles.price}>{"Ngày mua: 	23/12/2020"}</Text>
+                        <Text style={styles.price}>{"Nguyên giá: Bộ Micro hội thảo LHY-530 (2)"}</Text>
+                        <Text style={styles.price}>
+                                {"Đơn vị quản lý: MobiFone R&D - Kế toán"}
+                        </Text>
+                        <Text style={styles.price}>{"Trạng thái: Chưa sử dụng"}</Text>
+                        <Text style={styles.price}>{"Mã sử dụng: RFID"}</Text>
+                        <Text style={styles.price}>{"Vị trí tài sản: Tầng 8"}</Text>
+                    </View>
+                  
+                    <View style={styles.separator}></View>
+                    <View style={styles.addToCarContainer}>
+                        <TouchableOpacity style={styles.shareButton} >
+                            <Text style={styles.shareButtonText}>Xóa</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+            </View>
+        );
+    
 }
 const styles = StyleSheet.create({
     container: {
@@ -60,6 +56,7 @@ const styles = StyleSheet.create({
     },
     price: {
         marginTop: 10,
+        alignItems:'flex-start',
         fontSize: 18,
         color: "green",
         fontWeight: 'bold'

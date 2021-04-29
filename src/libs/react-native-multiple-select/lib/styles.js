@@ -10,7 +10,7 @@ export const colorPack = {
   light: '#FFF',
   textPrimary: '#525966',
   placeholderTextColor: '#A9A9A9',
-  danger: '#C62828',
+  danger: 'black',
   borderColor: '#e9e9e9',
   backgroundColor: '#b1b1b1',
 };
@@ -42,7 +42,7 @@ export default {
     backgroundColor: colorPack.backgroundColor,
   },
   indicator: {
-    fontSize: 30,
+    fontSize: 25,
     color: colorPack.placeholderTextColor,
   },
   selectedItem: {
@@ -82,6 +82,7 @@ export default {
     alignItems: 'center',
     paddingLeft: 16,
     backgroundColor: colorPack.light,
+    borderRadius : 10
   },
   dropdownView: {
     flexDirection: 'row',

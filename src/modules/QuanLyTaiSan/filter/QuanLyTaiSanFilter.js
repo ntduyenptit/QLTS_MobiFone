@@ -173,15 +173,20 @@ const QuanLyTaiSanFilterComponent = (items) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor:"#eeeee4",
     padding: 10,
     width: 300
   },
   titleText: {
     fontSize: 20,
     fontWeight: "bold",
-    marginLeft: -10
+    marginLeft: -10,
+    padding: 10,
+  },
+  component: {
+    
   }
+
 });
 
 const mapStateToProps = state => ({

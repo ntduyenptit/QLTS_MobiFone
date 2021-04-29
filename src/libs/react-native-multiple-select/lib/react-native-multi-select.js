@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import reject from 'lodash/reject';
 import find from 'lodash/find';
 import get from 'lodash/get';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { ScrollView } from 'react-native-gesture-handler';
 import styles, { colorPack } from './styles';
@@ -27,7 +27,7 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 
 const defaultSearchIcon = (
   <Icon
-    name="magnify"
+    name="search"
     size={20}
     color={colorPack.placeholderTextColor}
     style={{ marginRight: 10 }}
@@ -106,7 +106,7 @@ export default class MultiSelect extends Component {
     itemFontSize: 16,
     selectedItemIconColor: colorPack.primary,
     searchInputPlaceholderText: 'Search',
-    searchInputStyle: { color: colorPack.textPrimary },
+    searchInputStyle: { color: colorPack.textPrimary, borderRadius: 10},
     textColor: colorPack.textPrimary,
     selectText: 'Select',
     altFontFamily: '',
@@ -117,12 +117,12 @@ export default class MultiSelect extends Component {
     fixedHeight: false,
     hideTags: false,
     hideDropdown: false,
-    onChangeInput: () => {},
+    onChangeInput: () => { },
     displayKey: 'name',
     canAddItems: false,
-    onAddItem: () => {},
-    onClearSelector: () => {},
-    onToggleList: () => {},
+    onAddItem: () => { },
+    onClearSelector: () => { },
+    onToggleList: () => { },
     removeSelected: false
   };
 
@@ -182,18 +182,18 @@ export default class MultiSelect extends Component {
     const {
       uniqueKey
     } = this.props;
-    if(element[uniqueKey] === matchingTitle){
-         return element;
-    }if (element.children != null){
-         let i;
-         let result = null;
-         for(i=0; result == null &&  i < element.children.length; i++){
-              result = this._searchTree(element.children[i], matchingTitle);
-         }
-         return result;
+    if (element[uniqueKey] === matchingTitle) {
+      return element;
+    } if (element.children != null) {
+      let i;
+      let result = null;
+      for (i = 0; result == null && i < element.children.length; i++) {
+        result = this._searchTree(element.children[i], matchingTitle);
+      }
+      return result;
     }
     return null;
-}
+  }
 
   _displaySelectedItems = optionalSelectedItems => {
     const {
@@ -236,7 +236,7 @@ export default class MultiSelect extends Component {
               {
                 flex: 1,
                 color: tagTextColor,
-                fontSize: 15
+                fontSize: 15,
               },
               styleTextTag && styleTextTag,
               fontFamily ? { fontFamily } : {}
@@ -251,7 +251,7 @@ export default class MultiSelect extends Component {
             }}
           >
             <Icon
-              name="close-circle"
+              name="times-circle"
               style={{
                 color: tagRemoveIconColor,
                 fontSize: 22,
@@ -259,7 +259,7 @@ export default class MultiSelect extends Component {
               }}
             />
           </TouchableOpacity>
-        </View> 
+        </View>
       );
     });
   };
@@ -408,7 +408,7 @@ export default class MultiSelect extends Component {
       const index = array.indexOf(level)
       if (index !== -1) {
         array.splice(index, 1);
-        this.setState({listExpanded: array});
+        this.setState({ listExpanded: array });
       }
     }
   }
@@ -447,7 +447,8 @@ export default class MultiSelect extends Component {
                 name="check"
                 style={{
                   fontSize: 20,
-                  color: selectedItemIconColor
+                  color: selectedItemIconColor,
+                  padding:10,
                 }}
               />
             ) : null}
@@ -455,12 +456,12 @@ export default class MultiSelect extends Component {
               onPress={() => this._toggleDropDown(level)}
             >
               {hasChildren && (
-              <Icon
-                name={this.state.listExpanded.find(a => a === level) !== undefined ? 'arrow-down' : 'arrow-right'}
-                style={fixStyles.caretIcon}
-                size={18}
-              />
-)}
+                <Icon
+                  name={this.state.listExpanded.find(a => a === level) !== undefined ? 'angle-down' : 'angle-right'}
+                  style={fixStyles.caretIcon}
+                  size={20}
+                />
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -558,8 +559,8 @@ export default class MultiSelect extends Component {
       const { key, children } = nodeData;
       return (
         <ScrollView
-          style={{height: 'auto'}} 
-          key={`${key  }_${  index}`}
+          style={{ height: 200 }}
+          key={`${key}_${index}`}
         >
           {this._renderNode(nodeData, level)}
           {children && this.state.listExpanded.find(a => a === level) !== undefined && this._renderTree(children, level + 1)}
@@ -573,32 +574,33 @@ export default class MultiSelect extends Component {
     if (Object.keys(nodeData).length) {
       return this._getRow(nodeData, level);
     }
-    
-      return (
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text
-            style={[
-              {
-                flex: 1,
-                marginTop: 20,
-                textAlign: 'center',
-                color: colorPack.danger
-              },
-              fontFamily ? { fontFamily } : {}
-            ]}
-          >
-            No item to display.
+
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text
+          style={[
+            {
+              flex: 1,
+              marginTop: 20,
+              textAlign: 'center',
+              color: colorPack.danger,
+              borderRadius: 10,
+            },
+            fontFamily ? { fontFamily } : {}
+          ]}
+        >
+          No item to display.
           </Text>
-        </View>
-      );
-    
+      </View>
+    );
+
   }
 
-   _find = (array, searchTerm, listResult, isCallBack = false) => {
-     let aaa = [];
-     if (isCallBack) {
+  _find = (array, searchTerm, listResult, isCallBack = false) => {
+    let aaa = [];
+    if (isCallBack) {
       aaa = listResult;
-     }
+    }
     if (this._filterItemsPartialTest(array, searchTerm) != []) {
       if (this._filterItemsPartialTest(array, searchTerm).length > 0) {
         aaa.push(this._filterItemsPartialTest(array, searchTerm));
@@ -608,16 +610,16 @@ export default class MultiSelect extends Component {
     if (array.length == 1) {
       array = array[0];
     }
-   if (array.children != []) {
+    if (array.children != []) {
       let i;
       if (array.children.length > 0) {
-        for(i=0; i < array.children.length; i++){
+        for (i = 0; i < array.children.length; i++) {
           this._find(array.children[i], searchTerm, aaa, true);
-     }
+        }
       }
       return aaa;
     }
-};
+  };
 
   _renderItems(renderItems) {
     const {
@@ -661,7 +663,8 @@ export default class MultiSelect extends Component {
                 flex: 1,
                 marginTop: 20,
                 textAlign: 'center',
-                color: colorPack.danger
+                color: colorPack.danger,
+                borderRadius: 10,
               },
               fontFamily ? { fontFamily } : {}
             ]}
@@ -733,8 +736,8 @@ export default class MultiSelect extends Component {
           {
             flexDirection: 'column'
           } &&
-            styleMainWrapper &&
-            styleMainWrapper
+          styleMainWrapper &&
+          styleMainWrapper
         ]}
       >
         {selector ? (
@@ -755,14 +758,14 @@ export default class MultiSelect extends Component {
                 placeholder={searchInputPlaceholderText}
                 placeholderTextColor={colorPack.placeholderTextColor}
                 underlineColorAndroid="transparent"
-                style={[searchInputStyle, { flex: 1 }]}
+                style={[searchInputStyle, { flex: 1 } ]}
                 value={searchTerm}
                 {...textInputProps}
               />
               {hideSubmitButton && (
                 <TouchableOpacity onPress={this._submitSelection}>
                   <Icon
-                    name="menu-down"
+                    name="angle-down"
                     style={[
                       styles.indicator,
                       { paddingLeft: 15, paddingRight: 15 }
@@ -771,13 +774,18 @@ export default class MultiSelect extends Component {
                 </TouchableOpacity>
               )}
               {!hideDropdown && (
-                <Icon
-                  name="arrow-left"
-                  size={20}
-                  onPress={this._clearSelectorCallback}
-                  color={colorPack.placeholderTextColor}
-                  style={{ marginLeft: 5 }}
-                />
+                <TouchableOpacity onPress={this._clearSelectorCallback}>
+                  <Icon
+                    name="times"
+                    size={15}
+                    color={colorPack.placeholderTextColor}
+                    style={[
+                      styles.indicator,
+                      { paddingLeft: 15, paddingRight: 15 }
+                    ]}
+                  />
+                </TouchableOpacity>
+
               )}
             </View>
             <View
@@ -836,36 +844,36 @@ export default class MultiSelect extends Component {
                       style={
                         !selectedItems || selectedItems.length === 0
                           ? [
-                              {
-                                flex: 1,
-                                fontSize: fontSize || 16,
-                                color:
-                                  textColor || colorPack.placeholderTextColor
-                              },
-                              styleTextDropdown && styleTextDropdown,
-                              altFontFamily
-                                ? { fontFamily: altFontFamily }
-                                : fontFamily
+                            {
+                              flex: 1,
+                              fontSize: fontSize || 16,
+                              color:
+                                textColor || colorPack.placeholderTextColor
+                            },
+                            styleTextDropdown && styleTextDropdown,
+                            altFontFamily
+                              ? { fontFamily: altFontFamily }
+                              : fontFamily
                                 ? { fontFamily }
                                 : {}
-                            ]
+                          ]
                           : [
-                              {
-                                flex: 1,
-                                fontSize: fontSize || 16,
-                                color:
-                                  textColor || colorPack.placeholderTextColor
-                              },
-                              styleTextDropdownSelected &&
-                                styleTextDropdownSelected
-                            ]
+                            {
+                              flex: 1,
+                              fontSize: fontSize || 16,
+                              color:
+                                textColor || colorPack.placeholderTextColor
+                            },
+                            styleTextDropdownSelected &&
+                            styleTextDropdownSelected
+                          ]
                       }
                       numberOfLines={1}
                     >
                       {this._getSelectLabel()}
                     </Text>
                     <Icon
-                      name={hideSubmitButton ? 'menu-right' : 'menu-down'}
+                      name={hideSubmitButton ? 'angle-right' : 'angle-down'}
                       style={styles.indicator}
                     />
                   </View>
@@ -873,12 +881,12 @@ export default class MultiSelect extends Component {
               </View>
             </View>
             {!single && !hideTags && selectedItems.length ? (
-              <ScrollView style={{height: 200}}>
+              <ScrollView style={{ height: 200 }}>
                 <View
                   style={{
-                  flexDirection: 'row',
-                  flexWrap: 'wrap'
-                }}
+                    flexDirection: 'row',
+                    flexWrap: 'wrap'
+                  }}
                 >
                   {this._displaySelectedItems()}
                 </View>
@@ -919,8 +927,16 @@ const fixStyles = StyleSheet.create({
   },
   caretIcon: {
     width: 15,
+    alignItems:'flex-end'
   },
   chevronIcon: {
     padding: 10,
   },
+  boderIcon: {
+    width : 30,
+    height: 30,
+    padding: 5,
+     marginLeft: 15,
+    backgroundColor: 'black',
+  }
 });
