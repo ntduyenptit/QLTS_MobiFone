@@ -1,5 +1,6 @@
-import React from 'react'
-import { PieChart } from 'react-native-svg-charts'
+import React from 'react';
+import { View } from 'react-native';
+// import { PieChart } from 'react-native-svg-charts'
 
 class BaoCaoThongTinTS extends React.PureComponent {
 
@@ -36,12 +37,13 @@ class BaoCaoThongTinTS extends React.PureComponent {
 
 
         return (
-            <PieChart
-                style={{ height: 200 }}
-                outerRadius={'70%'}
-                innerRadius={10}
-                data={data}
-            />
+          <View />
+            // <PieChart
+            //     style={{ height: 200 }}
+            //     outerRadius={'70%'}
+            //     innerRadius={10}
+            //     data={data}
+            // />
         )
     }
 

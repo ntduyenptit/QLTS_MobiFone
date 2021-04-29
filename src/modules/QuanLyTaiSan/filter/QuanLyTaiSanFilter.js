@@ -103,6 +103,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
         <MultiSelect
           ref={donViQuanLyRef}
           isTree
+          getCollapsedNodeHeight={{height: 200}}
           onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
           items={dvqlTreeData}
           IconRenderer={Icon}
@@ -173,7 +174,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"#eeeee4",
+    backgroundColor:'white',
     padding: 10,
     width: 300
   },
