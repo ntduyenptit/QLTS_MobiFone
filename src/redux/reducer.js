@@ -5,7 +5,14 @@ import gallery from '../modules/gallery/GalleryState';
 import app from '../modules/AppState';
 import calendar from '../modules/calendar/CalendarState';
 import userReducer from '../modules/auth/AuthState';
-import toanbotaisanReducer from '../modules/quanlytaisan/QuanLyTaiSanState';
+import { 
+  toanbotaisanReducer, 
+  taisanhongReducer, 
+  taisanthanhlyReducer,
+  taisanmatReducer,
+  taisandangsudungReducer,
+  taisanchuasudungReducer,
+} from '../modules/quanlytaisan/QuanLyTaiSanState';
 import { 
   filterReducer, 
   filterDVQLDataReducer,
@@ -28,5 +35,10 @@ export default combineReducers({
   filterNCCDataReducer,
   currentScreenReducer,
   currentTabReducer,
-  toanbotaisanReducer
+  toanbotaisanReducer,
+  taisanhongReducer,
+  taisanthanhlyReducer,
+  taisanmatReducer,
+  taisandangsudungReducer,
+  taisanchuasudungReducer
 });

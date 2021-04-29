@@ -4,8 +4,10 @@ import { TouchableOpacity, Image,View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import TabNavigator from './MainTabNavigator';
 import GalleryScreen from '../gallery/GalleryViewContainer';
+import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
 import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVersionViewContainer";
 import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
+
 // import ProfileScreen from '../profile/ProfileViewContainer';
 // import ArticleScreen from '../article/ArticleViewContainer';
 // import ChatScreen from '../chat/ChatViewContainer';
@@ -15,6 +17,7 @@ import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
 import { showFilter } from '../../redux/actions/filter.actions';
+import { tabs } from '../../api/config';
 
 const headerLeftComponent = (props) => (
   <TouchableOpacity
@@ -367,7 +370,32 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
-  
+  {
+    name: 'TS đang sử dụng',
+    component: QuanLyTaiSanScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: 'TS chưa sử dụng',
+    component: QuanLyTaiSanScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
 ]
 
 export default StackNavigationData;

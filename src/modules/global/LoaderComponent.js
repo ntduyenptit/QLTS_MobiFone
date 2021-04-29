@@ -1,6 +1,8 @@
+/* eslint-disable import/no-cycle */
 import React from 'react';
 import { Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { GetToanBoTaiSanData } from '../quanlytaisan/QuanLyTaiSan';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
@@ -12,9 +14,9 @@ function LoaderComponent(array, props) {
       <View key={`loader-component-${index + 1}`} style={styles.listItem}>
         <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#0080FF' size={15} />
         <View style={styles.infor}>
-          <Text numberOfLines = {1} style={[{fontWeight: "bold"}, styles.infoText]}>EPC: {item.maEPC}</Text>
-          <Text numberOfLines = {1} style={styles.infoText}>{item.tenTS}</Text>
-          <Text numberOfLines = {1}>{item.phongBanQL}</Text>
+          <Text numberOfLines = {1} style={[{fontWeight: "bold"}, styles.infoText]}>EPC: {item.maEPC ? item.maEPC : item.epcCode}</Text>
+          <Text numberOfLines = {1} style={styles.infoText}>{item.tenTS ? item.tenTS : item.tenTaiSan}</Text>
+          <Text numberOfLines = {1}>{item.phongBanQL ? item.phongBanQL : item.phongBanQuanLy}</Text>
         </View>
         <TouchableOpacity
           style={{ height: 40, width: 20, alignItems: "flex-end"}}
@@ -27,8 +29,11 @@ function LoaderComponent(array, props) {
 
     return (
       <View>{items()}</View>
-    )
+    );
   }
+  return (
+    <TouchableOpacity onPress={() => GetToanBoTaiSanData(props.DvqlDataFilter, props.tab)}><Text>Không có dữ liệu</Text></TouchableOpacity>
+  );
 }
 
 const styles = StyleSheet.create({

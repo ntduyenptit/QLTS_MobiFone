@@ -1,80 +1,38 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList, Dimensions } from 'react-native';
 
 import { colors, fonts } from '../../styles';
+import { store } from '../../redux/store';
+import { setCurrentTab } from '../../redux/actions/screen.actions';
+import tabPagesViewData from './tabPagesViewData';
 
-const chartIcon = require('../../../assets/images/pages/chart.png');
-const calendarIcon = require('../../../assets/images/pages/calendar.png');
-const chatIcon = require('../../../assets/images/pages/chat.png');
-const galleryIcon = require('../../../assets/images/pages/gallery.png');
-const profileIcon = require('../../../assets/images/pages/profile.png');
-const loginIcon = require('../../../assets/images/pages/login.png');
-const blogIcon = require('../../../assets/images/pages/blog.png');
-
+const { width } = Dimensions.get('window');
+const itemWidth = (width - 12) / 3;
 export default function PagesScreen(props) {
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Charts')}
-          style={styles.item}
-        >
-          <Image
-            resizeMode="contain"
-            source={chartIcon}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>TS đang sử dung</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Gallery')}
-          style={styles.item}
-        >
-          <Image
-            resizeMode="contain"
-            source={galleryIcon}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>TS chưa sử dụng</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Profile')}
-          style={styles.item}
-        >
-          <Image
-            resizeMode="contain"
-            source={profileIcon}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>TS sửa chữa/bảo dưỡng</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.row}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Chat')}
-          style={styles.blogItem}
-        >
-          <Image
-            resizeMode="contain"
-            source={chatIcon}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>TS hủy</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Calendar')}
-          style={styles.blogItem}
-        >
-          <Image
-            resizeMode="contain"
-            source={calendarIcon}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>Báo hỏng/mất TS</Text>
-        </TouchableOpacity>
-        
-      </View>
-     
+      <FlatList
+        data={tabPagesViewData}
+        renderItem={({item}) => (
+          <TouchableOpacity
+            onPress={() => {
+            store.dispatch(setCurrentTab(item.name));
+            props.navigation.navigate(item.name)
+            }}
+            style={styles.item}
+          >
+            <Image
+              resizeMode="contain"
+              source={item.icon}
+              style={styles.itemImage}
+            />
+            <Text style={styles.itemText}>{item.name}</Text>
+          </TouchableOpacity>
+        )}
+        // Setting the number of column
+        numColumns={3}
+        keyExtractor={(item, index) => index}
+      />
     </View>
   );
 }
@@ -83,15 +41,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingTop: 10,
-  },
-  row: {
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    marginTop: 10,
+    padding: 10,
   },
   item: {
-    flex: 1,
+    paddingHorizontal: 10,
+    marginTop: 10,
+    width: itemWidth - 12,
     height: 120,
     paddingVertical: 20,
     borderColor: colors.primaryLight,
