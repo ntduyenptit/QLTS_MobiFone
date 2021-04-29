@@ -16,7 +16,13 @@ export const endPoint = ({
   getAllTrangThaiTaiSan: 'services/app/LookupTable/GetAllTrangThaiTaiSan',
   getAllNhaCungCap: 'services/app/LookupTable/GetAllNhaCungCap',
   getAllTinhTrangMaSuDungTaiSan: 'services/app/LookupTable/GetAllTinhTrangMaSuDungTaiSan',
+  // Quản lý tài sản
   getToanBoTaiSan: 'services/app/ToanBoTaiSan/GetAll',
+  getTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/GetAllTaiSanSuaChuaBaoDuong',
+  getTaiSanThanhLy: 'services/app/TaiSanThanhLy/GetAllTaiSanThanhLy',
+  getTaiSanMat: 'services/app/TaiSanMat/GetAllTaiSanMat',
+  getTaiSanChuaSuDung: 'services/app/TaiSanChuaSuDung/GetAll',
+  getTaiSanDangSuDung: 'services/app/TaiSanDangSuDung/GetAll',
 });
 
 // Quản lý màn hình
@@ -58,6 +64,11 @@ export const tabs = ({
   tai_san_mat: 'TS mất',
   tai_san_hong: 'TS hỏng',
   tai_san_thanh_ly: 'TS thanh lý',
+  tai_san_dang_su_dung: 'TS đang sử dụng',
+  tai_san_chua_su_dung: 'TS chưa sử dụng',
+  tai_san_sua_chua_bao_duong: 'TS sửa chữa/bảo dưỡng',
+  tai_san_huy: 'TS hủy',
+  bao_hong_mat_tai_san: 'Báo hỏng/mất TS'
 })
 
 // Quản lý icon

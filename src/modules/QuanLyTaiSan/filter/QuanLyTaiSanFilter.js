@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { filterType } from '../../global/Config';
+import { buildTree } from '../../global/Helper';
 
 const QuanLyTaiSanFilterComponent = (items) => {
   const [selectedDVQLItems, setDVQLItems] = useState([]);
@@ -15,6 +16,8 @@ const QuanLyTaiSanFilterComponent = (items) => {
   const loaiTaiSanRef  = useRef();
   const nhaCungCapRef  = useRef();
   const maSuDungRef  = useRef();
+
+  const dvqlTreeData = buildTree(items.DvqlDataFilter);
 
   const closeMultiSelectIfOpened = (type) => {
     switch (type) {
@@ -101,10 +104,10 @@ const QuanLyTaiSanFilterComponent = (items) => {
           ref={donViQuanLyRef}
           isTree
           onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
-          items={items.DvqlDataFilter}
+          items={dvqlTreeData}
           IconRenderer={Icon}
           searchInputPlaceholderText="Tìm kiếm..."
-          styleListContainer={items.DvqlDataFilter && items.DvqlDataFilter.length > 9 ? { height: 200 } : null}
+          styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
           uniqueKey="id"
           displayKey="displayName"
           selectText="Chọn đơn vị quản lý..."

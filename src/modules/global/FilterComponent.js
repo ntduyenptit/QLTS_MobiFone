@@ -10,7 +10,6 @@ export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
 const getFilterView = (screen, tab) => {
-  console.log(screen, tab);
   if (screen === screens.quan_ly_tai_san && tab === tabs.toan_bo_tai_san) {
     return <QuanLyTaiSanFilterComponent />;
   }
