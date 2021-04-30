@@ -18,7 +18,7 @@ import QuanLyTaiSanFilterComponent from '../quanlytaisan/filter/QuanLyTaiSanFilt
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
-const keyboardVerticalOffset = Platform.OS === 'ios' ? -200 : 0
+const keyboardVerticalOffset = Platform.OS === 'ios' ? -50 : 0
 
 const FilterComponent = (props) => (
   <Modal
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    marginTop: 80,
+    paddingTop: 80,
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,

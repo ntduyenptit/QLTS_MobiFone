@@ -19,7 +19,6 @@ export default function BottomTabs() {
           component={item.component}
           listeners={{
             tabPress: e => {
-              console.log(e);
               const tabName = e.target.substring(0, e.target.indexOf('-')); 
               store.dispatch(setCurrentTab(tabName))
             },

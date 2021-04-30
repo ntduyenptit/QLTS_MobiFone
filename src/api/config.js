@@ -185,3 +185,9 @@ export const drawerData = [
     ]
   },
 ];
+
+// Hình thức filter
+export const hinhThucData = [
+  {id: 5, displayName: "Sửa chữa"},
+  {id: 6, displayName: "Bảo dưỡng"}
+];

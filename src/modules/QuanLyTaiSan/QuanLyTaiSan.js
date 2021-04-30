@@ -14,7 +14,8 @@ import {
   taisanthanhlyGetData,
   toanbotaisanGetData,
   taisandangsudungGetData,
-  taisanchuasudungGetData
+  taisanchuasudungGetData,
+  taisanbaoduongsuachuaGetData
 } from '../../redux/actions/quanlytaisan.actions';
 
 export function GetToanBoTaiSanData(datas, tab = tabs.toan_bo_tai_san) {
@@ -38,6 +39,9 @@ export function GetToanBoTaiSanData(datas, tab = tabs.toan_bo_tai_san) {
         break;
       case tabs.tai_san_chua_su_dung:
         url = `${endPoint.getTaiSanChuaSuDung}?`;
+        break;
+      case tabs.tai_san_sua_chua_bao_duong:
+        url = `${endPoint.getTaiSanSuaChuaBaoDuong}?`;
         break;
       default:
         url = `${endPoint.getToanBoTaiSan}?`;
@@ -78,6 +82,9 @@ export function GetToanBoTaiSanData(datas, tab = tabs.toan_bo_tai_san) {
             case tabs.tai_san_chua_su_dung:
               store.dispatch(taisanchuasudungGetData(res));
               break;
+              case tabs.tai_san_sua_chua_bao_duong:
+                store.dispatch(taisanbaoduongsuachuaGetData(res));
+                break;
             default:
               break;
           }
@@ -122,6 +129,8 @@ const QuanLyTaiSan = (state) => {
         return LoaderComponent(state.taisanchuasudungData, state);
       case tabs.tai_san_dang_su_dung:
         return LoaderComponent(state.taisandangsudungData, state);
+      case tabs.tai_san_sua_chua_bao_duong:
+        return LoaderComponent(state.taisansuachuabaoduongData, state);
       default:
         break;
     }
@@ -168,6 +177,7 @@ const mapStateToProps = state => ({
   taisanhongData: state.taisanhongReducer.taisanhongData,
   taisanchuasudungData: state.taisanchuasudungReducer.taisanchuasudungData,
   taisandangsudungData: state.taisandangsudungReducer.taisandangsudungData,
+  taisansuachuabaoduongData: state.taisansuachuabaoduongReducer.taisansuachuabaoduongData,
 
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
   tab: state.currentTabReducer.tabName,

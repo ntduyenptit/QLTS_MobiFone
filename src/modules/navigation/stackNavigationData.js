@@ -17,7 +17,7 @@ import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
 import { showFilter } from '../../redux/actions/filter.actions';
-import { tabs } from '../../api/config';
+import { screens, tabs } from '../../api/config';
 
 const headerLeftComponent = (props) => (
   <TouchableOpacity
@@ -59,7 +59,7 @@ const headerBackground = require('../../../assets/images/topBarBg.png');
 
 const StackNavigationData = [
   {
-    name: 'Quản lý tài sản',
+    name: screens.quan_ly_tai_san,
     component: TabNavigator,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -72,7 +72,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý đầu đọc di động',
+    name: screens.quan_ly_dau_doc_di_dong,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -85,7 +85,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý đầu đọc cố định',
+    name: screens.quan_ly_dau_doc_co_dinh,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -98,7 +98,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Giám sát tài sản',
+    name: screens.giam_sat_tai_san,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -111,7 +111,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Theo dõi kết nối thiết bị',
+    name: screens.theo_doi_ket_noi_thiet_bi,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -124,7 +124,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý kiểm kê tài sản',
+    name: screens.quan_ly_kiem_ke_tai_san,
     component: GalleryScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -137,7 +137,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý dự trù mua sắm',
+    name: screens.quan_ly_du_tru_mua_sam,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -150,7 +150,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý cảnh báo',
+    name: screens.quan_ly_canh_bao,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -163,7 +163,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý danh mục',
+    name: screens.quan_ly_danh_muc,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -176,7 +176,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý nhà cung cấp',
+    name: screens.quan_ly_nha_cung_cap,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -189,7 +189,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý vị trí địa lý',
+    name: screens.quan_ly_vi_tri_dia_ly,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -202,7 +202,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý loại tài sản',
+    name: screens.quan_ly_loai_tai_san,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -215,7 +215,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý đơn vị',
+    name: screens.quan_ly_don_vi,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -228,7 +228,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Báo cáo',
+    name: screens.bao_cao,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -241,7 +241,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Báo cáo người dùng',
+    name: screens.bao_cao_nguoi_dung,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -254,7 +254,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Báo cáo cảnh báo',
+    name: screens.bao_cao_canh_bao,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -267,7 +267,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Đặt lịch xuất báo cáo',
+    name: screens.dat_lich_xuat_bao_cao,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -280,7 +280,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Báo cáo thông tin thiết bị RFID',
+    name: screens.bao_cao_thong_tin_thiet_bi_rfid,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -293,7 +293,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Báo cáo thông tin tài sản',
+    name: screens.bao_cao_thong_tin_tai_san,
     component: BaoCaoThongTinTS,
     headerLeft: null,
     headerRight: null,
@@ -306,7 +306,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý hệ thống',
+    name: screens.quan_ly_he_thong,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -319,7 +319,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý người dùng',
+    name: screens.quan_ly_nguoi_dung,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -332,7 +332,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý phân quyền',
+    name: screens.quan_ly_phan_quyen,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -345,7 +345,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Lịch sử người dùng',
+    name: screens.lich_su_nguoi_dung,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -358,7 +358,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'Quản lý Mail, Server',
+    name: screens.quan_ly_mail_server,
     component: AvailableInFullVersion,
     headerLeft: null,
     headerRight: headerRightComponent,
@@ -371,7 +371,7 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'TS đang sử dụng',
+    name: tabs.tai_san_dang_su_dung,
     component: QuanLyTaiSanScreen,
     headerLeft: headerLeftComponent,
     headerRight: headerRightComponent,
@@ -384,7 +384,20 @@ const StackNavigationData = [
     },
   },
   {
-    name: 'TS chưa sử dụng',
+    name: tabs.tai_san_chua_su_dung,
+    component: QuanLyTaiSanScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: tabs.tai_san_sua_chua_bao_duong,
     component: QuanLyTaiSanScreen,
     headerLeft: headerLeftComponent,
     headerRight: headerRightComponent,

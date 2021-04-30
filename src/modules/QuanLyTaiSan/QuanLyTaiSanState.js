@@ -3,7 +3,8 @@ TAISANHONG_DATA, TAISANHONG_FAILED, TAISANHONG_LOADING,
 TAISANMAT_DATA, TAISANMAT_FAILED, TAISANMAT_LOADING,
 TAISANTHANHLY_DATA, TAISANTHANHLY_FAILED, TAISANTHANHLY_LOADING,
 TAISANDANGSUDUNG_LOADING, TAISANDANGSUDUNG_DATA, TAISANDANGSUDUNG_FAILED,
-TAISANCHUASUDUNG_LOADING, TAISANCHUASUDUNG_DATA, TAISANCHUASUDUNG_FAILED, } from '../../redux/actions/quanlytaisan.actions'
+TAISANCHUASUDUNG_LOADING, TAISANCHUASUDUNG_DATA, TAISANCHUASUDUNG_FAILED,
+TAISANSUACHUABAODUONG_DATA, TAISANSUACHUABAODUONG_FAILED, TAISANSUACHUABAODUONG_LOADING } from '../../redux/actions/quanlytaisan.actions'
 
 const initialState = {
     toanbotaisanData: [],
@@ -12,6 +13,7 @@ const initialState = {
     taisanthanhlyData: [],
     taisanchuasudungData: [],
     taisandangsudungData: [],
+    taisansuachuabaoduongData: [],
 
     isLoading: false,
     isSuccess: false
@@ -176,6 +178,34 @@ export const taisanchuasudungReducer = (state = initialState, action) => {
       }
     }
     case TAISANCHUASUDUNG_FAILED: {
+        return {
+            isLoading: false,
+            isSuccess: false,
+          }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const taisansuachuabaoduongReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case TAISANSUACHUABAODUONG_LOADING: {
+      return {
+        isLoading: true,
+        isSuccess: false,
+      }
+    }
+    case TAISANSUACHUABAODUONG_DATA: {
+      const result = action.payload.data.result.items;
+      return {
+        isLoading: false,
+        isSuccess: true,
+        taisansuachuabaoduongData: result
+      }
+    }
+    case TAISANSUACHUABAODUONG_FAILED: {
         return {
             isLoading: false,
             isSuccess: false,
