@@ -12,6 +12,7 @@ import {
   taisanmatReducer,
   taisandangsudungReducer,
   taisanchuasudungReducer,
+  taisansuachuabaoduongReducer
 } from '../modules/quanlytaisan/QuanLyTaiSanState';
 import { 
   filterReducer, 
@@ -40,5 +41,6 @@ export default combineReducers({
   taisanthanhlyReducer,
   taisanmatReducer,
   taisandangsudungReducer,
-  taisanchuasudungReducer
+  taisanchuasudungReducer,
+  taisansuachuabaoduongReducer
 });

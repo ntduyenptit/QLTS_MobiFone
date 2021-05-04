@@ -13,15 +13,13 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Collapsible from 'react-native-collapsible';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Header } from 'react-native/Libraries/NewAppScreen';
 import NavigatorView from './RootNavigation';
 import AuthScreen from '../auth/AuthViewContainer';
-import DetailComponentScreen from '../global/DetailComponent';
-import CapnhatTaisanScreen from '../quanlytaisan/capnhattaisan/CapnhatTaisan';
 import { userLogin, userLogout } from '../../redux/actions/user.actions';
 import { setCurrentScreen } from '../../redux/actions/screen.actions';
 import { store } from '../../redux/store';
 import { drawerData } from '../../api/config';
-import { Header } from 'react-native/Libraries/NewAppScreen';
 import { fonts } from '../../styles';
 
 const Drawer = createDrawerNavigator();
@@ -176,41 +174,6 @@ const AuthStack = () => (
     <Stack.Screen name="Login" component={AuthScreen} />
   </Stack.Navigator>
 );
-const headerBackground = require('../../../assets/images/topBarBg.png');
-const headerLeftComponent = (props) => {
-  return (
-    <TouchableOpacity
-      onPress={props.onPress}
-      style={{
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-      }}
-    >
-      <Image
-        source={require('../../../assets/images/icons/arrow-back.png')}
-        resizeMode="contain"
-        style={{
-          height: 20,
-        }}
-      />
-    </TouchableOpacity>
-  )
-}
-
-const headerRightComponent = (props) => (
-  <TouchableOpacity
-    onPress={() => props.navigation.navigate('CapnhatTaisan')}
-    style={{
-      paddingHorizontal: 16,
-      paddingVertical: 12,
-    }}
-  >
-    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-      <Icon name="ellipsis-v" color="white" size={20} />
-    </View>
-  </TouchableOpacity>
-)
-
 function App(stateToProps) {
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
@@ -237,27 +200,6 @@ function App(stateToProps) {
         <Stack.Screen name='App' component={DrawerStack} />
 
       }
-      <Stack.Screen screenOptions={{
-      animationEnabled: false,
-      headerMode: true,
-      headerLeft: headerLeftComponent,
-      headerRight: headerRightComponent,
-      headerBackground: () => (
-        <Image style={styles.headerImage} source={headerBackground} />
-      ),
-      headerTitleStyle: styles.headerTitleStyle
-    }} name='DetailComponent' component={DetailComponentScreen} />
-     
-      <Stack.Screen screenOptions={{
-        animationEnabled: false,
-        headerMode: true,
-        headerLeft: headerLeftComponent,
-        headerRight: null,
-        headerBackground: () => (
-          <Image style={styles.headerImage} source={headerBackground} />
-        ),
-        headerTitleStyle: styles.headerTitleStyle
-      }} name='CapnhatTaisan' component={CapnhatTaisanScreen} />
     </Stack.Navigator>
   );
 }

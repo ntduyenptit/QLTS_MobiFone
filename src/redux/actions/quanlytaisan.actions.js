@@ -27,6 +27,11 @@ export const TAISANCHUASUDUNG = '[TAISANCHUASUDUNG]'
 export const TAISANCHUASUDUNG_LOADING = `${TAISANCHUASUDUNG} is loading`
 export const TAISANCHUASUDUNG_DATA = `${TAISANCHUASUDUNG} Set taisanchuasudung data to store`
 export const TAISANCHUASUDUNG_FAILED = `${TAISANCHUASUDUNG} Get taisanchuasudung data failed`
+
+export const TAISANSUACHUABAODUONG = '[TAISANSUACHUABAODUONG]'
+export const TAISANSUACHUABAODUONG_LOADING = `${TAISANSUACHUABAODUONG} is loading`
+export const TAISANSUACHUABAODUONG_DATA = `${TAISANSUACHUABAODUONG} Set taisansuachuabaoduong data to store`
+export const TAISANSUACHUABAODUONG_FAILED = `${TAISANSUACHUABAODUONG} Get taisansuachuabaoduong data failed`
 // toàn bộ tài sản
 export const toanbotaisanLoading = () => ({
     type: TOANBOTAISAN_LOADING,
@@ -132,5 +137,23 @@ export const taisanchuasudungGetData = (data) => ({
 
 export const taisanchuasudungFailed = () => ({
     type: TAISANCHUASUDUNG_FAILED,
+    payload: {},
+})
+
+// tài sản bảo dưỡng sửa chữa
+export const taisanbaoduongsuachuaLoading = () => ({
+    type: TAISANSUACHUABAODUONG_LOADING,
+    payload: {},
+})
+
+export const taisanbaoduongsuachuaGetData = (data) => ({
+    type: TAISANSUACHUABAODUONG_DATA,
+    payload: {
+        data
+    },
+})
+
+export const taisanbaoduongsuachuaFailed = () => ({
+    type: TAISANSUACHUABAODUONG_FAILED,
     payload: {},
 })

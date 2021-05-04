@@ -1,4 +1,14 @@
-import { Alert, Modal, StyleSheet, Text, Pressable, View, Dimensions } from "react-native";
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform
+} from "react-native";
 import React from 'react';
 import { connect } from "react-redux";
 import { store } from "../../redux/store";
@@ -7,6 +17,8 @@ import QuanLyTaiSanFilterComponent from '../quanlytaisan/filter/QuanLyTaiSanFilt
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
+
+const keyboardVerticalOffset = Platform.OS === 'ios' ? -50 : 0
 
 const FilterComponent = (props) => (
   <Modal
@@ -17,20 +29,26 @@ const FilterComponent = (props) => (
       Alert.alert("Modal has been closed.");
     }}
   >
-    <View style={styles.modalView}>
+    <KeyboardAvoidingView
+      behavior='position' 
+      keyboardVerticalOffset={keyboardVerticalOffset}
+      style={styles.modalView}
+    >
       <View style={styles.underLine}>
         <Text style={styles.titleStyle}>Bộ lọc</Text>
       </View>
       <View style={styles.container}>
         <QuanLyTaiSanFilterComponent />
       </View>
-      <Pressable
-        style={[styles.button, styles.buttonClose]}
-        onPress={() => store.dispatch(hideFilter())}
-      >
-        <Text style={styles.textStyle}>Xong</Text>
-      </Pressable>
-    </View>
+      <View style={{width: deviceWidth - 100, alignItems: 'center'}}>
+        <Pressable
+          style={[styles.button, styles.buttonClose]}
+          onPress={() => store.dispatch(hideFilter())}
+        >
+          <Text style={styles.textStyle}>Xong</Text>
+        </Pressable>
+      </View>
+    </KeyboardAvoidingView>
   </Modal>
 )
 
@@ -43,7 +61,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    marginTop: 95,
+    paddingTop: 80,
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
@@ -59,7 +77,7 @@ const styles = StyleSheet.create({
     height: deviceHeight - 200,
   },
   underLine: {
-    width: '100%',
+    width: deviceWidth - 100,
     borderBottomColor: 'black',
     borderBottomWidth: 0.7,
   },
@@ -82,12 +100,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    marginBottom: 10,
   },
   buttonClose: {
     width: 100,
     backgroundColor: "#2196F3",
   },
-
+  safeAreaView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 const mapStateToProps = state => ({

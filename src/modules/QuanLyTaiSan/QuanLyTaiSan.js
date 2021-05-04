@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import React, { useState, useEffect } from 'react';
-import { Animated, SafeAreaView, StatusBar, Alert } from 'react-native';
+import { Animated, SafeAreaView, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import LoaderComponent from '../global/LoaderComponent';
 import SearchComponent from '../global/SearchComponent';
@@ -14,7 +14,8 @@ import {
   taisanthanhlyGetData,
   toanbotaisanGetData,
   taisandangsudungGetData,
-  taisanchuasudungGetData
+  taisanchuasudungGetData,
+  taisanbaoduongsuachuaGetData
 } from '../../redux/actions/quanlytaisan.actions';
 
 export function GetToanBoTaiSanData(datas, tab = tabs.toan_bo_tai_san) {
@@ -38,6 +39,9 @@ export function GetToanBoTaiSanData(datas, tab = tabs.toan_bo_tai_san) {
         break;
       case tabs.tai_san_chua_su_dung:
         url = `${endPoint.getTaiSanChuaSuDung}?`;
+        break;
+      case tabs.tai_san_sua_chua_bao_duong:
+        url = `${endPoint.getTaiSanSuaChuaBaoDuong}?`;
         break;
       default:
         url = `${endPoint.getToanBoTaiSan}?`;
@@ -78,11 +82,14 @@ export function GetToanBoTaiSanData(datas, tab = tabs.toan_bo_tai_san) {
             case tabs.tai_san_chua_su_dung:
               store.dispatch(taisanchuasudungGetData(res));
               break;
+              case tabs.tai_san_sua_chua_bao_duong:
+                store.dispatch(taisanbaoduongsuachuaGetData(res));
+                break;
             default:
               break;
           }
         } else {
-          //Alert.alert('Lỗi khi load toàn bộ tài sản!');
+          // Alert.alert('Lỗi khi load toàn bộ tài sản!');
         }
       })
       .catch(err => console.log(err));
@@ -122,6 +129,8 @@ const QuanLyTaiSan = (state) => {
         return LoaderComponent(state.taisanchuasudungData, state);
       case tabs.tai_san_dang_su_dung:
         return LoaderComponent(state.taisandangsudungData, state);
+      case tabs.tai_san_sua_chua_bao_duong:
+        return LoaderComponent(state.taisansuachuabaoduongData, state);
       default:
         break;
     }
@@ -168,6 +177,7 @@ const mapStateToProps = state => ({
   taisanhongData: state.taisanhongReducer.taisanhongData,
   taisanchuasudungData: state.taisanchuasudungReducer.taisanchuasudungData,
   taisandangsudungData: state.taisandangsudungReducer.taisandangsudungData,
+  taisansuachuabaoduongData: state.taisansuachuabaoduongReducer.taisansuachuabaoduongData,
 
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
   tab: state.currentTabReducer.tabName,
