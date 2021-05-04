@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import React, { useState, useEffect } from 'react';
-import { Animated, SafeAreaView, StatusBar, Alert } from 'react-native';
+import { Animated, SafeAreaView, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import LoaderComponent from '../global/LoaderComponent';
 import SearchComponent from '../global/SearchComponent';
@@ -89,7 +89,7 @@ export function GetToanBoTaiSanData(datas, tab = tabs.toan_bo_tai_san) {
               break;
           }
         } else {
-          //Alert.alert('Lỗi khi load toàn bộ tài sản!');
+          // Alert.alert('Lỗi khi load toàn bộ tài sản!');
         }
       })
       .catch(err => console.log(err));

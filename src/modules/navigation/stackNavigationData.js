@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import TabNavigator from './MainTabNavigator';
 import GalleryScreen from '../gallery/GalleryViewContainer';
 import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
+import DetailComponentScreen from "../quanlytaisan/detail/DetailComponent";
 import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVersionViewContainer";
 import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
 
@@ -53,7 +54,20 @@ const headerRightComponent = () => (
       <Icon name="filter" color="white" size={20} />
     </View>
   </TouchableOpacity>
-  )
+  );
+
+  const moreHeaderRightComponent = () => (
+    <TouchableOpacity
+      style={{
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+    }}
+    >
+      <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+        <Icon name="ellipsis-v" color="white" size={20} />
+      </View>
+    </TouchableOpacity>
+  );
 
 const headerBackground = require('../../../assets/images/topBarBg.png');
 
@@ -401,6 +415,20 @@ const StackNavigationData = [
     component: QuanLyTaiSanScreen,
     headerLeft: headerLeftComponent,
     headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  // Màn hình chi tiết tài sản
+  {
+    name: "Chi tiết tài sản",
+    component: DetailComponentScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,

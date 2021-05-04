@@ -251,7 +251,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
           </View>
         </>
           )}
-        {items.screen === screens.quan_ly_tai_san && tabs.tai_san_sua_chua_bao_duong && (
+        {items.screen === screens.quan_ly_tai_san && items.tab === tabs.tai_san_sua_chua_bao_duong && (
           <>
             <View>
               <Text style={styles.titleText}>Hình thức</Text>
