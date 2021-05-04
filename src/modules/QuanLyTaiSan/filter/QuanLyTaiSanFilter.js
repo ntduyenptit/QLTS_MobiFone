@@ -149,7 +149,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
             onToggleList={() => closeMultiSelectIfOpened(filterType.loai_tai_san)}
             items={items.LtsDataFilter}
             IconRenderer={Icon}
-            styleListContainer={items.LtsDataFilter && items.LtsDataFilter.length > 9 ? { height: 200 } : null}
+            styleListContainer={items.LtsDataFilter && items.LtsDataFilter.length > 9 ? { height: 100 } : null}
             single
             searchInputPlaceholderText="Tìm kiếm..."
             uniqueKey="id"
