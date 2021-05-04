@@ -11,8 +11,9 @@ function LoaderComponent(array, props) {
   console.log("props LoadComponent: " + props);
   if (array && array.length > 0) {
     const items = () => array.map((item, index) => (
+      
       <View key={`loader-component-${index + 1}`} style={styles.listItem}>
-        <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#0080FF' size={15} />
+        <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#0080FF'  size={15} />
         <View style={styles.infor}>
           <Text numberOfLines = {1} style={[{fontWeight: "bold"}, styles.infoText]}>EPC: {item.maEPC ? item.maEPC : item.epcCode}</Text>
           <Text numberOfLines = {1} style={styles.infoText}>{item.tenTS ? item.tenTS : item.tenTaiSan}</Text>

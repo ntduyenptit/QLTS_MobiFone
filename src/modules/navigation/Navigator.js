@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import NavigatorView from './RootNavigation';
 import AuthScreen from '../auth/AuthViewContainer';
 import DetailComponentScreen from '../global/DetailComponent';
+import CapnhatTaisanScreen from '../quanlytaisan/capnhattaisan/CapnhatTaisan';
 import { userLogin, userLogout } from '../../redux/actions/user.actions';
 import { setCurrentScreen } from '../../redux/actions/screen.actions';
 import { store } from '../../redux/store';
@@ -192,17 +193,13 @@ const headerLeftComponent = (props) => {
           height: 20,
         }}
       />
-    </TouchableOpacity>    
+    </TouchableOpacity>
   )
 }
 
-const headerRightComponent = () => (
+const headerRightComponent = (props) => (
   <TouchableOpacity
-    // onPress={() => {
-    //     if (!store.getState().filterReducer.isShowFilter) {
-    //       store.dispatch(showFilter());
-    //     }
-    //   }}
+    onPress={() => props.navigation.navigate('CapnhatTaisan')}
     style={{
       paddingHorizontal: 16,
       paddingVertical: 12,
@@ -212,23 +209,8 @@ const headerRightComponent = () => (
       <Icon name="ellipsis-v" color="white" size={20} />
     </View>
   </TouchableOpacity>
-  )
-const DetailComponentStack = () => (
-  <Stack.Navigator
-    initialRouteName="Detail"
-    screenOptions={{
-      animationEnabled: false,
-      headerLeft:  headerLeftComponent,
-      headerRight: headerRightComponent,
-      headerBackground: () => (
-        <Image style={styles.headerImage} source={headerBackground} />
-      ),
-      headerTitleStyle: styles.headerTitleStyle
-    }}
-  >
-    <Stack.Screen name="Chi tiết tài sản" component={DetailComponentScreen} />
-  </Stack.Navigator>
-);
+)
+
 function App(stateToProps) {
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
@@ -255,7 +237,27 @@ function App(stateToProps) {
         <Stack.Screen name='App' component={DrawerStack} />
 
       }
-      <Stack.Screen name='DetailComponent' component={DetailComponentStack} />
+      <Stack.Screen screenOptions={{
+      animationEnabled: false,
+      headerMode: true,
+      headerLeft: headerLeftComponent,
+      headerRight: headerRightComponent,
+      headerBackground: () => (
+        <Image style={styles.headerImage} source={headerBackground} />
+      ),
+      headerTitleStyle: styles.headerTitleStyle
+    }} name='DetailComponent' component={DetailComponentScreen} />
+     
+      <Stack.Screen screenOptions={{
+        animationEnabled: false,
+        headerMode: true,
+        headerLeft: headerLeftComponent,
+        headerRight: null,
+        headerBackground: () => (
+          <Image style={styles.headerImage} source={headerBackground} />
+        ),
+        headerTitleStyle: styles.headerTitleStyle
+      }} name='CapnhatTaisan' component={CapnhatTaisanScreen} />
     </Stack.Navigator>
   );
 }
