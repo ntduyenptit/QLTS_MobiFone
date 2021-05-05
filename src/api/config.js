@@ -23,6 +23,13 @@ export const endPoint = ({
   getTaiSanMat: 'services/app/TaiSanMat/GetAllTaiSanMat',
   getTaiSanChuaSuDung: 'services/app/TaiSanChuaSuDung/GetAll',
   getTaiSanDangSuDung: 'services/app/TaiSanDangSuDung/GetAll',
+  // Quản lý đầu đọc 
+  getDaudocCodinh: 'services/app/AngTenRFID/GetAll',
+  getDaudocDidong: 'services/app/DauDocTheRFID/GetAll',
+
+  // Giám sát tài sản:
+  getLichsuRavaoAngten: 'services/app/LichSuRaVaoAngten/GetAll',
+  getToanboThietbi:  'services/app/LichSuRaVaoAngten/GetAllTaiSanLa',
 });
 
 // Quản lý màn hình
@@ -56,6 +63,8 @@ export const screens = ({
   quan_ly_phan_quyen: 'Quản lý phân quyền',
   lich_su_nguoi_dung: 'Lịch sử người dùng',
   quan_ly_mail_server: 'Quản lý Mail, Server'
+
+  //
 });
 
 // Quản lý tabs
@@ -191,3 +200,21 @@ export const hinhThucData = [
   {id: 5, displayName: "Sửa chữa"},
   {id: 6, displayName: "Bảo dưỡng"}
 ];
+
+
+// TrangThai filter
+export const trangThaiData = [
+  {id: 5, displayName: "Chưa sử dụng"},
+  {id: 6, displayName: "Đang sử dụng"}
+];
+// Trạng thái giám sát tài sản
+export const trangThaiRavao = [
+  {id: 5, displayName: "Ra"},
+  {id: 6, displayName: "Vao"}
+];
+
+export const trangThaiPhanloai = [
+  {id: 5, displayName: "Trong hệ thống"},
+  {id: 6, displayName: "Ngoài hệ thống"}
+];
+ 

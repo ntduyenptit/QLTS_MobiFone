@@ -33,6 +33,7 @@ const tabNavigationData = [
   {
     name: 'Khác',
     component: PagesScreen,
+    
     icon: iconComponents,
   },
 ];
