@@ -1,21 +1,21 @@
-export const TOANBOTAITHIETBI = '[TOANBOTHIETBI]'
-export const TOANBOTAITHIETBI_LOADING = `${TOANBOTAITHIETBI} is loading`
-export const TOANBOTAITHIETBI_DATA = `${TOANBOTAITHIETBI} Set toanbotaisan data to store`
-export const TOANBOTAITHIETBI_FAILED = `${TOANBOTAITHIETBI} Get toanbotaisan data failed`
+export const TOANBOTHIETBI = '[TOANBOTHIETBI]'
+export const TOANBOTHIETBI_LOADING = `${TOANBOTHIETBI} is loading`
+export const TOANBOTHIETBI_DATA = `${TOANBOTHIETBI} Set toanbotaisan data to store`
+export const TOANBOTHIETBI_FAILED = `${TOANBOTHIETBI} Get toanbotaisan data failed`
 
 export const toanbothietbiLoading = () => ({
-    type: TOANBOTAITHIETBI_LOADING,
+    type: TOANBOTHIETBI_LOADING,
     payload: {},
 })
 
 export const toanbothietbiGetData = (data) => ({
-    type: TOANBOTAITHIETBI_DATA,
+    type: TOANBOTHIETBI_DATA,
     payload: {
         data
     },
 })
 
 export const toanbothietbiFailed = () => ({
-    type: TOANBOTAITHIETBI_FAILED,
+    type: TOANBOTHIETBI_FAILED,
     payload: {},
 })

@@ -24,7 +24,6 @@ export function GetData(datas) {
     datas.forEach(e => {
       url += `BoPhanId=${encodeURIComponent(`${e.id}`)}&`;
     });
-    //StartDate=&EndDate=
     url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
     url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
     url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
