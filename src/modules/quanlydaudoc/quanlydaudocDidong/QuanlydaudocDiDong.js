@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Animated, SafeAreaView, StatusBar, View, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import SearchComponent from '../../global/SearchComponent';
-import FilterComponent from '../QuanLyDauDocFilter';
+import FilterComponent from '../DaudocFilterComponent';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, tabs } from '../../../api/config';
 import { store } from '../../../redux/store';

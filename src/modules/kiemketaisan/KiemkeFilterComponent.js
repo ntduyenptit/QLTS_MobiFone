@@ -13,14 +13,14 @@ import {
   import { connect } from "react-redux";
   import { store } from "../../redux/store";
   import { hideFilter } from "../../redux/actions/filter.actions";
-  import QuanLyDaudocFilterComponent from './QuanLyDauDocFilter';
+  import QuanLyKiemkeFilterComponent from './QuanlyKiemkeFilter';
   
   export const deviceWidth = Dimensions.get('window').width;
   export const deviceHeight = Dimensions.get('window').height;
   
   const keyboardVerticalOffset = Platform.OS === 'ios' ? -50 : 0
  
-const DaudocFilterComponent = (props) => (
+const GiamsatFilterComponent = (props) => (
     <Modal
         animationType="slide"
         transparent
@@ -38,7 +38,7 @@ const DaudocFilterComponent = (props) => (
                 <Text style={styles.titleStyle}>Bộ lọc</Text>
             </View>
             <View style={styles.container}>
-            <QuanLyDaudocFilterComponent/>
+            <QuanLyKiemkeFilterComponent/>
             </View>
             <View style={{ width: deviceWidth - 100, alignItems: 'center' }}>
                 <Pressable
@@ -116,6 +116,7 @@ const DaudocFilterComponent = (props) => (
   const mapStateToProps = state => ({
     isShowFilter: state.filterReducer.isShowFilter,
     screen: state.currentScreenReducer.screenName,
+    tab: state.currentTabReducer.tabName,
   });
   
-  export default connect(mapStateToProps)(DaudocFilterComponent);
+  export default connect(mapStateToProps)(GiamsatFilterComponent);

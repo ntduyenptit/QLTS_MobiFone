@@ -30,6 +30,9 @@ import {
 import { 
   toanboTBReducer,  
 } from '../modules/giamsattaisan/theodoiketnoi/TheodoiKetnoiState';
+import { 
+  toanbokiemkeReducer,  
+} from '../modules/kiemketaisan/KiemkeTSState';
 
 import { 
   filterReducer, 
@@ -68,4 +71,5 @@ export default combineReducers({
   daudocdidongdangsudungReducer,
   toanbodauTSRaVaoReducer,
   toanboTBReducer,
+  toanbokiemkeReducer,
 });

@@ -48,14 +48,11 @@ function LoaderComponent(array, props) {
         <View style={styles.infor}>
           <Text numberOfLines={1} style={[{fontWeight: "bold"}, styles.infoText]}>EPC: {item.maRFID}</Text>
           <Text numberOfLines={1} style={styles.infoText}>Chiều di chuyển: {item.chieuDiChuyen}</Text>
+          <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {item.ngayDiChuyen}</Text>
+          
           <Text numberOfLines={1}>{item.loaiTaiSan}</Text>
         </View>
-        <TouchableOpacity
-          style={{ height: 40, width: 20, alignItems: "flex-end"}}
-          onPress={() => props.navigation.navigate('Chi tiết tài sản', {paramKey: item})}
-        >
-          <Icon name="chevron-right" color='#0080FF' size={15} />
-        </TouchableOpacity>
+        
       </View>
           )) 
 
@@ -131,7 +128,7 @@ const mapStateToProps = state => ({
 
 const styles = StyleSheet.create({
   listItem: {
-    padding: 15,
+    padding: 10,
     flex: 1,
     width: deviceWidth - 50,
     backgroundColor: "#FFF",
@@ -146,12 +143,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     justifyContent: "flex-start",
     alignSelf: "flex-start",
-    height: 50,
+    height: 100,
     width: "85%",
 
   },
   infoText: {
-    paddingBottom: 3,
+    paddingBottom: 0,
     
   }
 });

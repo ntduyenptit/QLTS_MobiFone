@@ -12,6 +12,8 @@ import GiamsatTaiSanScreen from '../giamsattaisan/theodoitaisan/GiamsatTsContain
 import TheodoiThietbiScreen from '../giamsattaisan/theodoiketnoi/TheodoiKetnoiContainer';
 import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVersionViewContainer";
 import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
+import KiemkeTsScreen from '../kiemketaisan/KiemkeTSContainer';
+import DetailKiemkeComponentScreen from '../kiemketaisan/DetailKiemkeComponent';
 
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
@@ -137,7 +139,7 @@ const StackNavigationData = [
   },
   {
     name: screens.quan_ly_kiem_ke_tai_san,
-    component: GalleryScreen,
+    component: KiemkeTsScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -425,6 +427,19 @@ const StackNavigationData = [
   {
     name: "Chi tiết tài sản",
     component: DetailComponentScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: moreHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: "Chi tiết đợt kiểm kê",
+    component: DetailKiemkeComponentScreen,
     headerLeft: headerLeftComponent,
     headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },

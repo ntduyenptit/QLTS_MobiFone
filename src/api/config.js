@@ -30,6 +30,9 @@ export const endPoint = ({
   // Giám sát tài sản:
   getLichsuRavaoAngten: 'services/app/LichSuRaVaoAngten/GetAll',
   getToanboThietbi:  'services/app/LichSuRaVaoAngten/GetAllTaiSanLa',
+
+  //Kiểm kê tài sản
+  getdanhsachKiemke: 'services/app/KiemKeTaiSan/GetAll',
 });
 
 // Quản lý màn hình
@@ -217,4 +220,12 @@ export const trangThaiPhanloai = [
   {id: 5, displayName: "Trong hệ thống"},
   {id: 6, displayName: "Ngoài hệ thống"}
 ];
+
+
+export const trangThaiKiemke = [
+  {id: 5, displayName: "Chưa bắt đầu"},
+  {id: 6, displayName: "Đang kiểm kê"},
+  {id: 7, displayName: "Đã kết thúc"},
+];
+
  
