@@ -14,6 +14,26 @@ import {
   taisanchuasudungReducer,
   taisansuachuabaoduongReducer
 } from '../modules/quanlytaisan/QuanLyTaiSanState';
+
+import { 
+  toanbodaudocCodinhReducer,daudoccodinhchuasudungReducer,daudoccodinhdangsudungReducer
+} from '../modules/quanlydaudoc/quanlydaudocCodinh/QuanLyDauDocCoDinhState';
+
+import { 
+  toanbodaudocDidongReducer,  daudocdidongchuasudungReducer,
+  daudocdidongdangsudungReducer,
+} from '../modules/quanlydaudoc/quanlydaudocDidong/QuanLyDauDocDidongState';
+
+import { 
+  toanbodauTSRaVaoReducer,  
+} from '../modules/giamsattaisan/theodoitaisan/GiamsatTsState';
+import { 
+  toanboTBReducer,  
+} from '../modules/giamsattaisan/theodoiketnoi/TheodoiKetnoiState';
+import { 
+  toanbokiemkeReducer,  
+} from '../modules/kiemketaisan/KiemkeTSState';
+
 import { 
   filterReducer, 
   filterDVQLDataReducer,
@@ -42,5 +62,14 @@ export default combineReducers({
   taisanmatReducer,
   taisandangsudungReducer,
   taisanchuasudungReducer,
-  taisansuachuabaoduongReducer
+  taisansuachuabaoduongReducer,
+  toanbodaudocCodinhReducer,
+  daudoccodinhchuasudungReducer,
+  daudoccodinhdangsudungReducer,
+  toanbodaudocDidongReducer,
+  daudocdidongchuasudungReducer,
+  daudocdidongdangsudungReducer,
+  toanbodauTSRaVaoReducer,
+  toanboTBReducer,
+  toanbokiemkeReducer,
 });

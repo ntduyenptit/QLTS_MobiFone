@@ -174,7 +174,6 @@ const AuthStack = () => (
     <Stack.Screen name="Login" component={AuthScreen} />
   </Stack.Navigator>
 );
-
 function App(stateToProps) {
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place

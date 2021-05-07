@@ -31,14 +31,13 @@ export default class AuthViewContainer extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ImageBackground source={require('../../../assets/images/background.png')} style={styles.backgroundImage}>
           <Image source={require('../../../assets/images/icon.png')} style={styles.iconImage} />
           <Text style={styles.logo}>Quản lý tài sản</Text>
           <View style={styles.inputView}>
             <TextInput
               style={styles.inputText}
               placeholder="Email..."
-              value='admin'
+             // value='admin'
               placeholderTextColor="#003f5c"
               onChangeText={text => this.setState({ email: text })}
             />
@@ -48,7 +47,7 @@ export default class AuthViewContainer extends React.Component {
               secureTextEntry
               style={styles.inputText}
               placeholder="Mật khẩu..."
-              value='123qwe'
+             // value='123qwe'
               placeholderTextColor="#003f5c"
               onChangeText={text => this.setState({ password: text })}
             />
@@ -56,7 +55,9 @@ export default class AuthViewContainer extends React.Component {
           <TouchableOpacity style={styles.loginBtn} onPress={() => this.signIn(this.state.email, this.state.password)}>
             <Text style={styles.loginText}>Đăng nhập</Text>
           </TouchableOpacity>
-        </ImageBackground>
+          <TouchableOpacity style={styles.forgotpassBtn} >
+            <Text style={styles.forgotpassBtn}>Quên mật khẩu</Text>
+          </TouchableOpacity>
       </View>
     );
   }
@@ -67,6 +68,8 @@ export default class AuthViewContainer extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   backgroundImage: {
     flex: 1,
@@ -78,20 +81,22 @@ const styles = StyleSheet.create({
   logo: {
     fontFamily : "Lato-Semibold",
     fontSize: 40,
-    color: "white",
+    color: "#1f76c3",
     marginBottom: 40,
-    alignContent: "flex-start"
+    alignContent: "flex-start",
   },
   iconImage: {
     alignItems: "center",
     justifyContent: "center",
-    width: "60%",
-    height: 80,
+    width: "80%",
+    marginBottom: 15,
+    height: 90,
+
   },
   inputView: {
     width: "80%",
     backgroundColor: "#e5e5e5",
-    borderRadius: 25,
+    borderRadius: 10,
     height: 50,
     marginBottom: 20,
     justifyContent: "center",
@@ -99,23 +104,36 @@ const styles = StyleSheet.create({
   },
   inputText: {
     height: 50,
-    color: "black"
-  },
-  forgot: {
     color: "black",
-    fontSize: 11
   },
+  
   loginBtn: {
-    width: "60%",
-    backgroundColor: "white",
-    borderRadius: 25,
-    height: 40,
+    width: "80%",
+    backgroundColor: "#526be8",
+    borderRadius: 10,
+    height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
+    marginTop: 30,
     marginBottom: 10
   },
   loginText: {
-    color: "black"
+    color: "white",
+    fontSize: 15,
+    fontFamily:'bold'
+  },
+  forgotpassBtn:{
+    textDecorationLine: 'underline',
+    color: "black",
+    marginTop: 15,
+    fontSize: 15
+  },
+  hotline: {
+    alignSelf: 'center',
+    alignContent: 'center',
+    justifyContent: 'flex-end',
+    bottom: 10,
+    position: 'absolute',
+    fontSize: 14
   }
 });

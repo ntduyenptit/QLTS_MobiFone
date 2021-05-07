@@ -6,14 +6,14 @@ import TabNavigator from './MainTabNavigator';
 import GalleryScreen from '../gallery/GalleryViewContainer';
 import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
 import DetailComponentScreen from "../quanlytaisan/detail/DetailComponent";
+import QuanLyDauDocCodinhScreen from '../quanlydaudoc/quanlydaudocCodinh/QuanlydaudocCodinhContainer';
+import QuanLyDauDocDiDongScreen from '../quanlydaudoc/quanlydaudocDidong/QuanlydaudocDidongContainer';
+import GiamsatTaiSanScreen from '../giamsattaisan/theodoitaisan/GiamsatTsContainer';
+import TheodoiThietbiScreen from '../giamsattaisan/theodoiketnoi/TheodoiKetnoiContainer';
 import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVersionViewContainer";
 import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
-
-// import ProfileScreen from '../profile/ProfileViewContainer';
-// import ArticleScreen from '../article/ArticleViewContainer';
-// import ChatScreen from '../chat/ChatViewContainer';
-// import MessagesScreen from '../chat/MessagesViewContainer';
-// import ChartsScreen from '../charts/ChartsViewContainer';
+import KiemkeTsScreen from '../kiemketaisan/KiemkeTSContainer';
+import DetailKiemkeComponentScreen from '../kiemketaisan/DetailKiemkeComponent';
 
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
@@ -87,7 +87,7 @@ const StackNavigationData = [
   },
   {
     name: screens.quan_ly_dau_doc_di_dong,
-    component: AvailableInFullVersion,
+    component: QuanLyDauDocDiDongScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -100,7 +100,7 @@ const StackNavigationData = [
   },
   {
     name: screens.quan_ly_dau_doc_co_dinh,
-    component: AvailableInFullVersion,
+    component: QuanLyDauDocCodinhScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -113,7 +113,7 @@ const StackNavigationData = [
   },
   {
     name: screens.giam_sat_tai_san,
-    component: AvailableInFullVersion,
+    component: GiamsatTaiSanScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -126,7 +126,7 @@ const StackNavigationData = [
   },
   {
     name: screens.theo_doi_ket_noi_thiet_bi,
-    component: AvailableInFullVersion,
+    component: TheodoiThietbiScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -139,7 +139,7 @@ const StackNavigationData = [
   },
   {
     name: screens.quan_ly_kiem_ke_tai_san,
-    component: GalleryScreen,
+    component: KiemkeTsScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -427,6 +427,19 @@ const StackNavigationData = [
   {
     name: "Chi tiết tài sản",
     component: DetailComponentScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: moreHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: "Chi tiết đợt kiểm kê",
+    component: DetailKiemkeComponentScreen,
     headerLeft: headerLeftComponent,
     headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },
