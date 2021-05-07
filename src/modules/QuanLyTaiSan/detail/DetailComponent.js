@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,6 +7,8 @@ import {
     Image,
     ScrollView,
 } from 'react-native';
+import { deviceWidth } from '../../global/LoaderComponent';
+import { convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
 
 const bullet = (title, text) => (
   <View style={styles.row}>
@@ -14,8 +16,14 @@ const bullet = (title, text) => (
       <Text>{'\u2022' + " "}</Text>
     </View>
     <View style={styles.bulletText}>
-      <Text>
+      <Text styles={styles.text}>
         <Text style={styles.boldText}>{`${title}: `}</Text>
+        {/* <Text style={styles.normalText}>{text}</Text> */}
+      </Text>
+    </View>
+    <View style={styles.bulletTextNormal}>
+      <Text styles={styles.text}>
+        {/* <Text style={styles.boldText}>{`${title}: `}</Text> */}
         <Text style={styles.normalText}>{text}</Text>
       </Text>
     </View>
@@ -23,14 +31,14 @@ const bullet = (title, text) => (
 );
 
 function DetailComponent({ route, navigation }) {
-    const { paramKey } = route.params;
+    const { paramKey, tabKey } = route.params;
     console.log(paramKey);
     return (
       <View style={styles.container}>
         <ScrollView>
           <View style={{ alignItems: 'flex-start', marginHorizontal: 30 }}>
             <Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} style={styles.iconImage} />
-            <Text style={styles.title}>Thông tin tài sản:</Text>
+            <Text style={styles.title}>Thông tin {convertTextToLowerCase(tabKey)}:</Text>
             {/* Mã tài sản */}
             {bullet('Mã tài sản',paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
             {/* Tên tài sản */}
@@ -44,7 +52,7 @@ function DetailComponent({ route, navigation }) {
             {/* Trạng thái */}
             {bullet('Trạng thái', paramKey.trangThai)}
             {/* Ngày mua */}
-            {bullet('Ngày mua', paramKey.ngayMua)}
+            {bullet('Ngày mua', paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua))}
           </View>
 
         </ScrollView>
@@ -65,9 +73,9 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        alignItems: 'flex-start',
         flexWrap: 'wrap',
-        flex: 1
+        width: deviceWidth - 30,
+        paddingBottom: 5
     },
     title: {
         paddingBottom: 10, 
@@ -78,14 +86,21 @@ const styles = StyleSheet.create({
         width: 10
     },
     bulletText: {
-        flex: 1,
-        paddingBottom: 5
+        flex: 0.8,
+        paddingRight: 5
+    },
+    bulletTextNormal: {
+        flex: 2
     },
     boldText: {
         fontWeight: 'bold',
-        fontSize: 15,
+        alignItems: 'flex-start',
     },
     normalText: {
+        flex: 1,
+        alignItems: 'flex-end',
+    },
+    text: {
         fontSize: 15,
     },
     star: {

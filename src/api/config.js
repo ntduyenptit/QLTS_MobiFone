@@ -61,14 +61,14 @@ export const screens = ({
 // Quản lý tabs
 export const tabs = ({
   toan_bo_tai_san: 'Toàn bộ TS',
-  tai_san_mat: 'TS mất',
+  tai_san_mat: 'Tài sản mất',
   tai_san_hong: 'TS hỏng',
   tai_san_thanh_ly: 'TS thanh lý',
-  tai_san_dang_su_dung: 'TS đang sử dụng',
-  tai_san_chua_su_dung: 'TS chưa sử dụng',
+  tai_san_dang_su_dung: 'Tài sản đang sử dụng',
+  tai_san_chua_su_dung: 'Tài sản chưa sử dụng',
   tai_san_sua_chua_bao_duong: 'TS sửa chữa/bảo dưỡng',
-  tai_san_huy: 'TS hủy',
-  bao_hong_mat_tai_san: 'Báo hỏng/mất TS'
+  tai_san_huy: 'Tài sản hủy',
+  bao_hong_mat_tai_san: 'Báo hỏng/mất tài sản'
 })
 
 // Quản lý icon
