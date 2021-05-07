@@ -5,7 +5,6 @@ import {
   Text,
   Pressable,
   View,
-  Dimensions,
   KeyboardAvoidingView,
   Platform
 } from "react-native";
@@ -13,10 +12,9 @@ import React from 'react';
 import { connect } from "react-redux";
 import { store } from "../../redux/store";
 import { hideFilter } from "../../redux/actions/filter.actions";
+// eslint-disable-next-line import/no-cycle
+import { deviceWidth, deviceHeight } from './LoaderComponent';
 import QuanLyTaiSanFilterComponent from '../quanlytaisan/filter/QuanLyTaiSanFilter';
-
-export const deviceWidth = Dimensions.get('window').width;
-export const deviceHeight = Dimensions.get('window').height;
 
 const keyboardVerticalOffset = Platform.OS === 'ios' ? -50 : 0
 

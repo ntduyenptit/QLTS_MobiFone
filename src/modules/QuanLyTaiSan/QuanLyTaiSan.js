@@ -15,13 +15,30 @@ import {
   toanbotaisanGetData,
   taisandangsudungGetData,
   taisanchuasudungGetData,
-  taisanbaoduongsuachuaGetData
+  taisanbaoduongsuachuaGetData,
+
+  taisanhongSearchData,
+  taisanmatSearchData,
+  taisanthanhlySearchData,
+  toanbotaisanSearchData,
+  taisandangsudungSearchData,
+  taisanchuasudungSearchData,
+  taisanbaoduongsuachuaSearchData,
+
+  toanbotaisanLoading
 } from '../../redux/actions/quanlytaisan.actions';
 
-export function GetToanBoTaiSanData(datas, tab = tabs.toan_bo_tai_san) {
+export function GetToanBoTaiSanData(parameters) {
+  //console.log('co vao day k nao e owi: ', parameters);
+  const { datas, tab, textFilter, skipCount, maxResultCount } = parameters;
+  const maxCount = maxResultCount !== undefined ? maxResultCount : 10;
+  const skipTotal = skipCount !== undefined ? skipCount : 0;
+  const tabChosen = tab !== undefined ? tab : tabs.toan_bo_tai_san;
+
+  store.dispatch(toanbotaisanLoading());
   if (datas && datas.length > 0) {
     let url;
-    switch (tab) {
+    switch (tabChosen) {
       case tabs.toan_bo_tai_san:
         url = `${endPoint.getToanBoTaiSan}?`;
         break;
@@ -48,6 +65,13 @@ export function GetToanBoTaiSanData(datas, tab = tabs.toan_bo_tai_san) {
         break;
     }
 
+    if (textFilter) {
+      url += `Fillter=${textFilter}&`
+      if (tabs.tai_san_dang_su_dung || tabs.tai_san_chua_su_dung) {
+        url += `KeyWord=${textFilter}&`
+      }
+    }
+
     datas.forEach(e => {
       url += `PhongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
     });
@@ -57,36 +81,67 @@ export function GetToanBoTaiSanData(datas, tab = tabs.toan_bo_tai_san) {
       });
     }
 
-    url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
-    url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
-    url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
+    url += `IsSearch=${encodeURIComponent(`${textFilter !== undefined}`)}&`;
+    url += `SkipCount=${encodeURIComponent(`${maxCount * skipTotal}`)}&`;
+    url += `MaxResultCount=${encodeURIComponent(`${maxCount}`)}`;
+
     createGetMethod(url)
       .then(res => {
         if (res) {
-          switch (tab) {
-            case tabs.toan_bo_tai_san:
-              store.dispatch(toanbotaisanGetData(res));
-              break;
-            case tabs.tai_san_thanh_ly:
-              store.dispatch(taisanthanhlyGetData(res));
-              break;
-            case tabs.tai_san_mat:
-              store.dispatch(taisanmatGetData(res));
-              break;
-            case tabs.tai_san_hong:
-              store.dispatch(taisanhongGetData(res));
-              break;
-            case tabs.tai_san_dang_su_dung:
-              store.dispatch(taisandangsudungGetData(res));
-              break;
-            case tabs.tai_san_chua_su_dung:
-              store.dispatch(taisanchuasudungGetData(res));
-              break;
+          if (textFilter !== undefined) {
+            switch (tabChosen) {
+              case tabs.toan_bo_tai_san:
+                store.dispatch(toanbotaisanSearchData(res));
+                break;
+              case tabs.tai_san_thanh_ly:
+                store.dispatch(taisanthanhlySearchData(res));
+                break;
+              case tabs.tai_san_mat:
+                store.dispatch(taisanmatSearchData(res));
+                break;
+              case tabs.tai_san_hong:
+                store.dispatch(taisanhongSearchData(res));
+                break;
+              case tabs.tai_san_dang_su_dung:
+                console.log(res);
+                store.dispatch(taisandangsudungSearchData(res));
+                break;
+              case tabs.tai_san_chua_su_dung:
+                store.dispatch(taisanchuasudungSearchData(res));
+                break;
+              case tabs.tai_san_sua_chua_bao_duong:
+                store.dispatch(taisanbaoduongsuachuaSearchData(res));
+                break;
+              default:
+                break;
+            }
+          } else {
+            switch (tabChosen) {
+              case tabs.toan_bo_tai_san:
+                store.dispatch(toanbotaisanGetData(res));
+                break;
+              case tabs.tai_san_thanh_ly:
+                store.dispatch(taisanthanhlyGetData(res));
+                break;
+              case tabs.tai_san_mat:
+                store.dispatch(taisanmatGetData(res));
+                break;
+              case tabs.tai_san_hong:
+                store.dispatch(taisanhongGetData(res));
+                break;
+              case tabs.tai_san_dang_su_dung:
+                //console.log(res);
+                store.dispatch(taisandangsudungGetData(res));
+                break;
+              case tabs.tai_san_chua_su_dung:
+                store.dispatch(taisanchuasudungGetData(res));
+                break;
               case tabs.tai_san_sua_chua_bao_duong:
                 store.dispatch(taisanbaoduongsuachuaGetData(res));
                 break;
-            default:
-              break;
+              default:
+                break;
+            }
           }
         } else {
           // Alert.alert('Lỗi khi load toàn bộ tài sản!');
@@ -96,8 +151,15 @@ export function GetToanBoTaiSanData(datas, tab = tabs.toan_bo_tai_san) {
   }
 }
 
+const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+  const paddingToBottom = 10;
+  return layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom;
+};
+
 const QuanLyTaiSan = (state) => {
   const [scrollYValue] = useState(new Animated.Value(0));
+  const [skipCount, setSkipCount] = useState(1);
   const clampedScroll = Animated.diffClamp(
     Animated.add(
       scrollYValue.interpolate({
@@ -112,8 +174,10 @@ const QuanLyTaiSan = (state) => {
   )
 
   useEffect(() => {
-    GetToanBoTaiSanData(state.DvqlDataFilter, state.tab);
-  }, []);
+    if (!state.isLoading) {
+      GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab, skipCount });
+    }
+  }, [skipCount]);
 
   function LoaderComponentByTab() {
     switch (state.tab) {
@@ -155,11 +219,14 @@ const QuanLyTaiSan = (state) => {
             justifyContent: 'space-around',
             paddingBottom: 55,
           }}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
-            { useNativeDriver: true },
-            () => { },          // Optional async listener
-          )}
+          onScroll={({ nativeEvent }) => {
+            if (isCloseToBottom(nativeEvent) && !state.isLoading) {
+              setTimeout(() => {
+                setSkipCount(skipCount + 1);
+              }, 2000)
+            }         // Optional async listener
+          }}
+          scrollEventThrottle={500}
           contentInsetAdjustmentBehavior="automatic"
         >
           {LoaderComponentByTab()}
@@ -178,6 +245,8 @@ const mapStateToProps = state => ({
   taisanchuasudungData: state.taisanchuasudungReducer.taisanchuasudungData,
   taisandangsudungData: state.taisandangsudungReducer.taisandangsudungData,
   taisansuachuabaoduongData: state.taisansuachuabaoduongReducer.taisansuachuabaoduongData,
+
+  isLoading: state.toanbotaisanReducer.isLoading,
 
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
   tab: state.currentTabReducer.tabName,

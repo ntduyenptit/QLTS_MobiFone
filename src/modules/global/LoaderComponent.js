@@ -8,6 +8,7 @@ export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
 function LoaderComponent(array, props) {
+  //console.log('aaa', array);
   if (array && array.length > 0) {
     const items = () => array.map((item, index) => (
       
@@ -20,7 +21,7 @@ function LoaderComponent(array, props) {
         </View>
         <TouchableOpacity
           style={{ height: 40, width: 20, alignItems: "flex-end"}}
-          onPress={() => props.navigation.navigate('Chi tiết tài sản', {paramKey: item})}
+          onPress={() => props.navigation.navigate('Chi tiết tài sản', {paramKey: item, tabKey: props.tab})}
         >
           <Icon name="chevron-right" color='#0080FF' size={15} />
         </TouchableOpacity>
@@ -32,7 +33,7 @@ function LoaderComponent(array, props) {
     );
   }
   return (
-    <TouchableOpacity onPress={() => GetToanBoTaiSanData(props.DvqlDataFilter, props.tab)}><Text>Không có dữ liệu</Text></TouchableOpacity>
+    <TouchableOpacity onPress={() => GetToanBoTaiSanData({datas: props.DvqlDataFilter, tab: props.tab})}><Text>Không có dữ liệu</Text></TouchableOpacity>
   );
 }
 

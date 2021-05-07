@@ -1,7 +1,7 @@
 export function buildTree(arr) {
-  var tree = [];
+  const tree = [];
   mappedArr = {};
-  var arrElem;
+  let arrElem;
   let mappedElem;
 
   // First map the nodes of the array to an object -> create a hash table.
@@ -26,4 +26,34 @@ export function buildTree(arr) {
     }
   }
   return tree;
+}
+
+export const convertTextToUpperCase = (text) => {
+  // To convert Upper Case
+  const upperCaseText = text.toUpperCase();
+  return upperCaseText;
+};
+
+export const convertTextToLowerCase = (text) => {
+  // To convert Lower Case
+  const lowerCaseText = text.toLowerCase();
+  return lowerCaseText;
+};
+
+export const convertTimeFormatToLocaleDate = (time) => {
+  const reg = /(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d/;
+  if (time.match(reg)) {
+    return time;
+  }
+  const date = new Date(time);
+  const formatOptions = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  };
+  let dateString = date.toLocaleDateString('vi-VN', formatOptions);
+  // => "02/17/2017, 11:32 PM"
+
+  dateString = dateString.replace(',', '');
+  return dateString;
 }
