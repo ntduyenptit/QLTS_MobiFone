@@ -53,7 +53,7 @@ function LoaderComponent(array, props) {
         </View>
         <TouchableOpacity
           style={{ height: 40, width: 20, alignItems: "flex-end"}}
-          onPress={() => props.navigation.navigate('Chi tiết tài sản', {paramKey: item})}
+          onPress={() => props.navigation.navigate('Chi tiết đầu đọc', {paramKey: item})}
         >
           <Icon name="chevron-right" color='#0080FF' size={15} />
         </TouchableOpacity>
