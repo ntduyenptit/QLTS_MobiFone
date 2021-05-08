@@ -16,6 +16,7 @@ import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVer
 import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
 import KiemkeTsScreen from '../kiemketaisan/KiemkeTSContainer';
 import DetailKiemkeComponentScreen from '../kiemketaisan/DetailKiemkeComponent';
+import DetailDaudocComponentScreen from '../quanlydaudoc/DetailDaudocComponent';
 
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
@@ -58,12 +59,13 @@ const headerRightComponent = () => (
   </TouchableOpacity>
   );
 
-  const moreHeaderRightComponent = () => (
+  const moreHeaderRightComponent = (props) => (
     <TouchableOpacity
       style={{
       paddingHorizontal: 16,
       paddingVertical: 12,
-    }}
+    }
+  }
     >
       <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
         <Icon name="ellipsis-v" color="white" size={20} />
@@ -455,6 +457,20 @@ const StackNavigationData = [
   {
     name: "Chi tiết đợt kiểm kê",
     component: DetailKiemkeComponentScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: moreHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+
+  {
+    name: "Chi tiết đầu đọc",
+    component: DetailDaudocComponentScreen,
     headerLeft: headerLeftComponent,
     headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },
