@@ -12,10 +12,12 @@ export const headers = (token) => ({
 });
 export const endPoint = ({
   login: 'TokenAuth/Authenticate',
+  // Filter
   getAllToChucTheoNguoiDung: 'services/app/LookupTable/GetAllToChucTheoNguoiDung',
   getAllTrangThaiTaiSan: 'services/app/LookupTable/GetAllTrangThaiTaiSan',
   getAllNhaCungCap: 'services/app/LookupTable/GetAllNhaCungCap',
   getAllTinhTrangMaSuDungTaiSan: 'services/app/LookupTable/GetAllTinhTrangMaSuDungTaiSan',
+  getAllTrangThaiSuDung: 'services/app/LookupTable/GetAllTrangThaiTaiSanTimKiem',
   // Quản lý tài sản
   getToanBoTaiSan: 'services/app/ToanBoTaiSan/GetAll',
   getTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/GetAllTaiSanSuaChuaBaoDuong',
@@ -31,7 +33,7 @@ export const endPoint = ({
   getLichsuRavaoAngten: 'services/app/LichSuRaVaoAngten/GetAll',
   getToanboThietbi:  'services/app/LichSuRaVaoAngten/GetAllTaiSanLa',
 
-  //Kiểm kê tài sản
+  // Kiểm kê tài sản:
   getdanhsachKiemke: 'services/app/KiemKeTaiSan/GetAll',
 });
 

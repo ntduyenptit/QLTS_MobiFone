@@ -7,6 +7,7 @@ export const LTS_FILTER = `${FILTER} Get LOAI_TAI_SAN data`;
 export const NCC_FILTER = `${FILTER} Get NHA_CUNG_CAP data`;
 export const MSD_FILTER = `${FILTER} Get MA_SU_DUNG data`;
 export const TT_FILTER = `${FILTER} Get TRANG_THAI data`;
+export const TTSD_FILTER = `${FILTER} Get TRANG_THAI_SU_DUNG data`;
 
 export const showFilter = () => ({
     type: SHOW_FILTER,
@@ -40,5 +41,10 @@ export const getMSDDataAction = (data) => ({
 
 export const getTTDataAction = (data) => ({
     type: TT_FILTER,
+    payload: data
+});
+
+export const getTTSDDataAction = (data) => ({
+    type: TTSD_FILTER,
     payload: data
 });

@@ -8,7 +8,6 @@ export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
 function LoaderComponent(array, props) {
-  //console.log('aaa', array);
   if (array && array.length > 0) {
     const items = () => array.map((item, index) => (
       

@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   loginText: {
     color: "white",
     fontSize: 15,
-    fontFamily:'bold'
+    fontWeight:'bold'
   },
   forgotpassBtn:{
     textDecorationLine: 'underline',

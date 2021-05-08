@@ -1,15 +1,23 @@
 /* eslint-disable import/no-cycle */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Animated, StyleSheet, TextInput } from 'react-native';
 import { store } from '../../redux/store';
 import { deviceWidth } from './LoaderComponent';
 import { GetToanBoTaiSanData } from '../quanlytaisan/QuanLyTaiSan';
-import { tabs } from '../../api/config';
 
 const SearchComponent = (props) => {
   const {
-    clampedScroll
+    clampedScroll,
+    total,
   } = props;
+  const [totalState, setTotal] = useState('');
+  useEffect(() => {
+    if (total === '0/0' || total === "") {
+      setTotal('');
+    } else {
+      setTotal(`(${total})`);
+    }
+  }, [total]);
   const searchBarTranslate = clampedScroll.interpolate({
     inputRange: [0, 50],
     outputRange: [0, -(250)],
@@ -20,27 +28,6 @@ const SearchComponent = (props) => {
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
-  let total = '';
-  switch(store.getState().currentTabReducer.tabName) {
-    case tabs.toan_bo_tai_san: {
-      total = store.getState().toanbotaisanReducer.toanbotaisanTotal > 0 ? `(${store.getState().toanbotaisanReducer.toanbotaisanData.length  }/${  store.getState().toanbotaisanReducer.toanbotaisanTotal})` : '';
-      break;
-    }
-    case tabs.tai_san_mat: {
-      total = store.getState().taisanmatReducer.taisanmatTotal > 0 ? `(${store.getState().taisanmatReducer.taisanmatData.length  }/${  store.getState().taisanmatReducer.taisanmatTotal})` : '';
-      break;
-    }
-    case tabs.tai_san_hong: {
-      total = store.getState().taisanhongReducer.taisanhongTotal > 0 ? `(${store.getState().taisanhongReducer.taisanhongData.length  }/${  store.getState().taisanhongReducer.taisanhongTotal})` : '';
-      break;
-    }
-    case tabs.tai_san_thanh_ly: {
-      total = store.getState().taisanthanhlyReducer.taisanthanhlyTotal > 0 ? `${store.getState().taisanthanhlyReducer.taisanthanhlyData.length  }/${  store.getState().taisanthanhlyReducer.taisanthanhlyTotal})` : '';
-      break;
-    }
-    default:
-      total = '';
-  }
   return (
     <Animated.View style={[
       styles.container,
@@ -55,7 +42,7 @@ const SearchComponent = (props) => {
     ]}
     >
       <TextInput
-        placeholder={`Tìm kiếm tài sản ${total}`}
+        placeholder={`Tìm kiếm tài sản ${totalState}`}
         style={styles.formField}
         placeholderTextColor="#888888"
         onChangeText={(text) => {
