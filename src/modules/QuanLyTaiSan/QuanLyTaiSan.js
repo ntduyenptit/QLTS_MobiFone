@@ -219,6 +219,27 @@ const QuanLyTaiSan = (state) => {
     }
   }
 
+  const getSkipCount = () => {
+    switch (state.tab) {
+      case tabs.toan_bo_tai_san:
+        return state.toanbotaisanData.length;
+      case tabs.tai_san_mat:
+        return state.taisanmatData.length
+      case tabs.tai_san_hong:
+        return state.taisanhongData.length;
+      case tabs.tai_san_thanh_ly:
+        return state.taisanthanhlyData.length;
+      case tabs.tai_san_chua_su_dung:
+        return state.taisanchuasudungData.length;
+      case tabs.tai_san_dang_su_dung:
+        return state.taisandangsudungData.length;
+      case tabs.tai_san_sua_chua_bao_duong:
+        return state.taisansuachuabaoduongData.length;
+      default:
+        return 0;
+    }
+  }
+
   return (
     <Animated.View>
       <StatusBar barStyle="dark-content" />
@@ -241,7 +262,7 @@ const QuanLyTaiSan = (state) => {
           onScroll={({ nativeEvent }) => {
             if (isCloseToBottom(nativeEvent) && !state.isLoading) {
               setTimeout(() => {
-                setSkipCount(skipCount + 1);
+                setSkipCount(getSkipCount());
               }, 2000)
             }         // Optional async listener
           }}

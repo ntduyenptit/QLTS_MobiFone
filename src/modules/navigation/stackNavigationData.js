@@ -59,7 +59,7 @@ const headerRightComponent = () => (
   </TouchableOpacity>
   );
 
-  const moreHeaderRightComponent = (props) => (
+  const moreHeaderRightComponent = () => (
     <TouchableOpacity
       style={{
       paddingHorizontal: 16,
