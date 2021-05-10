@@ -16,12 +16,7 @@ import {
   taisansuachuabaoduongReducer
 } from '../modules/quanlytaisan/QuanLyTaiSanState';
 
-import { 
-  toanbodauTSRaVaoReducer,  
-} from '../modules/giamsattaisan/theodoitaisan/GiamsatTsState';
-import { 
-  toanboTBReducer,  
-} from '../modules/giamsattaisan/theodoiketnoi/TheodoiKetnoiState';
+
 import { 
   toanbokiemkeReducer,  
 } from '../modules/kiemketaisan/KiemkeTSState';
@@ -63,8 +58,6 @@ import {
   taisanchuasudungReducer,
   taisansuachuabaoduongReducer,
 
-  toanbodauTSRaVaoReducer,
-  toanboTBReducer,
   toanbokiemkeReducer,
 });
 
