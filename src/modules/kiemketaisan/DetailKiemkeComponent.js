@@ -87,7 +87,7 @@ export default class QuanLyKiemKeDetail extends React.Component {
                     console.log("res: " + res.result);
                     if (res) {
                         console.log("res: " + res.result);
-                        this.state({
+                        this.setState({
                             danhsachUserKiemke: res.result,
                            // total: `${res.result.length}/${res.result.totalCount}`
                         });
@@ -129,7 +129,7 @@ export default class QuanLyKiemKeDetail extends React.Component {
             renderTabBar={() => <DefaultTabBar inactiveTextColor="white" activeTextColor="white" backgroundColor="blue" />}
         >
             <View onLayout={(event) => this.measureTabOne(event)} tabLabel='TS tìm thấy'>
-                <View style={{ height: 1000, backgroundColor: "white" }}>
+                <View style={{ height: 'auto', backgroundColor: "white" }}>
 
                     <FlatList
                         scrollEnabled={false}
