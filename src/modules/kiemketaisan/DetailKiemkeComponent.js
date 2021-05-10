@@ -47,16 +47,14 @@ export default class QuanLyKiemKeDetail extends React.Component {
         this.state = {
             tabOneHeight: containerHeight,
             tabTwoHeight: containerHeight,
-            tabThirtHeight: containerHeight
+            tabThirtHeight: containerHeight,
+            danhsachUserKiemke: []
         }
         this.param = {
             param: props.route.params,
 
         }
-        this.user = {
-            danhsachUserKiemke: []
-           // total: '',
-        }
+        
     }
     componentDidMount() {
         this.getDanhsachUserKiemke();
@@ -89,8 +87,7 @@ export default class QuanLyKiemKeDetail extends React.Component {
                     console.log("res: " + res.result);
                     if (res) {
                         console.log("res: " + res.result);
-                        danhsachUserKiemke = res.result;
-                        this.user({
+                        this.state({
                             danhsachUserKiemke: res.result,
                            // total: `${res.result.length}/${res.result.totalCount}`
                         });
@@ -119,9 +116,8 @@ export default class QuanLyKiemKeDetail extends React.Component {
         )
     }
     render() {
-        const { tabOneHeight, tabTwoHeight, tabThirtHeight } = this.state;
+        const { tabOneHeight, tabTwoHeight, tabThirtHeight,danhsachUserKiemke } = this.state;
         const { paramKey, tabKey } = this.props.route.params;
-        const {danhsachUserKiemke} = this.user;
         console.log("userList: " + danhsachUserKiemke);
 
         return <ScrollableTabView

@@ -31,7 +31,7 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
       let url;
       url = `${endPoint.getdanhsachKiemke}?`;
 
-      url += `StartDate=${encodeURIComponent(`${'2021-01-01'}`)}&`;
+      url += `StartDate=${encodeURIComponent(`${'2021-02-01'}`)}&`;
       url += `EndDate=${encodeURIComponent(`${''}`)}&`;
       datas.forEach(e => {
         url += `BoPhanDuocKiemKeId=${encodeURIComponent(`${e.id}`)}&`;
