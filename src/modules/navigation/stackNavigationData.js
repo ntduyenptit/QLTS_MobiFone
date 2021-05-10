@@ -3,7 +3,6 @@ import { TouchableOpacity, Image,View } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import TabNavigator from './MainTabNavigator';
-import GalleryScreen from '../gallery/GalleryViewContainer';
 import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
 import DetailComponentScreen from "../quanlytaisan/detail/DetailComponent";
 import QuanLyDauDocCodinhScreen from '../quanlydaudoc/quanlydaudocCodinh/QuanlydaudocCodinhContainer';

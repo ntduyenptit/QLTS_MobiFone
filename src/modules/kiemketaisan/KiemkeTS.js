@@ -19,18 +19,19 @@ export function GetData(datas) {
         let url;
         url = `${endPoint.getdanhsachKiemke}?`;
 
-        url += `StartDate=${encodeURIComponent(`${'2021-01-01'}`)}&`;
+        url += `StartDate=${encodeURIComponent(`${'2020-12-31'}`)}&`;
         url += `EndDate=${encodeURIComponent(`${''}`)}&`;
         datas.forEach(e => {
             url += `BoPhanDuocKiemKeId=${encodeURIComponent(`${e.id}`)}&`;
         });
         //StartDate=&EndDate=
-        url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
+        url += `IsSearch=${encodeURIComponent(`${true}`)}&`;
         url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
         url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
         createGetMethod(url)
             .then(res => {
                 if (res) {
+                    console.log("Kiem kesdasdas: " + res);
                     store.dispatch(toanbokiemkeGetData(res));
                 } else {
                     // Alert.alert('Lỗi khi load toàn bộ tài sản!');
@@ -81,7 +82,7 @@ function LoaderComponent(array, props) {
         );
     }
     return (
-        <TouchableOpacity onPress={() => GetData(props.DvqlDataFilter)}><Text>Không có dữ liệu</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => GetData()}><Text>Không có dữ liệu</Text></TouchableOpacity>
     );
 }
 
@@ -101,11 +102,12 @@ const KiemkeTs = (state) => {
     )
 
     useEffect(() => {
-        GetData(state.DvqlDataFilter);
+        GetData();
     }, []);
-
+console.log("Datakiemke212: ", state.toanbotaisanData);
 
     return (
+
         <Animated.View>
             <StatusBar barStyle="dark-content" />
             <SafeAreaView>
