@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { USER_LOGOUT } from './actions/user.actions';
 
 // ## Generator Reducer Imports
 import gallery from '../modules/gallery/GalleryState';
@@ -36,7 +37,7 @@ import {
   currentTabReducer
  } from '../modules/global/GlobalState';
 
-export default combineReducers({
+ const appReducer = combineReducers({
   // ## Generator Reducers
   gallery,
   app,
@@ -52,6 +53,8 @@ export default combineReducers({
 
   currentScreenReducer,
   currentTabReducer,
+
+  // giám sát tài sản
   toanbotaisanReducer,
   taisanhongReducer,
   taisanthanhlyReducer,
@@ -59,7 +62,19 @@ export default combineReducers({
   taisandangsudungReducer,
   taisanchuasudungReducer,
   taisansuachuabaoduongReducer,
+
   toanbodauTSRaVaoReducer,
   toanboTBReducer,
   toanbokiemkeReducer,
 });
+
+const rootReducer = (state, action) => {
+  // when a logout action is dispatched it will reset redux state
+  if (action.type === USER_LOGOUT) {
+    state = undefined
+  }
+  
+  return appReducer(state, action);
+};
+
+export default rootReducer;
