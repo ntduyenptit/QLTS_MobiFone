@@ -245,4 +245,10 @@ export const tenTaiSan = [
   "tenTS"
 ];
 
+export const trangThaiTaiSan = ({
+  'chua_su_dung': 'Chưa sử dụng',
+  'dang_su_dung': 'Đang sử dụng',
+  
+});
+
  

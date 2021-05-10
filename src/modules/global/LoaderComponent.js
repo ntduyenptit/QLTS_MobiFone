@@ -4,7 +4,7 @@ import { Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'react-nati
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { GetToanBoTaiSanData } from '../quanlytaisan/QuanLyTaiSan';
 import { maTaiSan, screens, tenTaiSan } from '../../api/config';
-import { convertTimeFormatToLocaleDate } from "./Helper";
+import { convertTimeFormatToLocaleDate, getColorByType } from "./Helper";
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
@@ -30,6 +30,7 @@ const loadInfo = (screen, item, props) => {
     case screens.chi_tiet_dau_doc:
       return (
         <>
+          <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color={getColorByType(item.trangThai ? item.trangThai : props.tab)} size={15} />
           <View style={styles.infor}>
             <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
             <Text numberOfLines={1} style={styles.infoText}>{item[tenTaiSanKey]}</Text>
@@ -45,19 +46,25 @@ const loadInfo = (screen, item, props) => {
       );
     case screens.giam_sat_tai_san:
       return (
-        <View style={styles.infor}>
-          <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
-          <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
-          <Text numberOfLines={1}>Chiều di chuyển: {item.chieuDiChuyen}</Text>
-        </View>
+        <>
+          <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="exchange" color='#0080FF' size={15} />
+          <View style={styles.infor}>
+            <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
+            <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
+            <Text numberOfLines={1}>Chiều di chuyển: {item.chieuDiChuyen}</Text>
+          </View>
+        </>
       );
       case screens.theo_doi_ket_noi_thiet_bi:
         return (
-          <View style={styles.infor}>
-            <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
-            <Text numberOfLines={1}>{item.loaiTaiSan}</Text>
-            <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
-          </View>
+          <>
+            <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="exchange" color='#0080FF' size={15} />
+            <View style={styles.infor}>
+              <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
+              <Text numberOfLines={1}>{item.loaiTaiSan}</Text>
+              <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
+            </View>
+          </>
         );
     default:
       break;
@@ -68,7 +75,6 @@ function LoaderComponent(array, props, screen) {
   if (array && array.length > 0) {
     const items = () => array.map((item, index) => (
       <View key={`loader-component-${index + 1}`} style={styles.listItem}>
-        <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#0080FF' size={15} />
         {loadInfo(screen, item, props)}
       </View>
     ))

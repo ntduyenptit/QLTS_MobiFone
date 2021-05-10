@@ -3,6 +3,7 @@ import { PieChart } from 'react-native-svg-charts'
 import { Text } from 'react-native-svg'
 import {    View } from 'react-native';
 import colorDetail from './detailColor';
+
 class BaoCaoThongTinTS extends React.PureComponent {
 
     render() {
@@ -47,44 +48,43 @@ class BaoCaoThongTinTS extends React.PureComponent {
             }
 
         ]
-        const Labels = ({ slices, height, width }) => {
-            return slices.map((slice, index) => {
+        const Labels = ({ slices, height, width }) => slices.map((slice, index) => {
                 const { labelCentroid, pieCentroid, data } = slice;
                 return (
-                    <Text
-                        key={index}
-                        x={pieCentroid[0]}
-                        y={pieCentroid[1]}
-                        fill={'white'}
-                        textAnchor={'middle'}
-                        alignmentBaseline={'middle'}
-                        fontSize={18}
-                        stroke={'black'}
-                        strokeWidth={0.2}
-                    >
-                        {data.value + "%"}
-                    </Text>
+                  <Text
+                    key={index}
+                    x={pieCentroid[0]}
+                    y={pieCentroid[1]}
+                    fill="white"
+                    textAnchor="middle"
+                    alignmentBaseline="middle"
+                    fontSize={18}
+                    stroke="black"
+                    strokeWidth={0.2}
+                  >
+                    {`${data.value  }%`}
+                  </Text>
                 )
             })
-        }
 
 
         return (
 
-            <View style = {{backgroundColor: '#DADDE7',flex:1}}>
-                <PieChart
-                    style={{ height: 400 }}
-                    outerRadius={'80%'}
-                    innerRadius={10}
-                    data={data}>
-                    <Labels />
+          <View style={{backgroundColor: '#DADDE7',flex:1}}>
+            <PieChart
+              style={{ height: 400 }}
+              outerRadius="80%"
+              innerRadius={10}
+              data={data}
+            >
+              <Labels />
 
-                </PieChart>
-                <View style = {{marginTop: 50}}>
-                {colorDetail()}
-                </View>
-              
+            </PieChart>
+            <View style={{marginTop: 50}}>
+              {colorDetail()}
             </View>
+              
+          </View>
           
         )
     }
