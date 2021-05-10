@@ -31,7 +31,7 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
       let url;
       url = `${endPoint.getdanhsachKiemke}?`;
 
-      url += `StartDate=${encodeURIComponent(`${'2021-02-01'}`)}&`;
+      url += `StartDate=${encodeURIComponent(`${'2021-01-01'}`)}&`;
       url += `EndDate=${encodeURIComponent(`${''}`)}&`;
       datas.forEach(e => {
         url += `BoPhanDuocKiemKeId=${encodeURIComponent(`${e.id}`)}&`;
@@ -42,6 +42,7 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
       createGetMethod(url)
         .then(res => {
+            console.log("kiemke: " + res.result);
           if (res) {
             this.setState({
               toanboTaiSanData: res.result.items,

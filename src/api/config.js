@@ -36,6 +36,7 @@ export const endPoint = ({
   // Kiểm kê tài sản:
   getdanhsachKiemke: 'services/app/KiemKeTaiSan/GetAll',
   getdanhsachUserKiemke: 'services/app/KiemKeTaiSan/GetUserForEdit',
+  getAllTaisanKiemke: 'services/app/KiemKeTaiSan/GetAllTaiSan'
   
 });
 
