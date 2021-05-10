@@ -272,7 +272,7 @@ export const taisansuachuabaoduongReducer = (state = initialState, action) => {
         isLoading: false,
         isSuccess: true,
         taisansuachuabaoduongTotal: action.payload.data.result.totalCount,
-        taisansuachuabaoduongData: [...state.taisanchuasudungData, ...result]
+        taisansuachuabaoduongData: [...state.taisansuachuabaoduongData, ...result]
       }
     }
     case TAISANSUACHUABAODUONG_SEARCH: {

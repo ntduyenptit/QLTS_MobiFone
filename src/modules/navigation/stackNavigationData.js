@@ -4,9 +4,12 @@ import { TouchableOpacity, Image,View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import TabNavigator from './MainTabNavigator';
 import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
-import DetailComponentScreen from "../quanlytaisan/detail/DetailComponent";
-import QuanLyDauDocCodinhScreen from '../quanlydaudoc/quanlydaudocCodinh/QuanlydaudocCodinhContainer';
-import QuanLyDauDocDiDongScreen from '../quanlydaudoc/quanlydaudocDidong/QuanlydaudocDidongContainer';
+import QuanLyTaiSanDetailComponentScreen from "../quanlytaisan/detail/QuanLyTaiSanDetailComponent";
+
+import QuanLyDauDocCodinhScreen from '../quanlydaudoc/quanlydaudocCodinh/QuanlydaudocCodinh';
+import QuanLyDauDocDiDongScreen from '../quanlydaudoc/quanlydaudocDidong/QuanlydaudocDiDong';
+import QuanLyDauDocDetailComponentScreen from "../quanlydaudoc/detail/QuanLyDauDocDetailComponent";
+
 import GiamsatTaiSanScreen from '../giamsattaisan/theodoitaisan/GiamsatTsContainer';
 import TheodoiThietbiScreen from '../giamsattaisan/theodoiketnoi/TheodoiKetnoiContainer';
 import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVersionViewContainer";
@@ -56,7 +59,7 @@ const headerRightComponent = () => (
   </TouchableOpacity>
   );
 
-  const moreHeaderRightComponent = (props) => (
+  const moreHeaderRightComponent = () => (
     <TouchableOpacity
       style={{
       paddingHorizontal: 16,
@@ -427,7 +430,20 @@ const StackNavigationData = [
   // Màn hình chi tiết tài sản
   {
     name: "Chi tiết tài sản",
-    component: DetailComponentScreen,
+    component: QuanLyTaiSanDetailComponentScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: moreHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: "Chi tiết đầu đọc cố định",
+    component: QuanLyDauDocDetailComponentScreen,
     headerLeft: headerLeftComponent,
     headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },
@@ -455,20 +471,6 @@ const StackNavigationData = [
   {
     name: "Chi tiết đầu đọc",
     component: DetailDaudocComponentScreen,
-    headerLeft: headerLeftComponent,
-    headerRight: moreHeaderRightComponent,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-      alignSelf: 'center'
-    },
-  },
-
-  {
-    name: "Thêm mới tài sản",
-    component: DetailComponentScreen,
     headerLeft: headerLeftComponent,
     headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },

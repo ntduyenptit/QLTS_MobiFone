@@ -1,4 +1,13 @@
-import { SHOW_FILTER, HIDE_FILTER, DVQL_FILTER, LTS_FILTER, NCC_FILTER, MSD_FILTER,TT_FILTER } from '../../redux/actions/filter.actions'
+import { 
+  SHOW_FILTER, 
+  HIDE_FILTER, 
+  DVQL_FILTER, 
+  LTS_FILTER, 
+  NCC_FILTER, 
+  MSD_FILTER, 
+  TT_FILTER,
+  TTSD_FILTER
+ } from '../../redux/actions/filter.actions'
 import { screens, tabs } from '../../api/config';
 import { CURRENT_SCREEN, CURRENT_TAB } from '../../redux/actions/screen.actions';
 
@@ -10,7 +19,8 @@ const initialState = {
     ltsDataFilter: [],
     nccDataFilter: [],
     msdDataFilter: [],
-    ttDataFiler:[]
+    ttDataFilter: [],
+    ttsdDataFilter: [],
 }
 
 // Reducer
@@ -117,6 +127,19 @@ export const filterMSDDataReducer = (state = initialState, action) => {
     case MSD_FILTER: {
       return {
         msdDataFilter: action.payload
+      }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const filterTTSDDataReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case TTSD_FILTER: {
+      return {
+        ttsdDataFilter: action.payload
       }
     }
     default: {

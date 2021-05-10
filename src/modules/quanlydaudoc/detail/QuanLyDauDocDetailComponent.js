@@ -30,9 +30,8 @@ const bullet = (title, text) => (
   </View>
 );
 
-function DetailComponent({ route, navigation }) {
+function QuanLyDauDocDetailComponent({ route }) {
     const { paramKey, tabKey } = route.params;
-    console.log(paramKey);
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -169,4 +168,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default DetailComponent;
+export default QuanLyDauDocDetailComponent;

@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { USER_LOGOUT } from './actions/user.actions';
 
 // ## Generator Reducer Imports
 import gallery from '../modules/gallery/GalleryState';
@@ -6,7 +7,7 @@ import app from '../modules/AppState';
 import calendar from '../modules/calendar/CalendarState';
 import userReducer from '../modules/auth/AuthState';
 import { 
-  toanbotaisanReducer, 
+  toanbotaisanReducer,
   taisanhongReducer, 
   taisanthanhlyReducer,
   taisanmatReducer,
@@ -14,15 +15,6 @@ import {
   taisanchuasudungReducer,
   taisansuachuabaoduongReducer
 } from '../modules/quanlytaisan/QuanLyTaiSanState';
-
-import { 
-  toanbodaudocCodinhReducer,daudoccodinhchuasudungReducer,daudoccodinhdangsudungReducer
-} from '../modules/quanlydaudoc/quanlydaudocCodinh/QuanLyDauDocCoDinhState';
-
-import { 
-  toanbodaudocDidongReducer,  daudocdidongchuasudungReducer,
-  daudocdidongdangsudungReducer,
-} from '../modules/quanlydaudoc/quanlydaudocDidong/QuanLyDauDocDidongState';
 
 import { 
   toanbodauTSRaVaoReducer,  
@@ -40,22 +32,29 @@ import {
   filterLTSDataReducer,
   filterMSDDataReducer,
   filterNCCDataReducer,
+  filterTTSDDataReducer,
   currentScreenReducer,
-  currentTabReducer } from '../modules/global/GlobalState';
+  currentTabReducer
+ } from '../modules/global/GlobalState';
 
-export default combineReducers({
+ const appReducer = combineReducers({
   // ## Generator Reducers
   gallery,
   app,
   calendar,
   userReducer,
+// filter
   filterReducer,
   filterDVQLDataReducer,
   filterLTSDataReducer,
   filterMSDDataReducer,
   filterNCCDataReducer,
+  filterTTSDDataReducer,
+
   currentScreenReducer,
   currentTabReducer,
+
+  // giám sát tài sản
   toanbotaisanReducer,
   taisanhongReducer,
   taisanthanhlyReducer,
@@ -63,13 +62,19 @@ export default combineReducers({
   taisandangsudungReducer,
   taisanchuasudungReducer,
   taisansuachuabaoduongReducer,
-  toanbodaudocCodinhReducer,
-  daudoccodinhchuasudungReducer,
-  daudoccodinhdangsudungReducer,
-  toanbodaudocDidongReducer,
-  daudocdidongchuasudungReducer,
-  daudocdidongdangsudungReducer,
+
   toanbodauTSRaVaoReducer,
   toanboTBReducer,
   toanbokiemkeReducer,
 });
+
+const rootReducer = (state, action) => {
+  // when a logout action is dispatched it will reset redux state
+  if (action.type === USER_LOGOUT) {
+    state = undefined
+  }
+  
+  return appReducer(state, action);
+};
+
+export default rootReducer;

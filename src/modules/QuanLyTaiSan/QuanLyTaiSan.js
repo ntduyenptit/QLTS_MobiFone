@@ -27,9 +27,9 @@ import {
 
   toanbotaisanLoading
 } from '../../redux/actions/quanlytaisan.actions';
+import QuanLyTaiSanFilter from './filter/QuanLyTaiSanFilter';
 
 export function GetToanBoTaiSanData(parameters) {
-  //console.log('co vao day k nao e owi: ', parameters);
   const { datas, tab, textFilter, skipCount, maxResultCount } = parameters;
   const maxCount = maxResultCount !== undefined ? maxResultCount : 10;
   const skipTotal = skipCount !== undefined ? skipCount : 0;
@@ -103,7 +103,6 @@ export function GetToanBoTaiSanData(parameters) {
                 store.dispatch(taisanhongSearchData(res));
                 break;
               case tabs.tai_san_dang_su_dung:
-                console.log(res);
                 store.dispatch(taisandangsudungSearchData(res));
                 break;
               case tabs.tai_san_chua_su_dung:
@@ -130,7 +129,6 @@ export function GetToanBoTaiSanData(parameters) {
                 store.dispatch(taisanhongGetData(res));
                 break;
               case tabs.tai_san_dang_su_dung:
-                //console.log(res);
                 store.dispatch(taisandangsudungGetData(res));
                 break;
               case tabs.tai_san_chua_su_dung:
@@ -159,7 +157,7 @@ const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
 
 const QuanLyTaiSan = (state) => {
   const [scrollYValue] = useState(new Animated.Value(0));
-  const [skipCount, setSkipCount] = useState(1);
+  const [skipCount, setSkipCount] = useState(0);
   const clampedScroll = Animated.diffClamp(
     Animated.add(
       scrollYValue.interpolate({
@@ -174,7 +172,7 @@ const QuanLyTaiSan = (state) => {
   )
 
   useEffect(() => {
-    if (!state.isLoading) {
+    if (!state.isLoading && skipCount > 0) {
       GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab, skipCount });
     }
   }, [skipCount]);
@@ -200,11 +198,53 @@ const QuanLyTaiSan = (state) => {
     }
   }
 
+  function SearchViewForTab() {
+    switch (state.tab) {
+      case tabs.toan_bo_tai_san:
+        return <SearchComponent clampedScroll={clampedScroll} total={`${state.toanbotaisanData.length}/${state.toanbotaisanTotal}`} />;
+      case tabs.tai_san_mat:
+        return <SearchComponent clampedScroll={clampedScroll} total={`${state.taisanmatData.length}/${state.taisanmatTotal}`} />;
+      case tabs.tai_san_hong:
+        return <SearchComponent clampedScroll={clampedScroll} total={`${state.taisanhongData.length}/${state.taisanhongTotal}`} />;
+      case tabs.tai_san_thanh_ly:
+        return <SearchComponent clampedScroll={clampedScroll} total={`${state.taisanthanhlyData.length}/${state.taisanhongTotal}`} />;
+      case tabs.tai_san_chua_su_dung:
+        return <SearchComponent clampedScroll={clampedScroll} total={`${state.taisanchuasudungData.length}/${state.taisanchuasudungTotal}`} />;
+      case tabs.tai_san_dang_su_dung:
+        return <SearchComponent clampedScroll={clampedScroll} total={`${state.taisandangsudungData.length}/${state.taisandangsudungTotal}`} />;
+      case tabs.tai_san_sua_chua_bao_duong:
+        return <SearchComponent clampedScroll={clampedScroll} total={`${state.taisansuachuabaoduongData.length}/${state.taisansuachuabaoduongTotal}`} />;
+      default:
+        break;
+    }
+  }
+
+  const getSkipCount = () => {
+    switch (state.tab) {
+      case tabs.toan_bo_tai_san:
+        return state.toanbotaisanData.length;
+      case tabs.tai_san_mat:
+        return state.taisanmatData.length
+      case tabs.tai_san_hong:
+        return state.taisanhongData.length;
+      case tabs.tai_san_thanh_ly:
+        return state.taisanthanhlyData.length;
+      case tabs.tai_san_chua_su_dung:
+        return state.taisanchuasudungData.length;
+      case tabs.tai_san_dang_su_dung:
+        return state.taisandangsudungData.length;
+      case tabs.tai_san_sua_chua_bao_duong:
+        return state.taisansuachuabaoduongData.length;
+      default:
+        return 0;
+    }
+  }
+
   return (
     <Animated.View>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <SearchComponent clampedScroll={clampedScroll} />
+        {SearchViewForTab()}
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
           style={{
@@ -222,7 +262,7 @@ const QuanLyTaiSan = (state) => {
           onScroll={({ nativeEvent }) => {
             if (isCloseToBottom(nativeEvent) && !state.isLoading) {
               setTimeout(() => {
-                setSkipCount(skipCount + 1);
+                setSkipCount(getSkipCount());
               }, 2000)
             }         // Optional async listener
           }}
@@ -232,7 +272,7 @@ const QuanLyTaiSan = (state) => {
           {LoaderComponentByTab()}
         </Animated.ScrollView>
       </SafeAreaView>
-      <FilterComponent />
+      <FilterComponent filter={<QuanLyTaiSanFilter />} />
     </Animated.View>
   );
 };
@@ -245,6 +285,14 @@ const mapStateToProps = state => ({
   taisanchuasudungData: state.taisanchuasudungReducer.taisanchuasudungData,
   taisandangsudungData: state.taisandangsudungReducer.taisandangsudungData,
   taisansuachuabaoduongData: state.taisansuachuabaoduongReducer.taisansuachuabaoduongData,
+
+  toanbotaisanTotal: state.toanbotaisanReducer.toanbotaisanTotal,
+  taisanthanhlyTotal: state.taisanthanhlyReducer.taisanthanhlyTotal,
+  taisanmatTotal: state.taisanmatReducer.taisanmatTotal,
+  taisanhongTotal: state.taisanhongReducer.taisanhongTotal,
+  taisanchuasudungTotal: state.taisanchuasudungReducer.taisanchuasudungTotal,
+  taisandangsudungTotal: state.taisandangsudungReducer.taisandangsudungTotal,
+  taisansuachuabaoduongTotal: state.taisansuachuabaoduongReducer.taisansuachuabaoduongTotal,
 
   isLoading: state.toanbotaisanReducer.isLoading,
 
