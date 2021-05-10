@@ -3,20 +3,35 @@ import React from 'react';
 import { Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { GetToanBoTaiSanData } from '../quanlytaisan/QuanLyTaiSan';
+import { maTaiSan, tenTaiSan } from '../../api/config'
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
 function LoaderComponent(array, props, screen) {
-  console.log('aaaa: ',screen);
   if (array && array.length > 0) {
+    let maTaiSanKey;
+    let tenTaiSanKey;
+    array.forEach((item) => {
+      maTaiSan.forEach(e => {
+        const mataisan = Object.keys(item).find(x => x === e);
+        if (mataisan) {
+          maTaiSanKey = mataisan;
+        }
+      })
+      tenTaiSan.forEach(e => {
+        const tentaisan = Object.keys(item).find(x => x === e);
+        if (tentaisan) {
+          tenTaiSanKey = tentaisan;
+        }
+      })
+    })
     const items = () => array.map((item, index) => (
-      
       <View key={`loader-component-${index + 1}`} style={styles.listItem}>
         <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#0080FF' size={15} />
         <View style={styles.infor}>
-          <Text numberOfLines={1} style={[{fontWeight: "bold"}, styles.infoText]}>EPC: {item.maEPC ? item.maEPC : item.epcCode}</Text>
-          <Text numberOfLines={1} style={styles.infoText}>{item.tenTS ? item.tenTS : item.tenTaiSan}</Text>
+          <Text numberOfLines={1} style={[{fontWeight: "bold"}, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
+          <Text numberOfLines={1} style={styles.infoText}>{item[tenTaiSanKey]}</Text>
           <Text numberOfLines={1}>{item.phongBanQL ? item.phongBanQL : item.phongBanQuanLy}</Text>
         </View>
         <TouchableOpacity
