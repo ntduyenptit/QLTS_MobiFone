@@ -10,8 +10,8 @@ import QuanLyDauDocCodinhScreen from '../quanlydaudoc/quanlydaudocCodinh/Quanlyd
 import QuanLyDauDocDiDongScreen from '../quanlydaudoc/quanlydaudocDidong/QuanlydaudocDiDong';
 import QuanLyDauDocDetailComponentScreen from "../quanlydaudoc/detail/QuanLyDauDocDetailComponent";
 
-import GiamsatTaiSanScreen from '../giamsattaisan/theodoitaisan/GiamsatTsContainer';
-import TheodoiThietbiScreen from '../giamsattaisan/theodoiketnoi/TheodoiKetnoiContainer';
+import GiamsatTaiSanScreen from '../giamsattaisan/theodoitaisan/GiamsatTs';
+import TheodoiThietbiScreen from '../giamsattaisan/theodoiketnoi/TheodoiKetnoi';
 import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVersionViewContainer";
 import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
 import KiemkeTsScreen from '../kiemketaisan/KiemkeTSContainer';

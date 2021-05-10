@@ -1,29 +1,24 @@
 import {
-    Alert,
-    Modal,
     StyleSheet,
     Text,
-    Pressable,
     View,
     Dimensions,
-    KeyboardAvoidingView,
-    Platform, ScrollView,
+    ScrollView,
 } from "react-native";
 import React, { useState, useRef } from 'react';
 import { connect } from "react-redux";
 
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import MultiSelect from '../../libs/react-native-multiple-select/lib/react-native-multi-select';
-import { filterType } from '../global/Config';
-import { buildTree } from '../global/Helper';
-import { trangThaiData } from '../../api/config';
+import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
+import { filterType } from '../../global/Config';
+import { buildTree } from '../../global/Helper';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
 
-const QuanLyDauDocFilterComponent = (items) => {
+const QuanLyGiamSatFilter = (items) => {
     const [selectedDVQLItems, setDVQLItems] = useState([]);
     const [selectedHTItems, setHTItems] = useState([]);
 
@@ -41,17 +36,16 @@ const QuanLyDauDocFilterComponent = (items) => {
                 break;
 
             case filterType.hinh_thuc:
-                
+
                 if (donViQuanLyRef.current && donViQuanLyRef.current.state.selector) {
                     donViQuanLyRef.current._toggleSelector();
                 };
-               
+
                 break;
             default:
                 break;
         }
     }
-
 
     const requestToanBoTaiSanDataByFilter = (params) => {
 
@@ -70,48 +64,48 @@ const QuanLyDauDocFilterComponent = (items) => {
     }
     // end SelectedChange
     return (
-        <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.container}>
-                <>
-                    <View>
-                        <Text style={styles.titleText}>Đơn vị Quản lý</Text>
-                        <MultiSelect
-                            ref={donViQuanLyRef}
-                            isTree
-                            getCollapsedNodeHeight={{ height: 200 }}
-                            onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
-                            items={dvqlTreeData}
-                            IconRenderer={Icon}
-                            searchInputPlaceholderText="Tìm kiếm..."
-                            styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
-                            uniqueKey="id"
-                            displayKey="displayName"
-                            selectText="Chọn đơn vị quản lý..."
-                            onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-                            selectedItems={selectedDVQLItems}
-                        />
-                    </View>
-                </>
-                <>
-                    <View>
-                        <Text style={styles.titleText}>Trạng Thái</Text>
-                        <MultiSelect
-                            ref={trangThaiRef}
-                            onToggleList={() => closeMultiSelectIfOpened(filterType.hinh_thuc)}
-                            items={trangThaiData}
-                            IconRenderer={Icon}
-                            single
-                            searchInputPlaceholderText="Tìm kiếm..."
-                            uniqueKey="id"
-                            displayKey="displayName"
-                            selectText="Chọn trạng thái..."
-                            onSelectedItemsChange={(item) => onSelectedHTChange(item)}
-                            selectedItems={selectedHTItems}
-                        />
-                    </View>
-                </>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <>
+            <View>
+              <Text style={styles.titleText}>Đơn vị Quản lý</Text>
+              <MultiSelect
+                ref={donViQuanLyRef}
+                isTree
+                getCollapsedNodeHeight={{ height: 200 }}
+                onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
+                items={dvqlTreeData}
+                IconRenderer={Icon}
+                searchInputPlaceholderText="Tìm kiếm..."
+                styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
+                uniqueKey="id"
+                displayKey="displayName"
+                selectText="Chọn đơn vị quản lý..."
+                onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
+                selectedItems={selectedDVQLItems}
+              />
             </View>
-        </ScrollView>
+          </>
+          <>
+            <View>
+              <Text style={styles.titleText}>Trạng Thái</Text>
+              <MultiSelect
+                ref={trangThaiRef}
+                onToggleList={() => closeMultiSelectIfOpened(filterType.hinh_thuc)}
+                items={items.TtsdDataFilter}
+                IconRenderer={Icon}
+                single
+                searchInputPlaceholderText="Tìm kiếm..."
+                uniqueKey="id"
+                displayKey="displayName"
+                selectText="Chọn trạng thái..."
+                onSelectedItemsChange={(item) => onSelectedHTChange(item)}
+                selectedItems={selectedHTItems}
+              />
+            </View>
+          </>
+        </View>
+      </ScrollView>
     );
 };
 
@@ -190,9 +184,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-    TTDataFiler: state.filterLTSDataReducer.TTDataFiler,
+    TtsdDataFilter: state.filterTTSDDataReducer.ttsdDataFilter,
     isShowFilter: state.filterReducer.isShowFilter,
     screen: state.currentScreenReducer.screenName,
 });
 
-export default connect(mapStateToProps)(QuanLyDauDocFilterComponent);
+export default connect(mapStateToProps)(QuanLyGiamSatFilter);
