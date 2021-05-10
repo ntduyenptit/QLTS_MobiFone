@@ -234,4 +234,15 @@ export const trangThaiKiemke = [
   {id: 7, displayName: "Đã kết thúc"},
 ];
 
+export const maTaiSan = [
+  "maEPC",
+  "epcCode",
+  "maRFID"
+];
+
+export const tenTaiSan = [
+  "tenTaiSan",
+  "tenTS"
+];
+
  

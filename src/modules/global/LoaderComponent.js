@@ -3,37 +3,82 @@ import React from 'react';
 import { Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { GetToanBoTaiSanData } from '../quanlytaisan/QuanLyTaiSan';
+import { maTaiSan, screens, tenTaiSan } from '../../api/config';
+import { convertTimeFormatToLocaleDate } from "./Helper";
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
+const loadInfo = (screen, item, props) => {
+  let maTaiSanKey;
+  let tenTaiSanKey;
+  maTaiSan.forEach(e => {
+    const mataisan = Object.keys(item).find(x => x === e);
+    if (mataisan) {
+      maTaiSanKey = mataisan;
+    }
+  })
+  tenTaiSan.forEach(e => {
+    const tentaisan = Object.keys(item).find(x => x === e);
+    if (tentaisan) {
+      tenTaiSanKey = tentaisan;
+    }
+  });
+
+  switch (screen) {
+    case screens.chi_tiet_tai_san:
+    case screens.chi_tiet_dau_doc:
+      return (
+        <>
+          <View style={styles.infor}>
+            <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
+            <Text numberOfLines={1} style={styles.infoText}>{item[tenTaiSanKey]}</Text>
+            <Text numberOfLines={1}>{item.phongBanQL ? item.phongBanQL : item.phongBanQuanLy}</Text>
+          </View>
+          <TouchableOpacity
+            style={{ height: 40, width: 20, alignItems: "flex-end" }}
+            onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab })}
+          >
+            <Icon name="chevron-right" color='#0080FF' size={15} />
+          </TouchableOpacity>
+        </>
+      );
+    case screens.giam_sat_tai_san:
+      return (
+        <View style={styles.infor}>
+          <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
+          <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
+          <Text numberOfLines={1}>Chiều di chuyển: {item.chieuDiChuyen}</Text>
+        </View>
+      );
+      case screens.theo_doi_ket_noi_thiet_bi:
+        return (
+          <View style={styles.infor}>
+            <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
+            <Text numberOfLines={1}>{item.loaiTaiSan}</Text>
+            <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
+          </View>
+        );
+    default:
+      break;
+  }
+};
+
 function LoaderComponent(array, props, screen) {
-  console.log('aaaa: ',screen);
   if (array && array.length > 0) {
     const items = () => array.map((item, index) => (
-      
       <View key={`loader-component-${index + 1}`} style={styles.listItem}>
         <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#0080FF' size={15} />
-        <View style={styles.infor}>
-          <Text numberOfLines={1} style={[{fontWeight: "bold"}, styles.infoText]}>EPC: {item.maEPC ? item.maEPC : item.epcCode}</Text>
-          <Text numberOfLines={1} style={styles.infoText}>{item.tenTS ? item.tenTS : item.tenTaiSan}</Text>
-          <Text numberOfLines={1}>{item.phongBanQL ? item.phongBanQL : item.phongBanQuanLy}</Text>
-        </View>
-        <TouchableOpacity
-          style={{ height: 40, width: 20, alignItems: "flex-end"}}
-          onPress={() => props.navigation.navigate(screen, {paramKey: item, tabKey: props.tab})}
-        >
-          <Icon name="chevron-right" color='#0080FF' size={15} />
-        </TouchableOpacity>
+        {loadInfo(screen, item, props)}
       </View>
-          )) 
+    ))
 
     return (
       <View>{items()}</View>
     );
   }
   return (
-    <TouchableOpacity onPress={() => GetToanBoTaiSanData({datas: props.DvqlDataFilter, tab: props.tab})}><Text>Không có dữ liệu</Text></TouchableOpacity>
+    <TouchableOpacity onPress={() => GetToanBoTaiSanData({ datas: props.DvqlDataFilter, tab: props.tab })}><Text>Không có dữ liệu</Text></TouchableOpacity>
   );
 }
 
@@ -60,7 +105,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     paddingBottom: 3,
-    
+
   }
 });
 
