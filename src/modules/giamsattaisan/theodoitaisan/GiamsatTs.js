@@ -102,7 +102,7 @@ class GiamSatTaiSanScreen extends React.Component {
             )}
             contentInsetAdjustmentBehavior="automatic"
           >
-            {LoaderComponent(toanboTaiSanData, this.props, screens.chi_tiet_giam_sat_tai_san)}
+            {LoaderComponent(toanboTaiSanData, this.props, screens.giam_sat_tai_san)}
           </Animated.ScrollView>
         </SafeAreaView>
         <FilterComponent filter={<QuanLyGiamSatFilter />} />

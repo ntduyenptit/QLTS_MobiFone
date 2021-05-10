@@ -51,14 +51,30 @@ const loadInfo = (screen, item, props) => {
           <Text numberOfLines={1}>Chiều di chuyển: {item.chieuDiChuyen}</Text>
         </View>
       );
-      case screens.theo_doi_ket_noi_thiet_bi:
-        return (
+    case screens.theo_doi_ket_noi_thiet_bi:
+      return (
+        <View style={styles.infor}>
+          <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
+          <Text numberOfLines={1}>{item.loaiTaiSan}</Text>
+          <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
+        </View>
+      );
+    case screens.chi_tiet_kiem_ke_tai_san:
+      return (
+        <>
           <View style={styles.infor}>
-            <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
-            <Text numberOfLines={1}>{item.loaiTaiSan}</Text>
-            <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
+            <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>Mã kiểm kê: {item.kiemKeTaiSan.maKiemKe}</Text>
+            <Text numberOfLines={1}>Tên kiểm kê: {item.kiemKeTaiSan.tenKiemKe}</Text>
+            <Text numberOfLines={1} style={styles.infoText}>Đơn vị: {(item.phongBan)}</Text>
           </View>
-        );
+          <TouchableOpacity
+            style={{ height: 40, width: 20, alignItems: "flex-end" }}
+            onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab })}
+          >
+            <Icon name="chevron-right" color='#0080FF' size={15} />
+          </TouchableOpacity>
+        </>
+      );
     default:
       break;
   }

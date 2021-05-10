@@ -46,7 +46,8 @@ export default class QuanLyKiemKeDetail extends React.Component {
 
         this.state = {
             tabOneHeight: containerHeight,
-            tabTwoHeight: containerHeight
+            tabTwoHeight: containerHeight,
+            tabThirtHeight: containerHeight
         }
         this.param = {
             param: props.route.params,
@@ -69,6 +70,11 @@ export default class QuanLyKiemKeDetail extends React.Component {
     measureTabTwo = (event) => {
         this.setState({
             tabTwoHeight: event.nativeEvent.layout.height
+        })
+    }
+    measureTabThirt = (event) => {
+        this.setState({
+            tabThirstHeight: event.nativeEvent.layout.height
         })
     }
 
@@ -113,7 +119,7 @@ export default class QuanLyKiemKeDetail extends React.Component {
         )
     }
     render() {
-        const { tabOneHeight, tabTwoHeight } = this.state;
+        const { tabOneHeight, tabTwoHeight, tabThirtHeight } = this.state;
         const { paramKey, tabKey } = this.props.route.params;
         const {danhsachUserKiemke} = this.user;
         console.log("userList: " + danhsachUserKiemke);
@@ -121,13 +127,13 @@ export default class QuanLyKiemKeDetail extends React.Component {
         return <ScrollableTabView
             collapsableBar={this.collapsableComponent(paramKey, tabKey,danhsachUserKiemke)}
             initialPage={0}
-            tabContentHeights={[tabOneHeight, tabTwoHeight]}
+            tabContentHeights={[tabOneHeight, tabTwoHeight,tabThirtHeight]}
             scrollEnabled
             prerenderingSiblingsNumber={Infinity}
             renderTabBar={() => <DefaultTabBar inactiveTextColor="white" activeTextColor="white" backgroundColor="blue" />}
         >
-            <View onLayout={(event) => this.measureTabOne(event)} tabLabel='Tab #1'>
-                <View style={{ height: 1000, backgroundColor: "cyan" }}>
+            <View onLayout={(event) => this.measureTabOne(event)} tabLabel='TS tìm thấy'>
+                <View style={{ height: 1000, backgroundColor: "white" }}>
 
                     <FlatList
                         scrollEnabled={false}
@@ -139,8 +145,20 @@ export default class QuanLyKiemKeDetail extends React.Component {
                 </View>
 
             </View>
-            <View onLayout={(event) => this.measureTabTwo(event)} tabLabel='Tab #2'>
-                <View style={{ height: 4000, backgroundColor: "orange" }}>
+            <View onLayout={(event) => this.measureTabTwo(event)} tabLabel='TS không tìm thấy'>
+                <View style={{ height: 4000, backgroundColor: "white" }}>
+
+                    <FlatList
+                        scrollEnabled={false}
+                        data={[{ key: 'item 1' }, { key: 'item 2' }, { key: 'item 3' }, { key: 'item 4' }, { key: 'item 6' }, { key: 'item 12' }]}
+                        renderItem={({ item }) => <View style={{ height: 30 }}>
+                            <Text>{item.key}</Text>
+                        </View>}
+                    />
+                </View>
+            </View>
+            <View onLayout={(event) => this.measureTabThirt(event)} tabLabel='TS ngoài danh sách'>
+                <View style={{ height: 4000, backgroundColor: "white" }}>
 
                     <FlatList
                         scrollEnabled={false}
