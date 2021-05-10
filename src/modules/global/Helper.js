@@ -57,6 +57,22 @@ export const convertTimeFormatToLocaleDate = (time) => {
   dateString = dateString.replace(',', '');
   return dateString;
 };
+
+export const getColorByType = (type) => {
+  switch (type) {
+    case "Chưa sử dụng":
+      case "Tài sản chưa sử dụng":
+      return "#600080";
+    case "Đang sử dụng":
+      case "Tài sản đang sử dụng":
+      return "#9900cc";
+      case 3:
+        return "#FFBF00";
+    default:
+      return null;
+  }
+}
+
 export const convertTrangThai = (int) => {
   switch (int) {
     case 1:
@@ -65,7 +81,7 @@ export const convertTrangThai = (int) => {
       return "Đã kết thúc";
     case 0:
       return "Chưa bắt đầu";
+    default:
+      return null;
   }
-
-
 }
