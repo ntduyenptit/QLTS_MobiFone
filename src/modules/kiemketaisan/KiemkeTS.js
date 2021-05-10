@@ -15,6 +15,7 @@ export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
 export function GetData(datas) {
+    console.log('co vao day k e');
     if (datas && datas.length > 0) {
         let url;
         url = `${endPoint.getdanhsachKiemke}?`;
@@ -31,6 +32,7 @@ export function GetData(datas) {
         createGetMethod(url)
             .then(res => {
                 if (res) {
+                    console.log(res);
                     store.dispatch(toanbokiemkeGetData(res));
                 } else {
                     // Alert.alert('Lỗi khi load toàn bộ tài sản!');
@@ -131,7 +133,7 @@ const KiemkeTs = (state) => {
                     )}
                     contentInsetAdjustmentBehavior="automatic"
                 >
-                    {LoaderComponent(state.toanbotaisanData, state)}
+                    {/* {LoaderComponent(state.toanbotaisanData, state)} */}
                 </Animated.ScrollView>
             </SafeAreaView>
             <FilterComponent />

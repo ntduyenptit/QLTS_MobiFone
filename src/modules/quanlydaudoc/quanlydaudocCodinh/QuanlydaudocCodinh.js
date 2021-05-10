@@ -6,7 +6,7 @@ import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
 import QuanLyDauDocFilter from '../filter/QuanLyDauDocFilter';
 import { createGetMethod } from '../../../api/Apis';
-import { endPoint } from '../../../api/config';
+import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
 
 export const deviceWidth = Dimensions.get('window').width;
@@ -100,7 +100,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
             )}
             contentInsetAdjustmentBehavior="automatic"
           >
-            {LoaderComponent(daudoccodinhData, this.props)}
+            {LoaderComponent(daudoccodinhData, this.props, screens.chi_tiet_dau_doc)}
           </Animated.ScrollView>
         </SafeAreaView>
         <FilterComponent filter={<QuanLyDauDocFilter />} />
@@ -112,6 +112,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
 
 const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
+  tab: 'đầu đọc cố định'
 });
 
 export default connect(mapStateToProps)(QuanLyDauDocCoDinhScreen);

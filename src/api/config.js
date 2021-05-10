@@ -67,9 +67,10 @@ export const screens = ({
   quan_ly_nguoi_dung: 'Quản lý người dùng',
   quan_ly_phan_quyen: 'Quản lý phân quyền',
   lich_su_nguoi_dung: 'Lịch sử người dùng',
-  quan_ly_mail_server: 'Quản lý Mail, Server'
-
-  //
+  quan_ly_mail_server: 'Quản lý Mail, Server',
+  // Màn hình chi tiết
+  chi_tiet_tai_san: 'Chi tiết tài sản',
+  chi_tiet_dau_doc: 'Chi tiết đầu đọc'
 });
 
 // Quản lý tabs

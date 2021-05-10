@@ -16,7 +16,6 @@ import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVer
 import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
 import KiemkeTsScreen from '../kiemketaisan/KiemkeTSContainer';
 import DetailKiemkeComponentScreen from '../kiemketaisan/DetailKiemkeComponent';
-import DetailDaudocComponentScreen from '../quanlydaudoc/DetailDaudocComponent';
 
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
@@ -429,7 +428,7 @@ const StackNavigationData = [
   },
   // Màn hình chi tiết tài sản
   {
-    name: "Chi tiết tài sản",
+    name: screens.chi_tiet_tai_san,
     component: QuanLyTaiSanDetailComponentScreen,
     headerLeft: headerLeftComponent,
     headerRight: moreHeaderRightComponent,
@@ -441,8 +440,9 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
+   // Màn hình chi tiết đầu đọc
   {
-    name: "Chi tiết đầu đọc cố định",
+    name: screens.chi_tiet_dau_doc,
     component: QuanLyDauDocDetailComponentScreen,
     headerLeft: headerLeftComponent,
     headerRight: moreHeaderRightComponent,
@@ -457,20 +457,6 @@ const StackNavigationData = [
   {
     name: "Chi tiết đợt kiểm kê",
     component: DetailKiemkeComponentScreen,
-    headerLeft: headerLeftComponent,
-    headerRight: moreHeaderRightComponent,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-      alignSelf: 'center'
-    },
-  },
-
-  {
-    name: "Chi tiết đầu đọc",
-    component: DetailDaudocComponentScreen,
     headerLeft: headerLeftComponent,
     headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },

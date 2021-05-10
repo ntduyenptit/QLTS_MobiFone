@@ -6,7 +6,7 @@ import LoaderComponent from '../global/LoaderComponent';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
 import { createGetMethod } from '../../api/Apis';
-import { endPoint, tabs } from '../../api/config';
+import { endPoint, screens, tabs } from '../../api/config';
 import { store } from '../../redux/store';
 import {
   taisanhongGetData,
@@ -180,19 +180,19 @@ const QuanLyTaiSan = (state) => {
   function LoaderComponentByTab() {
     switch (state.tab) {
       case tabs.toan_bo_tai_san:
-        return LoaderComponent(state.toanbotaisanData, state);
+        return LoaderComponent(state.toanbotaisanData, state, screens.chi_tiet_tai_san);
       case tabs.tai_san_mat:
-        return LoaderComponent(state.taisanmatData, state);
+        return LoaderComponent(state.taisanmatData, state, screens.chi_tiet_tai_san);
       case tabs.tai_san_hong:
-        return LoaderComponent(state.taisanhongData, state);
+        return LoaderComponent(state.taisanhongData, state, screens.chi_tiet_tai_san);
       case tabs.tai_san_thanh_ly:
-        return LoaderComponent(state.taisanthanhlyData, state);
+        return LoaderComponent(state.taisanthanhlyData, state, screens.chi_tiet_tai_san);
       case tabs.tai_san_chua_su_dung:
-        return LoaderComponent(state.taisanchuasudungData, state);
+        return LoaderComponent(state.taisanchuasudungData, state, screens.chi_tiet_tai_san);
       case tabs.tai_san_dang_su_dung:
-        return LoaderComponent(state.taisandangsudungData, state);
+        return LoaderComponent(state.taisandangsudungData, state, screens.chi_tiet_tai_san);
       case tabs.tai_san_sua_chua_bao_duong:
-        return LoaderComponent(state.taisansuachuabaoduongData, state);
+        return LoaderComponent(state.taisansuachuabaoduongData, state, screens.chi_tiet_tai_san);
       default:
         break;
     }

@@ -6,7 +6,7 @@ import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
 import QuanLyDauDocFilter from '../filter/QuanLyDauDocFilter';
 import { createGetMethod } from '../../../api/Apis';
-import { endPoint } from '../../../api/config';
+import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
 
 class QuanLyDauDocDiDongScreen extends React.Component {
@@ -99,7 +99,7 @@ class QuanLyDauDocDiDongScreen extends React.Component {
             )}
             contentInsetAdjustmentBehavior="automatic"
           >
-            {LoaderComponent(daudocdidongData, this.props)}
+            {LoaderComponent(daudocdidongData, this.props, screens.chi_tiet_dau_doc)}
           </Animated.ScrollView>
         </SafeAreaView>
         <FilterComponent filter={<QuanLyDauDocFilter />} />
@@ -111,6 +111,7 @@ class QuanLyDauDocDiDongScreen extends React.Component {
 
 const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
+  tab: 'đầu đọc di động'
 });
 
 export default connect(mapStateToProps)(QuanLyDauDocDiDongScreen);
