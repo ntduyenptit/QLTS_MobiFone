@@ -102,7 +102,7 @@ class TheoDoiKetNoiScreen extends React.Component {
             )}
             contentInsetAdjustmentBehavior="automatic"
           >
-            {LoaderComponent(toanboTaiSanData, this.props, screens.theo_doi_ket_noi_thiet_bi)}
+            {LoaderComponent(toanboTaiSanData, this.props, screens.chi_tiet_giam_sat_tai_san)}
           </Animated.ScrollView>
         </SafeAreaView>
         <FilterComponent filter={<QuanLyGiamsatFilter />} />

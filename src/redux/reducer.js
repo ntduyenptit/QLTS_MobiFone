@@ -15,12 +15,6 @@ import {
   taisanchuasudungReducer,
   taisansuachuabaoduongReducer
 } from '../modules/quanlytaisan/QuanLyTaiSanState';
-
-
-import { 
-  toanbokiemkeReducer,  
-} from '../modules/kiemketaisan/KiemkeTSState';
-
 import { 
   filterReducer, 
   filterDVQLDataReducer,
@@ -57,8 +51,6 @@ import {
   taisandangsudungReducer,
   taisanchuasudungReducer,
   taisansuachuabaoduongReducer,
-
-  toanbokiemkeReducer,
 });
 
 const rootReducer = (state, action) => {

@@ -37,23 +37,21 @@ function QuanLyDauDocDetailComponent({ route }) {
         <ScrollView>
           <View style={{ alignItems: 'flex-start', marginHorizontal: 30 }}>
             <Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} style={styles.iconImage} />
-            <Text style={styles.title}>Thông tin {tabKey && convertTextToLowerCase(tabKey)}:</Text>
-            {/* Tên đầu đọc */}
-            {bullet('Tên đầu đọc',paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan)}
-            {/* Loại tài sản */}
-            {bullet('Loại tài sản',paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan)}
+            <Text style={styles.title}>Thông tin {convertTextToLowerCase(tabKey)}:</Text>
             {/* Mã tài sản */}
             {bullet('Mã tài sản',paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
+            {/* Tên tài sản */}
+            {bullet('Tên tài sản',paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan)}
+            {/* Loại tài sản */}
+            {bullet('Loại tài sản',paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan)}
             {/* Phòng ban quản lý */}
             {bullet('Phòng ban quản lý',paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy)}
             {/* Vị trí tài sản */}
             {bullet('Vị trí tài sản',paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan)}
             {/* Trạng thái */}
-            {bullet('Trạng thái', paramKey.tinhTrangSuDung)}
+            {bullet('Trạng thái', paramKey.trangThai)}
             {/* Ngày mua */}
             {bullet('Ngày mua', paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua))}
-            {/* Ngày tạo */}
-            {bullet('Ngày tạo', paramKey.ngayTao && convertTimeFormatToLocaleDate(paramKey.ngayTao))}
           </View>
 
         </ScrollView>

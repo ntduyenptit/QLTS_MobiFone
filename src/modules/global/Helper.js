@@ -56,4 +56,16 @@ export const convertTimeFormatToLocaleDate = (time) => {
 
   dateString = dateString.replace(',', '');
   return dateString;
+};
+export const convertTrangThai = (int) => {
+  switch (int) {
+    case 1:
+      return "Đang kiểm kê";
+    case 2:
+      return "Đã kết thúc";
+    case 0:
+      return "Chưa bắt đầu";
+  }
+
+
 }

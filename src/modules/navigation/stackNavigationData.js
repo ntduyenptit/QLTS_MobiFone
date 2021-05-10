@@ -12,9 +12,12 @@ import QuanLyDauDocDetailComponentScreen from "../quanlydaudoc/detail/QuanLyDauD
 
 import GiamsatTaiSanScreen from '../giamsattaisan/theodoitaisan/GiamsatTs';
 import TheodoiThietbiScreen from '../giamsattaisan/theodoiketnoi/TheodoiKetnoi';
+
+import KiemKeTaiSanDetailComponent from '../kiemketaisan/DetailKiemkeComponent';
+
 import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVersionViewContainer";
 import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
-import KiemkeTsScreen from '../kiemketaisan/KiemkeTSContainer';
+import KiemkeTsScreen from '../kiemketaisan/KiemkeTS';
 import DetailKiemkeComponentScreen from '../kiemketaisan/DetailKiemkeComponent';
 
 import { colors, fonts } from '../../styles';
@@ -132,6 +135,20 @@ const StackNavigationData = [
     component: TheodoiThietbiScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+
+  {
+    name: screens.chi_tiet_kiem_ke_tai_san,
+    component: KiemKeTaiSanDetailComponent,
+    headerLeft: null,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,

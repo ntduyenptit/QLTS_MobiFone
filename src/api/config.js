@@ -35,6 +35,8 @@ export const endPoint = ({
 
   // Kiểm kê tài sản:
   getdanhsachKiemke: 'services/app/KiemKeTaiSan/GetAll',
+  getdanhsachUserKiemke: 'services/app/KiemKeTaiSan/GetUserForEdit',
+  
 });
 
 // Quản lý màn hình
@@ -70,7 +72,8 @@ export const screens = ({
   quan_ly_mail_server: 'Quản lý Mail, Server',
   // Màn hình chi tiết
   chi_tiet_tai_san: 'Chi tiết tài sản',
-  chi_tiet_dau_doc: 'Chi tiết đầu đọc'
+  chi_tiet_dau_doc: 'Chi tiết đầu đọc',
+  chi_tiet_kiem_ke_tai_san: 'Chi tiết kiểm kê tài sản'
 });
 
 // Quản lý tabs

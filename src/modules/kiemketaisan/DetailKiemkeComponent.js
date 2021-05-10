@@ -8,6 +8,9 @@ import {
     TouchableOpacity, FlatList,
 } from 'react-native';
 import ScrollableTabView, { DefaultTabBar, } from 'rn-collapsing-tab-bar';
+import { createGetMethod } from '../../api/Apis';
+import { endPoint } from '../../api/config';
+import { convertTextToLowerCase, convertTimeFormatToLocaleDate, convertTrangThai } from '../global/Helper';
 
 const deviceWidth = Dimensions.get("window").width;
 const containerHeight = Dimensions.get('window').height;
@@ -18,8 +21,25 @@ const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 44 : 20) : 0;
 const HEADER_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 88 : 64) : 64;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 
+const bullet = (title, text) => (
+    <View style={styles.row}>
+        <View style={styles.bullet}>
+            <Text>{'\u2022' + " "}</Text>
+        </View>
+        <View style={styles.bulletText}>
+            <Text styles={styles.text}>
+                <Text style={styles.boldText}>{`${title}: `}</Text>
+            </Text>
+        </View>
+        <View style={styles.bulletTextNormal}>
+            <Text styles={styles.text}>
+                <Text style={styles.normalText}>{text}</Text>
+            </Text>
+        </View>
+    </View>
+);
 
-export default class Collapse extends React.Component {
+export default class QuanLyKiemKeDetail extends React.Component {
     constructor(props) {
         super(props);
 
@@ -30,8 +50,16 @@ export default class Collapse extends React.Component {
         }
         this.param = {
             param: props.route.params,
+
+        }
+        this.user = {
+            danhsachUserKiemke: []
+           // total: '',
         }
     }
+    componentDidMount() {
+        this.getDanhsachUserKiemke();
+      }
 
     measureTabOne = (event) => {
         this.setState({
@@ -43,23 +71,55 @@ export default class Collapse extends React.Component {
             tabTwoHeight: event.nativeEvent.layout.height
         })
     }
-    collapsableComponent = () => {
+
+    getDanhsachUserKiemke() {
+            let url;
+            url = `${endPoint.getdanhsachUserKiemke}?`;
+            url += `Id=${encodeURIComponent(`${2}`)}`;
+            console.log("url: " + url);
+
+            createGetMethod(url)
+                .then(res => {
+                    console.log("res: " + res.result);
+                    if (res) {
+                        console.log("res: " + res.result);
+                        danhsachUserKiemke = res.result;
+                        this.user({
+                            danhsachUserKiemke: res.result,
+                           // total: `${res.result.length}/${res.result.totalCount}`
+                        });
+                    } else {
+                        // Alert.alert('Lỗi khi load toàn bộ tài sản!');
+                    }
+                })
+                .catch(err => console.log(err));
+    }
+
+    collapsableComponent = (paramKey, tabKey,userList) => {
         return (
-            <View style={{ height: 400, backgroundColor: 'white', width: deviceWidth }}>
-                <TouchableOpacity onPress={() => { alert('Alert') }}>
-                    <Text>Thông tin kiểm kê</Text>
-                </TouchableOpacity>
+            <View style={{ alignItems: 'flex-start', height: 500, backgroundColor: 'white', width: deviceWidth }}>
+                <Text style={styles.title}>Thông tin kiểm kê tài sản:</Text>
+                {bullet('Mã kiểm kê', paramKey.kiemKeTaiSan.maKiemKe)}
+                {bullet('Tên kiểm kê', paramKey.kiemKeTaiSan.tenKiemKe)}
+                {bullet('Thời gian bắt đầu dự kiến', paramKey.kiemKeTaiSan.thoiGianBatDauDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauDuKien))}
+                {bullet('Thời gian bắt đầu thực tế', paramKey.kiemKeTaiSan.thoiGianBatDauThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauThucTe))}
+                {bullet('Thời gian kết thúc dự kiến', paramKey.kiemKeTaiSan.thoiGianKetThucDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucDuKien))}
+                {bullet('Thời gian kết thúc thực tế', paramKey.kiemKeTaiSan.thoiGianKetThucThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucThucTe))}
+                {bullet('Bộ phận được kiểm kê', paramKey.phongBan)}
+                {bullet('Trạng thái', paramKey.kiemKeTaiSan.trangThaiId && convertTrangThai(paramKey.kiemKeTaiSan.trangThaiId))}
+                <Text style={styles.title}>Danh sách người kiểm kê</Text>
+
             </View>
         )
     }
     render() {
         const { tabOneHeight, tabTwoHeight } = this.state;
-
-        const paramKey = this.param;
-        console.log("DetailKiemke: " + paramKey);
+        const { paramKey, tabKey } = this.props.route.params;
+        const {danhsachUserKiemke} = this.user;
+        console.log("userList: " + danhsachUserKiemke);
 
         return <ScrollableTabView
-            collapsableBar={this.collapsableComponent()}
+            collapsableBar={this.collapsableComponent(paramKey, tabKey,danhsachUserKiemke)}
             initialPage={0}
             tabContentHeights={[tabOneHeight, tabTwoHeight]}
             scrollEnabled
@@ -67,7 +127,7 @@ export default class Collapse extends React.Component {
             renderTabBar={() => <DefaultTabBar inactiveTextColor="white" activeTextColor="white" backgroundColor="blue" />}
         >
             <View onLayout={(event) => this.measureTabOne(event)} tabLabel='Tab #1'>
-                <View style={{ height: 2000, backgroundColor: "cyan" }}>
+                <View style={{ height: 1000, backgroundColor: "cyan" }}>
 
                     <FlatList
                         scrollEnabled={false}
@@ -120,5 +180,40 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
         fontSize: 18,
+    },
+
+    row: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        width: deviceWidth,
+        paddingBottom: 5,
+        paddingLeft: 10
+    },
+    title: {
+        paddingBottom: 10,
+        alignSelf: 'center',
+        fontSize: 18,
+        fontStyle: 'italic'
+    },
+    bullet: {
+        width: 15
+    },
+    bulletText: {
+        flex: 1,
+        paddingRight: 5
+    },
+    bulletTextNormal: {
+        flex: 2
+    },
+    boldText: {
+        fontWeight: 'bold',
+        alignItems: 'flex-start',
+    },
+    normalText: {
+        flex: 1,
+        alignItems: 'flex-end',
+    },
+    text: {
+        fontSize: 15,
     },
 });
