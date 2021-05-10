@@ -11,6 +11,7 @@ const SearchComponent = (props) => {
     total,
   } = props;
   const [totalState, setTotal] = useState('');
+  const [textSearch, setTextSearch] = useState('');
   useEffect(() => {
     if (total === '0/0' || total === "") {
       setTotal('');
@@ -44,8 +45,10 @@ const SearchComponent = (props) => {
       <TextInput
         placeholder={`Tìm kiếm tài sản ${totalState}`}
         style={styles.formField}
+        value={textSearch}
         placeholderTextColor="#888888"
         onChangeText={(text) => {
+          setTextSearch(text);
           GetToanBoTaiSanData({
             datas: store.getState().filterDVQLDataReducer.dvqlDataFilter,
             tab: store.getState().currentTabReducer.tabName,
