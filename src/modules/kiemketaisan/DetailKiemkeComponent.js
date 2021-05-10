@@ -1,163 +1,124 @@
 import React from 'react';
 import {
     StyleSheet,
-    Text,
     View,
-    TouchableOpacity,
-    Image,
-    ScrollView,
+    Text,
+    StatusBar,
+    Dimensions,
+    TouchableOpacity, FlatList,
 } from 'react-native';
+import ScrollableTabView, { DefaultTabBar, } from 'rn-collapsing-tab-bar';
 
-const bullet = (title, text) => (
-  <View style={styles.row}>
-    <View style={styles.bullet}>
-      <Text>{'\u2022' + " "}</Text>
-    </View>
-    <View style={styles.bulletText}>
-      <Text>
-        <Text style={styles.boldText}>{`${title}: `}</Text>
-        <Text style={styles.normalText}>{text}</Text>
-      </Text>
-    </View>
-  </View>
-);
-function trangThaiKiemke(id) {
-    switch (id) {
-        case 0:
-            return "Chưa bắt đầu";
-        case 1:
-            return "Đang kiểm kê";
-        case 2:
-            return "Đã kết thúc"
+const deviceWidth = Dimensions.get("window").width;
+const containerHeight = Dimensions.get('window').height;
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
+const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
+const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 44 : 20) : 0;
+const HEADER_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 88 : 64) : 64;
+const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
+
+
+export default class Collapse extends React.Component {
+    constructor(props) {
+        super(props);
+
+
+        this.state = {
+            tabOneHeight: containerHeight,
+            tabTwoHeight: containerHeight
+        }
+        this.param = {
+            param: props.route.params,
+        }
     }
-}
 
-function DetailKiemkeComponent({ route, navigation }) {
-    const { paramKey } = route.params;
-    console.log(paramKey);
-    return (
-      <View style={styles.container}>
-        <ScrollView>
-          <View style={{ alignItems: 'flex-start', marginHorizontal: 20}}>
-            <Text style={styles.title}>Thông tin đợt kiểm kê:</Text>
-            {bullet('Mã kiểm kê',paramKey.kiemKeTaiSan.maKiemKe)}
-            {bullet('Tên đợt kiểm kê',paramKey.kiemKeTaiSan.tenKiemKe)}
-            {bullet('Thời gian bắt đầu dự kiến:',paramKey.kiemKeTaiSan.thoiGianBatDauDuKien)}
-            {bullet('Thời gian bắt đầu thực tế',paramKey.kiemKeTaiSan.thoiGianBatDauThucTe)}
+    measureTabOne = (event) => {
+        this.setState({
+            tabOneHeight: event.nativeEvent.layout.height
+        })
+    }
+    measureTabTwo = (event) => {
+        this.setState({
+            tabTwoHeight: event.nativeEvent.layout.height
+        })
+    }
+    collapsableComponent = () => {
+        return (
+            <View style={{ height: 400, backgroundColor: 'white', width: deviceWidth }}>
+                <TouchableOpacity onPress={() => { alert('Alert') }}>
+                    <Text>Thông tin kiểm kê</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+    render() {
+        const { tabOneHeight, tabTwoHeight } = this.state;
 
-            {bullet('Thời gian kết thúc dự kiến:',paramKey.kiemKeTaiSan.thoiGianKetThucDuKien)}
-            {bullet('Thời gian kết thúc thực tế',paramKey.kiemKeTaiSan.thoiGianKetThucThucTe)}
-            {bullet('Bộ phận được kiêm kê',paramKey.phongBan)}
-            {bullet('Trạng thái',paramKey.kiemKeTaiSan.trangThaiId)}
-          </View>
-          <Text  style={styles.title}>Danh sách người kiểm kê</Text>
-        </ScrollView>
-       
-        <View style={styles.separator} />
-        <View style={styles.addToCarContainer}>
-          <TouchableOpacity style={styles.shareButton}>
-            <Text style={styles.shareButtonText}>Xóa</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
+        const paramKey = this.param;
+        console.log("DetailKiemke: " + paramKey);
 
+        return <ScrollableTabView
+            collapsableBar={this.collapsableComponent()}
+            initialPage={0}
+            tabContentHeights={[tabOneHeight, tabTwoHeight]}
+            scrollEnabled
+            prerenderingSiblingsNumber={Infinity}
+            renderTabBar={() => <DefaultTabBar inactiveTextColor="white" activeTextColor="white" backgroundColor="blue" />}
+        >
+            <View onLayout={(event) => this.measureTabOne(event)} tabLabel='Tab #1'>
+                <View style={{ height: 2000, backgroundColor: "cyan" }}>
+
+                    <FlatList
+                        scrollEnabled={false}
+                        data={[{ key: 'item 12' }, { key: 'item 23' }, { key: 'item 13' }, { key: 'item 52' }, { key: 'item 51' }, { key: 'item 25' }]}
+                        renderItem={({ item }) => <View style={{ height: 30 }}>
+                            <Text>{item.key}</Text>
+                        </View>}
+                    />
+                </View>
+
+            </View>
+            <View onLayout={(event) => this.measureTabTwo(event)} tabLabel='Tab #2'>
+                <View style={{ height: 4000, backgroundColor: "orange" }}>
+
+                    <FlatList
+                        scrollEnabled={false}
+                        data={[{ key: 'item 1' }, { key: 'item 2' }, { key: 'item 3' }, { key: 'item 4' }, { key: 'item 6' }, { key: 'item 12' }]}
+                        renderItem={({ item }) => <View style={{ height: 30 }}>
+                            <Text>{item.key}</Text>
+                        </View>}
+                    />
+                </View>
+            </View>
+        </ScrollableTabView>;
+    }
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 20,
     },
-    row: {
+    contentContainer: {
+        flexGrow: 1,
+    },
+    navContainer: {
+        height: HEADER_HEIGHT,
+        marginHorizontal: 10,
+    },
+    statusBar: {
+        height: STATUS_BAR_HEIGHT,
+        backgroundColor: 'transparent',
+    },
+    navBar: {
+        height: NAV_BAR_HEIGHT,
+        justifyContent: 'space-between',
+        alignItems: 'center',
         flexDirection: 'row',
-        alignItems: 'flex-start',
-        flexWrap: 'wrap',
-        flex: 1
+        backgroundColor: 'transparent',
     },
-    title: {
-        paddingBottom: 10, 
-        fontSize: 18, 
-        fontStyle: 'italic'
-    },
-    bullet: {
-        width: 10
-    },
-    bulletText: {
-        flex: 1,
-        paddingBottom: 5
-    },
-    boldText: {
+    titleStyle: {
+        color: 'white',
         fontWeight: 'bold',
-        fontSize: 15,
+        fontSize: 18,
     },
-    normalText: {
-        fontSize: 15,
-    },
-    star: {
-        width: 40,
-        height: 40,
-    },
-    btnColor: {
-        height: 30,
-        width: 30,
-        borderRadius: 30,
-        marginHorizontal: 3
-    },
-    btnSize: {
-        height: 40,
-        width: 40,
-        borderRadius: 40,
-        borderColor: '#778899',
-        borderWidth: 1,
-        marginHorizontal: 3,
-        backgroundColor: 'white',
-
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    starContainer: {
-        justifyContent: 'center',
-        marginHorizontal: 30,
-        flexDirection: 'row',
-        marginTop: 20
-    },
-    contentColors: {
-        justifyContent: 'center',
-        marginHorizontal: 30,
-        flexDirection: 'row',
-        marginTop: 20
-    },
-    contentSize: {
-        justifyContent: 'center',
-        marginHorizontal: 30,
-        flexDirection: 'row',
-        marginTop: 20
-    },
-    separator: {
-        height: 2,
-        backgroundColor: "#eeeeee",
-        marginTop: 20,
-        marginHorizontal: 30
-    },
-    shareButton: {
-        marginTop: 10,
-        height: 45,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 30,
-        backgroundColor: "red",
-    },
-    shareButtonText: {
-        color: "#FFFFFF",
-        fontSize: 20,
-    },
-    addToCarContainer: {
-        marginHorizontal: 30,
-        paddingBottom: 30
-    }
 });
-
-export default DetailKiemkeComponent;
