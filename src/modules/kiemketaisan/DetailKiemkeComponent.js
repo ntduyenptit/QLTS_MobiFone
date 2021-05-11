@@ -48,17 +48,24 @@ export default class QuanLyKiemKeDetail extends React.Component {
             tabOneHeight: containerHeight,
             tabTwoHeight: containerHeight,
             tabThirtHeight: containerHeight,
-            danhsachUserKiemke: []
+            danhsachUserKiemke: [],
+            danhsachTSFound: [],
+            danhsachTSNotFound: [],
+            danhsachTSNgoaiHT: []
         }
         this.param = {
             param: props.route.params,
 
         }
-        
+
     }
     componentDidMount() {
         this.getDanhsachUserKiemke();
-      }
+        this.getAllTaiSanKiemke(0);
+        this.getAllTaiSanKiemke(1);
+        this.getAllTaiSanKiemke(2);
+
+    }
 
     measureTabOne = (event) => {
         this.setState({
@@ -77,30 +84,82 @@ export default class QuanLyKiemKeDetail extends React.Component {
     }
 
     getDanhsachUserKiemke() {
-            let url;
-            url = `${endPoint.getdanhsachUserKiemke}?`;
-            url += `Id=${encodeURIComponent(`${2}`)}`;
-            console.log("url: " + url);
+        let url;
+        url = `${endPoint.getdanhsachUserKiemke}?`;
+        url += `Id=${encodeURIComponent(`${2}`)}`;
+        console.log("url: " + url);
 
-            createGetMethod(url)
-                .then(res => {
+        createGetMethod(url)
+            .then(res => {
+                console.log("res: " + res.result);
+                if (res) {
                     console.log("res: " + res.result);
-                    if (res) {
-                        console.log("res: " + res.result);
-                        this.setState({
-                            danhsachUserKiemke: res.result,
-                           // total: `${res.result.length}/${res.result.totalCount}`
-                        });
-                    } else {
-                        // Alert.alert('Lỗi khi load toàn bộ tài sản!');
-                    }
-                })
-                .catch(err => console.log(err));
+                    this.setState({
+                        danhsachUserKiemke: res.result,
+                        // total: `${res.result.length}/${res.result.totalCount}`
+                    });
+                } else {
+                    // Alert.alert('Lỗi khi load toàn bộ tài sản!');
+                }
+            })
+            .catch(err => console.log(err));
     }
+    getAllTaiSanKiemke(status) {
+        let url;
+        url = `${endPoint.getAllTaisanKiemke}?`;
+        url += `Id=${encodeURIComponent(`${2}`)}&`;
+        url += `Status=${encodeURIComponent(`${status}`)}&`;
+        url += `IsSearch=${encodeURIComponent(`${false}`)}`;
+        console.log("url: " + url);
 
-    collapsableComponent = (paramKey, tabKey,userList) => {
+        createGetMethod(url)
+            .then(res => {
+                if (res) {
+                    console.log("res: " + res.result);
+                    switch (status) {
+                        case 0:
+                            this.setState({
+                                danhsachTSFound: res.result,
+                            });
+                        case 1:
+                            this.setState({
+                                danhsachTSNotFound: res.result,
+                            });
+                        case 2:
+                            this.setState({
+                                danhsachTSNgoaiHT: res.result,
+                            });
+                    }
+                } else {
+                    // Alert.alert('Lỗi khi load toàn bộ tài sản!');
+                }
+            })
+            .catch(err => console.log(err));
+    }
+    renderItemComponent = (data) =>
+        <View style={styles.listItem}>
+            <View style={styles.infor}>
+                <Text numberOfLines={1} style={[{ fontWeight: "bold", paddingBottom: 3 }]}>EPC: {data.item.maTaiSan}</Text>
+                <Text numberOfLines={1} style={{ paddingBottom: 3 }}>{data.item.tenTaiSan}</Text>
+                <Text numberOfLines={1} tyle={{ paddingBottom: 3 }} >{data.item.viTri}</Text>
+                <Text numberOfLines={1} tyle={{ paddingBottom: 3 }} >{data.item.trangThai}</Text>
+            </View>
+        </View>
+
+
+    collapsableComponent = (paramKey, tabKey, userList) => {
+        const items = () => userList.map((item, index) => (
+            <View style={styles.listItem}>
+                <View style={styles.infor}>
+                    <Text numberOfLines={1} style={[{ paddingBottom: 3 }]}>Tên: {item.user.name}</Text>
+                    <Text numberOfLines={1} style={{ paddingBottom: 3 }}>Chức vụ: {item.user.roleNames}</Text>
+                    <Text numberOfLines={1} tyle={{ paddingBottom: 3 }} >Phòng ban: {item.tenToChuc}</Text>
+                    <Text numberOfLines={1} tyle={{ paddingBottom: 3 }} >Email: {item.user.emailAddress}</Text>
+                </View>
+            </View>
+        ))
         return (
-            <View style={{ alignItems: 'flex-start', height: 500, backgroundColor: 'white', width: deviceWidth }}>
+            <View style={{ alignItems: 'flex-start', height: 450, backgroundColor: 'white', width: deviceWidth }}>
                 <Text style={styles.title}>Thông tin kiểm kê tài sản:</Text>
                 {bullet('Mã kiểm kê', paramKey.kiemKeTaiSan.maKiemKe)}
                 {bullet('Tên kiểm kê', paramKey.kiemKeTaiSan.tenKiemKe)}
@@ -111,19 +170,23 @@ export default class QuanLyKiemKeDetail extends React.Component {
                 {bullet('Bộ phận được kiểm kê', paramKey.phongBan)}
                 {bullet('Trạng thái', paramKey.kiemKeTaiSan.trangThaiId && convertTrangThai(paramKey.kiemKeTaiSan.trangThaiId))}
                 <Text style={styles.title}>Danh sách người kiểm kê</Text>
-
+                <View >
+                    {items()}
+                </View>
             </View>
         )
     }
     render() {
-        const { tabOneHeight, tabTwoHeight, tabThirtHeight,danhsachUserKiemke } = this.state;
+        const { tabOneHeight, tabTwoHeight, tabThirtHeight, danhsachUserKiemke, danhsachTSFound,
+            danhsachTSNotFound,
+            danhsachTSNgoaiHT } = this.state;
         const { paramKey, tabKey } = this.props.route.params;
-        console.log("userList: " + danhsachUserKiemke);
+        console.log("danhsachTSFound: " + danhsachTSNotFound);
 
         return <ScrollableTabView
-            collapsableBar={this.collapsableComponent(paramKey, tabKey,danhsachUserKiemke)}
+            collapsableBar={this.collapsableComponent(paramKey, tabKey, danhsachUserKiemke)}
             initialPage={0}
-            tabContentHeights={[tabOneHeight, tabTwoHeight,tabThirtHeight]}
+            tabContentHeights={[tabOneHeight, tabTwoHeight, tabThirtHeight]}
             scrollEnabled
             prerenderingSiblingsNumber={Infinity}
             renderTabBar={() => <DefaultTabBar inactiveTextColor="white" activeTextColor="white" backgroundColor="blue" />}
@@ -133,35 +196,29 @@ export default class QuanLyKiemKeDetail extends React.Component {
 
                     <FlatList
                         scrollEnabled={false}
-                        data={[{ key: 'item 12' }, { key: 'item 23' }, { key: 'item 13' }, { key: 'item 52' }, { key: 'item 51' }, { key: 'item 25' }]}
-                        renderItem={({ item }) => <View style={{ height: 30 }}>
-                            <Text>{item.key}</Text>
-                        </View>}
+                        data={danhsachTSFound}
+                        renderItem={item => this.renderItemComponent(item)}
                     />
                 </View>
 
             </View>
             <View onLayout={(event) => this.measureTabTwo(event)} tabLabel='TS không tìm thấy'>
-                <View style={{ height: 4000, backgroundColor: "white" }}>
+                <View style={{ height: 'auto', backgroundColor: "white" }}>
 
                     <FlatList
                         scrollEnabled={false}
-                        data={[{ key: 'item 1' }, { key: 'item 2' }, { key: 'item 3' }, { key: 'item 4' }, { key: 'item 6' }, { key: 'item 12' }]}
-                        renderItem={({ item }) => <View style={{ height: 30 }}>
-                            <Text>{item.key}</Text>
-                        </View>}
+                        data={danhsachTSNotFound}
+                        renderItem={item => this.renderItemComponent(item)}
                     />
                 </View>
             </View>
             <View onLayout={(event) => this.measureTabThirt(event)} tabLabel='TS ngoài danh sách'>
-                <View style={{ height: 4000, backgroundColor: "white" }}>
+                <View style={{ height: 'auto', backgroundColor: "white" }}>
 
-                    <FlatList
+                <FlatList
                         scrollEnabled={false}
-                        data={[{ key: 'item 1' }, { key: 'item 2' }, { key: 'item 3' }, { key: 'item 4' }, { key: 'item 6' }, { key: 'item 12' }]}
-                        renderItem={({ item }) => <View style={{ height: 30 }}>
-                            <Text>{item.key}</Text>
-                        </View>}
+                        data={danhsachTSNgoaiHT}
+                        renderItem={item => this.renderItemComponent(item)}
                     />
                 </View>
             </View>
@@ -229,5 +286,25 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 15,
+    },
+    listItem: {
+        padding: 10,
+        flex: 1,
+        width: deviceWidth - 50,
+        backgroundColor: "#FFF",
+        alignSelf: "flex-start",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        flexDirection: "row",
+        borderRadius: 5,
+        height: 95,
+    },
+    infor: {
+        marginLeft: 10,
+        justifyContent: "flex-start",
+        alignSelf: "flex-start",
+        height: 50,
+        width: "85%",
+
     },
 });
