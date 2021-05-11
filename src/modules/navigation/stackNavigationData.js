@@ -18,7 +18,9 @@ import KiemKeTaiSanDetailComponent from '../kiemketaisan/DetailKiemkeComponent';
 import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVersionViewContainer";
 import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
 import KiemkeTsScreen from '../kiemketaisan/KiemkeTS';
-import DetailKiemkeComponentScreen from '../kiemketaisan/DetailKiemkeComponent';
+
+import QuanLyDutruMuasamScreen from '../quanlydutrumuasam/DutruMuasamComponent';
+import ChitietDutruMuasamScreen from '../quanlydutrumuasam/QuanLyMuasamDetailComponent';
 
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
@@ -172,7 +174,20 @@ const StackNavigationData = [
   },
   {
     name: screens.quan_ly_du_tru_mua_sam,
-    component: AvailableInFullVersion,
+    component: QuanLyDutruMuasamScreen,
+    headerLeft: null,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.chi_tiet_du_tru_mua_sam,
+    component: ChitietDutruMuasamScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -471,19 +486,7 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
-  {
-    name: "Chi tiết đợt kiểm kê",
-    component: DetailKiemkeComponentScreen,
-    headerLeft: headerLeftComponent,
-    headerRight: moreHeaderRightComponent,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-      alignSelf: 'center'
-    },
-  },
+ 
 ]
 
 export default StackNavigationData;
