@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 5,
-    height: 125,
+    height: 200,
   },
   infor: {
     marginLeft: 10,

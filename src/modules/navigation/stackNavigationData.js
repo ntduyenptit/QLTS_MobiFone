@@ -22,6 +22,8 @@ import KiemkeTsScreen from '../kiemketaisan/KiemkeTS';
 import QuanLyDutruMuasamScreen from '../quanlydutrumuasam/DutruMuasamComponent';
 import ChitietDutruMuasamScreen from '../quanlydutrumuasam/QuanLyMuasamDetailComponent';
 
+import QuanlyCanhbaoScreen from '../quanlycanhbao/QuanlyCanhbao';
+
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
 import { showFilter } from '../../redux/actions/filter.actions';
@@ -189,7 +191,7 @@ const StackNavigationData = [
     name: screens.chi_tiet_du_tru_mua_sam,
     component: ChitietDutruMuasamScreen,
     headerLeft: null,
-    headerRight: headerRightComponent,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -200,7 +202,7 @@ const StackNavigationData = [
   },
   {
     name: screens.quan_ly_canh_bao,
-    component: AvailableInFullVersion,
+    component: QuanlyCanhbaoScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
