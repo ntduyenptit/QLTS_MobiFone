@@ -46,19 +46,25 @@ const loadInfo = (screen, item, props) => {
       );
     case screens.giam_sat_tai_san:
       return (
-        <View style={styles.infor}>
-          <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
-          <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
-          <Text numberOfLines={1}>Chiều di chuyển: {item.chieuDiChuyen}</Text>
-        </View>
+        <>
+          <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} color="#0080FF" name="exchange" size={15} />
+          <View style={styles.infor}>
+            <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
+            <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
+            <Text numberOfLines={1}>Chiều di chuyển: {item.chieuDiChuyen}</Text>
+          </View>
+        </>
       );
     case screens.theo_doi_ket_noi_thiet_bi:
       return (
-        <View style={styles.infor}>
-          <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
-          <Text numberOfLines={1}>{item.loaiTaiSan}</Text>
-          <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
-        </View>
+        <>
+          <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} color="#0080FF" name="exchange" size={15} />
+          <View style={styles.infor}>
+            <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
+            <Text numberOfLines={1}>{item.loaiTaiSan}</Text>
+            <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
+          </View>
+        </>
       );
     case screens.chi_tiet_kiem_ke_tai_san:
       return (
@@ -77,7 +83,7 @@ const loadInfo = (screen, item, props) => {
         </>
       );
     default:
-      break;
+      return null;
   }
 };
 

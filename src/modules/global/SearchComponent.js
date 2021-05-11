@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { Animated, StyleSheet, TextInput } from 'react-native';
 import { store } from '../../redux/store';
 import { deviceWidth } from './LoaderComponent';
@@ -8,17 +8,7 @@ import { GetToanBoTaiSanData } from '../quanlytaisan/QuanLyTaiSan';
 const SearchComponent = (props) => {
   const {
     clampedScroll,
-    total,
   } = props;
-  const [totalState, setTotal] = useState('');
-  const [textSearch, setTextSearch] = useState('');
-  useEffect(() => {
-    if (total === '0/0' || total === "") {
-      setTotal('');
-    } else {
-      setTotal(`(${total})`);
-    }
-  }, [total]);
   const searchBarTranslate = clampedScroll.interpolate({
     inputRange: [0, 50],
     outputRange: [0, -(250)],
@@ -43,12 +33,10 @@ const SearchComponent = (props) => {
     ]}
     >
       <TextInput
-        placeholder={`Tìm kiếm tài sản ${totalState}`}
+        placeholder="Tìm kiếm tài sản"
         style={styles.formField}
-        value={textSearch}
         placeholderTextColor="#888888"
         onChangeText={(text) => {
-          setTextSearch(text);
           GetToanBoTaiSanData({
             datas: store.getState().filterDVQLDataReducer.dvqlDataFilter,
             tab: store.getState().currentTabReducer.tabName,

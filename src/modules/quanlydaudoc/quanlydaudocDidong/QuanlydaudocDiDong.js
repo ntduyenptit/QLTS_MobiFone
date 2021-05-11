@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Text } from 'react-native';
 import { connect } from 'react-redux';
 import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
@@ -15,7 +15,7 @@ class QuanLyDauDocDiDongScreen extends React.Component {
     this.state = {
       scrollYValue: new Animated.Value(0),
       daudocdidongData: [],
-      total: '',
+      total: 0,
     }
   }
 
@@ -76,7 +76,6 @@ class QuanLyDauDocDiDongScreen extends React.Component {
         <SafeAreaView>
           <SearchComponent 
             clampedScroll={clampedScroll} 
-            total={`${daudocdidongData.length}/${total}`}
           />
           <Animated.ScrollView
             showsVerticalScrollIndicator={false}
@@ -102,6 +101,14 @@ class QuanLyDauDocDiDongScreen extends React.Component {
             {LoaderComponent(daudocdidongData, this.props, screens.chi_tiet_dau_doc)}
           </Animated.ScrollView>
         </SafeAreaView>
+        <Text
+          style={{
+          bottom: 5,
+          right: 5,
+          position: 'absolute',
+        }}
+        >Hiển thị: {daudocdidongData.length}/{total}
+        </Text>
         <FilterComponent filter={<QuanLyDauDocFilter />} />
       </Animated.View>
     );
