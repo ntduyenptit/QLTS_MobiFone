@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import React, { useState, useEffect } from 'react';
-import { Animated, SafeAreaView, StatusBar } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import LoaderComponent from '../global/LoaderComponent';
 import SearchComponent from '../global/SearchComponent';
@@ -149,12 +149,6 @@ export function GetToanBoTaiSanData(parameters) {
   }
 }
 
-const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
-  const paddingToBottom = 10;
-  return layoutMeasurement.height + contentOffset.y >=
-    contentSize.height - paddingToBottom;
-};
-
 const QuanLyTaiSan = (state) => {
   const [scrollYValue] = useState(new Animated.Value(0));
   const [skipCount, setSkipCount] = useState(0);
@@ -177,6 +171,12 @@ const QuanLyTaiSan = (state) => {
     }
   }, [skipCount]);
 
+  const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+    const paddingToBottom = 10;
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
+  };
+
   function LoaderComponentByTab() {
     switch (state.tab) {
       case tabs.toan_bo_tai_san:
@@ -193,27 +193,6 @@ const QuanLyTaiSan = (state) => {
         return LoaderComponent(state.taisandangsudungData, state, screens.chi_tiet_tai_san);
       case tabs.tai_san_sua_chua_bao_duong:
         return LoaderComponent(state.taisansuachuabaoduongData, state, screens.chi_tiet_tai_san);
-      default:
-        break;
-    }
-  }
-
-  function SearchViewForTab() {
-    switch (state.tab) {
-      case tabs.toan_bo_tai_san:
-        return <SearchComponent clampedScroll={clampedScroll} total={`${state.toanbotaisanData.length}/${state.toanbotaisanTotal}`} />;
-      case tabs.tai_san_mat:
-        return <SearchComponent clampedScroll={clampedScroll} total={`${state.taisanmatData.length}/${state.taisanmatTotal}`} />;
-      case tabs.tai_san_hong:
-        return <SearchComponent clampedScroll={clampedScroll} total={`${state.taisanhongData.length}/${state.taisanhongTotal}`} />;
-      case tabs.tai_san_thanh_ly:
-        return <SearchComponent clampedScroll={clampedScroll} total={`${state.taisanthanhlyData.length}/${state.taisanhongTotal}`} />;
-      case tabs.tai_san_chua_su_dung:
-        return <SearchComponent clampedScroll={clampedScroll} total={`${state.taisanchuasudungData.length}/${state.taisanchuasudungTotal}`} />;
-      case tabs.tai_san_dang_su_dung:
-        return <SearchComponent clampedScroll={clampedScroll} total={`${state.taisandangsudungData.length}/${state.taisandangsudungTotal}`} />;
-      case tabs.tai_san_sua_chua_bao_duong:
-        return <SearchComponent clampedScroll={clampedScroll} total={`${state.taisansuachuabaoduongData.length}/${state.taisansuachuabaoduongTotal}`} />;
       default:
         break;
     }
@@ -240,11 +219,33 @@ const QuanLyTaiSan = (state) => {
     }
   }
 
+  const totalDisplayForTab = () => {
+    switch (state.tab) {
+      case tabs.toan_bo_tai_san:
+        return <Text>Hiển thị: {state.toanbotaisanData.length}/{state.toanbotaisanTotal}</Text>;
+      case tabs.tai_san_mat:
+        return <Text>Hiển thị: {state.taisanmatData.length}/{state.taisanmatTotal}</Text>;
+      case tabs.tai_san_hong:
+        return <Text>Hiển thị: {state.taisanhongData.length}/{state.taisanhongTotal}</Text>;
+      case tabs.tai_san_thanh_ly:
+        return <Text>Hiển thị: {state.taisanthanhlyData.length}/{state.taisanthanhlyTotal}</Text>;
+      case tabs.tai_san_chua_su_dung:
+        return <Text>Hiển thị: {state.taisanchuasudungData.length}/{state.taisanchuasudungTotal}</Text>;
+      case tabs.tai_san_dang_su_dung:
+        return <Text>Hiển thị: {state.taisandangsudungData.length}/{state.taisandangsudungTotal}</Text>;
+      case tabs.tai_san_sua_chua_bao_duong:
+        return <Text>Hiển thị: {state.taisansuachuabaoduongData.length}/{state.taisansuachuabaoduongTotal}</Text>;
+      default:
+        return null;
+    }
+  }
+
+
   return (
     <Animated.View>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        {SearchViewForTab()}
+        <SearchComponent clampedScroll={clampedScroll} />
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
           style={{
@@ -259,19 +260,33 @@ const QuanLyTaiSan = (state) => {
             justifyContent: 'space-around',
             paddingBottom: 55,
           }}
-          onScroll={({ nativeEvent }) => {
-            if (isCloseToBottom(nativeEvent) && !state.isLoading) {
-              setTimeout(() => {
-                setSkipCount(getSkipCount());
-              }, 2000)
-            }         // Optional async listener
-          }}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
+            {
+              useNativeDriver: true,
+              listener: event => {
+                if (isCloseToBottom(event.nativeEvent) && !state.isLoading) {
+                  setTimeout(() => {
+                    setSkipCount(getSkipCount());
+                  }, 2000)
+                }
+              },
+            },
+          )}
           scrollEventThrottle={500}
           contentInsetAdjustmentBehavior="automatic"
         >
           {LoaderComponentByTab()}
         </Animated.ScrollView>
       </SafeAreaView>
+      <View style={{
+          bottom: 5,
+          right: 5,
+          position: 'absolute',
+        }}
+      >
+        {totalDisplayForTab()}
+      </View>
       <FilterComponent filter={<QuanLyTaiSanFilter />} />
     </Animated.View>
   );

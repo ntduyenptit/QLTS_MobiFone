@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar, Dimensions } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Dimensions, Text } from 'react-native';
 import { connect } from 'react-redux';
 import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
@@ -18,7 +18,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
     this.state = {
       scrollYValue: new Animated.Value(0),
       daudoccodinhData: [],
-      total: '',
+      total: 0,
     }
   }
 
@@ -43,7 +43,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
           if (res) {
             this.setState({
               daudoccodinhData: res.result.items,
-              total: `${res.result.items.length}/${res.result.totalCount}`
+              total: res.result.totalCount
             });
           } else {
             // Alert.alert('Lỗi khi load toàn bộ tài sản!');
@@ -77,7 +77,6 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
         <SafeAreaView>
           <SearchComponent 
             clampedScroll={clampedScroll} 
-            total={total}
           />
           <Animated.ScrollView
             showsVerticalScrollIndicator={false}
@@ -103,6 +102,14 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
             {LoaderComponent(daudoccodinhData, this.props, screens.chi_tiet_dau_doc)}
           </Animated.ScrollView>
         </SafeAreaView>
+        <Text
+          style={{
+          bottom: 5,
+          right: 5,
+          position: 'absolute',
+        }}
+        >Hiển thị: {daudoccodinhData.length}/{total}
+        </Text>
         <FilterComponent filter={<QuanLyDauDocFilter />} />
       </Animated.View>
     );

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar, Dimensions } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Dimensions, Text } from 'react-native';
 import { connect } from 'react-redux';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
@@ -18,7 +18,7 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
     this.state = {
       scrollYValue: new Animated.Value(0),
       toanboTaiSanData: [],
-      total: '',
+      total: 0,
     }
   }
 
@@ -46,7 +46,7 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
           if (res) {
             this.setState({
               toanboTaiSanData: res.result.items,
-              total: `${res.result.items.length}/${res.result.totalCount}`
+              total: res.result.totalCount
             });
           } else {
             // Alert.alert('Lỗi khi load toàn bộ tài sản!');
@@ -80,7 +80,6 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
         <SafeAreaView>
           <SearchComponent
             clampedScroll={clampedScroll}
-            total={total}
           />
           <Animated.ScrollView
             showsVerticalScrollIndicator={false}
@@ -106,6 +105,14 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
             {LoaderComponent(toanboTaiSanData, this.props, screens.chi_tiet_kiem_ke_tai_san)}
           </Animated.ScrollView>
         </SafeAreaView>
+        <Text
+          style={{
+          bottom: 5,
+          right: 5,
+          position: 'absolute',
+        }}
+        >Hiển thị: {toanboTaiSanData.length}/{total}
+        </Text>
         <FilterComponent filter={<QuanLyKiemkeFilter />} />
       </Animated.View>
     );
