@@ -23,6 +23,7 @@ import QuanLyDutruMuasamScreen from '../quanlydutrumuasam/DutruMuasamComponent';
 import ChitietDutruMuasamScreen from '../quanlydutrumuasam/QuanLyMuasamDetailComponent';
 
 import QuanlyCanhbaoScreen from '../quanlycanhbao/QuanlyCanhbao';
+import BaocaonguoidungScreen from '../quanlybaocao/baocaonguoidung/BaoCaoNguoiDung';
 
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
@@ -293,7 +294,7 @@ const StackNavigationData = [
   },
   {
     name: screens.bao_cao_nguoi_dung,
-    component: AvailableInFullVersion,
+    component: BaocaonguoidungScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
