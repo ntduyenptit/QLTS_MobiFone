@@ -1,20 +1,20 @@
 import React from 'react'
-import { LineChart, YAxis, XAxis, Path, Grid } from 'react-native-svg-charts'
-import { Animated, View, StatusBar, Dimensions, SafeAreaView , StyleSheet, Text} from 'react-native';
+import { YAxis, XAxis, Path, Grid, BarChart } from 'react-native-svg-charts'
+import { Animated, View, StatusBar, Dimensions, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import FilterComponent from '../../global/FilterComponent';
-import BaocaoNguoidungFilter from './BaocaoNguoidungFilter';
+import BaocaoCanhbaoFilter from './BaocaoCanhbaoFilter';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { fonts } from '../../../styles';
 
-class BaocaonguoidungScreen extends React.PureComponent {
+class BaocaoCanhbaoScreen extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
             toanboData: [],
-            total:''
+            total: ''
         }
     }
 
@@ -49,8 +49,8 @@ class BaocaonguoidungScreen extends React.PureComponent {
         }
     }
     createData(datas, total) {
-        for(let i = 0; i < total; i++){
-           // console.log("Baocaonguoidung: " +datas.listKhaiBaoSuDung);
+        for (let i = 0; i < total; i++) {
+            // console.log("Baocaonguoidung: " +datas.listKhaiBaoSuDung);
         }
 
     }
@@ -60,22 +60,38 @@ class BaocaonguoidungScreen extends React.PureComponent {
         const data1 = [30, 17, 18, 4, 2, 59, 6, 1, 24, 8, 3, 7, 2, 0]
         const data2 = [0, 2, 0, 12, 0, 2, 0, 0, 0, 0, 4, 7, 9, 0, 8]
         const data3 = [-10, 20, 30, 40, 30, 23, 16, 62, 20, 23, 14, 27, 19, 34, 28]
+        const data4 = [0, 20, 0, 4, 3, 2, 16, 6, 2, 3, 4, 7, 9, 3, 8]
         //Array of datasets, following this syntax:
         const contentInset = { top: 20, bottom: 20 }
-        const {danhsachbaocao, total} = this.state;
-        this.createData(danhsachbaocao,total);
+        const { danhsachbaocao, total } = this.state;
+        this.createData(danhsachbaocao, total);
+
         const data = [
             {
-                data: data1,
-                svg: { stroke: 'purple' },
+                value: 50,
+                label: 'Tài sản ra',
+                svg : {fill :'#600080'},
             },
             {
-                data: data2,
-                svg: { stroke: 'green' },
+                value: 10,
+                label: 'Tài sản vào',
+                svg: {
+                    fill: '#FF0000',
+                },
             },
             {
-                data: data3,
-                svg: { stroke: 'red' },
+                value: 40,
+                label: 'Bắt đầu kiểm kê',
+                svg: {
+                    fill: '#FFBF00',
+                },
+            },
+            {
+                value: 95,
+                label: 'Kết thúc kiểm kê',
+                svg: {
+                    fill: '#0000FF',
+                },
             },
 
         ]
@@ -84,7 +100,7 @@ class BaocaonguoidungScreen extends React.PureComponent {
             <Animated.View>
                 <StatusBar barStyle="dark-content" />
                 <SafeAreaView>
-                    <View style={{ height: 400, flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', height: 400, paddingVertical: 10, marginLeft: 10 }}>
                         <YAxis
                             data={data1}
                             contentInset={contentInset}
@@ -95,77 +111,57 @@ class BaocaonguoidungScreen extends React.PureComponent {
                             numberOfTicks={10}
                             formatLabel={(value) => `${value}`}
                         />
-                        <XAxis
-                            data={data2}
-                            contentInset={contentInset}
-                            svg={{
-                                fill: 'grey',
-                                fontSize: 10,
-                            }}
-                            numberOfTicks={10}
-                            formatLabel={(value) => `${value}`}
-                        />
-                        <LineChart
-                            style={{ flex: 1, marginLeft: 16 }}
+                        <BarChart
+                            style={{ flex: 1, marginLeft: 8 }}
                             data={data}
-                            svg={{ stroke: 'rgb(134, 65, 244)' }}
-                            contentInset={contentInset}
+                            horizontal={false}
+                            yAccessor={({ item }) => item.value}
+                            svg={{
+                                fill: 'blue',
+                            }}
+                            contentInset={{ top: 10, bottom: 10 }}
+                            spacingInner={0.2}
+                            gridMin={0}
                         >
-                            <Grid />
-                        </LineChart>
+                            <Grid direction={Grid.Direction.VERTICAL} />
+                        </BarChart>
                     </View>
                     <View style={styles.container}>
                         <View style={styles.listItem}>
                             <View style={styles.infor}>
                                 <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="ellipsis-h" color='#600080' size={35} />
-                                <Text style={[{ fontWeight: "bold" }, styles.infoText]}>Đăng nhập</Text>
+                                <Text style={[{ fontWeight: "bold" }, styles.infoText]}>Tài sản ra</Text>
                             </View>
                             <View style={styles.infor}>
                                 <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="ellipsis-h" color='#FF0000' size={35} />
-                                <Text style={styles.infoText}>Đăng xuất</Text>
+                                <Text style={styles.infoText}>Tài sản vào</Text>
                             </View>
-                            <View style={styles.infor}>
-                                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="ellipsis-h" color='#FFBF00' size={35} />
-                                <Text style={styles.infoText}>Xem</Text>
-                            </View>
-
-                            <View style={styles.infor}>
-                                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="ellipsis-h" color='#0000FF' size={35} />
-                                <Text style={styles.infoText}>Tìm kiếm</Text>
-                            </View>
-
                         </View>
                         <View style={styles.listItem, { marginLeft: 40 }}>
 
                             <View style={styles.infor}>
-                                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="ellipsis-h" color='#9900cc' size={35} />
-                                <Text style={styles.infoText}>Thêm mới</Text>
+                                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="ellipsis-h" color='#FFBF00' size={35} />
+                                <Text style={styles.infoText}>Bắt đầu kiểm kê</Text>
                             </View>
-
                             <View style={styles.infor}>
-                                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="ellipsis-h" color='#8A2908' size={35} />
-                                <Text style={styles.infoText}>Xóa</Text>
-                            </View>
-
-                            <View style={styles.infor}>
-                                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="ellipsis-h" color='#29088A' size={35} />
-                                <Text style={styles.infoText}>Sửa</Text>
+                                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="ellipsis-h" color='#0000FF' size={35} />
+                                <Text style={styles.infoText}>Kết thúc kiểm kê</Text>
                             </View>
                         </View>
                     </View>
                 </SafeAreaView>
-                <FilterComponent filter={<BaocaoNguoidungFilter />} />
+                <FilterComponent filter={<BaocaoCanhbaoFilter />} />
             </Animated.View>
         )
     }
-    
+
 }
 const styles = StyleSheet.create({
     container: {
         padding: 5,
-        marginTop: 40,
+        marginTop: 60,
         flexDirection: 'row',
-        alignContent:'center',
+        alignContent: 'center',
         alignSelf: 'center',
     },
     listItem: {
@@ -193,4 +189,4 @@ const mapStateToProps = state => ({
     tab: 'Quan ly canh bao'
 });
 
-export default connect(mapStateToProps)(BaocaonguoidungScreen);
+export default connect(mapStateToProps)(BaocaoCanhbaoScreen);
