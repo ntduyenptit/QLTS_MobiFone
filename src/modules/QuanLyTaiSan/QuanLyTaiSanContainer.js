@@ -60,9 +60,7 @@ export default compose(
         })
           .catch(err => console.log('err: ', err));
       } else if (!isLoadData()) {
-          GetToanBoTaiSanData({ 
-            datas: store.getState().filterDVQLDataReducer.dvqlDataFilter, 
-            tab: store.getState().currentTabReducer.tabName });
+          GetToanBoTaiSanData({});
         }
     },
   }))(QuanLyTaiSanScreen);

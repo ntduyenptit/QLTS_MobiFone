@@ -22,6 +22,15 @@ import {
   filterMSDDataReducer,
   filterNCCDataReducer,
   filterTTSDDataReducer,
+
+  filterDVQLSelectedReducer,
+  filterLTSSelectedReducer,
+  filterMSDSelectedReducer,
+  filterTTSelectedReducer,
+  filterNCCSelectedReducer,
+  filterTTSDSelectedReducer,
+  filterHTSelectedReducer,
+
   currentScreenReducer,
   currentTabReducer
  } from '../modules/global/GlobalState';
@@ -32,13 +41,22 @@ import {
   app,
   calendar,
   userReducer,
-// filter
+// filter get
   filterReducer,
   filterDVQLDataReducer,
   filterLTSDataReducer,
   filterMSDDataReducer,
   filterNCCDataReducer,
   filterTTSDDataReducer,
+
+  // filter selected
+  filterDVQLSelectedReducer,
+  filterLTSSelectedReducer,
+  filterMSDSelectedReducer,
+  filterTTSelectedReducer,
+  filterNCCSelectedReducer,
+  filterTTSDSelectedReducer,
+  filterHTSelectedReducer,
 
   currentScreenReducer,
   currentTabReducer,

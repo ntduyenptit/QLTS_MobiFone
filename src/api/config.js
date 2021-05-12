@@ -18,6 +18,7 @@ export const endPoint = ({
   getAllNhaCungCap: 'services/app/LookupTable/GetAllNhaCungCap',
   getAllTinhTrangMaSuDungTaiSan: 'services/app/LookupTable/GetAllTinhTrangMaSuDungTaiSan',
   getAllTrangThaiSuDung: 'services/app/LookupTable/GetAllTrangThaiTaiSanTimKiem',
+  getAllLoaiTaiSan: 'services/app/LookupTable/GetAllLoaiTaiSanTree',
   // Quản lý tài sản
   getToanBoTaiSan: 'services/app/ToanBoTaiSan/GetAll',
   getTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/GetAllTaiSanSuaChuaBaoDuong',

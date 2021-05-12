@@ -1,18 +1,34 @@
-import React, { useState, useRef } from 'react';
+/* eslint-disable import/no-cycle */
+import React, { useRef } from 'react';
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
+import find from 'lodash/find';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { filterType } from '../../global/Config';
 import { buildTree } from '../../global/Helper';
+import { GetToanBoTaiSanData } from '../QuanLyTaiSan';
 import { screens, tabs, hinhThucData } from '../../../api/config';
+import { 
+  addSelectedDVQLAction,
+  addSelectedLTSAction,
+  addSelectedMSDAction,
+  addSelectedNCCAction,
+  addSelectedTTAction,
+  addSelectedTTSDAction,
+  addSelectedHTAction,
+
+  removeSelectedDVQLAction,
+  removeSelectedLTSAction,
+  removeSelectedMSDAction,
+  removeSelectedNCCAction,
+  removeSelectedTTAction,
+  removeSelectedTTSDAction,
+  removeSelectedHTAction,
+ } from '../../../redux/actions/filter.actions';
+import store from '../../../redux/store';
 
 const QuanLyTaiSanFilterComponent = (items) => {
-  const [selectedDVQLItems, setDVQLItems] = useState([]);
-  const [selectedLTSItems, setLTSItems] = useState([]);
-  const [selectedNCCItems, setNCCItems] = useState([]);
-  const [selectedMSDItems, setMSDItems] = useState([]);
-  const [selectedHTItems, setHTItems] = useState([]);
 
   const donViQuanLyRef = useRef();
   const loaiTaiSanRef = useRef();
@@ -99,36 +115,31 @@ const QuanLyTaiSanFilterComponent = (items) => {
     }
   }
 
-
-  const requestToanBoTaiSanDataByFilter = (params) => {
-
-  }
-
   // selectedChange
   const onSelectedDVQLChange = (newSelectItems) => {
-    setDVQLItems((newSelectItems), () => {
-      requestToanBoTaiSanDataByFilter({ 'DVQL_Filter': selectedDVQLItems });
-    });
+    items.removeSelectedDVQL({data: newSelectItems, screen: items.screen, tab: items.tab});
+    items.addSelectedDVQL({data: newSelectItems, screen: items.screen, tab: items.tab});
+    GetToanBoTaiSanData({ datas: newSelectItems.length > 0 ? newSelectItems : items.DvqlDataFilter, isFilter: true });
   }
   const onSelectedLTSChange = (newSelectItems) => {
-    setLTSItems((newSelectItems), () => {
-      requestToanBoTaiSanDataByFilter({ 'LTS_Filter': selectedLTSItems });
-    });
+    items.removeSelectedLTS({data: newSelectItems, screen: items.screen, tab: items.tab});
+    items.addSelectedLTS({data: newSelectItems, screen: items.screen, tab: items.tab});
+    GetToanBoTaiSanData({ loaitaisan: newSelectItems, isFilter: true });
   }
   const onSelectedNCCChange = (newSelectItems) => {
-    setNCCItems((newSelectItems), () => {
-      requestToanBoTaiSanDataByFilter({ 'NCC_Filter': selectedNCCItems });
-    });
+    items.removeSelectedLTS({data: newSelectItems, screen: items.screen, tab: items.tab});
+    items.addSelectedNCC({data: newSelectItems, screen: items.screen, tab: items.tab});
+    GetToanBoTaiSanData({ nhacungcap: newSelectItems, isFilter: true });
   }
   const onSelectedMSDChange = (newSelectItems) => {
-    setMSDItems((newSelectItems), () => {
-      requestToanBoTaiSanDataByFilter({ 'MSD_Filter': selectedMSDItems });
-    });
+    items.removeSelectedMSD({data: newSelectItems, screen: items.screen, tab: items.tab});
+    items.addSelectedMSD({data: newSelectItems, screen: items.screen, tab: items.tab});
+    GetToanBoTaiSanData({ masudung: newSelectItems, isFilter: true });
   }
   const onSelectedHTChange = (newSelectItems) => {
-    setHTItems((newSelectItems), () => {
-      requestToanBoTaiSanDataByFilter({ 'HT_Filter': selectedHTItems });
-    });
+    items.removeSelectedHT({data: newSelectItems, screen: items.screen, tab: items.tab});
+    items.addSelectedHT({data: newSelectItems, screen: items.screen, tab: items.tab});
+    GetToanBoTaiSanData({ hinhthuc: newSelectItems, isFilter: true });
   }
   // end SelectedChange
   return (
@@ -161,7 +172,8 @@ const QuanLyTaiSanFilterComponent = (items) => {
               displayKey="displayName"
               selectText="Chọn đơn vị quản lý..."
               onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-              selectedItems={selectedDVQLItems}
+              selectedItems={find(items.DvqlFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+              && find(items.DvqlFilterSelected, itemSelected => itemSelected.tab === items.tab).data}
             />
           </View>
         </>
@@ -181,17 +193,19 @@ const QuanLyTaiSanFilterComponent = (items) => {
             <Text style={styles.titleText}>Loại tài sản</Text>
             <MultiSelect
               ref={loaiTaiSanRef}
+              isTree
               onToggleList={() => closeMultiSelectIfOpened(filterType.loai_tai_san)}
               items={items.LtsDataFilter}
               IconRenderer={Icon}
               styleListContainer={items.LtsDataFilter && items.LtsDataFilter.length > 9 ? { height: 200 } : null}
               single
               searchInputPlaceholderText="Tìm kiếm..."
-              uniqueKey="id"
-              displayKey="displayName"
+              uniqueKey="value"
+              displayKey="text"
               selectText="Chọn loại tài sản..."
               onSelectedItemsChange={(item) => onSelectedLTSChange(item)}
-              selectedItems={selectedLTSItems}
+              selectedItems={find(items.LtsFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+              && find(items.LtsFilterSelected, itemSelected => itemSelected.tab === items.tab).data}
             />
           </View>
         </>
@@ -221,7 +235,8 @@ const QuanLyTaiSanFilterComponent = (items) => {
               displayKey="displayName"
               selectText="Chọn nhà cung cấp..."
               onSelectedItemsChange={(item) => onSelectedNCCChange(item)}
-              selectedItems={selectedNCCItems}
+              selectedItems={find(items.NccFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+              && find(items.NccFilterSelected, itemSelected => itemSelected.tab === items.tab).data}
             />
           </View>
         </>
@@ -246,7 +261,8 @@ const QuanLyTaiSanFilterComponent = (items) => {
               displayKey="displayName"
               selectText="Chọn mã sử dụng..."
               onSelectedItemsChange={(item) => onSelectedMSDChange(item)}
-              selectedItems={selectedMSDItems}
+              selectedItems={find(items.MsdFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+              && find(items.MsdFilterSelected, itemSelected => itemSelected.tab === items.tab).data}
             />
           </View>
         </>
@@ -266,7 +282,8 @@ const QuanLyTaiSanFilterComponent = (items) => {
                 displayKey="displayName"
                 selectText="Chọn hình thức..."
                 onSelectedItemsChange={(item) => onSelectedHTChange(item)}
-                selectedItems={selectedHTItems}
+                selectedItems={find(items.HtFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+                && find(items.HtFilterSelected, itemSelected => itemSelected.tab === items.tab).data}
               />
             </View>
           </>
@@ -301,7 +318,35 @@ const mapStateToProps = state => ({
   NccDataFilter: state.filterNCCDataReducer.nccDataFilter,
   MsdDataFilter: state.filterMSDDataReducer.msdDataFilter,
   screen: state.currentScreenReducer.screenName,
-  tab: state.currentTabReducer.tabName
+  tab: state.currentTabReducer.tabName,
+
+  DvqlFilterSelected: state.filterDVQLSelectedReducer.dvqlFilterSelected,
+  LtsFilterSelected: state.filterLTSSelectedReducer.ltsFilterSelected,
+  MsdFilterSelected: state.filterMSDSelectedReducer.msdFilterSelected,
+  TtFilterSelected: state.filterTTSelectedReducer.ttFilterSelected,
+  NccFilterSelected: state.filterNCCSelectedReducer.nccFilterSelected,
+  TtsdFilterSelected: state.filterTTSDSelectedReducer.ttsdFilterSelected,
+  HtFilterSelected: state.filterHTSelectedReducer.htFilterSelected,
 });
 
-export default connect(mapStateToProps)(QuanLyTaiSanFilterComponent);
+function mapDispatchToProps(dispatch) {
+  return {
+    addSelectedDVQL: (item) => dispatch(addSelectedDVQLAction(item)),
+    addSelectedLTS: (item) => dispatch(addSelectedLTSAction(item)),
+    addSelectedMSD: (item) => dispatch(addSelectedMSDAction(item)),
+    addSelectedNCC: (item) => dispatch(addSelectedNCCAction(item)),
+    addSelectedTT: (item) => dispatch(addSelectedTTAction(item)),
+    addSelectedTTSD: (item) => dispatch(addSelectedTTSDAction(item)),
+    addSelectedHT: (item) => dispatch(addSelectedHTAction(item)),
+
+    removeSelectedDVQL: (item) => dispatch(removeSelectedDVQLAction(item)),
+    removeSelectedLTS: (item) => dispatch(removeSelectedLTSAction(item)),
+    removeSelectedMSD: (item) => dispatch(removeSelectedMSDAction(item)),
+    removeSelectedNCC: (item) => dispatch(removeSelectedNCCAction(item)),
+    removeSelectedTT: (item) => dispatch(removeSelectedTTAction(item)),
+    removeSelectedTTSD: (item) => dispatch(removeSelectedTTSDAction(item)),
+    removeSelectedHT: (item) => dispatch(removeSelectedHTAction(item)),
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuanLyTaiSanFilterComponent);
