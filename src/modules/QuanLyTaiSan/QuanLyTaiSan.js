@@ -30,13 +30,14 @@ import {
 import QuanLyTaiSanFilter from './filter/QuanLyTaiSanFilter';
 
 export function GetToanBoTaiSanData(parameters) {
-  const { datas, tab, textFilter, skipCount, maxResultCount } = parameters;
+  const { datas, tab, textFilter, skipCount, maxResultCount, loaitaisan, nhacungcap, masudung, isFilter } = parameters;
+  const phongbanquanly = datas !== undefined ? datas : store.getState().filterDVQLDataReducer.dvqlDataFilter;
   const maxCount = maxResultCount !== undefined ? maxResultCount : 10;
   const skipTotal = skipCount !== undefined ? skipCount : 0;
-  const tabChosen = tab !== undefined ? tab : tabs.toan_bo_tai_san;
+  const tabChosen = tab || store.getState().currentTabReducer.tabName;
 
   store.dispatch(toanbotaisanLoading());
-  if (datas && datas.length > 0) {
+  if (phongbanquanly && phongbanquanly.length > 0) {
     let url;
     switch (tabChosen) {
       case tabs.toan_bo_tai_san:
@@ -72,13 +73,34 @@ export function GetToanBoTaiSanData(parameters) {
       }
     }
 
-    datas.forEach(e => {
-      url += `PhongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
+    phongbanquanly.forEach(e => {
+      if (e.id) {
+        url += `PhongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
+      } else {
+        url += `PhongBanqQL=${encodeURIComponent(`${e}`)}&`;
+      }
     });
-    if (tabs.tai_san_dang_su_dung || tabs.tai_san_chua_su_dung) {
-      datas.forEach(e => {
+
+    if (tabChosen === tabs.tai_san_dang_su_dung || tabChosen === tabs.tai_san_chua_su_dung) {
+      phongbanquanly.forEach(e => {
         url += `PhongBanQuanLyId=${encodeURIComponent(`${e.id}`)}&`;
       });
+    }
+
+    if (loaitaisan) {
+      url += `LoaiTS=${encodeURIComponent(`${loaitaisan}`)}&`;
+      if (tabChosen === tabs.tai_san_dang_su_dung || tabChosen === tabs.tai_san_chua_su_dung) {
+        url += `LoaiTaiSanId=${encodeURIComponent(`${loaitaisan}`)}&`;
+      }
+    }
+    if (nhacungcap) {
+      url += `NhaCungCap=${encodeURIComponent(`${nhacungcap}`)}&`;
+      if (tabChosen === tabs.tai_san_dang_su_dung || tabChosen === tabs.tai_san_chua_su_dung) {
+        url += `NhaCungCapId=${encodeURIComponent(`${nhacungcap}`)}&`;
+      }
+    }
+    if (masudung) {
+      url += `MaSD=${encodeURIComponent(`${masudung}`)}&`;
     }
 
     url += `IsSearch=${encodeURIComponent(`${textFilter !== undefined}`)}&`;
@@ -88,7 +110,8 @@ export function GetToanBoTaiSanData(parameters) {
     createGetMethod(url)
       .then(res => {
         if (res) {
-          if (textFilter !== undefined) {
+          if (textFilter || isFilter) {
+            console.log('tabChosen: ',tabChosen);
             switch (tabChosen) {
               case tabs.toan_bo_tai_san:
                 store.dispatch(toanbotaisanSearchData(res));
@@ -103,6 +126,7 @@ export function GetToanBoTaiSanData(parameters) {
                 store.dispatch(taisanhongSearchData(res));
                 break;
               case tabs.tai_san_dang_su_dung:
+                console.log('res: ',res);
                 store.dispatch(taisandangsudungSearchData(res));
                 break;
               case tabs.tai_san_chua_su_dung:

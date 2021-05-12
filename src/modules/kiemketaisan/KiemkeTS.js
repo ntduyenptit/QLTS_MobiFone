@@ -42,7 +42,6 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
       createGetMethod(url)
         .then(res => {
-            console.log("kiemke: " + res.result);
           if (res) {
             this.setState({
               toanboTaiSanData: res.result.items,

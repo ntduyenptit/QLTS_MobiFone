@@ -22,21 +22,21 @@ const HEADER_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 88 : 64) : 64;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
 
 const bullet = (title, text) => (
-    <View style={styles.row}>
-        <View style={styles.bullet}>
-            <Text>{'\u2022' + " "}</Text>
-        </View>
-        <View style={styles.bulletText}>
-            <Text styles={styles.text}>
-                <Text style={styles.boldText}>{`${title}: `}</Text>
-            </Text>
-        </View>
-        <View style={styles.bulletTextNormal}>
-            <Text styles={styles.text}>
-                <Text style={styles.normalText}>{text}</Text>
-            </Text>
-        </View>
+  <View style={styles.row}>
+    <View style={styles.bullet}>
+      <Text>{'\u2022' + " "}</Text>
     </View>
+    <View style={styles.bulletText}>
+      <Text styles={styles.text}>
+        <Text style={styles.boldText}>{`${title}: `}</Text>
+      </Text>
+    </View>
+    <View style={styles.bulletTextNormal}>
+      <Text styles={styles.text}>
+        <Text style={styles.normalText}>{text}</Text>
+      </Text>
+    </View>
+  </View>
 );
 
 export default class QuanLyKiemKeDetail extends React.Component {
@@ -59,12 +59,14 @@ export default class QuanLyKiemKeDetail extends React.Component {
         }
 
     }
-    componentDidMount() {
-        this.getDanhsachUserKiemke();
-        this.getAllTaiSanKiemke(0);
-        this.getAllTaiSanKiemke(1);
-        this.getAllTaiSanKiemke(2);
 
+    componentDidMount() {
+        Promise.all([
+            this.getDanhsachUserKiemke(),
+            this.getAllTaiSanKiemke(0),
+            this.getAllTaiSanKiemke(1),
+            this.getAllTaiSanKiemke(2),
+        ]);
     }
 
     measureTabOne = (event) => {
@@ -72,11 +74,13 @@ export default class QuanLyKiemKeDetail extends React.Component {
             tabOneHeight: event.nativeEvent.layout.height
         })
     }
+
     measureTabTwo = (event) => {
         this.setState({
             tabTwoHeight: event.nativeEvent.layout.height
         })
     }
+
     measureTabThirt = (event) => {
         this.setState({
             tabThirstHeight: event.nativeEvent.layout.height
@@ -87,13 +91,10 @@ export default class QuanLyKiemKeDetail extends React.Component {
         let url;
         url = `${endPoint.getdanhsachUserKiemke}?`;
         url += `Id=${encodeURIComponent(`${2}`)}`;
-        console.log("url: " + url);
 
         createGetMethod(url)
             .then(res => {
-                console.log("res: " + res.result);
                 if (res) {
-                    console.log("res: " + res.result);
                     this.setState({
                         danhsachUserKiemke: res.result,
                         // total: `${res.result.length}/${res.result.totalCount}`
@@ -104,18 +105,17 @@ export default class QuanLyKiemKeDetail extends React.Component {
             })
             .catch(err => console.log(err));
     }
+
     getAllTaiSanKiemke(status) {
         let url;
         url = `${endPoint.getAllTaisanKiemke}?`;
         url += `Id=${encodeURIComponent(`${2}`)}&`;
         url += `Status=${encodeURIComponent(`${status}`)}&`;
         url += `IsSearch=${encodeURIComponent(`${false}`)}`;
-        console.log("url: " + url);
 
         createGetMethod(url)
             .then(res => {
                 if (res) {
-                    console.log("res: " + res.result);
                     switch (status) {
                         case 0:
                             this.setState({
@@ -136,93 +136,97 @@ export default class QuanLyKiemKeDetail extends React.Component {
             })
             .catch(err => console.log(err));
     }
-    renderItemComponent = (data) =>
-        <View style={styles.listItem}>
-            <View style={styles.infor}>
-                <Text numberOfLines={1} style={[{ fontWeight: "bold", paddingBottom: 3 }]}>EPC: {data.item.maTaiSan}</Text>
-                <Text numberOfLines={1} style={{ paddingBottom: 3 }}>{data.item.tenTaiSan}</Text>
-                <Text numberOfLines={1} tyle={{ paddingBottom: 3 }} >{data.item.viTri}</Text>
-                <Text numberOfLines={1} tyle={{ paddingBottom: 3 }} >{data.item.trangThai}</Text>
-            </View>
+
+    renderItemComponent = (data) => (
+      <View style={styles.listItem}>
+        <View style={styles.infor}>
+          <Text numberOfLines={1} style={[{ fontWeight: "bold", paddingBottom: 3 }]}>EPC: {data.item.maTaiSan}</Text>
+          <Text numberOfLines={1} style={{ paddingBottom: 3 }}>{data.item.tenTaiSan}</Text>
+          <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>{data.item.viTri}</Text>
+          <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>{data.item.trangThai}</Text>
         </View>
+      </View>
+      )
 
 
     collapsableComponent = (paramKey, tabKey, userList) => {
         const items = () => userList.map((item, index) => (
-            <View style={styles.listItem}>
-                <View style={styles.infor}>
-                    <Text numberOfLines={1} style={[{ paddingBottom: 3 }]}>Tên: {item.user.name}</Text>
-                    <Text numberOfLines={1} style={{ paddingBottom: 3 }}>Chức vụ: {item.user.roleNames}</Text>
-                    <Text numberOfLines={1} tyle={{ paddingBottom: 3 }} >Phòng ban: {item.tenToChuc}</Text>
-                    <Text numberOfLines={1} tyle={{ paddingBottom: 3 }} >Email: {item.user.emailAddress}</Text>
-                </View>
+          <View style={styles.listItem}>
+            <View style={styles.infor}>
+              <Text numberOfLines={1} style={[{ paddingBottom: 3 }]}>Tên: {item.user.name}</Text>
+              <Text numberOfLines={1} style={{ paddingBottom: 3 }}>Chức vụ: {item.user.roleNames}</Text>
+              <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Phòng ban: {item.tenToChuc}</Text>
+              <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Email: {item.user.emailAddress}</Text>
             </View>
+          </View>
         ))
         return (
-            <View style={{ alignItems: 'flex-start', height: 450, backgroundColor: 'white', width: deviceWidth }}>
-                <Text style={styles.title}>Thông tin kiểm kê tài sản:</Text>
-                {bullet('Mã kiểm kê', paramKey.kiemKeTaiSan.maKiemKe)}
-                {bullet('Tên kiểm kê', paramKey.kiemKeTaiSan.tenKiemKe)}
-                {bullet('Thời gian bắt đầu dự kiến', paramKey.kiemKeTaiSan.thoiGianBatDauDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauDuKien))}
-                {bullet('Thời gian bắt đầu thực tế', paramKey.kiemKeTaiSan.thoiGianBatDauThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauThucTe))}
-                {bullet('Thời gian kết thúc dự kiến', paramKey.kiemKeTaiSan.thoiGianKetThucDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucDuKien))}
-                {bullet('Thời gian kết thúc thực tế', paramKey.kiemKeTaiSan.thoiGianKetThucThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucThucTe))}
-                {bullet('Bộ phận được kiểm kê', paramKey.phongBan)}
-                {bullet('Trạng thái', paramKey.kiemKeTaiSan.trangThaiId && convertTrangThai(paramKey.kiemKeTaiSan.trangThaiId))}
-                <Text style={styles.title}>Danh sách người kiểm kê</Text>
-                <View >
-                    {items()}
-                </View>
+          <View style={{ alignItems: 'flex-start', height: 450, backgroundColor: 'white', width: deviceWidth }}>
+            <Text style={styles.title}>Thông tin kiểm kê tài sản:</Text>
+            {bullet('Mã kiểm kê', paramKey.kiemKeTaiSan.maKiemKe)}
+            {bullet('Tên kiểm kê', paramKey.kiemKeTaiSan.tenKiemKe)}
+            {bullet('Thời gian bắt đầu dự kiến', paramKey.kiemKeTaiSan.thoiGianBatDauDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauDuKien))}
+            {bullet('Thời gian bắt đầu thực tế', paramKey.kiemKeTaiSan.thoiGianBatDauThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauThucTe))}
+            {bullet('Thời gian kết thúc dự kiến', paramKey.kiemKeTaiSan.thoiGianKetThucDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucDuKien))}
+            {bullet('Thời gian kết thúc thực tế', paramKey.kiemKeTaiSan.thoiGianKetThucThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucThucTe))}
+            {bullet('Bộ phận được kiểm kê', paramKey.phongBan)}
+            {bullet('Trạng thái', paramKey.kiemKeTaiSan.trangThaiId && convertTrangThai(paramKey.kiemKeTaiSan.trangThaiId))}
+            <Text style={styles.title}>Danh sách người kiểm kê</Text>
+            <View>
+              {items()}
             </View>
+          </View>
         )
     }
+
     render() {
         const { tabOneHeight, tabTwoHeight, tabThirtHeight, danhsachUserKiemke, danhsachTSFound,
             danhsachTSNotFound,
             danhsachTSNgoaiHT } = this.state;
         const { paramKey, tabKey } = this.props.route.params;
-        console.log("danhsachTSFound: " + danhsachTSNotFound);
 
-        return <ScrollableTabView
+        return (
+          <ScrollableTabView
             collapsableBar={this.collapsableComponent(paramKey, tabKey, danhsachUserKiemke)}
             initialPage={0}
             tabContentHeights={[tabOneHeight, tabTwoHeight, tabThirtHeight]}
             scrollEnabled
             prerenderingSiblingsNumber={Infinity}
             renderTabBar={() => <DefaultTabBar inactiveTextColor="white" activeTextColor="white" backgroundColor="blue" />}
-        >
+          >
             <View onLayout={(event) => this.measureTabOne(event)} tabLabel='TS tìm thấy'>
-                <View style={{ height: 'auto', backgroundColor: "white" }}>
+              <View style={{ height: 'auto', backgroundColor: "white" }}>
 
-                    <FlatList
-                        scrollEnabled={false}
-                        data={danhsachTSFound}
-                        renderItem={item => this.renderItemComponent(item)}
-                    />
-                </View>
+                <FlatList
+                  scrollEnabled={false}
+                  data={danhsachTSFound}
+                  renderItem={item => this.renderItemComponent(item)}
+                />
+              </View>
 
             </View>
             <View onLayout={(event) => this.measureTabTwo(event)} tabLabel='TS không tìm thấy'>
-                <View style={{ height: 'auto', backgroundColor: "white" }}>
-
-                    <FlatList
-                        scrollEnabled={false}
-                        data={danhsachTSNotFound}
-                        renderItem={item => this.renderItemComponent(item)}
-                    />
-                </View>
-            </View>
-            <View onLayout={(event) => this.measureTabThirt(event)} tabLabel='TS ngoài danh sách'>
-                <View style={{ height: 'auto', backgroundColor: "white" }}>
+              <View style={{ height: 'auto', backgroundColor: "white" }}>
 
                 <FlatList
-                        scrollEnabled={false}
-                        data={danhsachTSNgoaiHT}
-                        renderItem={item => this.renderItemComponent(item)}
-                    />
-                </View>
+                  scrollEnabled={false}
+                  data={danhsachTSNotFound}
+                  renderItem={item => this.renderItemComponent(item)}
+                />
+              </View>
             </View>
-        </ScrollableTabView>;
+            <View onLayout={(event) => this.measureTabThirt(event)} tabLabel='TS ngoài danh sách'>
+              <View style={{ height: 'auto', backgroundColor: "white" }}>
+
+                <FlatList
+                  scrollEnabled={false}
+                  data={danhsachTSNgoaiHT}
+                  renderItem={item => this.renderItemComponent(item)}
+                />
+              </View>
+            </View>
+          </ScrollableTabView>
+);
     }
 }
 const styles = StyleSheet.create({
@@ -270,7 +274,7 @@ const styles = StyleSheet.create({
         width: 15
     },
     bulletText: {
-        flex: 1,
+        flex: 2,
         paddingRight: 5
     },
     bulletTextNormal: {

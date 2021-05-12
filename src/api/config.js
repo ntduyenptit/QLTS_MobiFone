@@ -1,6 +1,6 @@
 
 // define the api
-export const baseUrl = 'https://qlts-server.mobifonernd.vn/api/';
+export const baseUrl = 'http://10.16.150.143:9080/api/';
 export const headerWithoutToken = ({
   'Content-Type': 'application/json',
   Accept: 'application/json'
@@ -18,6 +18,7 @@ export const endPoint = ({
   getAllNhaCungCap: 'services/app/LookupTable/GetAllNhaCungCap',
   getAllTinhTrangMaSuDungTaiSan: 'services/app/LookupTable/GetAllTinhTrangMaSuDungTaiSan',
   getAllTrangThaiSuDung: 'services/app/LookupTable/GetAllTrangThaiTaiSanTimKiem',
+  getAllLoaiTaiSan: 'services/app/LookupTable/GetAllLoaiTaiSanTree',
   // Quản lý tài sản
   getToanBoTaiSan: 'services/app/ToanBoTaiSan/GetAll',
   getTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/GetAllTaiSanSuaChuaBaoDuong',
