@@ -309,6 +309,6 @@ const styles = StyleSheet.create({
         alignSelf: "flex-start",
         height: 50,
         width: "85%",
-
+        paddingBottom: 10,
     },
 });

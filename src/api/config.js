@@ -37,7 +37,17 @@ export const endPoint = ({
   // Kiểm kê tài sản:
   getdanhsachKiemke: 'services/app/KiemKeTaiSan/GetAll',
   getdanhsachUserKiemke: 'services/app/KiemKeTaiSan/GetUserForEdit',
-  getAllTaisanKiemke: 'services/app/KiemKeTaiSan/GetAllTaiSan'
+  getAllTaisanKiemke: 'services/app/KiemKeTaiSan/GetAllTaiSan',
+
+  //Dự trù mua sắm:
+  getAllPhieuMuasam: 'services/app/PhieuDuTruMuaSam/GetAll',
+  getChitietPhieuMuasam: 'services/app/PhieuDuTruMuaSam/GetForEdit',
+
+  //Quản lý cảnh báo:
+  getAllDanhsachCanhbao: 'services/app/CanhBao/GetAll',
+
+  //Báo cáo người dùng:
+  getAllBaocaoNguoidung: 'services/app/BaoCaoNguoiDung/GetAllBaoCao',
   
 });
 
@@ -75,7 +85,9 @@ export const screens = ({
   // Màn hình chi tiết
   chi_tiet_tai_san: 'Chi tiết tài sản',
   chi_tiet_dau_doc: 'Chi tiết đầu đọc',
-  chi_tiet_kiem_ke_tai_san: 'Chi tiết kiểm kê tài sản'
+  chi_tiet_kiem_ke_tai_san: 'Chi tiết kiểm kê tài sản',
+  chi_tiet_du_tru_mua_sam: 'Chi tiết phiếu mua sắm',
+  
 });
 
 // Quản lý tabs
