@@ -566,6 +566,7 @@ export default class MultiSelect extends Component {
       const { key, children } = nodeData;
       return (
         <ScrollView
+          nestedScrollEnabled
           style={{ height: 'auto' }}
           key={`${key}_${index}`}
         >
@@ -726,7 +727,7 @@ export default class MultiSelect extends Component {
     let renderItems = searchTerm && !isTree ? this._filterItems(searchTerm) : items;
     if (isTree && searchTerm) {
       const listResult = [];
-      this._find(items, searchTerm, listResult).map(x => {
+      this._find(items, searchTerm, listResult).forEach(x => {
         listResult.push(x[0]);
       });
       renderItems = listResult;
@@ -802,7 +803,7 @@ export default class MultiSelect extends Component {
                 backgroundColor: '#fafafa'
               }}
             >
-              <View style={[styleItemsContainer && styleItemsContainer, levelNum > 0 && listExpanded && listExpanded.length > 0 && getCollapsedNodeHeight]}>
+              <View style={[styleItemsContainer && styleItemsContainer, levelNum > 0 && listExpanded && !searchTerm && listExpanded.length > 0 && getCollapsedNodeHeight]}>
                 {this._renderTree(renderItems)}
               </View>
               {!single && !hideSubmitButton && (

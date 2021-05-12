@@ -39,14 +39,14 @@ export const endPoint = ({
   getdanhsachUserKiemke: 'services/app/KiemKeTaiSan/GetUserForEdit',
   getAllTaisanKiemke: 'services/app/KiemKeTaiSan/GetAllTaiSan',
 
-  //Dự trù mua sắm:
+  // Dự trù mua sắm:
   getAllPhieuMuasam: 'services/app/PhieuDuTruMuaSam/GetAll',
   getChitietPhieuMuasam: 'services/app/PhieuDuTruMuaSam/GetForEdit',
 
-  //Quản lý cảnh báo:
+  // Quản lý cảnh báo:
   getAllDanhsachCanhbao: 'services/app/CanhBao/GetAll',
 
-  //Báo cáo người dùng:
+  // Báo cáo người dùng:
   getAllBaocaoNguoidung: 'services/app/BaoCaoNguoiDung/GetAllBaoCao',
   
 });

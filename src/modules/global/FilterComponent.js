@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import React from 'react';
 import { connect } from "react-redux";
+import find from 'lodash/find';
 import { store } from "../../redux/store";
 import { hideFilter } from "../../redux/actions/filter.actions";
 import { deviceWidth, deviceHeight } from './LoaderComponent';
@@ -40,7 +41,24 @@ const FilterComponent = (props) => (
       <View style={{width: deviceWidth - 100, alignItems: 'center'}}>
         <Pressable
           style={[styles.button, styles.buttonClose]}
-          onPress={() => store.dispatch(hideFilter())}
+          onPress={() => {
+            store.dispatch(hideFilter());
+            const DvqlFilterSelected = find(props.DvqlFilterSelected, itemSelected => itemSelected.tab === props.tab) 
+              && find(props.DvqlFilterSelected, itemSelected => itemSelected.tab === props.tab).data;
+            const LtsFilterSelected = find(props.LtsFilterSelected, itemSelected => itemSelected.tab === props.tab) 
+              && find(props.LtsFilterSelected, itemSelected => itemSelected.tab === props.tab).data;
+              const NccFilterSelected = find(props.NccFilterSelected, itemSelected => itemSelected.tab === props.tab) 
+              && find(props.NccFilterSelected, itemSelected => itemSelected.tab === props.tab).data;
+              const MsdFilterSelected = find(props.MsdFilterSelected, itemSelected => itemSelected.tab === props.tab) 
+              && find(props.MsdFilterSelected, itemSelected => itemSelected.tab === props.tab).data;
+            const paramters = { 
+              datas: DvqlFilterSelected.length > 0 ? DvqlFilterSelected : props.DvqlDataFilter, 
+              loaitaisan: LtsFilterSelected, 
+              nhacungcap: NccFilterSelected,
+              masudung: MsdFilterSelected, 
+              isFilter: true };
+            props.action(paramters);
+          }}
         >
           <Text style={styles.textStyle}>Xong</Text>
         </Pressable>
@@ -113,6 +131,16 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   isShowFilter: state.filterReducer.isShowFilter,
+  DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
+  tab: state.currentTabReducer.tabName,
+
+  DvqlFilterSelected: state.filterDVQLSelectedReducer.dvqlFilterSelected,
+  LtsFilterSelected: state.filterLTSSelectedReducer.ltsFilterSelected,
+  MsdFilterSelected: state.filterMSDSelectedReducer.msdFilterSelected,
+  TtFilterSelected: state.filterTTSelectedReducer.ttFilterSelected,
+  NccFilterSelected: state.filterNCCSelectedReducer.nccFilterSelected,
+  TtsdFilterSelected: state.filterTTSDSelectedReducer.ttsdFilterSelected,
+  HtFilterSelected: state.filterHTSelectedReducer.htFilterSelected,
 });
 
 export default connect(mapStateToProps)(FilterComponent);

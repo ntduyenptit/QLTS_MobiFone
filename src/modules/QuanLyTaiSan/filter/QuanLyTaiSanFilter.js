@@ -7,7 +7,7 @@ import find from 'lodash/find';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { filterType } from '../../global/Config';
 import { buildTree } from '../../global/Helper';
-import { GetToanBoTaiSanData } from '../QuanLyTaiSan';
+import { deviceWidth } from '../../global/LoaderComponent';
 import { screens, tabs, hinhThucData } from '../../../api/config';
 import { 
   addSelectedDVQLAction,
@@ -26,7 +26,6 @@ import {
   removeSelectedTTSDAction,
   removeSelectedHTAction,
  } from '../../../redux/actions/filter.actions';
-import store from '../../../redux/store';
 
 const QuanLyTaiSanFilterComponent = (items) => {
 
@@ -119,28 +118,35 @@ const QuanLyTaiSanFilterComponent = (items) => {
   const onSelectedDVQLChange = (newSelectItems) => {
     items.removeSelectedDVQL({data: newSelectItems, screen: items.screen, tab: items.tab});
     items.addSelectedDVQL({data: newSelectItems, screen: items.screen, tab: items.tab});
-    GetToanBoTaiSanData({ datas: newSelectItems.length > 0 ? newSelectItems : items.DvqlDataFilter, isFilter: true });
   }
   const onSelectedLTSChange = (newSelectItems) => {
     items.removeSelectedLTS({data: newSelectItems, screen: items.screen, tab: items.tab});
     items.addSelectedLTS({data: newSelectItems, screen: items.screen, tab: items.tab});
-    GetToanBoTaiSanData({ loaitaisan: newSelectItems, isFilter: true });
   }
   const onSelectedNCCChange = (newSelectItems) => {
     items.removeSelectedLTS({data: newSelectItems, screen: items.screen, tab: items.tab});
     items.addSelectedNCC({data: newSelectItems, screen: items.screen, tab: items.tab});
-    GetToanBoTaiSanData({ nhacungcap: newSelectItems, isFilter: true });
   }
   const onSelectedMSDChange = (newSelectItems) => {
     items.removeSelectedMSD({data: newSelectItems, screen: items.screen, tab: items.tab});
     items.addSelectedMSD({data: newSelectItems, screen: items.screen, tab: items.tab});
-    GetToanBoTaiSanData({ masudung: newSelectItems, isFilter: true });
   }
   const onSelectedHTChange = (newSelectItems) => {
     items.removeSelectedHT({data: newSelectItems, screen: items.screen, tab: items.tab});
     items.addSelectedHT({data: newSelectItems, screen: items.screen, tab: items.tab});
-    GetToanBoTaiSanData({ hinhthuc: newSelectItems, isFilter: true });
   }
+
+  const DvqlFilterSelected = find(items.DvqlFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+  && find(items.DvqlFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
+  const LtsFilterSelected = find(items.LtsFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+  && find(items.LtsFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
+  const NccFilterSelected = find(items.NccFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+  && find(items.NccFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
+  const MsdFilterSelected = find(items.MsdFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+  && find(items.MsdFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
+  const HtFilterSelected = find(items.HtFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+  && find(items.HtFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
+
   // end SelectedChange
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -172,8 +178,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
               displayKey="displayName"
               selectText="Chọn đơn vị quản lý..."
               onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-              selectedItems={find(items.DvqlFilterSelected, itemSelected => itemSelected.tab === items.tab) 
-              && find(items.DvqlFilterSelected, itemSelected => itemSelected.tab === items.tab).data}
+              selectedItems={DvqlFilterSelected}
             />
           </View>
         </>
@@ -204,8 +209,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
               displayKey="text"
               selectText="Chọn loại tài sản..."
               onSelectedItemsChange={(item) => onSelectedLTSChange(item)}
-              selectedItems={find(items.LtsFilterSelected, itemSelected => itemSelected.tab === items.tab) 
-              && find(items.LtsFilterSelected, itemSelected => itemSelected.tab === items.tab).data}
+              selectedItems={LtsFilterSelected}
             />
           </View>
         </>
@@ -235,8 +239,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
               displayKey="displayName"
               selectText="Chọn nhà cung cấp..."
               onSelectedItemsChange={(item) => onSelectedNCCChange(item)}
-              selectedItems={find(items.NccFilterSelected, itemSelected => itemSelected.tab === items.tab) 
-              && find(items.NccFilterSelected, itemSelected => itemSelected.tab === items.tab).data}
+              selectedItems={NccFilterSelected}
             />
           </View>
         </>
@@ -261,8 +264,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
               displayKey="displayName"
               selectText="Chọn mã sử dụng..."
               onSelectedItemsChange={(item) => onSelectedMSDChange(item)}
-              selectedItems={find(items.MsdFilterSelected, itemSelected => itemSelected.tab === items.tab) 
-              && find(items.MsdFilterSelected, itemSelected => itemSelected.tab === items.tab).data}
+              selectedItems={MsdFilterSelected}
             />
           </View>
         </>
@@ -282,8 +284,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
                 displayKey="displayName"
                 selectText="Chọn hình thức..."
                 onSelectedItemsChange={(item) => onSelectedHTChange(item)}
-                selectedItems={find(items.HtFilterSelected, itemSelected => itemSelected.tab === items.tab) 
-                && find(items.HtFilterSelected, itemSelected => itemSelected.tab === items.tab).data}
+                selectedItems={HtFilterSelected}
               />
             </View>
           </>
@@ -298,7 +299,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     padding: 10,
-    width: 300
+    width: deviceWidth - 100
   },
   titleText: {
     fontSize: 20,
