@@ -24,6 +24,9 @@ import ChitietDutruMuasamScreen from '../quanlydutrumuasam/QuanLyMuasamDetailCom
 
 import QuanlyCanhbaoScreen from '../quanlycanhbao/QuanlyCanhbao';
 import BaocaonguoidungScreen from '../quanlybaocao/baocaonguoidung/BaoCaoNguoiDung';
+import BaocaoCanhbaoScreen from '../quanlybaocao/baocaocanhbao/BaoCaoCanhbao';
+import DatLichXuatBaoCaoScreen from '../quanlybaocao/datlichxuatbaocao/LichXuatBaoCao';
+import LichXuatBaoCaoChitietScreen  from '../quanlybaocao/datlichxuatbaocao/LichXuatBaoCao_Chitiet';
 
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
@@ -307,7 +310,7 @@ const StackNavigationData = [
   },
   {
     name: screens.bao_cao_canh_bao,
-    component: AvailableInFullVersion,
+    component: BaocaoCanhbaoScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -320,9 +323,22 @@ const StackNavigationData = [
   },
   {
     name: screens.dat_lich_xuat_bao_cao,
-    component: AvailableInFullVersion,
+    component: DatLichXuatBaoCaoScreen,
     headerLeft: null,
-    headerRight: headerRightComponent,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.chi_tiet_lich_xuat_bao_cao,
+    component: LichXuatBaoCaoChitietScreen,
+    headerLeft: null,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,

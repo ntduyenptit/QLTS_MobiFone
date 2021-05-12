@@ -112,6 +112,23 @@ const loadInfo = (screen, item, props) => {
           </View>
         </>
       );
+      case screens.chi_tiet_lich_xuat_bao_cao:
+      return (
+        <>
+          <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="bell" color="#0080FF" size={15} />
+          <View style={styles.infor}>
+            <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>Tên báo cáo: {item.tenBaoCao}</Text>
+            <Text numberOfLines={1}>Lặp lại: {item.lapLai}</Text>
+            <Text numberOfLines={1} style={styles.infoText}>Thời gian: {(item.ngayGio)}</Text>
+          </View>
+          <TouchableOpacity
+            style={{ height: 40, width: 20, alignItems: "flex-end" }}
+            onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab })}
+          >
+            <Icon name="chevron-right" color='#0080FF' size={15} />
+          </TouchableOpacity>
+        </>
+      );
     default:
       return null;
   }

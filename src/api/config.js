@@ -48,6 +48,10 @@ export const endPoint = ({
 
   // Báo cáo người dùng:
   getAllBaocaoNguoidung: 'services/app/BaoCaoNguoiDung/GetAllBaoCao',
+
+  //Đặt lịch xuất báo cáo:
+  getAllLichXuatBaoCao: 'services/app/DatLichXuatBaoCao/GetAllDatLich',
+  getChitietLichXuatBaoCao: 'services/app/DatLichXuatBaoCao/GetForEdit',
   
 });
 
@@ -87,6 +91,7 @@ export const screens = ({
   chi_tiet_dau_doc: 'Chi tiết đầu đọc',
   chi_tiet_kiem_ke_tai_san: 'Chi tiết kiểm kê tài sản',
   chi_tiet_du_tru_mua_sam: 'Chi tiết phiếu mua sắm',
+  chi_tiet_lich_xuat_bao_cao: 'Xem cài đặt Báo cáo người dùng',
   
 });
 
