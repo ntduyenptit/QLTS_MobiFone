@@ -311,7 +311,7 @@ const QuanLyTaiSan = (state) => {
       >
         {totalDisplayForTab()}
       </View>
-      <FilterComponent filter={<QuanLyTaiSanFilter />} />
+      <FilterComponent filter={<QuanLyTaiSanFilter />} action={GetToanBoTaiSanData} />
     </Animated.View>
   );
 };
