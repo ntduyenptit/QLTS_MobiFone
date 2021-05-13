@@ -52,6 +52,17 @@ export const endPoint = ({
   //Đặt lịch xuất báo cáo:
   getAllLichXuatBaoCao: 'services/app/DatLichXuatBaoCao/GetAllDatLich',
   getChitietLichXuatBaoCao: 'services/app/DatLichXuatBaoCao/GetForEdit',
+
+  //Quản lý nhà cung cấp
+  getNhaCungcap: 'services/app/NhaCungCap/GetAll',
+  getViewNhacungcap: 'services/app/NhaCungCap/GetForEdit',
+  //Quản lý vị trí địa lý
+  getAllVitriDialy: 'services/app/ViTriDiaLy/GetAll',
+  getAllTinhthanh: 'services/app/ViTriDiaLy/GetAllDtoTinhThanh',
+  // Quản lý loại tài sản
+  getAllLoaiTaiSan: 'services/app/LoaiTaiSan/GetAll',
+  //Quản lý đơn vị
+  getAllDonvi:  'services/app/ToChuc/GetAll',
   
 });
 
@@ -92,6 +103,7 @@ export const screens = ({
   chi_tiet_kiem_ke_tai_san: 'Chi tiết kiểm kê tài sản',
   chi_tiet_du_tru_mua_sam: 'Chi tiết phiếu mua sắm',
   chi_tiet_lich_xuat_bao_cao: 'Xem cài đặt Báo cáo người dùng',
+  chi_tiet_nha_cung_cap: 'Xem chi tiết',
   
 });
 
@@ -176,9 +188,6 @@ export const drawerData = [
       },
       {
         name: screens.dat_lich_xuat_bao_cao,
-      },
-      {
-        name: screens.bao_cao_thong_tin_thiet_bi_rfid,
       },
       {
         name: screens.bao_cao_thong_tin_tai_san,

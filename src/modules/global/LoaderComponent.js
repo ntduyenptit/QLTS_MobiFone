@@ -115,7 +115,7 @@ const loadInfo = (screen, item, props) => {
       case screens.chi_tiet_lich_xuat_bao_cao:
       return (
         <>
-          <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="bell" color="#0080FF" size={15} />
+          <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color="#0080FF" size={15} />
           <View style={styles.infor}>
             <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>Tên báo cáo: {item.tenBaoCao}</Text>
             <Text numberOfLines={1}>Lặp lại: {item.lapLai}</Text>
@@ -129,6 +129,60 @@ const loadInfo = (screen, item, props) => {
           </TouchableOpacity>
         </>
       );
+      case screens.chi_tiet_nha_cung_cap:
+        return (
+          <>
+            <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color="#0080FF" size={15} />
+            <View style={styles.infor}>
+              <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>Mã NCC: {item.nhaCungCap.maNhaCungCap}</Text>
+              <Text numberOfLines={1}>Tên NCC: {item.nhaCungCap.tenNhaCungCap}</Text>
+              <Text numberOfLines={1} style={styles.infoText}>Lĩnh vực kinh doanh: {(item.tenLinhVuc)}</Text>
+            </View>
+            <TouchableOpacity
+              style={{ height: 40, width: 20, alignItems: "flex-end" }}
+              onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab, idNCC: item.nhaCungCap.tenantId })}
+            >
+              <Icon name="chevron-right" color='#0080FF' size={15} />
+            </TouchableOpacity>
+          </>
+        );
+        case screens.quan_ly_vi_tri_dia_ly:
+          return (
+            <>
+              <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="map-marker" color="#0080FF" size={15} />
+              <View style={styles.infor}>
+                <Text numberOfLines={2} style={[{ fontWeight: "bold" }, styles.infoText]}>Tên vị trí: {item.tenViTri}</Text>
+                <Text numberOfLines={1}>Địa chỉ: {item.diaChi}</Text>
+                <Text numberOfLines={1} style={styles.infoText}>{(item.quanHuyen)}, {(item.tinhThanh)} </Text>
+              </View>
+              
+            </>
+          );
+          case screens.quan_ly_loai_tai_san:
+          return (
+            <>
+              <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="cubes" color="#0080FF" size={15} />
+              <View style={styles.infor}>
+                <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>Mã loại Tài sản: {item.data.loaiTaiSan.ma}</Text>
+                <Text numberOfLines={1}>Tên: {item.data.loaiTaiSan.ten}</Text>
+                <Text numberOfLines={1} style={styles.infoText}>Mã Hexa: {item.data.maHexa} </Text>
+              </View>
+              
+            </>
+          );
+          case screens.quan_ly_don_vi:
+            return (
+              <>
+                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color="#0080FF" size={15} />
+                <View style={styles.infor}>
+                  <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>Mã đơn vị: {item.data.toChuc.maToChuc}</Text>
+                  <Text numberOfLines={1}>Tên: {item.data.toChuc.tenToChuc}</Text>
+                  <Text numberOfLines={1} style={styles.infoText}>Mã Hexa: {item.data.toChuc.maHexa} </Text>
+                  <Text numberOfLines={1} style={styles.infoText}>Địa chỉ: {item.data.diaChi} </Text>
+                </View>
+                
+              </>
+            );
     default:
       return null;
   }
@@ -163,7 +217,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 5,
-    height: 95,
+    height: 100,
   },
   infor: {
     marginLeft: 10,

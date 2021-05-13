@@ -27,6 +27,11 @@ import BaocaonguoidungScreen from '../quanlybaocao/baocaonguoidung/BaoCaoNguoiDu
 import BaocaoCanhbaoScreen from '../quanlybaocao/baocaocanhbao/BaoCaoCanhbao';
 import DatLichXuatBaoCaoScreen from '../quanlybaocao/datlichxuatbaocao/LichXuatBaoCao';
 import LichXuatBaoCaoChitietScreen  from '../quanlybaocao/datlichxuatbaocao/LichXuatBaoCao_Chitiet';
+import QuanlyNhaCungcapScreen from '../quanlydanhmuc/quanlynhacungcap/QuanLyNhaCungCap';
+import NhaCungCapDetailScreen from '../quanlydanhmuc/quanlynhacungcap/QuanLyNhaCungCapDetail';
+import QuanlyVitriDialyScreen from '../quanlydanhmuc/quanlyvitridialy/QuanlyVitriDialy';
+import QuanlyLoaiTaiSanScreen from '../quanlydanhmuc/quanlyloaitaisan/QuanlyLoaiTaisan';
+import QuanlyDonviScreen from '../quanlydanhmuc/quanlydonvi/QuanlyDonvi';
 
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
@@ -232,7 +237,7 @@ const StackNavigationData = [
   },
   {
     name: screens.quan_ly_nha_cung_cap,
-    component: AvailableInFullVersion,
+    component: QuanlyNhaCungcapScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -244,8 +249,21 @@ const StackNavigationData = [
     },
   },
   {
+    name: screens.chi_tiet_nha_cung_cap,
+    component: NhaCungCapDetailScreen,
+    headerLeft: null,
+    headerRight: moreHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
     name: screens.quan_ly_vi_tri_dia_ly,
-    component: AvailableInFullVersion,
+    component: QuanlyVitriDialyScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -258,9 +276,9 @@ const StackNavigationData = [
   },
   {
     name: screens.quan_ly_loai_tai_san,
-    component: AvailableInFullVersion,
+    component: QuanlyLoaiTaiSanScreen,
     headerLeft: null,
-    headerRight: headerRightComponent,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -271,9 +289,9 @@ const StackNavigationData = [
   },
   {
     name: screens.quan_ly_don_vi,
-    component: AvailableInFullVersion,
+    component: QuanlyDonviScreen,
     headerLeft: null,
-    headerRight: headerRightComponent,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -338,7 +356,7 @@ const StackNavigationData = [
     name: screens.chi_tiet_lich_xuat_bao_cao,
     component: LichXuatBaoCaoChitietScreen,
     headerLeft: null,
-    headerRight: null,
+    headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -347,19 +365,19 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
-  {
-    name: screens.bao_cao_thong_tin_thiet_bi_rfid,
-    component: AvailableInFullVersion,
-    headerLeft: null,
-    headerRight: headerRightComponent,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-      alignSelf: 'center'
-    },
-  },
+  // {
+  //   name: screens.bao_cao_thong_tin_thiet_bi_rfid,
+  //   component: AvailableInFullVersion,
+  //   headerLeft: null,
+  //   headerRight: headerRightComponent,
+  //   headerBackground: { source: headerBackground },
+  //   headerTitleStyle: {
+  //     fontFamily: fonts.primaryRegular,
+  //     color: colors.white,
+  //     fontSize: 18,
+  //     alignSelf: 'center'
+  //   },
+  // },
   {
     name: screens.bao_cao_thong_tin_tai_san,
     component: BaoCaoThongTinTS,
