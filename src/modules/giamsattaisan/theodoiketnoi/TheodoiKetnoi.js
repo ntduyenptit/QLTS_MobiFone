@@ -19,26 +19,32 @@ class TheoDoiKetNoiScreen extends React.Component {
       scrollYValue: new Animated.Value(0),
       toanboTaiSanData: [],
       total: 0,
+      skipCount: 0
     }
   }
 
   componentDidMount() {
-    this.getToanTaisan(this.props.DvqlDataFilter);
+    this.getToanTaisan({ datas: this.props.DvqlDataFilter });
   }
 
-  getToanTaisan(datas) {
+  getToanTaisan(parameters) {
+    const { datas, startdate, enddate } = parameters;
     if (datas && datas.length > 0) {
       let url;
       url = `${endPoint.getToanboThietbi}?`;
 
-      url += `StartDate=${encodeURIComponent(`${''}`)}&`;
-      url += `EndDate=${encodeURIComponent(`${''}`)}&`;
+      if (startdate) {
+        url += `StartDate=${encodeURIComponent(`${startdate}`)}&`;
+      }
+      if (enddate) {
+        url += `EndDate=${encodeURIComponent(`${enddate}`)}&`;
+      }
       datas.forEach(e => {
         url += `BoPhanId=${encodeURIComponent(`${e.id}`)}&`;
       });
 
       url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
-      url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
+      url += `SkipCount=${encodeURIComponent(`${this.state.skipCount}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
       createGetMethod(url)
         .then(res => {
@@ -55,11 +61,18 @@ class TheoDoiKetNoiScreen extends React.Component {
     }
   }
 
+  isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+    const paddingToBottom = 10;
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
+  };
+
   render() {
     const {
       scrollYValue,
       toanboTaiSanData,
-      total
+      total,
+      skipCount
     } = this.state;
     const clampedScroll = Animated.diffClamp(
       Animated.add(
@@ -79,6 +92,7 @@ class TheoDoiKetNoiScreen extends React.Component {
         <SafeAreaView>
           <SearchComponent
             clampedScroll={clampedScroll}
+            screen={screens.theo_doi_ket_noi_thiet_bi}
           />
           <Animated.ScrollView
             showsVerticalScrollIndicator={false}
@@ -96,8 +110,18 @@ class TheoDoiKetNoiScreen extends React.Component {
             }}
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
-              { useNativeDriver: true },
-              () => { },          // Optional async listener
+              {
+                useNativeDriver: true,
+                listener: event => {
+                  if (this.isCloseToBottom(event.nativeEvent)) {
+                    setTimeout(() => {
+                      this.setState({
+                        skipCount: skipCount + 1,
+                      })
+                    }, 2000)
+                  }
+                },
+              }
             )}
             contentInsetAdjustmentBehavior="automatic"
           >
@@ -106,13 +130,21 @@ class TheoDoiKetNoiScreen extends React.Component {
         </SafeAreaView>
         <Text
           style={{
-          bottom: 5,
-          right: 5,
-          position: 'absolute',
-        }}
+            bottom: 5,
+            right: 5,
+            position: 'absolute',
+          }}
         >Hiển thị: {toanboTaiSanData.length}/{total}
         </Text>
-        <FilterComponent filter={<QuanLyGiamsatFilter />} />
+        <FilterComponent
+          screen={screens.theo_doi_ket_noi_thiet_bi}
+          filter={(
+            <QuanLyGiamsatFilter
+              screen={screens.theo_doi_ket_noi_thiet_bi}
+            />
+          )}
+          action={this.getToanTaisan}
+        />
       </Animated.View>
     );
   }
@@ -121,6 +153,7 @@ class TheoDoiKetNoiScreen extends React.Component {
 
 const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
+  isLoading: state.toanbotaisanReducer.isLoading,
   tab: 'theo doi ket noi'
 });
 

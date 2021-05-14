@@ -30,9 +30,12 @@ import {
   filterNCCSelectedReducer,
   filterTTSDSelectedReducer,
   filterHTSelectedReducer,
+  filterStartDateSelectedReducer,
+  filterEndDateSelectedReducer,
 
   currentScreenReducer,
-  currentTabReducer
+  currentTabReducer,
+  SearchReducer
  } from '../modules/global/GlobalState';
 
  const appReducer = combineReducers({
@@ -57,9 +60,13 @@ import {
   filterNCCSelectedReducer,
   filterTTSDSelectedReducer,
   filterHTSelectedReducer,
+  filterStartDateSelectedReducer,
+  filterEndDateSelectedReducer,
 
   currentScreenReducer,
   currentTabReducer,
+
+  SearchReducer,
 
   // giám sát tài sản
   toanbotaisanReducer,

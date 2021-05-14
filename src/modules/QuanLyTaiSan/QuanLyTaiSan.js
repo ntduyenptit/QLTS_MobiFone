@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Animated, SafeAreaView, StatusBar, Text, View } from 'react-native';
 import { connect } from 'react-redux';
+import find from 'lodash/find';
 import LoaderComponent from '../global/LoaderComponent';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
@@ -30,7 +31,7 @@ import {
 import QuanLyTaiSanFilter from './filter/QuanLyTaiSanFilter';
 
 export function GetToanBoTaiSanData(parameters) {
-  const { datas, tab, textFilter, skipCount, maxResultCount, loaitaisan, nhacungcap, masudung, isFilter } = parameters;
+  const { datas, tab, skipCount, maxResultCount, loaitaisan, nhacungcap, masudung, isFilter } = parameters;
   const phongbanquanly = datas !== undefined ? datas : store.getState().filterDVQLDataReducer.dvqlDataFilter;
   const maxCount = maxResultCount !== undefined ? maxResultCount : 10;
   const skipTotal = skipCount !== undefined ? skipCount : 0;
@@ -66,6 +67,9 @@ export function GetToanBoTaiSanData(parameters) {
         break;
     }
 
+    const textState = store.getState().SearchReducer.searchData;
+    const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san)
+    && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san).data;
     if (textFilter) {
       url += `Fillter=${textFilter}&`
       if (tabs.tai_san_dang_su_dung || tabs.tai_san_chua_su_dung) {
@@ -111,7 +115,6 @@ export function GetToanBoTaiSanData(parameters) {
       .then(res => {
         if (res) {
           if (textFilter || isFilter) {
-            console.log('tabChosen: ',tabChosen);
             switch (tabChosen) {
               case tabs.toan_bo_tai_san:
                 store.dispatch(toanbotaisanSearchData(res));
@@ -126,7 +129,6 @@ export function GetToanBoTaiSanData(parameters) {
                 store.dispatch(taisanhongSearchData(res));
                 break;
               case tabs.tai_san_dang_su_dung:
-                console.log('res: ',res);
                 store.dispatch(taisandangsudungSearchData(res));
                 break;
               case tabs.tai_san_chua_su_dung:
@@ -269,7 +271,7 @@ const QuanLyTaiSan = (state) => {
     <Animated.View>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <SearchComponent clampedScroll={clampedScroll} />
+        <SearchComponent clampedScroll={clampedScroll} screen={screens.quan_ly_tai_san} />
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
           style={{
@@ -311,7 +313,11 @@ const QuanLyTaiSan = (state) => {
       >
         {totalDisplayForTab()}
       </View>
-      <FilterComponent filter={<QuanLyTaiSanFilter />} action={GetToanBoTaiSanData} />
+      <FilterComponent 
+        screen={screens.quan_ly_tai_san} 
+        filter={<QuanLyTaiSanFilter screen={screens.quan_ly_tai_san} />} 
+        action={GetToanBoTaiSanData}
+      />
     </Animated.View>
   );
 };

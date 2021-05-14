@@ -2,108 +2,87 @@ import {
     StyleSheet,
     Text,
     View,
-    Dimensions,
     ScrollView,
 } from "react-native";
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import {Calendar} from 'react-native-calendars';
+
 import { connect } from "react-redux";
+import find from 'lodash/find';
+import { deviceWidth } from '../../global/LoaderComponent';
+import {
+    addSelectedStartDateAction,
+    addSelectedEndDateAction,
+    removeSelectedStartDateAction,
+    removeSelectedEndDateAction
+} from '../../../redux/actions/filter.actions';
+import { getPeriod } from '../../global/Helper';
 
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
-import { filterType } from '../../global/Config';
-import { buildTree } from '../../global/Helper';
+const QuanLyGiamSatFilter = (props) => {
+    const [start, setStart] = useState({});
+    const [end, setEnd] = useState({});
+    const [period, setPeriod]= useState({});
 
-export const deviceWidth = Dimensions.get('window').width;
-export const deviceHeight = Dimensions.get('window').height;
+    useEffect(() => {
+        if (Object.keys(start).length !== 0) {
+            props.removeStartDateSelected({data: start, screen: props.screen});
+            props.addStartDateSelected({data: start, screen: props.screen});
+        }
+      }, [start]);
 
+      useEffect(() => {
+        if (Object.keys(end).length !== 0) {
+            props.removeEndDateSelected({ data: end, screen: props.screen });
+            props.addEndDateSelected({ data: end, screen: props.screen });
+        }
+      }, [end]);
 
-const QuanLyGiamSatFilter = (items) => {
-    const [selectedDVQLItems, setDVQLItems] = useState([]);
-    const [selectedHTItems, setHTItems] = useState([]);
+      useEffect(() => {
+        const StartDateFilterSelected = find(props.StartDateFilterSelected, itemSelected => itemSelected.screen === props.screen)
+        && find(props.StartDateFilterSelected, itemSelected => itemSelected.screen === props.screen).data;
+        const EndDateFilterSelected = find(props.EndDateFilterSelected, itemSelected => itemSelected.screen === props.screen)
+        && find(props.EndDateFilterSelected, itemSelected => itemSelected.screen === props.screen).data;
+        if (StartDateFilterSelected && EndDateFilterSelected) {
+            const Period = getPeriod(StartDateFilterSelected.timestamp, EndDateFilterSelected.timestamp);
+            setPeriod(Period);
+        }
+    }, [props.isShowFilter]);
 
-    const donViQuanLyRef = useRef();
-    const trangThaiRef = useRef();
-
-    const dvqlTreeData = buildTree(items.DvqlDataFilter);
-
-    const closeMultiSelectIfOpened = (type) => {
-        switch (type) {
-            case filterType.don_vi_quan_ly:
-                if (trangThaiRef.current && trangThaiRef.current.state.selector) {
-                    trangThaiRef.current._toggleSelector();
-                }
-                break;
-
-            case filterType.hinh_thuc:
-
-                if (donViQuanLyRef.current && donViQuanLyRef.current.state.selector) {
-                    donViQuanLyRef.current._toggleSelector();
-                };
-
-                break;
-            default:
-                break;
+    // selectedChange
+    const onStartDateChange = (dayObj) => {
+        const {
+            day, month, year,
+          } = dayObj
+          const timestamp = new Date(year, month - 1, day).getTime()
+          const newDayObj = { ...dayObj, timestamp }
+        if (Object.keys(start).length === 0) {
+            setStart(newDayObj);
+        } else {
+            const { timestamp: savedTimestamp } = start
+            if (savedTimestamp > timestamp) {
+                const Period = getPeriod(timestamp, savedTimestamp);
+                setPeriod(Period);
+            } else {
+                const Period = getPeriod(savedTimestamp, timestamp);
+                setPeriod(Period);
+            }
+            setEnd(newDayObj);
         }
     }
 
-    const requestToanBoTaiSanDataByFilter = (params) => {
-
-    }
-
-    // selectedChange
-    const onSelectedDVQLChange = (newSelectItems) => {
-        setDVQLItems((newSelectItems), () => {
-            requestToanBoTaiSanDataByFilter({ 'DVQL_Filter': selectedDVQLItems });
-        });
-    }
-    const onSelectedHTChange = (newSelectItems) => {
-        setHTItems((newSelectItems), () => {
-            requestToanBoTaiSanDataByFilter({ 'TT_Filter': selectedHTItems });
-        });
-    }
     // end SelectedChange
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <>
-            <View>
-              <Text style={styles.titleText}>Đơn vị Quản lý</Text>
-              <MultiSelect
-                ref={donViQuanLyRef}
-                isTree
-                getCollapsedNodeHeight={{ height: 200 }}
-                onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
-                items={dvqlTreeData}
-                IconRenderer={Icon}
-                searchInputPlaceholderText="Tìm kiếm..."
-                styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
-                uniqueKey="id"
-                displayKey="displayName"
-                selectText="Chọn đơn vị quản lý..."
-                onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-                selectedItems={selectedDVQLItems}
-              />
-            </View>
-          </>
-          <>
-            <View>
-              <Text style={styles.titleText}>Trạng Thái</Text>
-              <MultiSelect
-                ref={trangThaiRef}
-                onToggleList={() => closeMultiSelectIfOpened(filterType.hinh_thuc)}
-                items={items.TtsdDataFilter}
-                IconRenderer={Icon}
-                single
-                searchInputPlaceholderText="Tìm kiếm..."
-                uniqueKey="id"
-                displayKey="displayName"
-                selectText="Chọn trạng thái..."
-                onSelectedItemsChange={(item) => onSelectedHTChange(item)}
-                selectedItems={selectedHTItems}
-              />
-            </View>
-          </>
+          <View>
+            <Text style={styles.titleText}>Thời gian</Text>
+            <Calendar
+              onDayPress={(day) => onStartDateChange(day)}
+              markingType='period'
+              markedDates={period}
+            />
+          </View>
         </View>
       </ScrollView>
     );
@@ -117,58 +96,6 @@ const styles = StyleSheet.create({
         padding: 10,
         width: deviceWidth - 100
     },
-    modalView: {
-        margin: 20,
-        paddingTop: 80,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-        height: deviceHeight - 200,
-    },
-    underLine: {
-        width: deviceWidth - 100,
-        borderBottomColor: 'black',
-        borderBottomWidth: 0.7,
-    },
-    titleStyle: {
-        textAlign: 'center',
-        fontSize: 20,
-        paddingBottom: 10,
-        color: '#2196F3'
-    },
-    textStyle: {
-        fontWeight: "bold",
-        textAlign: "center",
-        color: 'white'
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center"
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-        marginBottom: 10,
-    },
-    buttonClose: {
-        width: 100,
-        backgroundColor: "#2196F3",
-    },
-    safeAreaView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
 
     titleText: {
         fontSize: 20,
@@ -176,17 +103,23 @@ const styles = StyleSheet.create({
         marginLeft: -10,
         padding: 10,
     },
-    component: {
-
-    }
-
 });
 
 const mapStateToProps = state => ({
-    DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-    TtsdDataFilter: state.filterTTSDDataReducer.ttsdDataFilter,
     isShowFilter: state.filterReducer.isShowFilter,
-    screen: state.currentScreenReducer.screenName,
-});
+  
+    StartDateFilterSelected: state.filterStartDateSelectedReducer.startdateFilterSelected,
+    EndDateFilterSelected: state.filterEndDateSelectedReducer.enddateFilterSelected,
+  });
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+      addStartDateSelected: (item) => dispatch(addSelectedStartDateAction(item)),
+      addEndDateSelected: (item) => dispatch(addSelectedEndDateAction(item)),
+  
+      removeStartDateSelected: (item) => dispatch(removeSelectedStartDateAction(item)),
+      removeEndDateSelected: (item) => dispatch(removeSelectedEndDateAction(item)),
+    }
+  };
 
-export default connect(mapStateToProps)(QuanLyGiamSatFilter);
+export default connect(mapStateToProps, mapDispatchToProps)(QuanLyGiamSatFilter);

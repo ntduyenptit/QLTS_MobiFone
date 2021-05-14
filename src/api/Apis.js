@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import { result } from 'lodash';
 import { baseUrl, headers, headerWithoutToken} from './config';
 
 export function createPostMethodWithoutToken(endPoint, params) {

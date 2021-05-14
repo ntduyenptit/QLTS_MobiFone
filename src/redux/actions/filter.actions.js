@@ -31,6 +31,11 @@ export const TTSD_SELECTED_REMOVE = `${FILTER} Remove TRANG_THAI_SU_DUNG selecte
 export const HT_SELECTED_ADD = `${FILTER} Add HINH_THUC selected`;
 export const HT_SELECTED_REMOVE = `${FILTER} Remove HINH_THUC selected`;
 
+export const STARTDATE_SELECTED_ADD = `${FILTER} Add START_DATE selected`;
+export const STARTDATE_SELECTED_REMOVE = `${FILTER} Remove START_DATE selected`;
+export const ENDDATE_SELECTED_ADD = `${FILTER} Add END_DATE selected`;
+export const ENDDATE_SELECTED_REMOVE = `${FILTER} Remove END_DATE selected`;
+
 export const showFilter = () => ({
     type: SHOW_FILTER,
     payload: {},
@@ -145,5 +150,26 @@ export const addSelectedHTAction = (data) => ({
 
 export const removeSelectedHTAction = (data) => ({
     type: HT_SELECTED_REMOVE,
+    payload: data
+});
+
+// thời gian
+export const addSelectedStartDateAction = (data) => ({
+    type: STARTDATE_SELECTED_ADD,
+    payload: data
+});
+
+export const removeSelectedStartDateAction = (data) => ({
+    type: STARTDATE_SELECTED_REMOVE,
+    payload: data
+});
+
+export const addSelectedEndDateAction = (data) => ({
+    type: ENDDATE_SELECTED_ADD,
+    payload: data
+});
+
+export const removeSelectedEndDateAction = (data) => ({
+    type: ENDDATE_SELECTED_REMOVE,
     payload: data
 });

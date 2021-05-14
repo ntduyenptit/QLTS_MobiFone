@@ -15,6 +15,7 @@ import find from 'lodash/find';
 import { store } from "../../redux/store";
 import { hideFilter } from "../../redux/actions/filter.actions";
 import { deviceWidth, deviceHeight } from './LoaderComponent';
+import { screens } from "../../api/config";
 
 const keyboardVerticalOffset = Platform.OS === 'ios' ? -50 : 0
 
@@ -28,7 +29,7 @@ const FilterComponent = (props) => (
     }}
   >
     <KeyboardAvoidingView
-      behavior='position' 
+      behavior='position'
       keyboardVerticalOffset={keyboardVerticalOffset}
       style={styles.modalView}
     >
@@ -38,25 +39,43 @@ const FilterComponent = (props) => (
       <View style={styles.container}>
         {props.filter}
       </View>
-      <View style={{width: deviceWidth - 100, alignItems: 'center'}}>
+      <View style={{ width: deviceWidth - 100, alignItems: 'center' }}>
         <Pressable
           style={[styles.button, styles.buttonClose]}
           onPress={() => {
             store.dispatch(hideFilter());
-            const DvqlFilterSelected = find(props.DvqlFilterSelected, itemSelected => itemSelected.tab === props.tab) 
-              && find(props.DvqlFilterSelected, itemSelected => itemSelected.tab === props.tab).data;
-            const LtsFilterSelected = find(props.LtsFilterSelected, itemSelected => itemSelected.tab === props.tab) 
-              && find(props.LtsFilterSelected, itemSelected => itemSelected.tab === props.tab).data;
-              const NccFilterSelected = find(props.NccFilterSelected, itemSelected => itemSelected.tab === props.tab) 
-              && find(props.NccFilterSelected, itemSelected => itemSelected.tab === props.tab).data;
-              const MsdFilterSelected = find(props.MsdFilterSelected, itemSelected => itemSelected.tab === props.tab) 
-              && find(props.MsdFilterSelected, itemSelected => itemSelected.tab === props.tab).data;
-            const paramters = { 
-              datas: DvqlFilterSelected.length > 0 ? DvqlFilterSelected : props.DvqlDataFilter, 
-              loaitaisan: LtsFilterSelected, 
+            let DvqlFilterSelected;
+            let LtsFilterSelected;
+            let NccFilterSelected;
+            let MsdFilterSelected;
+            if (props.screen === screens.quan_ly_tai_san) {
+              DvqlFilterSelected = find(props.DvqlFilterSelected, itemSelected => itemSelected.tab === props.tab)
+                && find(props.DvqlFilterSelected, itemSelected => itemSelected.tab === props.tab).data;
+              LtsFilterSelected = find(props.LtsFilterSelected, itemSelected => itemSelected.tab === props.tab)
+                && find(props.LtsFilterSelected, itemSelected => itemSelected.tab === props.tab).data;
+              NccFilterSelected = find(props.NccFilterSelected, itemSelected => itemSelected.tab === props.tab)
+                && find(props.NccFilterSelected, itemSelected => itemSelected.tab === props.tab).data;
+              MsdFilterSelected = find(props.MsdFilterSelected, itemSelected => itemSelected.tab === props.tab)
+                && find(props.MsdFilterSelected, itemSelected => itemSelected.tab === props.tab).data;
+            } else {
+              DvqlFilterSelected = find(props.DvqlFilterSelected, itemSelected => itemSelected.screen === props.screen)
+                && find(props.DvqlFilterSelected, itemSelected => itemSelected.screen === props.screen).data;
+              LtsFilterSelected = find(props.LtsFilterSelected, itemSelected => itemSelected.screen === props.screen)
+                && find(props.LtsFilterSelected, itemSelected => itemSelected.screen === props.screen).data;
+              NccFilterSelected = find(props.NccFilterSelected, itemSelected => itemSelected.screen === props.screen)
+                && find(props.NccFilterSelected, itemSelected => itemSelected.screen === props.screen).data;
+              MsdFilterSelected = find(props.MsdFilterSelected, itemSelected => itemSelected.screen === props.screen)
+                && find(props.MsdFilterSelected, itemSelected => itemSelected.screen === props.screen).data;
+            }
+            const paramters = {
+              datas: DvqlFilterSelected && DvqlFilterSelected.length > 0 ? DvqlFilterSelected : props.DvqlDataFilter,
+              loaitaisan: LtsFilterSelected,
               nhacungcap: NccFilterSelected,
-              masudung: MsdFilterSelected, 
-              isFilter: true };
+              masudung: MsdFilterSelected,
+              startdate: props.StartDateFilterSelected,
+              enddate: props.EndDateFilterSelected,
+              isFilter: true
+            };
             props.action(paramters);
           }}
         >
@@ -65,7 +84,7 @@ const FilterComponent = (props) => (
       </View>
     </KeyboardAvoidingView>
   </Modal>
-  )
+  );
 
 
 const styles = StyleSheet.create({
@@ -141,6 +160,8 @@ const mapStateToProps = state => ({
   NccFilterSelected: state.filterNCCSelectedReducer.nccFilterSelected,
   TtsdFilterSelected: state.filterTTSDSelectedReducer.ttsdFilterSelected,
   HtFilterSelected: state.filterHTSelectedReducer.htFilterSelected,
+  StartDateFilterSelected: state.filterStartDateSelectedReducer.startdateFilterSelected,
+  EndDateFilterSelected: state.filterEndDateSelectedReducer.enddateFilterSelected
 });
 
 export default connect(mapStateToProps)(FilterComponent);
