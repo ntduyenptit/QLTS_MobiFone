@@ -11,8 +11,7 @@ import { endPoint } from '../../../api/config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 const deviceWidth = Dimensions.get("window").width;
-let idphongBan = [];
-let idNguoiNhan = [];
+var idNhacungcap;
 
 const bullet = (title, text) => (
     <View style={styles.row}>
@@ -32,15 +31,13 @@ const bullet = (title, text) => (
     </View>
 );
 
-class LichXuatBaocaoDetail extends React.Component {
+class NhaCungcapDetail extends React.Component {
     constructor(props) {
         super(props);
 
 
         this.state = {
             chitietData: [],
-            phongBan: [],
-            nguoiNhan: [],
         }
         this.param = {
             param: props.route.params,
@@ -48,19 +45,17 @@ class LichXuatBaocaoDetail extends React.Component {
     }
 
     componentDidMount() {
-        this.getchitietLichBaocao(this.props.DvqlDataFilter);
+        this.getchitietNCC();
     }
 
-    getchitietLichBaocao(array) {
+    getchitietNCC() {
         let url;
-        url = `${endPoint.getChitietLichXuatBaoCao}?`;
-        url += `input=${encodeURIComponent(`${1}`)}&`;
+        url = `${endPoint.getViewNhacungcap}?`;
+        url += `Id=${encodeURIComponent(`${idNhacungcap}`)}&`;
         url += `isView=${encodeURIComponent(`${true}`)}`;
         createGetMethod(url)
             .then(res => {
                 if (res) {
-                    idphongBan = res.result.phongBanNhan;
-                    idNguoiNhan = res.result.nguoiNhan;
                     this.setState({
                         chitietData: res.result,
                     });
@@ -69,60 +64,24 @@ class LichXuatBaocaoDetail extends React.Component {
                 }
             })
             .catch(err => console.log(err));
-
-        let url1 = 'services/app/LookupTable/GetAllNguoiDungTheoPBLookupTable?phongBan=' + idphongBan;
-        createGetMethod(url1)
-            .then(res => {
-                if (res) {
-                    let arr = res.result;
-                    let arraynguoiNhanID = idNguoiNhan.split(',');
-                    console.log("idNguoiNhan "+ arraynguoiNhanID.length);
-                    let element = [];
-                    for (let i = 0; i < arr.length; i++) {
-                        for (let j = 0; j < arraynguoiNhanID.length; j++)
-                            if (arr[i].id == arraynguoiNhanID[j]) {
-                                console.log("nguoiNhan: " + arr[i].displayName);
-                                element.push(arr[i].displayName);
-                                
-                            }
-                    }
-                    console.log("element: " + element);
-                    this.setState({
-                        nguoiNhan: element,
-                    });
-
-                } else {
-                    // Alert.alert('Lỗi khi load toàn bộ tài sản!');
-                }
-            })
-            .catch(err => console.log(err));
-
-        console.log("phongBan: " + array);
-        for (let i = 0; i < array.length; i++) {
-            if (array[i].id == idphongBan) {
-                console.log("phongBan: " + array[i].displayName);
-                this.setState({
-                    phongBan: array[i].displayName,
-                });
-            }
-        }
-
     }
 
     render() {
-        const { chitietData, nguoiNhan, phongBan } = this.state;
-        const { paramKey, tabKey } = this.props.route.params;
-
+        const { chitietData } = this.state;
+        const { paramKey, tabKey, idNCC } = this.props.route.params;
+        idNhacungcap = idNCC;
         return (
             <View style={{ alignItems: 'flex-start', backgroundColor: 'white', width: deviceWidth }}>
-                <Text style={styles.title}>Thông tin lịch xuất báo cáo:</Text>
-                {bullet('Tên báo cáo', paramKey.tenBaoCao)}
-                {bullet('Giờ gửi báo cáo', paramKey.ngayGio)}
-                {bullet('Lặp lại', paramKey.lapLai)}
-                {bullet('Người nhận báo cáo', nguoiNhan)}
-                {bullet('Phòng ban nhận báo cáo', phongBan)}
+                <Text style={styles.title}>Thông tin nhà cung cấp:</Text>
+                {bullet('Mã nhà cung cấp', chitietData.maNhaCungCap)}
+                {bullet('Tên nhà cung cấp', chitietData.tenNhaCungCap)}
+                {bullet('Lĩnh vực kinh doanh', paramKey.tenLinhVuc)}
+                {bullet('Mã số thuế', chitietData.maSoThue)}
+                {bullet('Địa chỉ', chitietData.diaChi)}
+                {bullet('Số điện thoại', chitietData.soDienThoai)}
+                {bullet('Email', chitietData.email)}
                 {bullet('Ghi chú', chitietData.ghiChu)}
-
+                {bullet('Tài liệu đính kèm', chitietData.listFile)}
             </View>
         )
     }
@@ -189,9 +148,5 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = state => ({
-    DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-    tab: 'Chi tiet lich xuat bao cao'
-});
 
-export default connect(mapStateToProps)(LichXuatBaocaoDetail);
+export default NhaCungcapDetail;
