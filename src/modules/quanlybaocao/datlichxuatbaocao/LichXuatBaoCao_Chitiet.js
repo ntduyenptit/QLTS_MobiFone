@@ -11,8 +11,7 @@ import { endPoint } from '../../../api/config';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 const deviceWidth = Dimensions.get("window").width;
-let idphongBan = [];
-let idNguoiNhan = [];
+const deviceHeight = Dimensions.get("window").height;
 
 const bullet = (title, text) => (
     <View style={styles.row}>
@@ -41,6 +40,8 @@ class LichXuatBaocaoDetail extends React.Component {
             chitietData: [],
             phongBan: [],
             nguoiNhan: [],
+            idPhongban: [],
+            idNguoiNhan: [],
         }
         this.param = {
             param: props.route.params,
@@ -48,10 +49,10 @@ class LichXuatBaocaoDetail extends React.Component {
     }
 
     componentDidMount() {
-        this.getchitietLichBaocao(this.props.DvqlDataFilter);
-    }
+        this.getchitietLichBaocao();
 
-    getchitietLichBaocao(array) {
+    }
+    getchitietLichBaocao() {
         let url;
         url = `${endPoint.getChitietLichXuatBaoCao}?`;
         url += `input=${encodeURIComponent(`${1}`)}&`;
@@ -59,62 +60,70 @@ class LichXuatBaocaoDetail extends React.Component {
         createGetMethod(url)
             .then(res => {
                 if (res) {
-                    idphongBan = res.result.phongBanNhan;
-                    idNguoiNhan = res.result.nguoiNhan;
+                    console.log("idphongBan: " + res.result.phongBanNhan);
+                    let idPB = res.result.phongBanNhan;
+                    let  idNN = res.result.nguoiNhan;
+                    let array = this.props.DvqlDataFilter
+                    for (let i = 0; i < array.length; i++) {
+                        if (array[i].id == idPB) {
+                            console.log("phongBan: " + array[i].displayName);
+                            this.setState({
+                                phongBan: array[i].displayName,
+                            });
+                            break;
+                        }
+                    }
+                    console.log("idphongBan123: " + res.result.phongBanNhan);
+                    let url1 = 'services/app/LookupTable/GetAllNguoiDungTheoPBLookupTable?phongBan=' + res.result.phongBanNhan;
+                    createGetMethod(url1)
+                        .then(res => {
+                            if (res) {
+                                let arr = res.result;
+                                console.log("arr " + res.result);
+                                let arraynguoiNhanID = idNN.split(',');
+                                console.log("idNguoiNhan " + arraynguoiNhanID.length);
+                                let element = [];
+                                for (let i = 0; i < arr.length; i++) {
+                                    for (let j = 0; j < arraynguoiNhanID.length; j++) {
+                                        console.log("NguoiNhan " +j+" "+ arraynguoiNhanID[j]);
+                                        if (arr[i].id == arraynguoiNhanID[j]) {
+                                            console.log("nguoiNhan: " + arr[i].displayName);
+                                            element.push(arr[i].displayName+", ");
+
+                                        }
+                                    }
+
+                                }
+                                console.log("element: " + element);
+                                this.setState({
+                                    nguoiNhan: element,
+                                });
+
+                            } else {
+                                // Alert.alert('Lỗi khi load toàn bộ tài sản!');
+                            }
+                        })
+                        .catch(err => console.log(err));
                     this.setState({
                         chitietData: res.result,
+                        idphongBan: res.result.phongBanNhan,
+                        idNguoiNhan: res.result.nguoiNhan,
                     });
                 } else {
                     // Alert.alert('Lỗi khi load toàn bộ tài sản!');
                 }
             })
             .catch(err => console.log(err));
-
-        let url1 = 'services/app/LookupTable/GetAllNguoiDungTheoPBLookupTable?phongBan=' + idphongBan;
-        createGetMethod(url1)
-            .then(res => {
-                if (res) {
-                    let arr = res.result;
-                    let arraynguoiNhanID = idNguoiNhan.split(',');
-                    console.log("idNguoiNhan "+ arraynguoiNhanID.length);
-                    let element = [];
-                    for (let i = 0; i < arr.length; i++) {
-                        for (let j = 0; j < arraynguoiNhanID.length; j++)
-                            if (arr[i].id == arraynguoiNhanID[j]) {
-                                console.log("nguoiNhan: " + arr[i].displayName);
-                                element.push(arr[i].displayName);
-                                
-                            }
-                    }
-                    console.log("element: " + element);
-                    this.setState({
-                        nguoiNhan: element,
-                    });
-
-                } else {
-                    // Alert.alert('Lỗi khi load toàn bộ tài sản!');
-                }
-            })
-            .catch(err => console.log(err));
-
-        console.log("phongBan: " + array);
-        for (let i = 0; i < array.length; i++) {
-            if (array[i].id == idphongBan) {
-                console.log("phongBan: " + array[i].displayName);
-                this.setState({
-                    phongBan: array[i].displayName,
-                });
-            }
-        }
-
     }
 
     render() {
-        const { chitietData, nguoiNhan, phongBan } = this.state;
+        const { chitietData, nguoiNhan, phongBan, idPhongban, idNguoiNhan } = this.state;
         const { paramKey, tabKey } = this.props.route.params;
-
+        idPB = idPhongban;
+        idNN = idNguoiNhan;
+        console.log("nguoiNhan: " + nguoiNhan);
         return (
-            <View style={{ alignItems: 'flex-start', backgroundColor: 'white', width: deviceWidth }}>
+            <View style={ StyleSheet.listItem}>
                 <Text style={styles.title}>Thông tin lịch xuất báo cáo:</Text>
                 {bullet('Tên báo cáo', paramKey.tenBaoCao)}
                 {bullet('Giờ gửi báo cáo', paramKey.ngayGio)}
@@ -177,7 +186,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "row",
         borderRadius: 5,
-        height: 200,
+        height: deviceHeight,
     },
     infor: {
         marginLeft: 10,

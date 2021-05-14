@@ -63,6 +63,13 @@ export const endPoint = ({
   getAllLoaiTaiSan: 'services/app/LoaiTaiSan/GetAll',
   // Quản lý đơn vị
   getAllDonvi:  'services/app/ToChuc/GetAll',
+  //Quản lý người dùng
+  getAllNguoidung: 'services/app/User/GetAll',
+  getTochucNguoidangnhap: 'services/app/LookupTable/GetAllToChucCuaNguoiDangNhapTree',
+  getDetailNguoidung: 'services/app/User/GetForEdit',
+  //Quản lý phân quyền
+  getALLRoleName: 'services/app/Role/GetAll',
+  getMailServerEdit: 'services/app/MailServer/GetForEdit',
   
 });
 
@@ -104,6 +111,7 @@ export const screens = ({
   chi_tiet_du_tru_mua_sam: 'Chi tiết phiếu mua sắm',
   chi_tiet_lich_xuat_bao_cao: 'Xem cài đặt Báo cáo người dùng',
   chi_tiet_nha_cung_cap: 'Xem chi tiết',
+  chi_tiet_nguoi_dung: 'Xem chi tiết người dùng',
   
 });
 
@@ -221,9 +229,6 @@ export const drawerData = [
       },
       {
         name: screens.quan_ly_phan_quyen,
-      },
-      {
-        name: screens.lich_su_nguoi_dung,
       },
       {
         name: screens.quan_ly_mail_server,
