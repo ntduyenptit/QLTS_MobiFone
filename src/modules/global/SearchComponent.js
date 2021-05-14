@@ -3,7 +3,7 @@ import React from 'react';
 import { Animated, StyleSheet, TextInput } from 'react-native';
 import { store } from '../../redux/store';
 import { deviceWidth } from './LoaderComponent';
-import { GetToanBoTaiSanData } from '../quanlytaisan/QuanLyTaiSan';
+import { addSearch, removeSearch } from '../../redux/actions/search.actions';
 
 const SearchComponent = (props) => {
   const {
@@ -37,11 +37,8 @@ const SearchComponent = (props) => {
         style={styles.formField}
         placeholderTextColor="#888888"
         onChangeText={(text) => {
-          GetToanBoTaiSanData({
-            datas: store.getState().filterDVQLDataReducer.dvqlDataFilter,
-            tab: store.getState().currentTabReducer.tabName,
-            textFilter: text
-          });
+          store.dispatch(removeSearch({data: text, screen: props.screen}));
+          store.dispatch(addSearch({data: text, screen: props.screen}));
         }}
       />
     </Animated.View>

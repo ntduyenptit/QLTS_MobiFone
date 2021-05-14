@@ -15,6 +15,8 @@ import {
   MSD_SELECTED_ADD,
   TTSD_SELECTED_ADD,
   HT_SELECTED_ADD,
+  STARTDATE_SELECTED_ADD,
+  ENDDATE_SELECTED_ADD,
 
   DVQL_SELECTED_REMOVE,
   TT_SELECTED_REMOVE,
@@ -22,10 +24,13 @@ import {
   NCC_SELECTED_REMOVE,
   MSD_SELECTED_REMOVE,
   TTSD_SELECTED_REMOVE,
-  HT_SELECTED_REMOVE
+  HT_SELECTED_REMOVE,
+  STARTDATE_SELECTED_REMOVE,
+  ENDDATE_SELECTED_REMOVE
  } from '../../redux/actions/filter.actions'
 import { screens, tabs } from '../../api/config';
 import { CURRENT_SCREEN, CURRENT_TAB } from '../../redux/actions/screen.actions';
+import { SEARCH_ADD, SEARCH_REMOVE } from '../../redux/actions/search.actions';
 
 const initialState = {
     isShowFilter: false,
@@ -44,6 +49,8 @@ const initialState = {
     msdFilterSelected: [],
     ttFilterSelected: [],
     ttsdFilterSelected: [],
+    startdateFilterSelected: [],
+    enddateFilterSelected: []
 }
 
 // Reducer
@@ -349,6 +356,66 @@ export const filterHTSelectedReducer = (state = initialState, action) => {
         return {
           ...state,
           htFilterSelected: state.htFilterSelected.filter((item) => item.screen !== action.payload.screen)
+        }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const filterStartDateSelectedReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case STARTDATE_SELECTED_ADD: {
+      return {
+        ...state,
+        startdateFilterSelected: [...state.startdateFilterSelected, action.payload]
+      }
+    }
+    case STARTDATE_SELECTED_REMOVE: {
+        return {
+          ...state,
+          startdateFilterSelected: state.startdateFilterSelected.filter((item) => item.screen !== action.payload.screen)
+        }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const filterEndDateSelectedReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ENDDATE_SELECTED_ADD: {
+      return {
+        ...state,
+        enddateFilterSelected: [...state.enddateFilterSelected, action.payload]
+      }
+    }
+    case ENDDATE_SELECTED_REMOVE: {
+        return {
+          ...state,
+          enddateFilterSelected: state.enddateFilterSelected.filter((item) => item.screen !== action.payload.screen)
+        }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const SearchReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case SEARCH_ADD: {
+      return {
+        ...state,
+        searchData: [...state.searchData, action.payload]
+      }
+    }
+    case SEARCH_REMOVE: {
+        return {
+          ...state,
+          searchData: state.searchData.filter((item) => item.screen !== action.payload.screen)
         }
     }
     default: {

@@ -85,3 +85,43 @@ export const convertTrangThai = (int) => {
       return null;
   }
 }
+
+export const getDateString = (timestamp) => {
+  const date = new Date(timestamp)
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+
+  let dateString = `${year}-`
+  if (month < 10) {
+    dateString += `0${month}-`
+  } else {
+    dateString += `${month}-`
+  }
+  if (day < 10) {
+    dateString += `0${day}`
+  } else {
+    dateString += day
+  }
+
+  return dateString
+}
+
+export const getPeriod = (startTimestamp, endTimestamp) => {
+  const period = {}
+  let currentTimestamp = startTimestamp
+  while (currentTimestamp < endTimestamp) {
+    const dateString = getDateString(currentTimestamp)
+    period[dateString] = {
+      color: 'green',
+      startingDay: currentTimestamp === startTimestamp,
+    }
+    currentTimestamp += 24 * 60 * 60 * 1000
+  }
+  const dateString = getDateString(endTimestamp)
+  period[dateString] = {
+    color: 'green',
+    endingDay: true,
+  }
+  return period
+}

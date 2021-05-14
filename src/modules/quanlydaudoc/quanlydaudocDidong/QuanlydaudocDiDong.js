@@ -76,6 +76,7 @@ class QuanLyDauDocDiDongScreen extends React.Component {
         <SafeAreaView>
           <SearchComponent 
             clampedScroll={clampedScroll} 
+            screen={screens.quan_ly_dau_doc_di_dong}
           />
           <Animated.ScrollView
             showsVerticalScrollIndicator={false}

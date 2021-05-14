@@ -2,6 +2,7 @@
 import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Dimensions, Text } from 'react-native';
 import { connect } from 'react-redux';
+import find from 'lodash/find';
 import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
 import QuanLyGiamSatFilter from '../filter/QuanlyGiamsatTSFilter';
@@ -20,19 +21,30 @@ class GiamSatTaiSanScreen extends React.Component {
       toanboTaiSanData: [],
       total: 0,
     }
+    this.getToanTaisan = this.getToanTaisan.bind(this);
   }
 
   componentDidMount() {
-    this.getToanTaisan(this.props.DvqlDataFilter);
+    this.getToanTaisan({ datas: this.props.DvqlDataFilter });
   }
 
-  getToanTaisan(datas) {
+  getToanTaisan(parameters) {
+    const { datas, startdate, enddate } = parameters;
     if (datas && datas.length > 0) {
       let url;
       url = `${endPoint.getLichsuRavaoAngten}?`;
+      const StartDate = find(startdate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
+      && find(startdate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
+      if (StartDate) {
+        url += `StartDate=${encodeURIComponent(`${StartDate.dateString}`)}&`;
+      }
 
-      url += `StartDate=${encodeURIComponent(`${''}`)}&`;
-      url += `EndDate=${encodeURIComponent(`${''}`)}&`;
+      const EndDate = find(enddate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
+      && find(enddate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
+      if (EndDate) {
+        url += `EndDate=${encodeURIComponent(`${EndDate.dateString}`)}&`;
+      }
+
       datas.forEach(e => {
         url += `BoPhanId=${encodeURIComponent(`${e.id}`)}&`;
       });
@@ -43,6 +55,7 @@ class GiamSatTaiSanScreen extends React.Component {
       createGetMethod(url)
         .then(res => {
           if (res) {
+            console.log(res);
             this.setState({
               toanboTaiSanData: res.result.items,
               total: res.result.totalCount
@@ -79,6 +92,7 @@ class GiamSatTaiSanScreen extends React.Component {
         <SafeAreaView>
           <SearchComponent
             clampedScroll={clampedScroll}
+            screen={screens.giam_sat_tai_san}
           />
           <Animated.ScrollView
             showsVerticalScrollIndicator={false}
@@ -106,13 +120,21 @@ class GiamSatTaiSanScreen extends React.Component {
         </SafeAreaView>
         <Text
           style={{
-          bottom: 5,
-          right: 5,
-          position: 'absolute',
-        }}
+            bottom: 5,
+            right: 5,
+            position: 'absolute',
+          }}
         >Hiển thị: {toanboTaiSanData.length}/{total}
         </Text>
-        <FilterComponent filter={<QuanLyGiamSatFilter />} />
+        <FilterComponent
+          screens={screens.giam_sat_tai_san}
+          filter={(
+            <QuanLyGiamSatFilter
+              screen={screens.giam_sat_tai_san}
+            />
+          )}
+          action={this.getToanTaisan}
+        />
       </Animated.View>
     );
   }

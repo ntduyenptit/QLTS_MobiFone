@@ -318,7 +318,6 @@ const mapStateToProps = state => ({
   LtsDataFilter: state.filterLTSDataReducer.ltsDataFilter,
   NccDataFilter: state.filterNCCDataReducer.nccDataFilter,
   MsdDataFilter: state.filterMSDDataReducer.msdDataFilter,
-  screen: state.currentScreenReducer.screenName,
   tab: state.currentTabReducer.tabName,
 
   DvqlFilterSelected: state.filterDVQLSelectedReducer.dvqlFilterSelected,

@@ -76,7 +76,8 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
           <SearchComponent 
-            clampedScroll={clampedScroll} 
+            clampedScroll={clampedScroll}
+            screen={screens.quan_ly_dau_doc_co_dinh}
           />
           <Animated.ScrollView
             showsVerticalScrollIndicator={false}

@@ -11,19 +11,19 @@ export default function NavigatorView(props) {
     <TouchableOpacity
       onPress={() => props.navigation.toggleDrawer()}
       style={{
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-      }}
+          paddingHorizontal: 16,
+          paddingVertical: 12,
+        }}
     >
       <Image
         source={require('../../../assets/images/drawer/menu.png')}
         resizeMode="contain"
         style={{
-          height: 20,
-        }}
+            height: 20,
+          }}
       />
     </TouchableOpacity>
-  )
+    )
 
 
   return (
