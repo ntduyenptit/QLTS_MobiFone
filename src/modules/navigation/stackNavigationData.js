@@ -32,6 +32,10 @@ import NhaCungCapDetailScreen from '../quanlydanhmuc/quanlynhacungcap/QuanLyNhaC
 import QuanlyVitriDialyScreen from '../quanlydanhmuc/quanlyvitridialy/QuanlyVitriDialy';
 import QuanlyLoaiTaiSanScreen from '../quanlydanhmuc/quanlyloaitaisan/QuanlyLoaiTaisan';
 import QuanlyDonviScreen from '../quanlydanhmuc/quanlydonvi/QuanlyDonvi';
+import QuanLyNguoidungScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoidung';
+import NguoidungDetailScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoidungDetail';
+import QuanLyPhanQuyenScreen from '../quanlyhethong/quanlyphanquyen/QuanLyPhanQuyen';
+import QuanlyCauhinhMailServer from '../quanlyhethong/quanlymailServer/QuanLyMailServer';
 
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
@@ -301,19 +305,6 @@ const StackNavigationData = [
     },
   },
   {
-    name: screens.bao_cao,
-    component: AvailableInFullVersion,
-    headerLeft: null,
-    headerRight: headerRightComponent,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-      alignSelf: 'center'
-    },
-  },
-  {
     name: screens.bao_cao_nguoi_dung,
     component: BaocaonguoidungScreen,
     headerLeft: null,
@@ -365,19 +356,6 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
-  // {
-  //   name: screens.bao_cao_thong_tin_thiet_bi_rfid,
-  //   component: AvailableInFullVersion,
-  //   headerLeft: null,
-  //   headerRight: headerRightComponent,
-  //   headerBackground: { source: headerBackground },
-  //   headerTitleStyle: {
-  //     fontFamily: fonts.primaryRegular,
-  //     color: colors.white,
-  //     fontSize: 18,
-  //     alignSelf: 'center'
-  //   },
-  // },
   {
     name: screens.bao_cao_thong_tin_tai_san,
     component: BaoCaoThongTinTS,
@@ -392,8 +370,8 @@ const StackNavigationData = [
     },
   },
   {
-    name: screens.quan_ly_he_thong,
-    component: AvailableInFullVersion,
+    name: screens.quan_ly_nguoi_dung,
+    component: QuanLyNguoidungScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -404,11 +382,12 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
+  
   {
-    name: screens.quan_ly_nguoi_dung,
-    component: AvailableInFullVersion,
+    name: screens.chi_tiet_nguoi_dung,
+    component: NguoidungDetailScreen,
     headerLeft: null,
-    headerRight: headerRightComponent,
+    headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -419,9 +398,9 @@ const StackNavigationData = [
   },
   {
     name: screens.quan_ly_phan_quyen,
-    component: AvailableInFullVersion,
+    component: QuanLyPhanQuyenScreen,
     headerLeft: null,
-    headerRight: headerRightComponent,
+    headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -445,9 +424,9 @@ const StackNavigationData = [
   },
   {
     name: screens.quan_ly_mail_server,
-    component: AvailableInFullVersion,
+    component: QuanlyCauhinhMailServer,
     headerLeft: null,
-    headerRight: headerRightComponent,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
