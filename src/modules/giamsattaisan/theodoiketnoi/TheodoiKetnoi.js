@@ -4,10 +4,10 @@ import { Animated, SafeAreaView, StatusBar, Dimensions, Text } from 'react-nativ
 import { connect } from 'react-redux';
 import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
-import QuanLyGiamsatFilter from '../filter/QuanlyGiamsatTSFilter';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
+import TheoDoiKetNoiFilter from '../filter/TheoDoiKetNoiFilter';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
@@ -21,6 +21,7 @@ class TheoDoiKetNoiScreen extends React.Component {
       total: 0,
       skipCount: 0
     }
+    this.getToanTaisan = this.getToanTaisan.bind(this);
   }
 
   componentDidMount() {
@@ -139,9 +140,7 @@ class TheoDoiKetNoiScreen extends React.Component {
         <FilterComponent
           screen={screens.theo_doi_ket_noi_thiet_bi}
           filter={(
-            <QuanLyGiamsatFilter
-              screen={screens.theo_doi_ket_noi_thiet_bi}
-            />
+            <TheoDoiKetNoiFilter />
           )}
           action={this.getToanTaisan}
         />
