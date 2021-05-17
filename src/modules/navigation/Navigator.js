@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   logout: {
-    marginTop: 10,
+    marginTop: 30,
     marginLeft: 20,
     marginBottom: 15,
     flexDirection: 'row',
