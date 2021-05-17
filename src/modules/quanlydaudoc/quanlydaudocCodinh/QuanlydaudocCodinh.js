@@ -2,12 +2,17 @@
 import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Dimensions, Text } from 'react-native';
 import { connect } from 'react-redux';
+import find from 'lodash/find';
 import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
 import QuanLyDauDocFilter from '../filter/QuanLyDauDocFilter';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
+import { getTTSDDataFilter } from '../../global/FilterApis';
+import {
+  getTTSDDataAction
+} from '../../../redux/actions/filter.actions';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
@@ -20,13 +25,20 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
       daudoccodinhData: [],
       total: 0,
     }
+    this.getToanBoDauDocCoDinhData = this.getToanBoDauDocCoDinhData.bind(this);
   }
 
   componentDidMount() {
-    this.getToanBoDauDocCoDinhData(this.props.DvqlDataFilter);
+    this.getToanBoDauDocCoDinhData({datas: this.props.DvqlDataFilter});
+    if (this.props.TtsdDataFilter.length === 0) {
+      getTTSDDataFilter().then(res => {
+        this.props.getTTSDData(res.result);
+      });
+    }
   }
 
-  getToanBoDauDocCoDinhData(datas) {
+  getToanBoDauDocCoDinhData(parameters) {
+    const { datas, tinhtrangsudung } = parameters;
     if (datas && datas.length > 0) {
       let url;
       url = `${endPoint.getDaudocCodinh}?`;
@@ -34,7 +46,15 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
       datas.forEach(e => {
         url += `PhongBanSuDung=${encodeURIComponent(`${e.id}`)}&`;
       });
-  
+
+      if (tinhtrangsudung) {
+        const tinhTrangSuDung = find(tinhtrangsudung, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_co_dinh)
+        && find(tinhtrangsudung, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_co_dinh).data;
+        if (tinhTrangSuDung) {
+          url += `TinhTrangSuDung=${encodeURIComponent(`${tinhTrangSuDung}`)}&`;
+        }
+      }
+
       url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
@@ -111,7 +131,11 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
         }}
         >Hiển thị: {daudoccodinhData.length}/{total}
         </Text>
-        <FilterComponent filter={<QuanLyDauDocFilter />} />
+        <FilterComponent
+          filter={<QuanLyDauDocFilter screen={screens.quan_ly_dau_doc_co_dinh} />}
+          screens={screens.quan_ly_dau_doc_co_dinh}
+          action={this.getToanBoDauDocCoDinhData}
+        />
       </Animated.View>
     );
   }
@@ -120,7 +144,13 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
 
 const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-  tab: 'đầu đọc cố định'
+  TtsdDataFilter: state.filterTTSDDataReducer.ttsdDataFilter,
 });
 
-export default connect(mapStateToProps)(QuanLyDauDocCoDinhScreen);
+function mapDispatchToProps(dispatch) {
+  return {
+    getTTSDData: (item) => dispatch(getTTSDDataAction(item)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuanLyDauDocCoDinhScreen);

@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 import { compose, lifecycle } from 'recompose';
 
 import QuanLyTaiSanScreen, { GetToanBoTaiSanData } from './QuanLyTaiSan';
-import { getDVQLDataFilter, getLTSDataFilter, getMSDDataFilter, getNCCDataFilter, getTTSDDataFilter } from '../global/FilterApis'
+import { getDVQLDataFilter, getLTSDataFilter, getMSDDataFilter, getNCCDataFilter } from '../global/FilterApis'
 import { store } from '../../redux/store';
 import { tabs } from '../../api/config'
 
@@ -45,7 +45,6 @@ export default compose(
           getLTSDataFilter(),
           getMSDDataFilter(),
           getNCCDataFilter(),
-          getTTSDDataFilter(),
         ]).then(res => {
           if (res) {
             GetToanBoTaiSanData({ datas: res[0].result });
@@ -53,7 +52,6 @@ export default compose(
             store.dispatch(getLTSDataAction(res[1].result));
             store.dispatch(getMSDDataAction(res[2].result));
             store.dispatch(getNCCDataAction(res[3].result));
-            store.dispatch(getTTSDDataFilter(res[4].result));
           } else {
             Alert.alert('Filter failed!');
           }

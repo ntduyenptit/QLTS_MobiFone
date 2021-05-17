@@ -327,12 +327,6 @@ export const filterTTSDSelectedReducer = (state = initialState, action) => {
       }
     }
     case TTSD_SELECTED_REMOVE: {
-      if (action.payload.screen === screens.quan_ly_tai_san) {
-        return {
-          ...state,
-          ttsdFilterSelected: state.ttsdFilterSelected.filter((item) => item.tab !== action.payload.tab)
-        }
-      } 
         return {
           ...state,
           ttsdFilterSelected: state.ttsdFilterSelected.filter((item) => item.screen !== action.payload.screen)

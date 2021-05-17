@@ -48,6 +48,7 @@ const FilterComponent = (props) => (
             let LtsFilterSelected;
             let NccFilterSelected;
             let MsdFilterSelected;
+            let TtsdFilterSelected;
             if (props.screen === screens.quan_ly_tai_san) {
               DvqlFilterSelected = find(props.DvqlFilterSelected, itemSelected => itemSelected.tab === props.tab)
                 && find(props.DvqlFilterSelected, itemSelected => itemSelected.tab === props.tab).data;
@@ -76,6 +77,7 @@ const FilterComponent = (props) => (
               enddate: props.EndDateFilterSelected,
               chieuDiChuyen: props.chieuDiChuyenFilterSelected,
               phanloaitaisan: props.PltsFilterSelected,
+              tinhtrangsudung: props.TtsdFilterSelected,
               isFilter: true
             };
             props.action(paramters);
