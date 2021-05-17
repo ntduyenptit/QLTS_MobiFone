@@ -36,6 +36,12 @@ export const STARTDATE_SELECTED_REMOVE = `${FILTER} Remove START_DATE selected`;
 export const ENDDATE_SELECTED_ADD = `${FILTER} Add END_DATE selected`;
 export const ENDDATE_SELECTED_REMOVE = `${FILTER} Remove END_DATE selected`;
 
+export const CHIEU_DI_CHUYEN_SELECTED_ADD = `${FILTER} Add CHIEU_DI_CHUYEN selected`;
+export const CHIEU_DI_CHUYEN_SELECTED_REMOVE = `${FILTER} Remove CHIEU_DI_CHUYEN selected`;
+
+export const PLTS_SELECTED_ADD = `${FILTER} Add PHAN_LOAI_TAI_SAN selected`;
+export const PLTS_SELECTED_REMOVE = `${FILTER} Remove PHAN_LOAI_TAI_SAN selected`;
+
 export const showFilter = () => ({
     type: SHOW_FILTER,
     payload: {},
@@ -171,5 +177,25 @@ export const addSelectedEndDateAction = (data) => ({
 
 export const removeSelectedEndDateAction = (data) => ({
     type: ENDDATE_SELECTED_REMOVE,
+    payload: data
+});
+
+export const addSelectedChieuDiChuyenAction = (data) => ({
+    type: CHIEU_DI_CHUYEN_SELECTED_ADD,
+    payload: data
+});
+
+export const removeSelectedChieuDiChuyenAction = (data) => ({
+    type: CHIEU_DI_CHUYEN_SELECTED_REMOVE,
+    payload: data
+});
+
+export const addSelectedPhanLoaiTaiSanAction = (data) => ({
+    type: PLTS_SELECTED_ADD,
+    payload: data
+});
+
+export const removeSelectedPhanLoaiTaiSanAction = (data) => ({
+    type: PLTS_SELECTED_REMOVE,
     payload: data
 });

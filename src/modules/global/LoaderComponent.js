@@ -1,11 +1,11 @@
 /* eslint-disable import/no-cycle */
-import React, { useState } from 'react';
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
+import React from 'react';
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { GetToanBoTaiSanData } from '../quanlytaisan/QuanLyTaiSan';
 import { maTaiSan, screens, tenTaiSan } from '../../api/config';
-import { convertTimeFormatToLocaleDate, getColorByType } from "./Helper";
-import Modal from 'react-native-modal';
+import { convertTimeFormatToLocaleDate, getColorByType, convertTimeFormatToLocaleDateFullTime } from "./Helper";
+
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
@@ -51,7 +51,7 @@ const loadInfo = (screen, item, props) => {
           <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} color="#0080FF" name="exchange" size={15} />
           <View style={styles.infor}>
             <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
-            <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
+            <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDateFullTime(item.ngayDiChuyen)}</Text>
             <Text numberOfLines={1}>Chiều di chuyển: {item.chieuDiChuyen}</Text>
           </View>
         </>
@@ -63,7 +63,7 @@ const loadInfo = (screen, item, props) => {
           <View style={styles.infor}>
             <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>EPC: {item[maTaiSanKey]}</Text>
             <Text numberOfLines={1}>{item.loaiTaiSan}</Text>
-            <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDate(item.ngayDiChuyen)}</Text>
+            <Text numberOfLines={1} style={styles.infoText}>Ngày di chuyển: {convertTimeFormatToLocaleDateFullTime(item.ngayDiChuyen)}</Text>
           </View>
         </>
       );

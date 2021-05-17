@@ -74,6 +74,8 @@ const FilterComponent = (props) => (
               masudung: MsdFilterSelected,
               startdate: props.StartDateFilterSelected,
               enddate: props.EndDateFilterSelected,
+              chieuDiChuyen: props.chieuDiChuyenFilterSelected,
+              phanloaitaisan: props.PltsFilterSelected,
               isFilter: true
             };
             props.action(paramters);
@@ -161,7 +163,9 @@ const mapStateToProps = state => ({
   TtsdFilterSelected: state.filterTTSDSelectedReducer.ttsdFilterSelected,
   HtFilterSelected: state.filterHTSelectedReducer.htFilterSelected,
   StartDateFilterSelected: state.filterStartDateSelectedReducer.startdateFilterSelected,
-  EndDateFilterSelected: state.filterEndDateSelectedReducer.enddateFilterSelected
+  EndDateFilterSelected: state.filterEndDateSelectedReducer.enddateFilterSelected,
+  chieuDiChuyenFilterSelected: state.filterChieuDiChuyenSelectedReducer.chieuDiChuyenFilterSelected,
+  PltsFilterSelected: state.filterPhanLoaiTaiSanSelectedReducer.pltsFilterSelected,
 });
 
 export default connect(mapStateToProps)(FilterComponent);

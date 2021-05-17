@@ -17,6 +17,8 @@ import {
   HT_SELECTED_ADD,
   STARTDATE_SELECTED_ADD,
   ENDDATE_SELECTED_ADD,
+  CHIEU_DI_CHUYEN_SELECTED_ADD,
+  PLTS_SELECTED_ADD,
 
   DVQL_SELECTED_REMOVE,
   TT_SELECTED_REMOVE,
@@ -26,7 +28,9 @@ import {
   TTSD_SELECTED_REMOVE,
   HT_SELECTED_REMOVE,
   STARTDATE_SELECTED_REMOVE,
-  ENDDATE_SELECTED_REMOVE
+  ENDDATE_SELECTED_REMOVE,
+  CHIEU_DI_CHUYEN_SELECTED_REMOVE,
+  PLTS_SELECTED_REMOVE,
  } from '../../redux/actions/filter.actions'
 import { screens, tabs } from '../../api/config';
 import { CURRENT_SCREEN, CURRENT_TAB } from '../../redux/actions/screen.actions';
@@ -50,7 +54,9 @@ const initialState = {
     ttFilterSelected: [],
     ttsdFilterSelected: [],
     startdateFilterSelected: [],
-    enddateFilterSelected: []
+    enddateFilterSelected: [],
+    chieuDiChuyenFilterSelected: [],
+    pltsFilterSelected: []
 }
 
 // Reducer
@@ -396,6 +402,46 @@ export const filterEndDateSelectedReducer = (state = initialState, action) => {
         return {
           ...state,
           enddateFilterSelected: state.enddateFilterSelected.filter((item) => item.screen !== action.payload.screen)
+        }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const filterChieuDiChuyenSelectedReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case CHIEU_DI_CHUYEN_SELECTED_ADD: {
+      return {
+        ...state,
+        chieuDiChuyenFilterSelected: [...state.chieuDiChuyenFilterSelected, action.payload]
+      }
+    }
+    case CHIEU_DI_CHUYEN_SELECTED_REMOVE: {
+        return {
+          ...state,
+          chieuDiChuyenFilterSelected: state.chieuDiChuyenFilterSelected.filter((item) => item.screen !== action.payload.screen)
+        }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const filterPhanLoaiTaiSanSelectedReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case PLTS_SELECTED_ADD: {
+      return {
+        ...state,
+        pltsFilterSelected: [...state.pltsFilterSelected, action.payload]
+      }
+    }
+    case PLTS_SELECTED_REMOVE: {
+        return {
+          ...state,
+          pltsFilterSelected: state.pltsFilterSelected.filter((item) => item.screen !== action.payload.screen)
         }
     }
     default: {

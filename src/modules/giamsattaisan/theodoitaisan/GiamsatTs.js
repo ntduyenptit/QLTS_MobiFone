@@ -31,8 +31,7 @@ class GiamSatTaiSanScreen extends React.Component {
   }
 
   getToanTaisan(parameters) {
-    console.log(this.state.skipCount);
-    const { datas, startdate, enddate } = parameters;
+    const { datas, startdate, enddate, chieuDiChuyen, phanloaitaisan } = parameters;
     if (datas && datas.length > 0) {
       let url;
       url = `${endPoint.getLichsuRavaoAngten}?`;
@@ -48,6 +47,18 @@ class GiamSatTaiSanScreen extends React.Component {
         url += `EndDate=${encodeURIComponent(`${EndDate.dateString}`)}&`;
       }
 
+      const ChieuDiChuyen = find(chieuDiChuyen, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
+      && find(chieuDiChuyen, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
+      if (ChieuDiChuyen) {
+        url += `ChieuDiChuyen=${encodeURIComponent(`${ChieuDiChuyen}`)}&`;
+      }
+
+      const PhanLoaiTaiSan = find(phanloaitaisan, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
+      && find(phanloaitaisan, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
+      if (PhanLoaiTaiSan) {
+        url += `PhanLoaiId=${encodeURIComponent(`${PhanLoaiTaiSan}`)}&`;
+      }
+
       datas.forEach(e => {
         url += `BoPhanId=${encodeURIComponent(`${e.id}`)}&`;
       });
@@ -58,7 +69,6 @@ class GiamSatTaiSanScreen extends React.Component {
       createGetMethod(url)
         .then(res => {
           if (res) {
-            console.log(res);
             this.setState({
               toanboTaiSanData: res.result.items,
               total: res.result.totalCount
