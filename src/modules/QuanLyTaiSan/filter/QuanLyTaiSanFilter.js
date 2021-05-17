@@ -116,24 +116,24 @@ const QuanLyTaiSanFilterComponent = (items) => {
 
   // selectedChange
   const onSelectedDVQLChange = (newSelectItems) => {
-    items.removeSelectedDVQL({data: newSelectItems, screen: items.screen, tab: items.tab});
-    items.addSelectedDVQL({data: newSelectItems, screen: items.screen, tab: items.tab});
+    items.removeSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+    items.addSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
   }
   const onSelectedLTSChange = (newSelectItems) => {
-    items.removeSelectedLTS({data: newSelectItems, screen: items.screen, tab: items.tab});
-    items.addSelectedLTS({data: newSelectItems, screen: items.screen, tab: items.tab});
+    items.removeSelectedLTS({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+    items.addSelectedLTS({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
   }
   const onSelectedNCCChange = (newSelectItems) => {
-    items.removeSelectedLTS({data: newSelectItems, screen: items.screen, tab: items.tab});
-    items.addSelectedNCC({data: newSelectItems, screen: items.screen, tab: items.tab});
+    items.removeSelectedLTS({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+    items.addSelectedNCC({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
   }
   const onSelectedMSDChange = (newSelectItems) => {
-    items.removeSelectedMSD({data: newSelectItems, screen: items.screen, tab: items.tab});
-    items.addSelectedMSD({data: newSelectItems, screen: items.screen, tab: items.tab});
+    items.removeSelectedMSD({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+    items.addSelectedMSD({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
   }
   const onSelectedHTChange = (newSelectItems) => {
-    items.removeSelectedHT({data: newSelectItems, screen: items.screen, tab: items.tab});
-    items.addSelectedHT({data: newSelectItems, screen: items.screen, tab: items.tab});
+    items.removeSelectedHT({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+    items.addSelectedHT({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
   }
 
   const DvqlFilterSelected = find(items.DvqlFilterSelected, itemSelected => itemSelected.tab === items.tab) 
@@ -151,8 +151,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        {items.screen === screens.quan_ly_tai_san && (
-          items.tab === tabs.toan_bo_tai_san
+        {(items.tab === tabs.toan_bo_tai_san
           || items.tab === tabs.tai_san_chua_su_dung
           || items.tab === tabs.tai_san_dang_su_dung
           || items.tab === tabs.tai_san_sua_chua_bao_duong
@@ -183,8 +182,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
           </View>
         </>
           )}
-        {items.screen === screens.quan_ly_tai_san && (
-          items.tab === tabs.toan_bo_tai_san
+        {(items.tab === tabs.toan_bo_tai_san
           || items.tab === tabs.tai_san_chua_su_dung
           || items.tab === tabs.tai_san_dang_su_dung
           || items.tab === tabs.tai_san_sua_chua_bao_duong
@@ -214,8 +212,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
           </View>
         </>
           )}
-        {items.screen === screens.quan_ly_tai_san && (
-          items.tab === tabs.toan_bo_tai_san
+        {(items.tab === tabs.toan_bo_tai_san
           || items.tab === tabs.tai_san_chua_su_dung
           || items.tab === tabs.tai_san_dang_su_dung
           || items.tab === tabs.tai_san_sua_chua_bao_duong
@@ -244,8 +241,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
           </View>
         </>
           )}
-        {items.screen === screens.quan_ly_tai_san && (
-          items.tab === tabs.toan_bo_tai_san
+        {(items.tab === tabs.toan_bo_tai_san
           || items.tab === tabs.tai_san_chua_su_dung
           || items.tab === tabs.tai_san_dang_su_dung
         ) && (

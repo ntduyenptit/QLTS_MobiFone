@@ -20,8 +20,10 @@ class GiamSatTaiSanScreen extends React.Component {
       scrollYValue: new Animated.Value(0),
       toanboTaiSanData: [],
       total: 0,
+      skipCount: 0
     }
     this.getToanTaisan = this.getToanTaisan.bind(this);
+    this.isCloseToBottom = this.isCloseToBottom.bind(this);
   }
 
   componentDidMount() {
@@ -29,6 +31,7 @@ class GiamSatTaiSanScreen extends React.Component {
   }
 
   getToanTaisan(parameters) {
+    console.log(this.state.skipCount);
     const { datas, startdate, enddate } = parameters;
     if (datas && datas.length > 0) {
       let url;
@@ -50,7 +53,7 @@ class GiamSatTaiSanScreen extends React.Component {
       });
 
       url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
-      url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
+      url += `SkipCount=${encodeURIComponent(`${this.state.skipCount}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
       createGetMethod(url)
         .then(res => {
@@ -68,11 +71,18 @@ class GiamSatTaiSanScreen extends React.Component {
     }
   }
 
+  isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+    const paddingToBottom = 10;
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
+  };
+
   render() {
     const {
       scrollYValue,
       toanboTaiSanData,
-      total
+      total,
+      skipCount
     } = this.state;
     const clampedScroll = Animated.diffClamp(
       Animated.add(
@@ -110,9 +120,28 @@ class GiamSatTaiSanScreen extends React.Component {
             }}
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
-              { useNativeDriver: true },
-              () => { },          // Optional async listener
+              {
+                useNativeDriver: true,
+                listener: event => {
+                  if (this.isCloseToBottom(event.nativeEvent)) {
+                    setTimeout(() => {
+                      this.setState({
+                        skipCount: skipCount + 1,
+                      }, () => {
+                        if (toanboTaiSanData.length < total) {
+                          this.getToanTaisan({
+                            data: this.props.DvqlDataFilter,
+                            startdate: this.props.StartDateFilterSelected,
+                            enddate: this.props.EndDateFilterSelected,
+                          });
+                        }
+                      })
+                    }, 2000)
+                  }
+                },
+              }
             )}
+            scrollEventThrottle={500}
             contentInsetAdjustmentBehavior="automatic"
           >
             {LoaderComponent(toanboTaiSanData, this.props, screens.giam_sat_tai_san)}
@@ -129,9 +158,7 @@ class GiamSatTaiSanScreen extends React.Component {
         <FilterComponent
           screens={screens.giam_sat_tai_san}
           filter={(
-            <QuanLyGiamSatFilter
-              screen={screens.giam_sat_tai_san}
-            />
+            <QuanLyGiamSatFilter />
           )}
           action={this.getToanTaisan}
         />
@@ -143,6 +170,8 @@ class GiamSatTaiSanScreen extends React.Component {
 
 const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
+  StartDateFilterSelected: state.filterStartDateSelectedReducer.startdateFilterSelected,
+  EndDateFilterSelected: state.filterEndDateSelectedReducer.enddateFilterSelected,
   tab: 'giam sat tai san'
 });
 

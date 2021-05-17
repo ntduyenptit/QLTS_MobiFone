@@ -5,7 +5,7 @@ import { createGetMethod } from '../../api/Apis'
 export const getDVQLDataFilter = () => createGetMethod(endPoint.getAllToChucTheoNguoiDung)
 
   // Loại tài sản
-  export const getLTSDataFilter =  () => createGetMethod(endPoint.getAllLoaiTaiSan)
+  export const getLTSDataFilter =  () => createGetMethod(endPoint.getAllLoaiTaiSanTree)
 
   // Nhà cung cấp
   export const getNCCDataFilter =  () => createGetMethod(endPoint.getAllNhaCungCap)

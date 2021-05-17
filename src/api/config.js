@@ -18,7 +18,7 @@ export const endPoint = ({
   getAllNhaCungCap: 'services/app/LookupTable/GetAllNhaCungCap',
   getAllTinhTrangMaSuDungTaiSan: 'services/app/LookupTable/GetAllTinhTrangMaSuDungTaiSan',
   getAllTrangThaiSuDung: 'services/app/LookupTable/GetAllTrangThaiTaiSanTimKiem',
-  getAllLoaiTaiSan: 'services/app/LookupTable/GetAllLoaiTaiSanTree',
+  getAllLoaiTaiSanTree: 'services/app/LookupTable/GetAllLoaiTaiSanTree',
   // Quản lý tài sản
   getToanBoTaiSan: 'services/app/ToanBoTaiSan/GetAll',
   getTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/GetAllTaiSanSuaChuaBaoDuong',
@@ -49,19 +49,19 @@ export const endPoint = ({
   // Báo cáo người dùng:
   getAllBaocaoNguoidung: 'services/app/BaoCaoNguoiDung/GetAllBaoCao',
 
-  //Đặt lịch xuất báo cáo:
+  // Đặt lịch xuất báo cáo:
   getAllLichXuatBaoCao: 'services/app/DatLichXuatBaoCao/GetAllDatLich',
   getChitietLichXuatBaoCao: 'services/app/DatLichXuatBaoCao/GetForEdit',
 
-  //Quản lý nhà cung cấp
+  // Quản lý nhà cung cấp
   getNhaCungcap: 'services/app/NhaCungCap/GetAll',
   getViewNhacungcap: 'services/app/NhaCungCap/GetForEdit',
-  //Quản lý vị trí địa lý
+  // Quản lý vị trí địa lý
   getAllVitriDialy: 'services/app/ViTriDiaLy/GetAll',
   getAllTinhthanh: 'services/app/ViTriDiaLy/GetAllDtoTinhThanh',
   // Quản lý loại tài sản
   getAllLoaiTaiSan: 'services/app/LoaiTaiSan/GetAll',
-  //Quản lý đơn vị
+  // Quản lý đơn vị
   getAllDonvi:  'services/app/ToChuc/GetAll',
   //Quản lý người dùng
   getAllNguoidung: 'services/app/User/GetAll',
@@ -281,7 +281,16 @@ export const tenTaiSan = [
 export const trangThaiTaiSan = ({
   'chua_su_dung': 'Chưa sử dụng',
   'dang_su_dung': 'Đang sử dụng',
-  
 });
+
+export const chieuDiChuyen = [
+  {id: 1, displayName: "Chiều ra"},
+  {id: 2, displayName: "Chiều vào"},
+];
+
+export const phanLoaiTaiSan = [
+  {id: 1, displayName: "Tài sản trong hệ thống"},
+  {id: 2, displayName: "Tài sản ngoài hệ thống"},
+];
 
  
