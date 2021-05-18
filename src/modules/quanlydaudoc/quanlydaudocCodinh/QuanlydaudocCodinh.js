@@ -44,7 +44,11 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
       url = `${endPoint.getDaudocCodinh}?`;
   
       datas.forEach(e => {
-        url += `PhongBanSuDung=${encodeURIComponent(`${e.id}`)}&`;
+        if (e.id) {
+          url += `PhongBanSuDung=${encodeURIComponent(`${e.id}`)}&`;
+        } else {
+          url += `PhongBanSuDung=${encodeURIComponent(`${e}`)}&`;
+        }
       });
 
       if (tinhtrangsudung) {

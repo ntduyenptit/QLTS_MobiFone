@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar, Dimensions, Text } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Text } from 'react-native';
 import { connect } from 'react-redux';
 import find from 'lodash/find';
 import SearchComponent from '../global/SearchComponent';
@@ -9,9 +9,6 @@ import QuanLyKiemkeFilterComponent from './filter/QuanlyKiemkeFilter';
 import { createGetMethod } from '../../api/Apis';
 import { endPoint, screens } from '../../api/config';
 import LoaderComponent from '../global/LoaderComponent';
-
-export const deviceWidth = Dimensions.get('window').width;
-export const deviceHeight = Dimensions.get('window').height;
 
 class QuanlyKiemkeTaiSanScreen extends React.Component {
   constructor(props) {
@@ -65,8 +62,6 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
       url += `IsSearch=${encodeURIComponent(`${true}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
-
-      console.log('url: ', url);
       createGetMethod(url)
         .then(res => {
           if (res) {
@@ -106,6 +101,7 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
         <SafeAreaView>
           <SearchComponent
             clampedScroll={clampedScroll}
+            screen={screens.quan_ly_kiem_ke_tai_san}
           />
           <Animated.ScrollView
             showsVerticalScrollIndicator={false}
