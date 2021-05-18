@@ -28,6 +28,9 @@ export const TT_SELECTED_REMOVE = `${FILTER} Remove TRANG_THAI selected`;
 export const TTSD_SELECTED_ADD = `${FILTER} Add TRANG_THAI_SU_DUNG selected`;
 export const TTSD_SELECTED_REMOVE = `${FILTER} Remove TRANG_THAI_SU_DUNG selected`;
 
+export const TTKK_SELECTED_ADD = `${FILTER} Add TINH_TRANG_KIEM_KE selected`;
+export const TTKK_SELECTED_REMOVE = `${FILTER} Remove TINH_TRANG_KIEM_KE selected`;
+
 export const HT_SELECTED_ADD = `${FILTER} Add HINH_THUC selected`;
 export const HT_SELECTED_REMOVE = `${FILTER} Remove HINH_THUC selected`;
 
@@ -145,6 +148,17 @@ export const addSelectedTTSDAction = (data) => ({
 
 export const removeSelectedTTSDAction = (data) => ({
     type: TTSD_SELECTED_REMOVE,
+    payload: data
+});
+
+// tình trạng kiểm kê
+export const addSelectedTTKKAction = (data) => ({
+    type: TTKK_SELECTED_ADD,
+    payload: data
+});
+
+export const removeSelectedTTKKAction = (data) => ({
+    type: TTKK_SELECTED_REMOVE,
     payload: data
 });
 

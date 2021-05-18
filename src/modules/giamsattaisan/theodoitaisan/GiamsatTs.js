@@ -60,7 +60,11 @@ class GiamSatTaiSanScreen extends React.Component {
       }
 
       datas.forEach(e => {
-        url += `BoPhanId=${encodeURIComponent(`${e.id}`)}&`;
+        if (e.id) {
+          url += `BoPhanId=${encodeURIComponent(`${e.id}`)}&`;
+        } else {
+          url += `BoPhanId=${encodeURIComponent(`${e}`)}&`;
+        }
       });
 
       url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
@@ -166,7 +170,7 @@ class GiamSatTaiSanScreen extends React.Component {
         >Hiển thị: {toanboTaiSanData.length}/{total}
         </Text>
         <FilterComponent
-          screens={screens.giam_sat_tai_san}
+          screen={screens.giam_sat_tai_san}
           filter={(
             <QuanLyGiamSatFilter />
           )}
@@ -182,7 +186,6 @@ const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
   StartDateFilterSelected: state.filterStartDateSelectedReducer.startdateFilterSelected,
   EndDateFilterSelected: state.filterEndDateSelectedReducer.enddateFilterSelected,
-  tab: 'giam sat tai san'
 });
 
 export default connect(mapStateToProps)(GiamSatTaiSanScreen);

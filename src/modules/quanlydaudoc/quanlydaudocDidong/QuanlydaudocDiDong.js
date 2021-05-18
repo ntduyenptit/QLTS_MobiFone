@@ -41,7 +41,11 @@ class QuanLyDauDocDiDongScreen extends React.Component {
      
   
       datas.forEach(e => {
-        url += `PhongBanSuDung=${encodeURIComponent(`${e.id}`)}&`;
+        if (e.id) {
+          url += `PhongBanSuDung=${encodeURIComponent(`${e.id}`)}&`;
+        } else {
+          url += `PhongBanSuDung=${encodeURIComponent(`${e}`)}&`;
+        }
       });
 
       if (tinhtrangsudung) {
@@ -131,7 +135,7 @@ class QuanLyDauDocDiDongScreen extends React.Component {
         </Text>
         <FilterComponent 
           filter={<QuanLyDauDocFilter screen={screens.quan_ly_dau_doc_di_dong} />}
-          screens={screens.quan_ly_dau_doc_di_dong}
+          screen={screens.quan_ly_dau_doc_di_dong}
           action={this.getToanBoDauDocDiDongData}
         />
       </Animated.View>

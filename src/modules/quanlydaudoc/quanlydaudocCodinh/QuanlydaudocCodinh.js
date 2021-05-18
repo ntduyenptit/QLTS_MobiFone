@@ -133,7 +133,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
         </Text>
         <FilterComponent
           filter={<QuanLyDauDocFilter screen={screens.quan_ly_dau_doc_co_dinh} />}
-          screens={screens.quan_ly_dau_doc_co_dinh}
+          screen={screens.quan_ly_dau_doc_co_dinh}
           action={this.getToanBoDauDocCoDinhData}
         />
       </Animated.View>

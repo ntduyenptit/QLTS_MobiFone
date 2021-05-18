@@ -19,6 +19,7 @@ import {
   ENDDATE_SELECTED_ADD,
   CHIEU_DI_CHUYEN_SELECTED_ADD,
   PLTS_SELECTED_ADD,
+  TTKK_SELECTED_ADD,
 
   DVQL_SELECTED_REMOVE,
   TT_SELECTED_REMOVE,
@@ -31,6 +32,7 @@ import {
   ENDDATE_SELECTED_REMOVE,
   CHIEU_DI_CHUYEN_SELECTED_REMOVE,
   PLTS_SELECTED_REMOVE,
+  TTKK_SELECTED_REMOVE,
  } from '../../redux/actions/filter.actions'
 import { screens, tabs } from '../../api/config';
 import { CURRENT_SCREEN, CURRENT_TAB } from '../../redux/actions/screen.actions';
@@ -56,7 +58,8 @@ const initialState = {
     startdateFilterSelected: [],
     enddateFilterSelected: [],
     chieuDiChuyenFilterSelected: [],
-    pltsFilterSelected: []
+    pltsFilterSelected: [],
+    ttkkFilterSelected: [],
 }
 
 // Reducer
@@ -330,6 +333,26 @@ export const filterTTSDSelectedReducer = (state = initialState, action) => {
         return {
           ...state,
           ttsdFilterSelected: state.ttsdFilterSelected.filter((item) => item.screen !== action.payload.screen)
+        }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const filterTTKKSelectedReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case TTKK_SELECTED_ADD: {
+      return {
+        ...state,
+        ttkkFilterSelected: [...state.ttkkFilterSelected, action.payload]
+      }
+    }
+    case TTKK_SELECTED_REMOVE: {
+        return {
+          ...state,
+          ttkkFilterSelected: state.ttkkFilterSelected.filter((item) => item.screen !== action.payload.screen)
         }
     }
     default: {
