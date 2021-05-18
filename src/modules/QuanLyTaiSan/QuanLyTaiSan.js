@@ -11,6 +11,7 @@ import { endPoint, screens, tabs } from '../../api/config';
 import { store } from '../../redux/store';
 import {
   taisanhongGetData,
+  taisanhuyGetData,
   taisanmatGetData,
   taisanthanhlyGetData,
   toanbotaisanGetData,
@@ -19,6 +20,7 @@ import {
   taisanbaoduongsuachuaGetData,
 
   taisanhongSearchData,
+  taisanhuySearchData,
   taisanmatSearchData,
   taisanthanhlySearchData,
   toanbotaisanSearchData,
@@ -62,6 +64,9 @@ export function GetToanBoTaiSanData(parameters) {
       case tabs.tai_san_sua_chua_bao_duong:
         url = `${endPoint.getTaiSanSuaChuaBaoDuong}?`;
         break;
+      case tabs.tai_san_huy:
+        url = `${endPoint.getTaiSanHuy}?`;
+        break;
       default:
         url = `${endPoint.getToanBoTaiSan}?`;
         break;
@@ -69,7 +74,7 @@ export function GetToanBoTaiSanData(parameters) {
 
     const textState = store.getState().SearchReducer.searchData;
     const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san)
-    && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san).data;
+      && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san).data;
     if (textFilter) {
       url += `Fillter=${textFilter}&`
       if (tabs.tai_san_dang_su_dung || tabs.tai_san_chua_su_dung) {
@@ -128,6 +133,9 @@ export function GetToanBoTaiSanData(parameters) {
               case tabs.tai_san_hong:
                 store.dispatch(taisanhongSearchData(res));
                 break;
+              case tabs.tai_san_huy:
+                store.dispatch(taisanhuySearchData(res));
+                break;
               case tabs.tai_san_dang_su_dung:
                 store.dispatch(taisandangsudungSearchData(res));
                 break;
@@ -153,6 +161,9 @@ export function GetToanBoTaiSanData(parameters) {
                 break;
               case tabs.tai_san_hong:
                 store.dispatch(taisanhongGetData(res));
+                break;
+              case tabs.tai_san_huy:
+                store.dispatch(taisanhuyGetData(res));
                 break;
               case tabs.tai_san_dang_su_dung:
                 store.dispatch(taisandangsudungGetData(res));
@@ -217,6 +228,8 @@ const QuanLyTaiSan = (state) => {
         return LoaderComponent(state.taisanchuasudungData, state, screens.chi_tiet_tai_san);
       case tabs.tai_san_dang_su_dung:
         return LoaderComponent(state.taisandangsudungData, state, screens.chi_tiet_tai_san);
+      case tabs.tai_san_huy:
+        return LoaderComponent(state.taisanhuyData, state, screens.chi_tiet_tai_san);
       case tabs.tai_san_sua_chua_bao_duong:
         return LoaderComponent(state.taisansuachuabaoduongData, state, screens.chi_tiet_tai_san);
       default:
@@ -232,6 +245,8 @@ const QuanLyTaiSan = (state) => {
         return state.taisanmatData.length
       case tabs.tai_san_hong:
         return state.taisanhongData.length;
+      case tabs.tai_san_huy:
+        return state.taisanhuyData.length;
       case tabs.tai_san_thanh_ly:
         return state.taisanthanhlyData.length;
       case tabs.tai_san_chua_su_dung:
@@ -253,6 +268,8 @@ const QuanLyTaiSan = (state) => {
         return <Text>Hiển thị: {state.taisanmatData.length}/{state.taisanmatTotal}</Text>;
       case tabs.tai_san_hong:
         return <Text>Hiển thị: {state.taisanhongData.length}/{state.taisanhongTotal}</Text>;
+      case tabs.tai_san_huy:
+        return <Text>Hiển thị: {state.taisanhuyData.length}/{state.taisanhuyTotal}</Text>;
       case tabs.tai_san_thanh_ly:
         return <Text>Hiển thị: {state.taisanthanhlyData.length}/{state.taisanthanhlyTotal}</Text>;
       case tabs.tai_san_chua_su_dung:
@@ -306,16 +323,16 @@ const QuanLyTaiSan = (state) => {
         </Animated.ScrollView>
       </SafeAreaView>
       <View style={{
-          bottom: 5,
-          right: 5,
-          position: 'absolute',
-        }}
+        bottom: 5,
+        right: 5,
+        position: 'absolute',
+      }}
       >
         {totalDisplayForTab()}
       </View>
-      <FilterComponent 
-        screen={screens.quan_ly_tai_san} 
-        filter={<QuanLyTaiSanFilter screen={screens.quan_ly_tai_san} />} 
+      <FilterComponent
+        screen={screens.quan_ly_tai_san}
+        filter={<QuanLyTaiSanFilter screen={screens.quan_ly_tai_san} />}
         action={GetToanBoTaiSanData}
       />
     </Animated.View>
@@ -327,6 +344,7 @@ const mapStateToProps = state => ({
   taisanthanhlyData: state.taisanthanhlyReducer.taisanthanhlyData,
   taisanmatData: state.taisanmatReducer.taisanmatData,
   taisanhongData: state.taisanhongReducer.taisanhongData,
+  taisanhuyData: state.taisanhuyReducer.taisanhuyData,
   taisanchuasudungData: state.taisanchuasudungReducer.taisanchuasudungData,
   taisandangsudungData: state.taisandangsudungReducer.taisandangsudungData,
   taisansuachuabaoduongData: state.taisansuachuabaoduongReducer.taisansuachuabaoduongData,
@@ -335,6 +353,7 @@ const mapStateToProps = state => ({
   taisanthanhlyTotal: state.taisanthanhlyReducer.taisanthanhlyTotal,
   taisanmatTotal: state.taisanmatReducer.taisanmatTotal,
   taisanhongTotal: state.taisanhongReducer.taisanhongTotal,
+  taisanhuyTotal: state.taisanhuyReducer.taisanhuyTotal,
   taisanchuasudungTotal: state.taisanchuasudungReducer.taisanchuasudungTotal,
   taisandangsudungTotal: state.taisandangsudungReducer.taisandangsudungTotal,
   taisansuachuabaoduongTotal: state.taisansuachuabaoduongReducer.taisansuachuabaoduongTotal,

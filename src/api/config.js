@@ -1,6 +1,6 @@
 
 // define the api
-export const baseUrl = 'http://10.16.150.143:9080/api/';
+export const baseUrl = 'http://10.6.71.64:9080/api/';
 export const headerWithoutToken = ({
   'Content-Type': 'application/json',
   Accept: 'application/json'
@@ -26,6 +26,7 @@ export const endPoint = ({
   getTaiSanMat: 'services/app/TaiSanMat/GetAllTaiSanMat',
   getTaiSanChuaSuDung: 'services/app/TaiSanChuaSuDung/GetAll',
   getTaiSanDangSuDung: 'services/app/TaiSanDangSuDung/GetAll',
+  getTaiSanHuy: 'services/app/TaiSanHuy/GetAllTaiSanHuy',
   // Quản lý đầu đọc 
   getDaudocCodinh: 'services/app/AngTenRFID/GetAll',
   getDaudocDidong: 'services/app/DauDocTheRFID/GetAll',
@@ -48,6 +49,8 @@ export const endPoint = ({
 
   // Báo cáo người dùng:
   getAllBaocaoNguoidung: 'services/app/BaoCaoNguoiDung/GetAllBaoCao',
+  // Báo cáo cảnh báo
+   getAllBaocaoCanhBao: 'services/app/BaoCaoCanhBao/GetAllBaoCao',
 
   // Đặt lịch xuất báo cáo:
   getAllLichXuatBaoCao: 'services/app/DatLichXuatBaoCao/GetAllDatLich',
@@ -188,9 +191,6 @@ export const drawerData = [
     name: screens.bao_cao,
     icon: icons.iconBaocao,
     children: [
-      {
-        name: screens.bao_cao_nguoi_dung,
-      },
       {
         name: screens.bao_cao_canh_bao,
       },

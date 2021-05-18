@@ -1,6 +1,7 @@
 import { TOANBOTAISAN_DATA, TOANBOTAISAN_FAILED, TOANBOTAISAN_LOADING, TOANBOTAISAN_SEARCH,
 TAISANHONG_DATA, TAISANHONG_FAILED, TAISANHONG_LOADING, TAISANHONG_SEARCH,
 TAISANMAT_DATA, TAISANMAT_FAILED, TAISANMAT_LOADING, TAISANMAT_SEARCH,
+TAISANHUY_DATA, TAISANHUY_FAILED, TAISANHUY_LOADING, TAISANHUY_SEARCH,
 TAISANTHANHLY_DATA, TAISANTHANHLY_FAILED, TAISANTHANHLY_LOADING, TAISANTHANHLY_SEARCH,
 TAISANDANGSUDUNG_LOADING, TAISANDANGSUDUNG_DATA, TAISANDANGSUDUNG_FAILED, TAISANDANGSUDUNG_SEARCH,
 TAISANCHUASUDUNG_LOADING, TAISANCHUASUDUNG_DATA, TAISANCHUASUDUNG_FAILED, TAISANCHUASUDUNG_SEARCH,
@@ -10,17 +11,19 @@ const initialState = {
     toanbotaisanData: [],
     taisanmatData: [],
     taisanhongData: [],
+    taisanhuyData:[],
     taisanthanhlyData: [],
     taisanchuasudungData: [],
     taisandangsudungData: [],
     taisansuachuabaoduongData: [],
-
+    
     isLoading: false,
     isSuccess: false,
 
     toanbotaisanTotal: 0,
     taisanmatTotal: 0,
     taisanhongTotal: 0,
+    taisanhuyTotal:0,
     taisanthanhlyTotal: 0,
     taisanchuasudungTotal: 0,
     taisandangsudungTotal: 0,
@@ -143,7 +146,43 @@ export const taisanhongReducer = (state = initialState, action) => {
     }
   }
 }
-
+export const taisanhuyReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case TAISANHUY_LOADING: {
+      return {
+        isLoading: true,
+        isSuccess: false,
+      }
+    }
+    case TAISANHUY_DATA: {
+      const result = action.payload.data.result.items;
+      return {
+        isLoading: false,
+        isSuccess: true,
+        taisanhuyTotal: action.payload.data.result.totalCount,
+        taisanhuyData: [...state.taisanhuyData, ...result]
+      }
+    }
+    case TAISANHUY_SEARCH: {
+      const result = action.payload.data.result.items;
+      return {
+        isLoading: false,
+        isSuccess: true,
+        taisanhuyTotal: action.payload.data.result.totalCount,
+        taisanhuyData: result
+      }
+    }
+    case TAISANHUY_FAILED: {
+        return {
+            isLoading: false,
+            isSuccess: false,
+          }
+    }
+    default: {
+      return state
+    }
+  }
+}
 export const taisanthanhlyReducer = (state = initialState, action) => {
   switch (action.type) {
     case TAISANTHANHLY_LOADING: {

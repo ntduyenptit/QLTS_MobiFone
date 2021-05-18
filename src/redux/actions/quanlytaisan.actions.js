@@ -16,6 +16,12 @@ export const TAISANHONG_DATA = `${TAISANHONG} Set taisanhong data to store`
 export const TAISANHONG_FAILED = `${TAISANHONG} Get taisanhong data failed`
 export const TAISANHONG_SEARCH = `${TAISANHONG} Search for taisanhong`
 
+export const TAISANHUY = '[TAISANHUY]'
+export const TAISANHUY_LOADING = `${TAISANHUY} is loading`
+export const TAISANHUY_DATA = `${TAISANHUY} Set taisanhuy data to store`
+export const TAISANHUY_FAILED = `${TAISANHUY} Get taisanhuy data failed`
+export const TAISANHUY_SEARCH = `${TAISANHUY} Search for taisanhuy`
+
 export const TAISANTHANHLY = '[TAISANTHANHLY]'
 export const TAISANTHANHLY_LOADING = `${TAISANTHANHLY} is loading`
 export const TAISANTHANHLY_DATA = `${TAISANTHANHLY} Set taisanthanhly data to store`
@@ -89,6 +95,31 @@ export const taisanhongFailed = () => ({
     payload: {},
 })
 
+
+// tài sản huy
+export const taisanhuyLoading = () => ({
+    type: TAISANHUY_LOADING,
+    payload: {},
+})
+
+export const taisanhuyGetData = (data) => ({
+    type: TAISANHUY_DATA,
+    payload: {
+        data
+    },
+})
+
+export const taisanhuySearchData = (data) => ({
+    type: TAISANHUY_SEARCH,
+    payload: {
+        data
+    },
+})
+
+export const taisanhuyFailed = () => ({
+    type: TAISANHUY_FAILED,
+    payload: {},
+})
 // tài sản mất
 export const taisanmatLoading = () => ({
     type: TAISANMAT_LOADING,

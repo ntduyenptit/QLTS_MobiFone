@@ -9,6 +9,7 @@ import userReducer from '../modules/auth/AuthState';
 import { 
   toanbotaisanReducer,
   taisanhongReducer, 
+  taisanhuyReducer, 
   taisanthanhlyReducer,
   taisanmatReducer,
   taisandangsudungReducer,
@@ -71,6 +72,7 @@ import {
   // giám sát tài sản
   toanbotaisanReducer,
   taisanhongReducer,
+  taisanhuyReducer,
   taisanthanhlyReducer,
   taisanmatReducer,
   taisandangsudungReducer,
