@@ -37,12 +37,25 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps){
+    if ( prevProps.searchText !== this.props.searchText ) {
+      this.getToanBoDauDocCoDinhData({datas: this.props.DvqlDataFilter});
+    }
+  }
+
   getToanBoDauDocCoDinhData(parameters) {
     const { datas, tinhtrangsudung } = parameters;
     if (datas && datas.length > 0) {
       let url;
       url = `${endPoint.getDaudocCodinh}?`;
-  
+
+      const textState = this.props.searchText;
+      const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_co_dinh)
+      && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_co_dinh).data;
+      if (textFilter) {
+        url += `TenTS=${textFilter}&`
+      }
+
       datas.forEach(e => {
         if (e.id) {
           url += `PhongBanSuDung=${encodeURIComponent(`${e.id}`)}&`;
@@ -149,6 +162,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
 const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
   TtsdDataFilter: state.filterTTSDDataReducer.ttsdDataFilter,
+  searchText: state.SearchReducer.searchData
 });
 
 function mapDispatchToProps(dispatch) {

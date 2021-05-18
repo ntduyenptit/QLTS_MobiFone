@@ -28,6 +28,12 @@ class TheoDoiKetNoiScreen extends React.Component {
     this.getToanTaisan({ datas: this.props.DvqlDataFilter });
   }
 
+  componentDidUpdate(prevProps){
+    if ( prevProps.searchText !== this.props.searchText ) {
+      this.getToanTaisan({datas: this.props.DvqlDataFilter});
+    }
+  }
+
   getToanTaisan(parameters) {
     const { datas, startdate, enddate } = parameters;
     if (datas && datas.length > 0) {
@@ -156,8 +162,7 @@ class TheoDoiKetNoiScreen extends React.Component {
 
 const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-  isLoading: state.toanbotaisanReducer.isLoading,
-  tab: 'theo doi ket noi'
+  searchText: state.SearchReducer.searchData
 });
 
 export default connect(mapStateToProps)(TheoDoiKetNoiScreen);

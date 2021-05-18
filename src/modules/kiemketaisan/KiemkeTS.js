@@ -25,11 +25,24 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
     this.getToanTaisan({datas: this.props.DvqlDataFilter});
   }
 
+  componentDidUpdate(prevProps){
+    if ( prevProps.searchText !== this.props.searchText ) {
+      this.getToanTaisan({datas: this.props.DvqlDataFilter});
+    }
+  }
+
   getToanTaisan(parameters) {
     const { datas, startdate, enddate, tinhtrangkiemke } = parameters;
     if (datas && datas.length > 0) {
       let url;
       url = `${endPoint.getdanhsachKiemke}?`;
+
+      const textState = this.props.searchText;
+      const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san)
+      && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san).data;
+      if (textFilter) {
+        url += `Keyword=${textFilter}&`
+      }
 
       const StartDate = find(startdate, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san)
       && find(startdate, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san).data;
@@ -59,9 +72,10 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
       }
 
 
-      url += `IsSearch=${encodeURIComponent(`${true}`)}&`;
+      url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
+
       createGetMethod(url)
         .then(res => {
           if (res) {
@@ -148,6 +162,8 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
 
 const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
+
+  searchText: state.SearchReducer.searchData
 });
 
 export default connect(mapStateToProps)(QuanlyKiemkeTaiSanScreen);

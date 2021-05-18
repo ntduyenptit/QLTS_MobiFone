@@ -68,8 +68,8 @@ export function GetToanBoTaiSanData(parameters) {
     }
 
     const textState = store.getState().SearchReducer.searchData;
-    const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san)
-    && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san).data;
+    const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === store.getState().currentTabReducer.tabName)
+    && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === store.getState().currentTabReducer.tabName).data;
     if (textFilter) {
       url += `Fillter=${textFilter}&`
       if (tabs.tai_san_dang_su_dung || tabs.tai_san_chua_su_dung) {
@@ -197,6 +197,10 @@ const QuanLyTaiSan = (state) => {
     }
   }, [skipCount]);
 
+  useEffect(() => {
+      GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab });
+  }, [state.searchText]);
+
   const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
     const paddingToBottom = 10;
     return layoutMeasurement.height + contentOffset.y >=
@@ -271,7 +275,11 @@ const QuanLyTaiSan = (state) => {
     <Animated.View>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <SearchComponent clampedScroll={clampedScroll} screen={screens.quan_ly_tai_san} />
+        <SearchComponent 
+          clampedScroll={clampedScroll} 
+          screen={screens.quan_ly_tai_san}
+          tab={state.tab}
+        />
         <Animated.ScrollView
           showsVerticalScrollIndicator={false}
           style={{
@@ -343,6 +351,7 @@ const mapStateToProps = state => ({
 
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
   tab: state.currentTabReducer.tabName,
+  searchText: state.SearchReducer.searchData
 });
 
 export default connect(mapStateToProps)(QuanLyTaiSan);

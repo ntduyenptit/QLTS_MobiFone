@@ -60,6 +60,8 @@ const initialState = {
     chieuDiChuyenFilterSelected: [],
     pltsFilterSelected: [],
     ttkkFilterSelected: [],
+
+    searchData: [],
 }
 
 // Reducer
@@ -476,6 +478,12 @@ export const SearchReducer = (state = initialState, action) => {
       }
     }
     case SEARCH_REMOVE: {
+      if (action.payload.screen === screens.quan_ly_tai_san) {
+        return {
+          ...state,
+          searchData: state.searchData.filter((item) => item.tab !== action.payload.tab)
+        }
+      } 
         return {
           ...state,
           searchData: state.searchData.filter((item) => item.screen !== action.payload.screen)

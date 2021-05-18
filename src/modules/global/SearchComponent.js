@@ -1,9 +1,11 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
 import { Animated, StyleSheet, TextInput } from 'react-native';
+import find from 'lodash/find';
 import { store } from '../../redux/store';
 import { deviceWidth } from './LoaderComponent';
 import { addSearch, removeSearch } from '../../redux/actions/search.actions';
+import { screens } from '../../api/config';
 
 const SearchComponent = (props) => {
   const {
@@ -19,6 +21,16 @@ const SearchComponent = (props) => {
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });
+  const textSearch = store.getState().SearchReducer.searchData;
+  let value = "";
+  if (props.screen === screens.quan_ly_tai_san) {
+    value = find(textSearch, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === props.tab)
+    && find(textSearch, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === props.tab).data;
+  } else {
+    value = find(textSearch, itemSelected => itemSelected.screen === props.screen)
+    && find(textSearch, itemSelected => itemSelected.screen === props.screen).data;
+  }
+
   return (
     <Animated.View style={[
       styles.container,
@@ -36,9 +48,15 @@ const SearchComponent = (props) => {
         placeholder="Tìm kiếm tài sản"
         style={styles.formField}
         placeholderTextColor="#888888"
+        value={value}
         onChangeText={(text) => {
-          store.dispatch(removeSearch({data: text, screen: props.screen}));
-          store.dispatch(addSearch({data: text, screen: props.screen}));
+          if (props.screen === screens.quan_ly_tai_san) {
+              store.dispatch(removeSearch({ data: text, screen: props.screen, tab: props.tab }));
+            store.dispatch(addSearch({ data: text, screen: props.screen, tab: props.tab }));
+          } else {
+              store.dispatch(removeSearch({ data: text, screen: props.screen }));
+            store.dispatch(addSearch({ data: text, screen: props.screen }));
+          }
         }}
       />
     </Animated.View>

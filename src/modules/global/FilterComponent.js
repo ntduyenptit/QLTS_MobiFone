@@ -67,7 +67,6 @@ const FilterComponent = (props) => (
               MsdFilterSelected = find(props.MsdFilterSelected, itemSelected => itemSelected.screen === props.screen)
                 && find(props.MsdFilterSelected, itemSelected => itemSelected.screen === props.screen).data;
             }
-            console.log('DvqlFilterSelected: ', DvqlFilterSelected && DvqlFilterSelected.length > 0, 'props.screen: ', props.screen);
             const paramters = {
               datas: DvqlFilterSelected && DvqlFilterSelected.length > 0 ? DvqlFilterSelected : props.DvqlDataFilter,
               loaitaisan: LtsFilterSelected,

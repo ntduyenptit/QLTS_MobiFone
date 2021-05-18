@@ -30,6 +30,12 @@ class GiamSatTaiSanScreen extends React.Component {
     this.getToanTaisan({ datas: this.props.DvqlDataFilter });
   }
 
+  componentDidUpdate(prevProps){
+    if ( prevProps.searchText !== this.props.searchText ) {
+      this.getToanTaisan({datas: this.props.DvqlDataFilter});
+    }
+  }
+
   getToanTaisan(parameters) {
     const { datas, startdate, enddate, chieuDiChuyen, phanloaitaisan } = parameters;
     if (datas && datas.length > 0) {
@@ -186,6 +192,7 @@ const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
   StartDateFilterSelected: state.filterStartDateSelectedReducer.startdateFilterSelected,
   EndDateFilterSelected: state.filterEndDateSelectedReducer.enddateFilterSelected,
+  searchText: state.SearchReducer.searchData
 });
 
 export default connect(mapStateToProps)(GiamSatTaiSanScreen);
