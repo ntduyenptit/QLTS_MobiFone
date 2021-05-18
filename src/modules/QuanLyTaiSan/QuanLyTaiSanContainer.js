@@ -19,6 +19,9 @@ const isLoadData = () => {
     case tabs.tai_san_hong: {
       return store.getState().taisanhongReducer.taisanhongData.length > 0;
     }
+    case tabs.tai_san_huy: {
+      return store.getState().taisanhuyReducer.taisanhuyData.length > 0;
+    }
     case tabs.tai_san_thanh_ly: {
       return store.getState().taisanthanhlyReducer.taisanthanhlyData.length > 0;
     }

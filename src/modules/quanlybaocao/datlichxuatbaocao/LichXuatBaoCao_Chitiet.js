@@ -4,11 +4,9 @@ import {
     View,
     Text,
     Dimensions,
-    TouchableOpacity, FlatList, ScrollView,
 } from 'react-native';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint } from '../../../api/config';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -60,34 +58,27 @@ class LichXuatBaocaoDetail extends React.Component {
         createGetMethod(url)
             .then(res => {
                 if (res) {
-                    console.log("idphongBan: " + res.result.phongBanNhan);
                     let idPB = res.result.phongBanNhan;
                     let  idNN = res.result.nguoiNhan;
                     let array = this.props.DvqlDataFilter
                     for (let i = 0; i < array.length; i++) {
                         if (array[i].id == idPB) {
-                            console.log("phongBan: " + array[i].displayName);
                             this.setState({
                                 phongBan: array[i].displayName,
                             });
                             break;
                         }
                     }
-                    console.log("idphongBan123: " + res.result.phongBanNhan);
                     let url1 = 'services/app/LookupTable/GetAllNguoiDungTheoPBLookupTable?phongBan=' + res.result.phongBanNhan;
                     createGetMethod(url1)
                         .then(res => {
                             if (res) {
                                 let arr = res.result;
-                                console.log("arr " + res.result);
                                 let arraynguoiNhanID = idNN.split(',');
-                                console.log("idNguoiNhan " + arraynguoiNhanID.length);
                                 let element = [];
                                 for (let i = 0; i < arr.length; i++) {
                                     for (let j = 0; j < arraynguoiNhanID.length; j++) {
-                                        console.log("NguoiNhan " +j+" "+ arraynguoiNhanID[j]);
                                         if (arr[i].id == arraynguoiNhanID[j]) {
-                                            console.log("nguoiNhan: " + arr[i].displayName);
                                             element.push(arr[i].displayName+", ");
 
                                         }

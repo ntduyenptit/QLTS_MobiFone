@@ -474,6 +474,19 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
+  {
+    name: tabs.tai_san_huy,
+    component: QuanLyTaiSanScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
   // Màn hình chi tiết tài sản
   {
     name: screens.chi_tiet_tai_san,

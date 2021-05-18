@@ -1,13 +1,9 @@
 import {
-    Alert,
-    Modal,
     StyleSheet,
     Text,
-    Pressable,
     View,
     Dimensions,
-    KeyboardAvoidingView,
-    Platform, ScrollView,
+    ScrollView,
 } from "react-native";
 import React, { useState, useRef } from 'react';
 import { connect } from "react-redux";
