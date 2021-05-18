@@ -58,6 +58,27 @@ export const convertTimeFormatToLocaleDate = (time) => {
   return dateString;
 };
 
+export const convertTimeFormatToLocaleDateFullTime = (time) => {
+  const reg = /(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d/;
+  if (time.match(reg)) {
+    return time;
+  }
+  const date = new Date(time);
+  const formatOptions = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: 'numeric'
+  };
+  let dateString = date.toLocaleDateString('vi-VN', formatOptions);
+  // => "02/17/2017, 11:32 PM"
+
+  dateString = dateString.replace(',', '');
+  return dateString;
+};
+
 export const getColorByType = (type) => {
   switch (type) {
     case "Chưa sử dụng":

@@ -33,6 +33,9 @@ import {
   filterHTSelectedReducer,
   filterStartDateSelectedReducer,
   filterEndDateSelectedReducer,
+  filterChieuDiChuyenSelectedReducer,
+  filterPhanLoaiTaiSanSelectedReducer,
+  filterTTKKSelectedReducer,
 
   currentScreenReducer,
   currentTabReducer,
@@ -63,6 +66,10 @@ import {
   filterHTSelectedReducer,
   filterStartDateSelectedReducer,
   filterEndDateSelectedReducer,
+  filterChieuDiChuyenSelectedReducer,
+  filterPhanLoaiTaiSanSelectedReducer,
+  filterTTKKSelectedReducer,
+
 
   currentScreenReducer,
   currentTabReducer,

@@ -5,22 +5,28 @@ import {
     Dimensions,
     ScrollView,
 } from "react-native";
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { connect } from "react-redux";
 
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import find from 'lodash/find';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { filterType } from '../../global/Config';
 import { buildTree } from '../../global/Helper';
+import {
+    addSelectedDVQLAction,
+    addSelectedTTSDAction,
+
+    removeSelectedDVQLAction,
+    removeSelectedTTSDAction
+} from '../../../redux/actions/filter.actions';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
 
 const QuanLyDauDocFilter = (items) => {
-    const [selectedDVQLItems, setDVQLItems] = useState([]);
-    const [selectedHTItems, setHTItems] = useState([]);
 
     const donViQuanLyRef = useRef();
     const trangThaiRef = useRef();
@@ -35,7 +41,7 @@ const QuanLyDauDocFilter = (items) => {
                 }
                 break;
 
-            case filterType.hinh_thuc:
+            case filterType.tinh_trang_su_dung:
 
                 if (donViQuanLyRef.current && donViQuanLyRef.current.state.selector) {
                     donViQuanLyRef.current._toggleSelector();
@@ -47,28 +53,30 @@ const QuanLyDauDocFilter = (items) => {
         }
     }
 
-    const requestToanBoTaiSanDataByFilter = (params) => {
-
-    }
-
     // selectedChange
     const onSelectedDVQLChange = (newSelectItems) => {
-        setDVQLItems((newSelectItems), () => {
-            requestToanBoTaiSanDataByFilter({ 'DVQL_Filter': selectedDVQLItems });
-        });
+        items.removeSelectedDVQL({data: newSelectItems, screen: items.screen});
+        items.addSelectedDVQL({data: newSelectItems, screen: items.screen});
     }
-    const onSelectedHTChange = (newSelectItems) => {
-        setHTItems((newSelectItems), () => {
-            requestToanBoTaiSanDataByFilter({ 'TT_Filter': selectedHTItems });
-        });
+
+    const onSelectedTTSDChange = (newSelectItems) => {
+        items.removeSelectedTTSD({data: newSelectItems, screen: items.screen});
+        items.addSelectedTTSD({data: newSelectItems, screen: items.screen});
     }
+
+    const DvqlFilterSelected = find(items.DvqlFilterSelected, itemSelected => itemSelected.screen === items.screen) 
+    && find(items.DvqlFilterSelected, itemSelected => itemSelected.screen === items.screen).data;
+
+    const TtsdFilterSelected = find(items.TtsdFilterSelected, itemSelected => itemSelected.screen === items.screen) 
+    && find(items.TtsdFilterSelected, itemSelected => itemSelected.screen === items.screen).data;
+
     // end SelectedChange
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <>
             <View>
-              <Text style={styles.titleText}>Đơn vị Quản lý</Text>
+              <Text style={styles.titleText}>Đơn vị quản lý</Text>
               <MultiSelect
                 ref={donViQuanLyRef}
                 isTree
@@ -82,25 +90,25 @@ const QuanLyDauDocFilter = (items) => {
                 displayKey="displayName"
                 selectText="Chọn đơn vị quản lý..."
                 onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-                selectedItems={selectedDVQLItems}
+                selectedItems={DvqlFilterSelected}
               />
             </View>
           </>
           <>
             <View>
-              <Text style={styles.titleText}>Trạng Thái</Text>
+              <Text style={styles.titleText}>Tình trạng sử dụng</Text>
               <MultiSelect
                 ref={trangThaiRef}
-                onToggleList={() => closeMultiSelectIfOpened(filterType.hinh_thuc)}
+                onToggleList={() => closeMultiSelectIfOpened(filterType.tinh_trang_su_dung)}
                 items={items.TtsdDataFilter}
                 IconRenderer={Icon}
                 single
                 searchInputPlaceholderText="Tìm kiếm..."
                 uniqueKey="id"
                 displayKey="displayName"
-                selectText="Chọn trạng thái..."
-                onSelectedItemsChange={(item) => onSelectedHTChange(item)}
-                selectedItems={selectedHTItems}
+                selectText="Chọn..."
+                onSelectedItemsChange={(item) => onSelectedTTSDChange(item)}
+                selectedItems={TtsdFilterSelected}
               />
             </View>
           </>
@@ -185,8 +193,19 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
     DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
     TtsdDataFilter: state.filterTTSDDataReducer.ttsdDataFilter,
-    isShowFilter: state.filterReducer.isShowFilter,
-    screen: state.currentScreenReducer.screenName,
+
+    DvqlFilterSelected: state.filterDVQLSelectedReducer.dvqlFilterSelected,
+    TtsdFilterSelected: state.filterTTSDSelectedReducer.ttsdFilterSelected,
 });
 
-export default connect(mapStateToProps)(QuanLyDauDocFilter);
+function mapDispatchToProps(dispatch) {
+    return {
+        addSelectedDVQL: (item) => dispatch(addSelectedDVQLAction(item)),
+        removeSelectedDVQL: (item) => dispatch(removeSelectedDVQLAction(item)),
+
+        addSelectedTTSD: (item) => dispatch(addSelectedTTSDAction(item)),
+        removeSelectedTTSD: (item) => dispatch(removeSelectedTTSDAction(item)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuanLyDauDocFilter);

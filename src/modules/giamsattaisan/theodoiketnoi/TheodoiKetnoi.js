@@ -41,7 +41,11 @@ class TheoDoiKetNoiScreen extends React.Component {
         url += `EndDate=${encodeURIComponent(`${enddate}`)}&`;
       }
       datas.forEach(e => {
-        url += `BoPhanId=${encodeURIComponent(`${e.id}`)}&`;
+        if (e.id) {
+          url += `BoPhanId=${encodeURIComponent(`${e.id}`)}&`;
+        } else {
+          url += `BoPhanId=${encodeURIComponent(`${e}`)}&`;
+        }
       });
 
       url += `IsSearch=${encodeURIComponent(`${false}`)}&`;

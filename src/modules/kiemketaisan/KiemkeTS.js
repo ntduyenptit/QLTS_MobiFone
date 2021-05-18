@@ -1,16 +1,14 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar, Dimensions, Text } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Text } from 'react-native';
 import { connect } from 'react-redux';
+import find from 'lodash/find';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
-import QuanLyKiemkeFilter from './QuanlyKiemkeFilter';
+import QuanLyKiemkeFilterComponent from './filter/QuanlyKiemkeFilter';
 import { createGetMethod } from '../../api/Apis';
 import { endPoint, screens } from '../../api/config';
 import LoaderComponent from '../global/LoaderComponent';
-
-export const deviceWidth = Dimensions.get('window').width;
-export const deviceHeight = Dimensions.get('window').height;
 
 class QuanlyKiemkeTaiSanScreen extends React.Component {
   constructor(props) {
@@ -20,22 +18,46 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
       toanboTaiSanData: [],
       total: 0,
     }
+    this.getToanTaisan = this.getToanTaisan.bind(this);
   }
 
   componentDidMount() {
-    this.getToanTaisan(this.props.DvqlDataFilter);
+    this.getToanTaisan({datas: this.props.DvqlDataFilter});
   }
 
-  getToanTaisan(datas) {
+  getToanTaisan(parameters) {
+    const { datas, startdate, enddate, tinhtrangkiemke } = parameters;
     if (datas && datas.length > 0) {
       let url;
       url = `${endPoint.getdanhsachKiemke}?`;
 
-      url += `StartDate=${encodeURIComponent(`${'2021-01-01'}`)}&`;
-      url += `EndDate=${encodeURIComponent(`${''}`)}&`;
+      const StartDate = find(startdate, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san)
+      && find(startdate, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san).data;
+      if (StartDate) {
+        url += `StartDate=${encodeURIComponent(`${StartDate.dateString}`)}&`;
+      }
+
+      const EndDate = find(enddate, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san)
+      && find(enddate, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san).data;
+      if (EndDate) {
+        url += `EndDate=${encodeURIComponent(`${EndDate.dateString}`)}&`;
+      }
       datas.forEach(e => {
-        url += `BoPhanDuocKiemKeId=${encodeURIComponent(`${e.id}`)}&`;
+        if (e.id) {
+          url += `BoPhanDuocKiemKeId=${encodeURIComponent(`${e.id}`)}&`;
+        } else {
+          url += `BoPhanDuocKiemKeId=${encodeURIComponent(`${e}`)}&`;
+        }
       });
+
+      if (tinhtrangkiemke) {
+        const tinhTrangKiemKe = find(tinhtrangkiemke, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san)
+        && find(tinhtrangkiemke, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san).data;
+        if (tinhTrangKiemKe) {
+          url += `TrangThaiId=${encodeURIComponent(`${tinhTrangKiemKe}`)}&`;
+        }
+      }
+
 
       url += `IsSearch=${encodeURIComponent(`${true}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
@@ -79,6 +101,7 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
         <SafeAreaView>
           <SearchComponent
             clampedScroll={clampedScroll}
+            screen={screens.quan_ly_kiem_ke_tai_san}
           />
           <Animated.ScrollView
             showsVerticalScrollIndicator={false}
@@ -112,7 +135,11 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
         }}
         >Hiển thị: {toanboTaiSanData.length}/{total}
         </Text>
-        <FilterComponent filter={<QuanLyKiemkeFilter />} />
+        <FilterComponent
+          screen={screens.quan_ly_kiem_ke_tai_san}
+          filter={<QuanLyKiemkeFilterComponent />}
+          action={this.getToanTaisan}
+        />
       </Animated.View>
     );
   }
@@ -121,7 +148,6 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
 
 const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-  tab: 'kiem ke tai san'
 });
 
 export default connect(mapStateToProps)(QuanlyKiemkeTaiSanScreen);

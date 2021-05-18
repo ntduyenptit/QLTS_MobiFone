@@ -27,23 +27,23 @@ const TheoDoiKetNoiFilter = (props) => {
 
     useEffect(() => {
         if (Object.keys(start).length !== 0) {
-            props.removeStartDateSelected({data: start, screen: screens.giam_sat_tai_san});
-            props.addStartDateSelected({data: start, screen: screens.giam_sat_tai_san});
+            props.removeStartDateSelected({data: start, screen: screens.theo_doi_ket_noi_thiet_bi});
+            props.addStartDateSelected({data: start, screen: screens.theo_doi_ket_noi_thiet_bi});
         }
       }, [start]);
 
       useEffect(() => {
         if (Object.keys(end).length !== 0) {
-            props.removeEndDateSelected({ data: end, screen: screens.giam_sat_tai_san });
-            props.addEndDateSelected({ data: end, screen: screens.giam_sat_tai_san });
+            props.removeEndDateSelected({ data: end, screen: screens.theo_doi_ket_noi_thiet_bi });
+            props.addEndDateSelected({ data: end, screen: screens.theo_doi_ket_noi_thiet_bi });
         }
       }, [end]);
 
       useEffect(() => {
-        const StartDateFilterSelected = find(props.StartDateFilterSelected, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
-        && find(props.StartDateFilterSelected, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
-        const EndDateFilterSelected = find(props.EndDateFilterSelected, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
-        && find(props.EndDateFilterSelected, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
+        const StartDateFilterSelected = find(props.StartDateFilterSelected, itemSelected => itemSelected.screen === screens.theo_doi_ket_noi_thiet_bi)
+        && find(props.StartDateFilterSelected, itemSelected => itemSelected.screen === screens.theo_doi_ket_noi_thiet_bi).data;
+        const EndDateFilterSelected = find(props.EndDateFilterSelected, itemSelected => itemSelected.screen === screens.theo_doi_ket_noi_thiet_bi)
+        && find(props.EndDateFilterSelected, itemSelected => itemSelected.screen === screens.theo_doi_ket_noi_thiet_bi).data;
         if (StartDateFilterSelected && EndDateFilterSelected) {
             const Period = getPeriod(StartDateFilterSelected.timestamp, EndDateFilterSelected.timestamp);
             setPeriod(Period);

@@ -67,6 +67,7 @@ const FilterComponent = (props) => (
               MsdFilterSelected = find(props.MsdFilterSelected, itemSelected => itemSelected.screen === props.screen)
                 && find(props.MsdFilterSelected, itemSelected => itemSelected.screen === props.screen).data;
             }
+            console.log('DvqlFilterSelected: ', DvqlFilterSelected && DvqlFilterSelected.length > 0, 'props.screen: ', props.screen);
             const paramters = {
               datas: DvqlFilterSelected && DvqlFilterSelected.length > 0 ? DvqlFilterSelected : props.DvqlDataFilter,
               loaitaisan: LtsFilterSelected,
@@ -74,6 +75,10 @@ const FilterComponent = (props) => (
               masudung: MsdFilterSelected,
               startdate: props.StartDateFilterSelected,
               enddate: props.EndDateFilterSelected,
+              chieuDiChuyen: props.chieuDiChuyenFilterSelected,
+              phanloaitaisan: props.PltsFilterSelected,
+              tinhtrangsudung: props.TtsdFilterSelected,
+              tinhtrangkiemke: props.TtkkFilterSelected,
               isFilter: true
             };
             props.action(paramters);
@@ -161,7 +166,10 @@ const mapStateToProps = state => ({
   TtsdFilterSelected: state.filterTTSDSelectedReducer.ttsdFilterSelected,
   HtFilterSelected: state.filterHTSelectedReducer.htFilterSelected,
   StartDateFilterSelected: state.filterStartDateSelectedReducer.startdateFilterSelected,
-  EndDateFilterSelected: state.filterEndDateSelectedReducer.enddateFilterSelected
+  EndDateFilterSelected: state.filterEndDateSelectedReducer.enddateFilterSelected,
+  chieuDiChuyenFilterSelected: state.filterChieuDiChuyenSelectedReducer.chieuDiChuyenFilterSelected,
+  PltsFilterSelected: state.filterPhanLoaiTaiSanSelectedReducer.pltsFilterSelected,
+  TtkkFilterSelected: state.filterTTKKSelectedReducer.ttkkFilterSelected,
 });
 
 export default connect(mapStateToProps)(FilterComponent);

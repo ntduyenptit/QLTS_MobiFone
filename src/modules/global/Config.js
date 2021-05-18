@@ -6,7 +6,9 @@ export const filterType = ({
     hinh_thuc: 'hinh_thuc',
     trang_thai_kiem_ke: 'kiem_ke',
     chieu_di_chuyen: 'chieu_di_chuyen',
-    phan_loai_tai_san: 'phan_loai_tai_san'
+    phan_loai_tai_san: 'phan_loai_tai_san',
+    tinh_trang_su_dung: 'tinh_trang_su_dung',
+    tinh_trang_kiem_ke: 'tinh_trang_kiem_ke'
 });
 
 export const hinhThuc = ({

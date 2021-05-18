@@ -28,6 +28,9 @@ export const TT_SELECTED_REMOVE = `${FILTER} Remove TRANG_THAI selected`;
 export const TTSD_SELECTED_ADD = `${FILTER} Add TRANG_THAI_SU_DUNG selected`;
 export const TTSD_SELECTED_REMOVE = `${FILTER} Remove TRANG_THAI_SU_DUNG selected`;
 
+export const TTKK_SELECTED_ADD = `${FILTER} Add TINH_TRANG_KIEM_KE selected`;
+export const TTKK_SELECTED_REMOVE = `${FILTER} Remove TINH_TRANG_KIEM_KE selected`;
+
 export const HT_SELECTED_ADD = `${FILTER} Add HINH_THUC selected`;
 export const HT_SELECTED_REMOVE = `${FILTER} Remove HINH_THUC selected`;
 
@@ -35,6 +38,12 @@ export const STARTDATE_SELECTED_ADD = `${FILTER} Add START_DATE selected`;
 export const STARTDATE_SELECTED_REMOVE = `${FILTER} Remove START_DATE selected`;
 export const ENDDATE_SELECTED_ADD = `${FILTER} Add END_DATE selected`;
 export const ENDDATE_SELECTED_REMOVE = `${FILTER} Remove END_DATE selected`;
+
+export const CHIEU_DI_CHUYEN_SELECTED_ADD = `${FILTER} Add CHIEU_DI_CHUYEN selected`;
+export const CHIEU_DI_CHUYEN_SELECTED_REMOVE = `${FILTER} Remove CHIEU_DI_CHUYEN selected`;
+
+export const PLTS_SELECTED_ADD = `${FILTER} Add PHAN_LOAI_TAI_SAN selected`;
+export const PLTS_SELECTED_REMOVE = `${FILTER} Remove PHAN_LOAI_TAI_SAN selected`;
 
 export const showFilter = () => ({
     type: SHOW_FILTER,
@@ -142,6 +151,17 @@ export const removeSelectedTTSDAction = (data) => ({
     payload: data
 });
 
+// tình trạng kiểm kê
+export const addSelectedTTKKAction = (data) => ({
+    type: TTKK_SELECTED_ADD,
+    payload: data
+});
+
+export const removeSelectedTTKKAction = (data) => ({
+    type: TTKK_SELECTED_REMOVE,
+    payload: data
+});
+
 // hình thức
 export const addSelectedHTAction = (data) => ({
     type: HT_SELECTED_ADD,
@@ -171,5 +191,25 @@ export const addSelectedEndDateAction = (data) => ({
 
 export const removeSelectedEndDateAction = (data) => ({
     type: ENDDATE_SELECTED_REMOVE,
+    payload: data
+});
+
+export const addSelectedChieuDiChuyenAction = (data) => ({
+    type: CHIEU_DI_CHUYEN_SELECTED_ADD,
+    payload: data
+});
+
+export const removeSelectedChieuDiChuyenAction = (data) => ({
+    type: CHIEU_DI_CHUYEN_SELECTED_REMOVE,
+    payload: data
+});
+
+export const addSelectedPhanLoaiTaiSanAction = (data) => ({
+    type: PLTS_SELECTED_ADD,
+    payload: data
+});
+
+export const removeSelectedPhanLoaiTaiSanAction = (data) => ({
+    type: PLTS_SELECTED_REMOVE,
     payload: data
 });

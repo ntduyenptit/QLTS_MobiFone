@@ -284,8 +284,8 @@ export const trangThaiTaiSan = ({
 });
 
 export const chieuDiChuyen = [
-  {id: 1, displayName: "Chiều ra"},
-  {id: 2, displayName: "Chiều vào"},
+  {id: 1, displayName: "Chiều ra", value: 'Ra'},
+  {id: 2, displayName: "Chiều vào", value: 'Vào'},
 ];
 
 export const phanLoaiTaiSan = [
