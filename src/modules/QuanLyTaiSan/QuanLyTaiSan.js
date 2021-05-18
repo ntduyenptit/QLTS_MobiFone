@@ -73,13 +73,8 @@ export function GetToanBoTaiSanData(parameters) {
     }
 
     const textState = store.getState().SearchReducer.searchData;
-<<<<<<< HEAD
     const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === store.getState().currentTabReducer.tabName)
     && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === store.getState().currentTabReducer.tabName).data;
-=======
-    const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san)
-      && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san).data;
->>>>>>> d77b23db7a4f60f8403a04ad122dae7e014a8389
     if (textFilter) {
       url += `Fillter=${textFilter}&`
       if (tabs.tai_san_dang_su_dung || tabs.tai_san_chua_su_dung) {
