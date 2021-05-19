@@ -30,9 +30,8 @@ const bullet = (title, text) => (
   </View>
 );
 
-function QuanLyTaiSanDetailComponent({ route, navigation }) {
+function QuanLyTaiSanDetailComponent({ route }) {
     const { paramKey, tabKey } = route.params;
-    console.log(paramKey);
     return (
       <View style={styles.container}>
         <ScrollView>

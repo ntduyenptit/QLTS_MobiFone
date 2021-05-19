@@ -33,6 +33,7 @@
     "lodash": "^4.17.13",
     "moment": "^2.24.0",
     "react": "16.9.0",
+    "react-minimal-pie-chart": "^8.2.0",
     "react-native": "0.63.2",
     "react-native-calendars": "^1.265.0",
     "react-native-collapsible": "^1.5.3",

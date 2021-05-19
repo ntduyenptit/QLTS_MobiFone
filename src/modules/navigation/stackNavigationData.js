@@ -36,6 +36,7 @@ import QuanLyNguoidungScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoid
 import NguoidungDetailScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoidungDetail';
 import QuanLyPhanQuyenScreen from '../quanlyhethong/quanlyphanquyen/QuanLyPhanQuyen';
 import QuanlyCauhinhMailServer from '../quanlyhethong/quanlymailServer/QuanLyMailServer';
+import DashBoard from '../dashboard/DashBoardView';
 
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
@@ -507,6 +508,19 @@ const StackNavigationData = [
     component: QuanLyDauDocDetailComponentScreen,
     headerLeft: headerLeftComponent,
     headerRight: moreHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.dash_board,
+    component: DashBoard,
+    headerLeft: null,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
