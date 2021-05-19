@@ -45,6 +45,12 @@ export const TAISANSUACHUABAODUONG_LOADING = `${TAISANSUACHUABAODUONG} is loadin
 export const TAISANSUACHUABAODUONG_DATA = `${TAISANSUACHUABAODUONG} Set taisansuachuabaoduong data to store`
 export const TAISANSUACHUABAODUONG_FAILED = `${TAISANSUACHUABAODUONG} Get taisansuachuabaoduong data failed`
 export const TAISANSUACHUABAODUONG_SEARCH = `${TAISANSUACHUABAODUONG} Search for taisansuachuabaoduong`
+
+export const KHAIBAOHONGMAT = '[KHAIBAOHONGMAT]'
+export const KHAIBAOHONGMAT_LOADING = `${KHAIBAOHONGMAT} is loading`
+export const KHAIBAOHONGMAT_DATA = `${KHAIBAOHONGMAT} Set khaibaohongmat data to store`
+export const KHAIBAOHONGMAT_FAILED = `${KHAIBAOHONGMAT} Get khaibaohongmat data failed`
+export const KHAIBAOHONGMAT_SEARCH = `${KHAIBAOHONGMAT} Search for khaibaohongmat`
 // toàn bộ tài sản
 export const toanbotaisanLoading = () => ({
     type: TOANBOTAISAN_LOADING,
@@ -242,5 +248,31 @@ export const taisanbaoduongsuachuaSearchData = (data) => ({
 
 export const taisanbaoduongsuachuaFailed = () => ({
     type: TAISANSUACHUABAODUONG_FAILED,
+    payload: {},
+})
+
+
+// khaibaohongmat
+export const khaibaohongmatLoading = () => ({
+    type: KHAIBAOHONGMAT_LOADING,
+    payload: {},
+})
+
+export const khaibaohongmatGetData = (data) => ({
+    type: KHAIBAOHONGMAT_DATA,
+    payload: {
+        data
+    },
+})
+
+export const khaibaohongmatSearchData = (data) => ({
+    type: KHAIBAOHONGMAT_SEARCH,
+    payload: {
+        data
+    },
+})
+
+export const khaibaohongmatFailed = () => ({
+    type: KHAIBAOHONGMAT_FAILED,
     payload: {},
 })

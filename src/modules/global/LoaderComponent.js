@@ -4,7 +4,7 @@ import { Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'react-nati
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { GetToanBoTaiSanData } from '../quanlytaisan/QuanLyTaiSan';
 import { maTaiSan, screens, tenTaiSan } from '../../api/config';
-import { convertTimeFormatToLocaleDate, getColorByType, convertTimeFormatToLocaleDateFullTime } from "./Helper";
+import { convertTimeFormatToLocaleDate, getColorByType, convertTimeFormatToLocaleDateFullTime,convertTrangthaiTaisan } from "./Helper";
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
@@ -70,6 +70,7 @@ const loadInfo = (screen, item, props) => {
     case screens.chi_tiet_kiem_ke_tai_san:
       return (
         <>
+         <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="server" color="#0080FF" size={15} />
           <View style={styles.infor}>
             <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>Mã kiểm kê: {item.kiemKeTaiSan.maKiemKe}</Text>
             <Text numberOfLines={1}>Tên kiểm kê: {item.kiemKeTaiSan.tenKiemKe}</Text>
@@ -194,22 +195,39 @@ const loadInfo = (screen, item, props) => {
           </View>
           <TouchableOpacity
             style={{ height: 40, width: 20, alignItems: "flex-end" }}
-            onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab})}
+            onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab })}
           >
             <Icon name="chevron-right" color='#0080FF' size={15} />
           </TouchableOpacity>
         </>
       );
-      case screens.quan_ly_phan_quyen:
+    case screens.quan_ly_phan_quyen:
       return (
         <>
           <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color="#0080FF" size={15} />
           <View style={styles.infor}>
             <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>Tên vai trò: {item.displayName}</Text>
             <Text numberOfLines={1}>Tên hiển thị: {item.name}</Text>
-            <Text numberOfLines={1}>Truy cập: {item.grantedPermissions}</Text>
           </View>
 
+        </>
+      );
+    case screens.chi_tiet_bao_hongmat_tai_san:
+      return (
+        <>
+          <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color="#0080FF" size={15} />
+          <View style={styles.inforhongmat}>
+            <Text numberOfLines={2} style={[{ fontWeight: "bold" }, styles.infoText]}>Đơn vị khai báo: {item.phongBanKhaiBao}</Text>
+            <Text numberOfLines={1}>Người khai báo: {item.nguoiKhaiBao}</Text>
+            <Text numberOfLines={1}>Ngày khai báo: {convertTimeFormatToLocaleDate(item.ngayKhaiBao)}</Text>
+            <Text numberOfLines={1}>Khai báo: {convertTrangthaiTaisan(item.khaiBao)}</Text>
+          </View>
+          <TouchableOpacity
+            style={{ height: 40, width: 20, alignItems: "flex-end" }}
+            onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab })}
+          >
+            <Icon name="chevron-right" color='#0080FF' size={15} />
+          </TouchableOpacity>
         </>
       );
     default:
@@ -246,15 +264,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 5,
-    height: 100,
   },
   infor: {
     marginLeft: 10,
     justifyContent: "flex-start",
     alignSelf: "flex-start",
-    height: 50,
+    height: 80,
     width: "85%",
-
+  },
+  inforhongmat: {
+    marginLeft: 10,
+    justifyContent: "flex-start",
+    alignSelf: "flex-start",
+    height: 110,
+    width: "85%",
   },
   infoText: {
     paddingBottom: 3,

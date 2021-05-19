@@ -82,15 +82,29 @@ export const convertTimeFormatToLocaleDateFullTime = (time) => {
 export const getColorByType = (type) => {
   switch (type) {
     case "Chưa sử dụng":
-      case "Tài sản chưa sử dụng":
+    case "Tài sản chưa sử dụng":
       return "#600080";
     case "Đang sử dụng":
-      case "Tài sản đang sử dụng":
+    case "Tài sản đang sử dụng":
+      return "#FF0000";
+    case "Tài sản mất":
+    case "Mất":
       return "#9900cc";
-      case 3:
-        return "#FFBF00";
+    case "TS hỏng":
+    case "Hỏng"  :
+      return "#29088A";
+    case "TS thanh lý":
+    case "Thanh lý":
+      return "#FFBF00";
+    case "Tài sản hủy":
+    case "Hủy":  
+      return "#0000FF";
+    case "TS sửa chữa/bảo dưỡng":
+    case "Sửa chữa":
+    case "Bảo dưỡng":
+      return "8A2908";
     default:
-      return null;
+      return 'black';
   }
 }
 
@@ -102,6 +116,36 @@ export const convertTrangThai = (int) => {
       return "Đã kết thúc";
     case 0:
       return "Chưa bắt đầu";
+    default:
+      return null;
+  }
+}
+
+export const convertTrangthaiTaisan = (int) => {
+  switch (int) {
+    case 0:
+      return "Khởi tạo";
+    case 1:
+      return "Cấp phát";
+    case 2:
+      return "Điều chuyển";
+    case 3:
+      return "Thu hồi";
+    case 4:
+      return "Đang sử dụng";
+    case 5:
+      return "Sửa chữa";
+    case 6:
+      return "Bảo dưỡng";
+    case 7:
+      return "Mất";
+    case 8:
+      return "Hỏng";
+    case 9:
+      return "Thanh lý";
+    case 10:
+      return "Hủy";
+
     default:
       return null;
   }
