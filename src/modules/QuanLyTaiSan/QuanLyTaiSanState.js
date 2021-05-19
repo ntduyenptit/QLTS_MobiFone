@@ -5,7 +5,8 @@ TAISANHUY_DATA, TAISANHUY_FAILED, TAISANHUY_LOADING, TAISANHUY_SEARCH,
 TAISANTHANHLY_DATA, TAISANTHANHLY_FAILED, TAISANTHANHLY_LOADING, TAISANTHANHLY_SEARCH,
 TAISANDANGSUDUNG_LOADING, TAISANDANGSUDUNG_DATA, TAISANDANGSUDUNG_FAILED, TAISANDANGSUDUNG_SEARCH,
 TAISANCHUASUDUNG_LOADING, TAISANCHUASUDUNG_DATA, TAISANCHUASUDUNG_FAILED, TAISANCHUASUDUNG_SEARCH,
-TAISANSUACHUABAODUONG_DATA, TAISANSUACHUABAODUONG_FAILED, TAISANSUACHUABAODUONG_LOADING, TAISANSUACHUABAODUONG_SEARCH } from '../../redux/actions/quanlytaisan.actions'
+TAISANSUACHUABAODUONG_DATA, TAISANSUACHUABAODUONG_FAILED, TAISANSUACHUABAODUONG_LOADING, TAISANSUACHUABAODUONG_SEARCH,
+KHAIBAOHONGMAT_DATA, KHAIBAOHONGMAT_FAILED, KHAIBAOHONGMAT_LOADING, KHAIBAOHONGMAT_SEARCH, } from '../../redux/actions/quanlytaisan.actions'
 
 const initialState = {
     toanbotaisanData: [],
@@ -16,7 +17,8 @@ const initialState = {
     taisanchuasudungData: [],
     taisandangsudungData: [],
     taisansuachuabaoduongData: [],
-    
+    khaibaohongmatData: [],
+
     isLoading: false,
     isSuccess: false,
 
@@ -28,6 +30,7 @@ const initialState = {
     taisanchuasudungTotal: 0,
     taisandangsudungTotal: 0,
     taisansuachuabaoduongTotal: 0,
+    khaibaohongmatTotal: 0,
 }
 
 // Reducer
@@ -324,6 +327,44 @@ export const taisansuachuabaoduongReducer = (state = initialState, action) => {
       }
     }
     case TAISANSUACHUABAODUONG_FAILED: {
+        return {
+            isLoading: false,
+            isSuccess: false,
+          }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const khaibaohongmatReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case KHAIBAOHONGMAT_LOADING: {
+      return {
+        isLoading: true,
+        isSuccess: false,
+      }
+    }
+    case KHAIBAOHONGMAT_DATA: {
+      const result = action.payload.data.result.items;
+      return {
+        isLoading: false,
+        isSuccess: true,
+        khaibaohongmatTotal: action.payload.data.result.totalCount,
+        khaibaohongmatData: [...state.taisansuachuabaoduongData, ...result]
+      }
+    }
+    case KHAIBAOHONGMAT_SEARCH: {
+      const result = action.payload.data.result.items;
+      return {
+        isLoading: false,
+        isSuccess: true,
+        khaibaohongmatTotal: action.payload.data.result.totalCount,
+        khaibaohongmatData: result
+      }
+    }
+    case KHAIBAOHONGMAT_FAILED: {
         return {
             isLoading: false,
             isSuccess: false,

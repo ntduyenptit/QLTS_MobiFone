@@ -28,7 +28,9 @@ import {
   taisanchuasudungSearchData,
   taisanbaoduongsuachuaSearchData,
 
-  toanbotaisanLoading
+  toanbotaisanLoading,
+  khaibaohongmatSearchData,
+  khaibaohongmatGetData
 } from '../../redux/actions/quanlytaisan.actions';
 import QuanLyTaiSanFilter from './filter/QuanLyTaiSanFilter';
 
@@ -67,19 +69,17 @@ export function GetToanBoTaiSanData(parameters) {
       case tabs.tai_san_huy:
         url = `${endPoint.getTaiSanHuy}?`;
         break;
+      case tabs.bao_hong_mat_tai_san:
+        url = `${endPoint.getAllKhaibaoHongmat}?`;
+        break;
       default:
         url = `${endPoint.getToanBoTaiSan}?`;
         break;
     }
 
     const textState = store.getState().SearchReducer.searchData;
-<<<<<<< HEAD
     const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === store.getState().currentTabReducer.tabName)
-    && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === store.getState().currentTabReducer.tabName).data;
-=======
-    const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san)
-      && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san).data;
->>>>>>> d77b23db7a4f60f8403a04ad122dae7e014a8389
+      && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === store.getState().currentTabReducer.tabName).data;
     if (textFilter) {
       url += `Fillter=${textFilter}&`
       if (tabs.tai_san_dang_su_dung || tabs.tai_san_chua_su_dung) {
@@ -150,6 +150,9 @@ export function GetToanBoTaiSanData(parameters) {
               case tabs.tai_san_sua_chua_bao_duong:
                 store.dispatch(taisanbaoduongsuachuaSearchData(res));
                 break;
+              case tabs.bao_hong_mat_tai_san:
+                store.dispatch(khaibaohongmatSearchData(res));
+                break;
               default:
                 break;
             }
@@ -178,6 +181,9 @@ export function GetToanBoTaiSanData(parameters) {
                 break;
               case tabs.tai_san_sua_chua_bao_duong:
                 store.dispatch(taisanbaoduongsuachuaGetData(res));
+                break;
+              case tabs.bao_hong_mat_tai_san:
+                store.dispatch(khaibaohongmatGetData(res));
                 break;
               default:
                 break;
@@ -214,7 +220,7 @@ const QuanLyTaiSan = (state) => {
   }, [skipCount]);
 
   useEffect(() => {
-      GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab });
+    GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab });
   }, [state.searchText]);
 
   const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
@@ -241,6 +247,8 @@ const QuanLyTaiSan = (state) => {
         return LoaderComponent(state.taisanhuyData, state, screens.chi_tiet_tai_san);
       case tabs.tai_san_sua_chua_bao_duong:
         return LoaderComponent(state.taisansuachuabaoduongData, state, screens.chi_tiet_tai_san);
+      case tabs.bao_hong_mat_tai_san:
+        return LoaderComponent(state.baohongmatData, state, screens.chi_tiet_bao_hongmat_tai_san);
       default:
         break;
     }
@@ -251,7 +259,7 @@ const QuanLyTaiSan = (state) => {
       case tabs.toan_bo_tai_san:
         return state.toanbotaisanData.length;
       case tabs.tai_san_mat:
-        return state.taisanmatData.length
+        return state.taisanmatData.length;
       case tabs.tai_san_hong:
         return state.taisanhongData.length;
       case tabs.tai_san_huy:
@@ -264,7 +272,10 @@ const QuanLyTaiSan = (state) => {
         return state.taisandangsudungData.length;
       case tabs.tai_san_sua_chua_bao_duong:
         return state.taisansuachuabaoduongData.length;
+      case tabs.bao_hong_mat_tai_san:
+        return state.baohongmatData.length;
       default:
+
         return 0;
     }
   }
@@ -287,6 +298,8 @@ const QuanLyTaiSan = (state) => {
         return <Text>Hiển thị: {state.taisandangsudungData.length}/{state.taisandangsudungTotal}</Text>;
       case tabs.tai_san_sua_chua_bao_duong:
         return <Text>Hiển thị: {state.taisansuachuabaoduongData.length}/{state.taisansuachuabaoduongTotal}</Text>;
+      case tabs.bao_hong_mat_tai_san:
+        return <Text>Hiển thị: {state.baohongmatData.length}/{state.baohongmatTotal}</Text>;
       default:
         return null;
     }
@@ -297,8 +310,8 @@ const QuanLyTaiSan = (state) => {
     <Animated.View>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <SearchComponent 
-          clampedScroll={clampedScroll} 
+        <SearchComponent
+          clampedScroll={clampedScroll}
           screen={screens.quan_ly_tai_san}
           tab={state.tab}
         />
@@ -361,6 +374,7 @@ const mapStateToProps = state => ({
   taisanchuasudungData: state.taisanchuasudungReducer.taisanchuasudungData,
   taisandangsudungData: state.taisandangsudungReducer.taisandangsudungData,
   taisansuachuabaoduongData: state.taisansuachuabaoduongReducer.taisansuachuabaoduongData,
+  baohongmatData:state.khaibaohongmatReducer.khaibaohongmatData,
 
   toanbotaisanTotal: state.toanbotaisanReducer.toanbotaisanTotal,
   taisanthanhlyTotal: state.taisanthanhlyReducer.taisanthanhlyTotal,
@@ -370,6 +384,7 @@ const mapStateToProps = state => ({
   taisanchuasudungTotal: state.taisanchuasudungReducer.taisanchuasudungTotal,
   taisandangsudungTotal: state.taisandangsudungReducer.taisandangsudungTotal,
   taisansuachuabaoduongTotal: state.taisansuachuabaoduongReducer.taisansuachuabaoduongTotal,
+  baohongmatTotal:state.khaibaohongmatReducer.khaibaohongmatTotal,
 
   isLoading: state.toanbotaisanReducer.isLoading,
 

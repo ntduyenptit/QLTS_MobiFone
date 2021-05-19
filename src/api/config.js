@@ -24,9 +24,11 @@ export const endPoint = ({
   getTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/GetAllTaiSanSuaChuaBaoDuong',
   getTaiSanThanhLy: 'services/app/TaiSanThanhLy/GetAllTaiSanThanhLy',
   getTaiSanMat: 'services/app/TaiSanMat/GetAllTaiSanMat',
+  getTaiSanHong: 'services/app/TaiSanHong/GetAllTaiSanHong',
   getTaiSanChuaSuDung: 'services/app/TaiSanChuaSuDung/GetAll',
   getTaiSanDangSuDung: 'services/app/TaiSanDangSuDung/GetAll',
   getTaiSanHuy: 'services/app/TaiSanHuy/GetAllTaiSanHuy',
+  getAllKhaibaoHongmat: 'services/app/KhaiBaoHongMat/GetAllKhaiBaoHongMat',
   // Quản lý đầu đọc 
   getDaudocCodinh: 'services/app/AngTenRFID/GetAll',
   getDaudocDidong: 'services/app/DauDocTheRFID/GetAll',
@@ -115,6 +117,7 @@ export const screens = ({
   chi_tiet_lich_xuat_bao_cao: 'Xem cài đặt Báo cáo người dùng',
   chi_tiet_nha_cung_cap: 'Xem chi tiết',
   chi_tiet_nguoi_dung: 'Xem chi tiết người dùng',
+  chi_tiet_bao_hongmat_tai_san: 'Xem chi tiết khai báo',
   
 });
 

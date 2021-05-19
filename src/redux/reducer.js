@@ -14,7 +14,8 @@ import {
   taisanmatReducer,
   taisandangsudungReducer,
   taisanchuasudungReducer,
-  taisansuachuabaoduongReducer
+  taisansuachuabaoduongReducer,
+  khaibaohongmatReducer
 } from '../modules/quanlytaisan/QuanLyTaiSanState';
 import { 
   filterReducer, 
@@ -85,6 +86,7 @@ import {
   taisandangsudungReducer,
   taisanchuasudungReducer,
   taisansuachuabaoduongReducer,
+  khaibaohongmatReducer
 });
 
 const rootReducer = (state, action) => {
