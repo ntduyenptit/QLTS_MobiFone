@@ -86,11 +86,25 @@ export const getColorByType = (type) => {
       return "#600080";
     case "Đang sử dụng":
     case "Tài sản đang sử dụng":
+      return "#FF0000";
+    case "Tài sản mất":
+    case "Mất":
       return "#9900cc";
-    case 3:
+    case "TS hỏng":
+    case "Hỏng"  :
+      return "#29088A";
+    case "TS thanh lý":
+    case "Thanh lý":
       return "#FFBF00";
+    case "Tài sản hủy":
+    case "Hủy":  
+      return "#0000FF";
+    case "TS sửa chữa/bảo dưỡng":
+    case "Sửa chữa":
+    case "Bảo dưỡng":
+      return "8A2908";
     default:
-      return null;
+      return 'black';
   }
 }
 
