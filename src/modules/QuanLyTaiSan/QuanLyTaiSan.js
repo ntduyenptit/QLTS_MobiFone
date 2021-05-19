@@ -220,7 +220,9 @@ const QuanLyTaiSan = (state) => {
   }, [skipCount]);
 
   useEffect(() => {
-    GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab });
+    if (state.searchText && state.searchText.length > 0) {
+      GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab });
+    }
   }, [state.searchText]);
 
   const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
