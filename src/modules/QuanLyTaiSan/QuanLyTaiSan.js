@@ -74,11 +74,29 @@ export function GetToanBoTaiSanData(parameters) {
 
     const textState = store.getState().SearchReducer.searchData;
     const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === store.getState().currentTabReducer.tabName)
-    && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === store.getState().currentTabReducer.tabName).data;
+      && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === store.getState().currentTabReducer.tabName).data;
     if (textFilter) {
-      url += `Fillter=${textFilter}&`
-      if (tabs.tai_san_dang_su_dung || tabs.tai_san_chua_su_dung) {
-        url += `KeyWord=${textFilter}&`
+      switch (tabChosen) {
+        case tabs.tai_san_dang_su_dung:
+        case tabs.tai_san_chua_su_dung: {
+          url += `KeyWord=${textFilter}&`;
+          break;
+        }
+        case tabs.tai_san_mat:
+        case tabs.tai_san_hong:
+        case tabs.tai_san_thanh_ly:
+        case tabs.tai_san_huy:
+        case tabs.tai_san_sua_chua_bao_duong: {
+          url += `TenTaiSan=${textFilter}&`;
+          break;
+        }
+        case tabs.bao_hong_mat_tai_san: {
+          url += `TimKiemKhaiBao=${textFilter}&`;
+          break;
+        }
+        default:
+          url += `Fillter=${textFilter}&`
+          break;
       }
     }
 
@@ -115,7 +133,6 @@ export function GetToanBoTaiSanData(parameters) {
     url += `IsSearch=${encodeURIComponent(`${textFilter !== undefined}`)}&`;
     url += `SkipCount=${encodeURIComponent(`${maxCount * skipTotal}`)}&`;
     url += `MaxResultCount=${encodeURIComponent(`${maxCount}`)}`;
-
     createGetMethod(url)
       .then(res => {
         if (res) {
@@ -210,7 +227,7 @@ const QuanLyTaiSan = (state) => {
 
   useEffect(() => {
     if (state.searchText && state.searchText.length > 0) {
-      GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab });
+      GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab, isFilter: true });
     }
   }, [state.searchText]);
 
@@ -294,8 +311,8 @@ const QuanLyTaiSan = (state) => {
     <Animated.View>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        <SearchComponent 
-          clampedScroll={clampedScroll} 
+        <SearchComponent
+          clampedScroll={clampedScroll}
           screen={screens.quan_ly_tai_san}
           tab={state.tab}
         />
