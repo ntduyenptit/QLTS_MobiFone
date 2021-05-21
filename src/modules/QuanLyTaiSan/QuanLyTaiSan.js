@@ -1,11 +1,12 @@
 /* eslint-disable import/no-cycle */
 import React, { useState, useEffect } from 'react';
-import { Animated, SafeAreaView, StatusBar, Text, View } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import find from 'lodash/find';
 import LoaderComponent from '../global/LoaderComponent';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
+import ThemmoiTaiSanScreen from './capnhattaisan/ThemmoiTaisan';
 import { createGetMethod } from '../../api/Apis';
 import { endPoint, screens, tabs } from '../../api/config';
 import { store } from '../../redux/store';
@@ -33,6 +34,8 @@ import {
   khaibaohongmatGetData
 } from '../../redux/actions/quanlytaisan.actions';
 import QuanLyTaiSanFilter from './filter/QuanLyTaiSanFilter';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export function GetToanBoTaiSanData(parameters) {
   const { datas, tab, skipCount, maxResultCount, loaitaisan, nhacungcap, masudung, isFilter } = parameters;
@@ -200,6 +203,7 @@ export function GetToanBoTaiSanData(parameters) {
 const QuanLyTaiSan = (state) => {
   const [scrollYValue] = useState(new Animated.Value(0));
   const [skipCount, setSkipCount] = useState(0);
+  const props = state;
   const clampedScroll = Animated.diffClamp(
     Animated.add(
       scrollYValue.interpolate({
@@ -281,7 +285,6 @@ const QuanLyTaiSan = (state) => {
         return 0;
     }
   }
-
   const totalDisplayForTab = () => {
     switch (state.tab) {
       case tabs.toan_bo_tai_san:
@@ -306,66 +309,121 @@ const QuanLyTaiSan = (state) => {
         return null;
     }
   }
-
-
+  const displayCreateForTab = () => {
+    switch (state.tab) {
+      case tabs.toan_bo_tai_san:
+      case tabs.tai_san_mat:
+      case tabs.tai_san_hong:
+      case tabs.tai_san_huy:
+      case tabs.tai_san_thanh_ly:
+        return <ActionButton buttonColor="rgba(231,76,60,1)" position='right' title="Thêm mới" onPress={() => LoadScreenThemmoi()}>
+          <Icon name="md-create" style={styles.actionButtonIcon} />
+        </ActionButton>;
+      case tabs.tai_san_chua_su_dung:
+      case tabs.tai_san_dang_su_dung:
+      case tabs.tai_san_sua_chua_bao_duong:
+      case tabs.bao_hong_mat_tai_san:
+      default:
+        return null;
+    }
+  }
+  const LoadScreenThemmoi = () => {
+    switch (state.tab) {
+      case tabs.toan_bo_tai_san:
+        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+      case tabs.tai_san_mat:
+        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+      case tabs.tai_san_hong:
+        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+      case tabs.tai_san_huy:
+        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+      case tabs.tai_san_thanh_ly:
+        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+      case tabs.tai_san_chua_su_dung:
+        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+      case tabs.tai_san_dang_su_dung:
+        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+      case tabs.tai_san_sua_chua_bao_duong:
+        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+      case tabs.bao_hong_mat_tai_san:
+        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+      default:
+        return null;
+    }
+  }
   return (
-    <Animated.View>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <SearchComponent
-          clampedScroll={clampedScroll}
-          screen={screens.quan_ly_tai_san}
-          tab={state.tab}
-        />
-        <Animated.ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{
-            margin: 10,
-            paddingTop: 55,
-            paddingBottom: 15,
-          }}
-          contentContainerStyle={{
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            justifyContent: 'space-around',
-            paddingBottom: 55,
-          }}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
-            {
-              useNativeDriver: true,
-              listener: event => {
-                if (isCloseToBottom(event.nativeEvent) && !state.isLoading) {
-                  setTimeout(() => {
-                    setSkipCount(getSkipCount());
-                  }, 2000)
-                }
+    <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
+      {/* Rest of the app comes ABOVE the action button component !*/}
+      <Animated.View>
+        <StatusBar barStyle="dark-content" />
+        <SafeAreaView>
+          <SearchComponent
+            clampedScroll={clampedScroll}
+            screen={screens.quan_ly_tai_san}
+            tab={state.tab}
+          />
+          <Animated.ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{
+              margin: 10,
+              paddingTop: 55,
+              paddingBottom: 15,
+            }}
+            contentContainerStyle={{
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'space-around',
+              paddingBottom: 55,
+            }}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
+              {
+                useNativeDriver: true,
+                listener: event => {
+                  if (isCloseToBottom(event.nativeEvent) && !state.isLoading) {
+                    setTimeout(() => {
+                      setSkipCount(getSkipCount());
+                    }, 2000)
+                  }
+                },
               },
-            },
-          )}
-          scrollEventThrottle={500}
-          contentInsetAdjustmentBehavior="automatic"
+            )}
+            scrollEventThrottle={500}
+            contentInsetAdjustmentBehavior="automatic"
+          >
+            {LoaderComponentByTab()}
+          </Animated.ScrollView>
+
+        </SafeAreaView>
+
+        {<View style={{
+          bottom: 5,
+          right: 5,
+          position: 'absolute',
+        }}
         >
-          {LoaderComponentByTab()}
-        </Animated.ScrollView>
-      </SafeAreaView>
-      <View style={{
-        bottom: 5,
-        right: 5,
-        position: 'absolute',
-      }}
-      >
-        {totalDisplayForTab()}
-      </View>
-      <FilterComponent
-        screen={screens.quan_ly_tai_san}
-        filter={<QuanLyTaiSanFilter screen={screens.quan_ly_tai_san} />}
-        action={GetToanBoTaiSanData}
-      />
-    </Animated.View>
+          {totalDisplayForTab()}
+        </View>}
+
+        <FilterComponent
+          screen={screens.quan_ly_tai_san}
+          filter={<QuanLyTaiSanFilter screen={screens.quan_ly_tai_san} />}
+          action={GetToanBoTaiSanData}
+        />
+      </Animated.View>
+      {displayCreateForTab()}
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
+});
 
 const mapStateToProps = state => ({
   toanbotaisanData: state.toanbotaisanReducer.toanbotaisanData,
@@ -376,7 +434,7 @@ const mapStateToProps = state => ({
   taisanchuasudungData: state.taisanchuasudungReducer.taisanchuasudungData,
   taisandangsudungData: state.taisandangsudungReducer.taisandangsudungData,
   taisansuachuabaoduongData: state.taisansuachuabaoduongReducer.taisansuachuabaoduongData,
-  baohongmatData:state.khaibaohongmatReducer.khaibaohongmatData,
+  baohongmatData: state.khaibaohongmatReducer.khaibaohongmatData,
 
   toanbotaisanTotal: state.toanbotaisanReducer.toanbotaisanTotal,
   taisanthanhlyTotal: state.taisanthanhlyReducer.taisanthanhlyTotal,
@@ -386,7 +444,7 @@ const mapStateToProps = state => ({
   taisanchuasudungTotal: state.taisanchuasudungReducer.taisanchuasudungTotal,
   taisandangsudungTotal: state.taisandangsudungReducer.taisandangsudungTotal,
   taisansuachuabaoduongTotal: state.taisansuachuabaoduongReducer.taisansuachuabaoduongTotal,
-  baohongmatTotal:state.khaibaohongmatReducer.khaibaohongmatTotal,
+  baohongmatTotal: state.khaibaohongmatReducer.khaibaohongmatTotal,
 
   isLoading: state.toanbotaisanReducer.isLoading,
 

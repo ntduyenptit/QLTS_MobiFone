@@ -118,6 +118,8 @@ export const screens = ({
   chi_tiet_nha_cung_cap: 'Xem chi tiết',
   chi_tiet_nguoi_dung: 'Xem chi tiết người dùng',
   chi_tiet_bao_hongmat_tai_san: 'Xem chi tiết khai báo',
+  // them moi tai san
+  them_moi_tai_san: "Thêm mới tài sản",
   
 });
 
