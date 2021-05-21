@@ -347,23 +347,19 @@ const QuanLyTaiSan = (state) => {
   const LoadScreenThemmoi = () => {
     switch (state.tab) {
       case tabs.toan_bo_tai_san:
-        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+        return props.navigation.navigate(screens.them_moi_tai_san, { screen: "toàn bộ tài sản" });
       case tabs.tai_san_mat:
-        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản mất" });
       case tabs.tai_san_hong:
-        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản hỏng" });
       case tabs.tai_san_huy:
-        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản hủy" });
       case tabs.tai_san_thanh_ly:
-        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
-      case tabs.tai_san_chua_su_dung:
-        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
-      case tabs.tai_san_dang_su_dung:
-        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản thanh lý" });
       case tabs.tai_san_sua_chua_bao_duong:
-        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản sửa chữa/bảo dưỡng" });
       case tabs.bao_hong_mat_tai_san:
-        return props.navigation.navigate(screens.them_moi_tai_san, { tabKey: props.tab });
+        return props.navigation.navigate(screens.them_moi_tai_san, { screen: "báo hỏng/mất tài sản" });
       default:
         return null;
     }

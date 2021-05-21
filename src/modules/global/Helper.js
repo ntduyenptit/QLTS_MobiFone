@@ -151,6 +151,33 @@ export const convertTrangthaiTaisan = (int) => {
   }
 }
 
+export const convertHinhthucTaisan = (int) => {
+  switch (int) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+      return "Chưa sử dụng";
+    case 4:
+      return "Đang sử dụng";
+    case 5:
+      return "Sửa chữa";
+    case 6:
+      return "Bảo dưỡng";
+    case 7:
+      return "Mất";
+    case 8:
+      return "Hỏng";
+    case 9:
+      return "Thanh lý";
+    case 10:
+      return "Hủy";
+
+    default:
+      return null;
+  }
+}
+
 export const getDateString = (timestamp) => {
   const date = new Date(timestamp)
   const year = date.getFullYear()
