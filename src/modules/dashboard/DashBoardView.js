@@ -21,7 +21,6 @@ class DashBoard extends React.Component {
     }
 
     componentDidMount() {
-      console.log('current_date: ', currentDate());
         this.getData().then(res => {
             store.dispatch(getDVQLDataAction(res.result));
             Promise.all([
