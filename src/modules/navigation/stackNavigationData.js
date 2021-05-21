@@ -37,6 +37,7 @@ import NguoidungDetailScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoid
 import QuanLyPhanQuyenScreen from '../quanlyhethong/quanlyphanquyen/QuanLyPhanQuyen';
 import QuanlyCauhinhMailServer from '../quanlyhethong/quanlymailServer/QuanLyMailServer';
 import ThemmoiTaiSanScreen from  '../quanlytaisan/capnhattaisan/ThemmoiTaisan';
+import KhaiBaoTaiSanScreen from '../quanlytaisan/capnhattaisan/KhaibaoTaiSan';
 import DashBoard from '../dashboard/DashBoardView';
 
 import { colors, fonts } from '../../styles';
@@ -97,19 +98,19 @@ const headerRightComponent = () => (
 const headerBackground = require('../../../assets/images/topBarBg.png');
 
 const StackNavigationData = [
-  {
-    name: screens.dash_board,
-    component: DashBoard,
-    headerLeft: null,
-    headerRight: null,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-      alignSelf: 'center'
-    },
-  },
+  // {
+  //   name: screens.dash_board,
+  //   component: DashBoard,
+  //   headerLeft: null,
+  //   headerRight: null,
+  //   headerBackground: { source: headerBackground },
+  //   headerTitleStyle: {
+  //     fontFamily: fonts.primaryRegular,
+  //     color: colors.white,
+  //     fontSize: 18,
+  //     alignSelf: 'center'
+  //   },
+  // },
   {
     name: screens.quan_ly_tai_san,
     component: TabNavigator,
@@ -547,6 +548,19 @@ const StackNavigationData = [
 {
   name: screens.them_moi_tai_san,
   component: ThemmoiTaiSanScreen,
+  headerLeft: headerLeftComponent,
+  headerRight: null,
+  headerBackground: { source: headerBackground },
+  headerTitleStyle: {
+    fontFamily: fonts.primaryRegular,
+    color: colors.white,
+    fontSize: 18,
+    alignSelf: 'center'
+  },
+},
+{
+  name: screens.khai_bao_tai_san,
+  component: KhaiBaoTaiSanScreen,
   headerLeft: headerLeftComponent,
   headerRight: null,
   headerBackground: { source: headerBackground },

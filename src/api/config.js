@@ -1,6 +1,6 @@
 
 // define the api
-export const baseUrl = 'http://10.6.71.64:9080/api/';
+export const baseUrl = 'http://qlts-server.mobifone.vn/api/';
 export const headerWithoutToken = ({
   'Content-Type': 'application/json',
   Accept: 'application/json'
@@ -12,6 +12,7 @@ export const headers = (token) => ({
 });
 export const endPoint = ({
   login: 'TokenAuth/Authenticate',
+  getuserDangnhap: 'services/app/ToanBoTaiSan/GetUserDangNhap',
   // Filter
   getAllToChucTheoNguoiDung: 'services/app/LookupTable/GetAllToChucTheoNguoiDung',
   getAllTrangThaiTaiSan: 'services/app/LookupTable/GetAllTrangThaiTaiSan',
@@ -75,7 +76,10 @@ export const endPoint = ({
   //Quản lý phân quyền
   getALLRoleName: 'services/app/Role/GetAll',
   getMailServerEdit: 'services/app/MailServer/GetForEdit',
-  
+
+  //getAllTS
+  TsMatgetAll: 'services/app/TaiSanMat/GetAllTaiSan',
+
 });
 
 // Quản lý màn hình
@@ -121,7 +125,7 @@ export const screens = ({
   chi_tiet_bao_hongmat_tai_san: 'Xem chi tiết khai báo',
   // them moi tai san
   them_moi_tai_san: "Thêm mới tài sản",
-  
+  khai_bao_tai_san: "Khai báo tài sản",
 });
 
 // Quản lý tabs
