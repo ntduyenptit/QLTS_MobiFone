@@ -80,6 +80,7 @@ export const endPoint = ({
 
 // Quản lý màn hình
 export const screens = ({
+  dash_board: 'Tổng quan',
   quan_ly_tai_san: 'Quản lý tài sản',
   // quản lý đầu đọc
   quan_ly_dau_doc: 'Quản lý đầu đọc',

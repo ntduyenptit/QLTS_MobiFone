@@ -37,6 +37,8 @@ import NguoidungDetailScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoid
 import QuanLyPhanQuyenScreen from '../quanlyhethong/quanlyphanquyen/QuanLyPhanQuyen';
 import QuanlyCauhinhMailServer from '../quanlyhethong/quanlymailServer/QuanLyMailServer';
 import ThemmoiTaiSanScreen from  '../quanlytaisan/capnhattaisan/ThemmoiTaisan';
+import DashBoard from '../dashboard/DashBoardView';
+
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
 import { showFilter } from '../../redux/actions/filter.actions';
@@ -543,6 +545,19 @@ const StackNavigationData = [
   },
 },
 
+  {
+    name: screens.dash_board,
+    component: DashBoard,
+    headerLeft: null,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
  
 ]
 
