@@ -108,17 +108,13 @@ export function GetToanBoTaiSanData(parameters) {
       }
     }
 
-    phongbanquanly.forEach(e => {
-      if (e.id) {
-        url += `PhongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
-      } else {
-        url += `PhongBanqQL=${encodeURIComponent(`${e}`)}&`;
-      }
-    });
-
     if (tabChosen === tabs.tai_san_dang_su_dung || tabChosen === tabs.tai_san_chua_su_dung) {
       phongbanquanly.forEach(e => {
         url += `PhongBanQuanLyId=${encodeURIComponent(`${e.id}`)}&`;
+      });
+    } else {
+      phongbanquanly.forEach(e => {
+          url += `PhongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
       });
     }
 

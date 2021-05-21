@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function buildTree(arr) {
   const tree = [];
   mappedArr = {};
@@ -208,4 +210,67 @@ export const getDateFromLastMonth = () => {
   const x = new Date();
   x.setMonth(x.getMonth()-1);
   return convertDateFormatTo(x);
+}
+
+export const countNumberOfExitsTotal = (items) => {
+  let count = 0;
+  items.forEach(e => {
+    if (e.chieuDiChuyen === "Ra") {
+      count += 1;
+    }
+  });
+  return count;
+}
+
+export const countNumberOfEntriesTotal = (items) => {
+  let count = 0;
+  items.forEach(e => {
+    if (e.chieuDiChuyen === "Vào") {
+      count += 1;
+    }
+  });
+  return count;
+}
+
+export const countNumberOfExitsInDay = (items, day) => {
+  let count = 0;
+  items.forEach(e => {
+    const itemDay = convertTimeFormatToLocaleDate(e.ngayDiChuyen);
+    if (e.chieuDiChuyen === "Ra" && itemDay === day) {
+      count += 1;
+    }
+  });
+  return count;
+}
+
+export const countNumberOfEntriesInDay = (items, day) => {
+  let count = 0;
+  items.forEach(e => {
+    const itemDay = convertTimeFormatToLocaleDate(e.ngayDiChuyen);
+    if (e.chieuDiChuyen === "Vào" && itemDay === day) {
+      count += 1;
+    }
+  });
+  return count;
+}
+
+export const getDates = (startDate, endDate, jump) => {
+  const dates = [];
+      let currentdate = startDate;
+      const addDays = function(days) {
+        const date = new Date(this.valueOf());
+        date.setDate(date.getDate() + days);
+        return date;
+      };
+  while (currentdate <= endDate) {
+    dates.push(convertFormatDate(currentdate));
+    currentdate = addDays.call(currentdate, jump);
+  }
+
+  return dates;
+}
+
+export const convertFormatDate = (date) => {
+  const newDate = new Date(date);
+  return `${newDate.getDate()  }/${  newDate.getMonth() + 1}`;
 }

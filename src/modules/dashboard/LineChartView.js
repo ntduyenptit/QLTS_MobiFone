@@ -4,7 +4,8 @@ import * as shape from 'd3-shape'
 import { View } from 'react-native';
 import { Circle, G, Line, Rect, Text } from 'react-native-svg'
 import PropTypes from 'prop-types';
-import { deviceWidth } from '../global/LoaderComponent'; 
+import { deviceWidth } from '../global/LoaderComponent';
+import { currentDate, getDateFromLastMonth, getDates } from '../global/Helper';
 
 export default class LineChartView extends React.PureComponent {
     static propTypes = {
@@ -20,16 +21,19 @@ export default class LineChartView extends React.PureComponent {
 
       render() {
         const { key }= this.state;
+        const { data }= this.props;
         const axesSvg = { fontSize: 10, fill: 'grey' };
         const xAxisHeight = 30
-        const data = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
-        const dataX = [ 0,5,10,15,20,25,30 ];
+        const dataLines = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
+
+        const dataX = getDates(new Date().setMonth(new Date().getMonth()-1) ,new Date(), 5);
 
         /**
          * Both below functions should preferably be their own React Components
          */
 
-         const Decorator = ({ x, y, data }) => data.map((value, index) => (
+         console.log('data_line_chart: ', data);
+         const Decorator = ({ x, y, data }) => dataLines.map((value, index) => (
            <Circle
              key={index}
              onPress={() => this.setState({
@@ -77,18 +81,18 @@ export default class LineChartView extends React.PureComponent {
                 textAnchor="middle"
                 stroke="rgb(134, 65, 244)"
               >
-                { `${data[key]} ts` }
+                { `${dataLines[key]} ts` }
               </Text>
             </G>
             <G x={75 / 2}>
               <Line
                 y1={50 + 40}
-                y2={y(data[ key ])}
+                y2={y(dataLines[ key ])}
                 stroke="grey"
                 strokeWidth={2}
               />
               <Circle
-                cy={y(data[ key ])}
+                cy={y(dataLines[ key ])}
                 r={6}
                 stroke="rgb(134, 65, 244)"
                 strokeWidth={2}
@@ -102,7 +106,7 @@ export default class LineChartView extends React.PureComponent {
           <View style={{ height: 300, width: deviceWidth, padding: 20 }}>
             <LineChart
               style={{ height: 250 }}
-              data={data}
+              data={dataLines}
               svg={{
                 stroke: 'rgb(134, 65, 244)',
                 strokeWidth: 2,
@@ -118,8 +122,7 @@ export default class LineChartView extends React.PureComponent {
             <XAxis
               style={{ marginHorizontal: -10, height: xAxisHeight }}
               data={dataX}
-              xAccessor={({ item }) => item}
-              formatLabel={(value) => value}
+              formatLabel={(value, index) => dataX[index]}
               contentInset={{ left: 10, right: 10 }}
               svg={axesSvg}
             />
