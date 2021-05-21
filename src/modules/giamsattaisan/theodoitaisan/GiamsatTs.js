@@ -15,7 +15,6 @@ export const deviceHeight = Dimensions.get('window').height;
 
 
 export function getToanTaisan(parameters) {
-  console.log('parameters: ',parameters.startdate, parameters.enddate);
   const { datas, startdate, enddate, chieuDiChuyen, phanloaitaisan } = parameters;
   if (datas && datas.length > 0) {
     let url;

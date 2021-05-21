@@ -557,21 +557,6 @@ const StackNavigationData = [
     alignSelf: 'center'
   },
 },
-
-  {
-    name: screens.dash_board,
-    component: DashBoard,
-    headerLeft: null,
-    headerRight: null,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-      alignSelf: 'center'
-    },
-  },
- 
 ]
 
 export default StackNavigationData;
