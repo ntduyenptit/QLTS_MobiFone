@@ -13,6 +13,70 @@ import LoaderComponent from '../../global/LoaderComponent';
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
+
+export function getToanTaisan(parameters) {
+  console.log('parameters: ',parameters.startdate, parameters.enddate);
+  const { datas, startdate, enddate, chieuDiChuyen, phanloaitaisan } = parameters;
+  if (datas && datas.length > 0) {
+    let url;
+    url = `${endPoint.getLichsuRavaoAngten}?`;
+    const StartDate = find(startdate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
+    && find(startdate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
+    if (StartDate) {
+      if (StartDate.dateString) {
+        url += `StartDate=${encodeURIComponent(`${StartDate.dateString}`)}&`;
+      } else {
+        url += `StartDate=${encodeURIComponent(`${StartDate}`)}&`;
+      }
+    }
+
+    const EndDate = find(enddate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
+    && find(enddate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
+    if (EndDate) {
+      if (EndDate.dateString) {
+        url += `EndDate=${encodeURIComponent(`${EndDate.dateString}`)}&`;
+      } else {
+        url += `EndDate=${encodeURIComponent(`${EndDate}`)}&`;
+      }
+    }
+
+    const ChieuDiChuyen = find(chieuDiChuyen, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
+    && find(chieuDiChuyen, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
+    if (ChieuDiChuyen) {
+      url += `ChieuDiChuyen=${encodeURIComponent(`${ChieuDiChuyen}`)}&`;
+    }
+
+    const PhanLoaiTaiSan = find(phanloaitaisan, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
+    && find(phanloaitaisan, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
+    if (PhanLoaiTaiSan) {
+      url += `PhanLoaiId=${encodeURIComponent(`${PhanLoaiTaiSan}`)}&`;
+    }
+
+    datas.forEach(e => {
+      if (e.id) {
+        url += `BoPhanId=${encodeURIComponent(`${e.id}`)}&`;
+      } else {
+        url += `BoPhanId=${encodeURIComponent(`${e}`)}&`;
+      }
+    });
+
+    url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
+    url += `SkipCount=${encodeURIComponent(`${this.state.skipCount}`)}&`;
+    url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
+    createGetMethod(url)
+      .then(res => {
+        if (res) {
+          this.setState({
+            toanboTaiSanData: res.result.items,
+            total: res.result.totalCount
+          });
+        } else {
+          // Alert.alert('Lỗi khi load toàn bộ tài sản!');
+        }
+      })
+      .catch(err => console.log(err));
+  }
+}
 class GiamSatTaiSanScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -22,7 +86,7 @@ class GiamSatTaiSanScreen extends React.Component {
       total: 0,
       skipCount: 0
     }
-    this.getToanTaisan = this.getToanTaisan.bind(this);
+    this.getToanTaisan = getToanTaisan.bind(this);
     this.isCloseToBottom = this.isCloseToBottom.bind(this);
   }
 
@@ -33,61 +97,6 @@ class GiamSatTaiSanScreen extends React.Component {
   componentDidUpdate(prevProps){
     if ( prevProps.searchText !== this.props.searchText ) {
       this.getToanTaisan({datas: this.props.DvqlDataFilter});
-    }
-  }
-
-  getToanTaisan(parameters) {
-    const { datas, startdate, enddate, chieuDiChuyen, phanloaitaisan } = parameters;
-    if (datas && datas.length > 0) {
-      let url;
-      url = `${endPoint.getLichsuRavaoAngten}?`;
-      const StartDate = find(startdate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
-      && find(startdate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
-      if (StartDate) {
-        url += `StartDate=${encodeURIComponent(`${StartDate.dateString}`)}&`;
-      }
-
-      const EndDate = find(enddate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
-      && find(enddate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
-      if (EndDate) {
-        url += `EndDate=${encodeURIComponent(`${EndDate.dateString}`)}&`;
-      }
-
-      const ChieuDiChuyen = find(chieuDiChuyen, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
-      && find(chieuDiChuyen, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
-      if (ChieuDiChuyen) {
-        url += `ChieuDiChuyen=${encodeURIComponent(`${ChieuDiChuyen}`)}&`;
-      }
-
-      const PhanLoaiTaiSan = find(phanloaitaisan, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
-      && find(phanloaitaisan, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
-      if (PhanLoaiTaiSan) {
-        url += `PhanLoaiId=${encodeURIComponent(`${PhanLoaiTaiSan}`)}&`;
-      }
-
-      datas.forEach(e => {
-        if (e.id) {
-          url += `BoPhanId=${encodeURIComponent(`${e.id}`)}&`;
-        } else {
-          url += `BoPhanId=${encodeURIComponent(`${e}`)}&`;
-        }
-      });
-
-      url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
-      url += `SkipCount=${encodeURIComponent(`${this.state.skipCount}`)}&`;
-      url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
-      createGetMethod(url)
-        .then(res => {
-          if (res) {
-            this.setState({
-              toanboTaiSanData: res.result.items,
-              total: res.result.totalCount
-            });
-          } else {
-            // Alert.alert('Lỗi khi load toàn bộ tài sản!');
-          }
-        })
-        .catch(err => console.log(err));
     }
   }
 

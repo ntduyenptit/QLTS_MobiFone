@@ -190,3 +190,22 @@ export const getPeriod = (startTimestamp, endTimestamp) => {
   }
   return period
 }
+
+export const getPercent = (value, total) => {
+  let result = (value / total) * 100;
+  result = result.toFixed(2);
+  return result;
+}
+
+export const convertDateFormatTo = (date) => {
+  const newDate = new Date(`${date.toString().split('GMT')[0]} UTC`).toISOString().split('.')[0];
+  return newDate;
+}
+
+export const currentDate = () => new Date(`${new Date().toString().split('GMT')[0]} UTC`).toISOString().split('.')[0];
+
+export const getDateFromLastMonth = () => {
+  const x = new Date();
+  x.setMonth(x.getMonth()-1);
+  return convertDateFormatTo(x);
+}
