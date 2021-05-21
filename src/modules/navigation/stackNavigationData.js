@@ -558,6 +558,19 @@ const StackNavigationData = [
     alignSelf: 'center'
   },
 },
+{
+  name: screens.khai_bao_tai_san,
+  component: KhaiBaoTaiSanScreen,
+  headerLeft: headerLeftComponent,
+  headerRight: null,
+  headerBackground: { source: headerBackground },
+  headerTitleStyle: {
+    fontFamily: fonts.primaryRegular,
+    color: colors.white,
+    fontSize: 18,
+    alignSelf: 'center'
+  },
+},
 ]
 
 export default StackNavigationData;
