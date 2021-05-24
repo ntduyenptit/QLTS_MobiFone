@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Image,View } from 'react-native';
+import { TouchableOpacity, Image, View, Text } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import TabNavigator from './MainTabNavigator';
@@ -26,7 +26,7 @@ import QuanlyCanhbaoScreen from '../quanlycanhbao/QuanlyCanhbao';
 import BaocaonguoidungScreen from '../quanlybaocao/baocaonguoidung/BaoCaoNguoiDung';
 import BaocaoCanhbaoScreen from '../quanlybaocao/baocaocanhbao/BaoCaoCanhbao';
 import DatLichXuatBaoCaoScreen from '../quanlybaocao/datlichxuatbaocao/LichXuatBaoCao';
-import LichXuatBaoCaoChitietScreen  from '../quanlybaocao/datlichxuatbaocao/LichXuatBaoCao_Chitiet';
+import LichXuatBaoCaoChitietScreen from '../quanlybaocao/datlichxuatbaocao/LichXuatBaoCao_Chitiet';
 import QuanlyNhaCungcapScreen from '../quanlydanhmuc/quanlynhacungcap/QuanLyNhaCungCap';
 import NhaCungCapDetailScreen from '../quanlydanhmuc/quanlynhacungcap/QuanLyNhaCungCapDetail';
 import QuanlyVitriDialyScreen from '../quanlydanhmuc/quanlyvitridialy/QuanlyVitriDialy';
@@ -36,7 +36,7 @@ import QuanLyNguoidungScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoid
 import NguoidungDetailScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoidungDetail';
 import QuanLyPhanQuyenScreen from '../quanlyhethong/quanlyphanquyen/QuanLyPhanQuyen';
 import QuanlyCauhinhMailServer from '../quanlyhethong/quanlymailServer/QuanLyMailServer';
-import ThemmoiTaiSanScreen from  '../quanlytaisan/capnhattaisan/ThemmoiTaisan';
+import ThemmoiTaiSanScreen from '../quanlytaisan/capnhattaisan/ThemmoiTaisan';
 import KhaiBaoTaiSanScreen from '../quanlytaisan/capnhattaisan/KhaibaoTaiSan';
 import DashBoard from '../dashboard/DashBoardView';
 
@@ -66,10 +66,10 @@ const headerLeftComponent = (props) => (
 const headerRightComponent = () => (
   <TouchableOpacity
     onPress={() => {
-        if (!store.getState().filterReducer.isShowFilter) {
-          store.dispatch(showFilter());
-        }
-      }}
+      if (!store.getState().filterReducer.isShowFilter) {
+        store.dispatch(showFilter());
+      }
+    }}
     style={{
       paddingHorizontal: 16,
       paddingVertical: 12,
@@ -79,38 +79,58 @@ const headerRightComponent = () => (
       <Icon name="filter" color="white" size={20} />
     </View>
   </TouchableOpacity>
-  );
+);
 
-  const moreHeaderRightComponent = () => (
-    <TouchableOpacity
-      style={{
+const moreHeaderRightComponent = () => (
+  <TouchableOpacity
+    style={{
       paddingHorizontal: 16,
       paddingVertical: 12,
     }
-  }
-    >
-      <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-        <Icon name="ellipsis-v" color="white" size={20} />
-      </View>
-    </TouchableOpacity>
-  );
+    }
+  >
+    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+      <Icon name="ellipsis-v" color="white" size={20} />
+    </View>
+  </TouchableOpacity>
+);
+
+const DoneHeaderRightComponent = () => (
+  <TouchableOpacity
+    style={{
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+    }
+    }
+  >
+    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+      {/* <Icon name="save" color="white" size={20} /> */}
+      <Text style={{
+        fontFamily: fonts.primaryRegular,
+        color: colors.white,
+        fontSize: 18,
+        alignSelf: 'center'
+      }}> Lưu</Text>
+    </View>
+  </TouchableOpacity>
+);
 
 const headerBackground = require('../../../assets/images/topBarBg.png');
 
 const StackNavigationData = [
-  // {
-  //   name: screens.dash_board,
-  //   component: DashBoard,
-  //   headerLeft: null,
-  //   headerRight: null,
-  //   headerBackground: { source: headerBackground },
-  //   headerTitleStyle: {
-  //     fontFamily: fonts.primaryRegular,
-  //     color: colors.white,
-  //     fontSize: 18,
-  //     alignSelf: 'center'
-  //   },
-  // },
+  {
+    name: screens.dash_board,
+    component: DashBoard,
+    headerLeft: null,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
   {
     name: screens.quan_ly_tai_san,
     component: TabNavigator,
@@ -398,7 +418,7 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
-  
+
   {
     name: screens.chi_tiet_nguoi_dung,
     component: NguoidungDetailScreen,
@@ -530,7 +550,7 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
-   // Màn hình chi tiết đầu đọc
+  // Màn hình chi tiết đầu đọc
   {
     name: screens.chi_tiet_dau_doc,
     component: QuanLyDauDocDetailComponentScreen,
@@ -544,33 +564,33 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
-// thêm mới tài sản
-{
-  name: screens.them_moi_tai_san,
-  component: ThemmoiTaiSanScreen,
-  headerLeft: headerLeftComponent,
-  headerRight: null,
-  headerBackground: { source: headerBackground },
-  headerTitleStyle: {
-    fontFamily: fonts.primaryRegular,
-    color: colors.white,
-    fontSize: 18,
-    alignSelf: 'center'
+  // thêm mới tài sản
+  {
+    name: screens.them_moi_tai_san,
+    component: ThemmoiTaiSanScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: DoneHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
   },
-},
-{
-  name: screens.khai_bao_tai_san,
-  component: KhaiBaoTaiSanScreen,
-  headerLeft: headerLeftComponent,
-  headerRight: null,
-  headerBackground: { source: headerBackground },
-  headerTitleStyle: {
-    fontFamily: fonts.primaryRegular,
-    color: colors.white,
-    fontSize: 18,
-    alignSelf: 'center'
+  {
+    name: screens.khai_bao_tai_san,
+    component: KhaiBaoTaiSanScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: DoneHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
   },
-},
 ]
 
 export default StackNavigationData;
