@@ -129,6 +129,8 @@ export const screens = ({
   // them moi tai san
   them_moi_tai_san: "Thêm mới tài sản",
   khai_bao_tai_san: "Khai báo tài sản",
+  //them moi đầu đọc
+  them_moi_dau_doc: "Thêm mới đầu đọc",
 });
 
 // Quản lý tabs

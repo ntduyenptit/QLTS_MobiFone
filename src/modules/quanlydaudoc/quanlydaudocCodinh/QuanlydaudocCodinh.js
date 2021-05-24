@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar, Dimensions, Text } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Dimensions, Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import find from 'lodash/find';
 import SearchComponent from '../../global/SearchComponent';
@@ -13,6 +13,7 @@ import { getTTSDDataFilter } from '../../global/FilterApis';
 import {
   getTTSDDataAction
 } from '../../../redux/actions/filter.actions';
+import ActionButton from 'react-native-action-button';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
@@ -29,7 +30,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.getToanBoDauDocCoDinhData({datas: this.props.DvqlDataFilter});
+    this.getToanBoDauDocCoDinhData({ datas: this.props.DvqlDataFilter });
     if (this.props.TtsdDataFilter.length === 0) {
       getTTSDDataFilter().then(res => {
         this.props.getTTSDData(res.result);
@@ -37,9 +38,9 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps){
-    if ( prevProps.searchText !== this.props.searchText ) {
-      this.getToanBoDauDocCoDinhData({datas: this.props.DvqlDataFilter});
+  componentDidUpdate(prevProps) {
+    if (prevProps.searchText !== this.props.searchText) {
+      this.getToanBoDauDocCoDinhData({ datas: this.props.DvqlDataFilter });
     }
   }
 
@@ -51,7 +52,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
 
       const textState = this.props.searchText;
       const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_co_dinh)
-      && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_co_dinh).data;
+        && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_co_dinh).data;
       if (textFilter) {
         url += `TenTS=${textFilter}&`
       }
@@ -66,7 +67,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
 
       if (tinhtrangsudung) {
         const tinhTrangSuDung = find(tinhtrangsudung, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_co_dinh)
-        && find(tinhtrangsudung, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_co_dinh).data;
+          && find(tinhtrangsudung, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_co_dinh).data;
         if (tinhTrangSuDung) {
           url += `TinhTrangSuDung=${encodeURIComponent(`${tinhTrangSuDung}`)}&`;
         }
@@ -90,12 +91,16 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
     }
   }
 
+  LoadScreenThemmoi() {
+
+  }
+
   render() {
-    const { 
+    const {
       scrollYValue,
       daudoccodinhData,
       total
-     } = this.state;
+    } = this.state;
     const clampedScroll = Animated.diffClamp(
       Animated.add(
         scrollYValue.interpolate({
@@ -109,55 +114,65 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
       50,
     )
     return (
-      <Animated.View>
-        <StatusBar barStyle="dark-content" />
-        <SafeAreaView>
-          <SearchComponent 
-            clampedScroll={clampedScroll}
-            screen={screens.quan_ly_dau_doc_co_dinh}
-          />
-          <Animated.ScrollView
-            showsVerticalScrollIndicator={false}
+      <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
+        <Animated.View>
+          <StatusBar barStyle="dark-content" />
+          <SafeAreaView>
+            <SearchComponent
+              clampedScroll={clampedScroll}
+              screen={screens.quan_ly_dau_doc_co_dinh}
+            />
+            <Animated.ScrollView
+              showsVerticalScrollIndicator={false}
+              style={{
+                margin: 10,
+                paddingTop: 55,
+                paddingBottom: 15,
+              }}
+              contentContainerStyle={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                justifyContent: 'space-around',
+                paddingBottom: 55,
+              }}
+              onScroll={Animated.event(
+                [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
+                { useNativeDriver: true },
+                () => { },          // Optional async listener
+              )}
+              contentInsetAdjustmentBehavior="automatic"
+            >
+              {LoaderComponent(daudoccodinhData, this.props, screens.chi_tiet_dau_doc)}
+            </Animated.ScrollView>
+          </SafeAreaView>
+          <Text
             style={{
-              margin: 10,
-              paddingTop: 55,
-              paddingBottom: 15,
+              bottom: 5,
+              right: 5,
+              position: 'absolute',
             }}
-            contentContainerStyle={{
-              display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              justifyContent: 'space-around',
-              paddingBottom: 55,
-            }}
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
-              { useNativeDriver: true },
-              () => { },          // Optional async listener
-            )}
-            contentInsetAdjustmentBehavior="automatic"
-          >
-            {LoaderComponent(daudoccodinhData, this.props, screens.chi_tiet_dau_doc)}
-          </Animated.ScrollView>
-        </SafeAreaView>
-        <Text
-          style={{
-          bottom: 5,
-          right: 5,
-          position: 'absolute',
-        }}
-        >Hiển thị: {daudoccodinhData.length}/{total}
-        </Text>
-        <FilterComponent
-          filter={<QuanLyDauDocFilter screen={screens.quan_ly_dau_doc_co_dinh} />}
-          screen={screens.quan_ly_dau_doc_co_dinh}
-          action={this.getToanBoDauDocCoDinhData}
-        />
-      </Animated.View>
+          >Hiển thị: {daudoccodinhData.length}/{total}
+          </Text>
+          <FilterComponent
+            filter={<QuanLyDauDocFilter screen={screens.quan_ly_dau_doc_co_dinh} />}
+            screen={screens.quan_ly_dau_doc_co_dinh}
+            action={this.getToanBoDauDocCoDinhData}
+          />
+        </Animated.View>
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_dau_doc, { screen: "Thêm mới đầu đọc cố định" })}></ActionButton>
+      </View>
     );
   }
 
 }
+const styles = StyleSheet.create({
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
+});
 
 const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,

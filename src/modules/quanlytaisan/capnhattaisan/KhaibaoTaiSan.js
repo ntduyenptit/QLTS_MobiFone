@@ -20,7 +20,7 @@ const hinhThucList = [
         label: 'Bảo dưỡng',
         value: 'Bảo dưỡng',
     },
-  
+
 ]
 const placeholder = {
     label: 'Chọn ...',
@@ -126,7 +126,7 @@ class KhaiBaoMatTaiSan extends React.Component {
         }
     }
 
-    renderTabInfor(userKhaibao, dateKhaibao,dateSuachua) {
+    renderTabInfor(userKhaibao, dateKhaibao, dateSuachua) {
         switch (tab) {
             case "tài sản mất":
             case "tài sản hỏng":
@@ -169,56 +169,56 @@ class KhaiBaoMatTaiSan extends React.Component {
                         <Text style={styles.title}>Khai báo sửa chữa/bảo dưỡng </Text>
                         <Text style={styles.boldText}>Hình thức: </Text>
                         <RNPickerSelect
-                                placeholder = {placeholder}
-                                items={hinhThucList}
-                                onValueChange={value => {
-                                    this.setState({
-                                        hinhthuc: value,
-                                    });
-                                }}
+                            placeholder={placeholder}
+                            items={hinhThucList}
+                            onValueChange={value => {
+                                this.setState({
+                                    hinhthuc: value,
+                                });
+                            }}
 
-                                style={{
-                                    ...pickerSelectStyles,
-                                    iconContainer: {
-                                        top: 10,
-                                        right: 12,
-                                    },
-                                }}
-                                value={this.state.hinhthuc}
-                                useNativeAndroidPickerStyle={false}
-                                textInputProps={{ underlineColor: 'yellow' }}
-                                Icon={() => {
-                                    return <Icon name="caret-down" size={25} color="black" />;
-                                }}
-                            />
+                            style={{
+                                ...pickerSelectStyles,
+                                iconContainer: {
+                                    top: 10,
+                                    right: 12,
+                                },
+                            }}
+                            value={this.state.hinhthuc}
+                            useNativeAndroidPickerStyle={false}
+                            textInputProps={{ underlineColor: 'yellow' }}
+                            Icon={() => {
+                                return <Icon name="caret-down" size={25} color="black" />;
+                            }}
+                        />
                         <Text style={styles.boldText}>Thời gian bắt đầu: </Text>
                         <DatePicker
-                                style={styles.datePickerStyle}
-                                date={dateSuachua} // Initial date from state
-                                mode="date" // The enum of date, datetime and time
-                                borderRadius='15'
-                                placeholder="Chọn ngày"
-                                format="DD-MM-YYYY"
-                                confirmBtnText="Chọn"
-                                cancelBtnText="Thoát"
-                                customStyles={{
-                                    dateIcon: {
-                                        //display: 'none',
-                                        position: 'absolute',
-                                        right: 0,
-                                        top: 0,
-                                        marginLeft: 0,
-                                    },
-                                    dateInput: {
-                                        marginLeft: 5,
-                                    },
-                                }}
-                                onDateChange={(date) => {
-                                    this.setState({
-                                        dateSuachua: date,
-                                    });
-                                }}
-                            />
+                            style={styles.datePickerStyle}
+                            date={dateSuachua} // Initial date from state
+                            mode="date" // The enum of date, datetime and time
+                            borderRadius='15'
+                            placeholder="Chọn ngày"
+                            format="DD-MM-YYYY"
+                            confirmBtnText="Chọn"
+                            cancelBtnText="Thoát"
+                            customStyles={{
+                                dateIcon: {
+                                    //display: 'none',
+                                    position: 'absolute',
+                                    right: 0,
+                                    top: 0,
+                                    marginLeft: 0,
+                                },
+                                dateInput: {
+                                    marginLeft: 5,
+                                },
+                            }}
+                            onDateChange={(date) => {
+                                this.setState({
+                                    dateSuachua: date,
+                                });
+                            }}
+                        />
                         <Text style={styles.boldText}>Nội dung khai báo*: </Text>
                         <TextInput
                             placeholderTextColor={'black'}
@@ -280,13 +280,8 @@ class KhaiBaoMatTaiSan extends React.Component {
         )
         return (
             <View style={styles.container}>
-                <View style={styles.containerInfor}>
-                    {this.renderTabInfor(userKhaibao, dateKhaibao,dateSuachua)}
-                </View>
-                <View style={styles.containerButton}>
-                    <Text style={styles.boldText}> Chọn tài sản khai báo</Text>
-
-                </View>
+                {this.renderTabInfor(userKhaibao, dateKhaibao, dateSuachua)}
+                <Text style={styles.boldText}> Chọn tài sản khai báo</Text>
                 <SafeAreaView>
                     <SearchComponent
                         clampedScroll={clampedScroll}
@@ -329,20 +324,18 @@ class KhaiBaoMatTaiSan extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-
-    containerInfor: {
-        height: '45%',
         padding: 5,
     },
 
+    containerInfor: {
+        padding: 0,
+    },
+
     containerButton: {
-        height: '7%',
-        paddingTop: 15,
+        marginTop: 5,
         flexDirection: 'row',
     },
     containerListTaisan: {
-        height: '50%',
         padding: 5,
     },
     title: {
@@ -361,21 +354,21 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: 'black',
         borderRadius: 10,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
     },
     borderedContent: {
         borderWidth: 0.5,
-        height: '25%',
+        height: 50,
         borderColor: 'black',
         borderRadius: 10,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
     },
     borderedContentSuachuabaoduong: {
         borderWidth: 0.5,
-        height: '15%',
+        height: 50,
         borderColor: 'black',
         borderRadius: 10,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
     },
     button2: {
         padding: 5,

@@ -38,6 +38,7 @@ import QuanLyPhanQuyenScreen from '../quanlyhethong/quanlyphanquyen/QuanLyPhanQu
 import QuanlyCauhinhMailServer from '../quanlyhethong/quanlymailServer/QuanLyMailServer';
 import ThemmoiTaiSanScreen from '../quanlytaisan/capnhattaisan/ThemmoiTaisan';
 import KhaiBaoTaiSanScreen from '../quanlytaisan/capnhattaisan/KhaibaoTaiSan';
+import ThemmoiDauDocScreen from '../quanlydaudoc/themmoi/ThemmoiDaudoc';
 import DashBoard from '../dashboard/DashBoardView';
 
 import { colors, fonts } from '../../styles';
@@ -581,6 +582,19 @@ const StackNavigationData = [
   {
     name: screens.khai_bao_tai_san,
     component: KhaiBaoTaiSanScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: DoneHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.them_moi_dau_doc,
+    component: ThemmoiDauDocScreen,
     headerLeft: headerLeftComponent,
     headerRight: DoneHeaderRightComponent,
     headerBackground: { source: headerBackground },
