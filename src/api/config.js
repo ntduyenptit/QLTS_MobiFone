@@ -79,7 +79,10 @@ export const endPoint = ({
 
   //getAllTS
   TsMatgetAll: 'services/app/TaiSanMat/GetAllTaiSan',
-
+  TsHonggetAll: 'services/app/TaiSanHong/GetAllTaiSan',
+  TsThanhlygetAll: 'services/app/TaiSanThanhLy/GetAllTaiSan',
+  TsHuygetAll: 'services/app/TaiSanHuy/GetAllTaiSan',
+  TsSuachuabaoduonggetAll: 'services/app/TaiSanSuaChuaBaoDuong/GetAllTaiSan',
 });
 
 // Quản lý màn hình

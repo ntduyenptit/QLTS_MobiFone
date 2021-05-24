@@ -114,7 +114,7 @@ export function GetToanBoTaiSanData(parameters) {
       });
     } else {
       phongbanquanly.forEach(e => {
-          url += `PhongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
+        url += `PhongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
       });
     }
 
@@ -330,12 +330,13 @@ const QuanLyTaiSan = (state) => {
       case tabs.tai_san_hong:
       case tabs.tai_san_huy:
       case tabs.tai_san_thanh_ly:
+      case tabs.tai_san_sua_chua_bao_duong:
         return <ActionButton buttonColor="rgba(231,76,60,1)" position='right' title="Thêm mới" onPress={() => LoadScreenThemmoi()}>
           <Icon name="md-create" style={styles.actionButtonIcon} />
         </ActionButton>;
       case tabs.tai_san_chua_su_dung:
       case tabs.tai_san_dang_su_dung:
-      case tabs.tai_san_sua_chua_bao_duong:
+
       case tabs.bao_hong_mat_tai_san:
       default:
         return null;

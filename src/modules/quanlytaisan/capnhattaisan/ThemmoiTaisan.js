@@ -490,9 +490,7 @@ class TaomoiTaisanScreen extends React.Component {
                                 source={{ uri: this.state.hinhanh.uri }}
                                 style={{ width: 100, height: 100, alignSelf: 'center' }}
                             />
-                            <TouchableOpacity onPress={this.selectFile} style={styles.button2}  >
-                                <Text style={styles.buttonText}> Lưu tài sản  </Text>
-                            </TouchableOpacity>
+                            
                         </View>
 
                     </Animated.ScrollView>
