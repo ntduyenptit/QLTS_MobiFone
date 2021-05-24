@@ -44,7 +44,8 @@ export default compose(
     componentDidMount() {
       if (!isLoadData()) {
         GetToanBoTaiSanData({});
-      } else if (store.getState().filterLTSDataReducer.ltsDataFilter.length === 0) {
+      }
+      if (store.getState().filterLTSDataReducer.ltsDataFilter.length === 0) {
         Promise.all([
           getLTSDataFilter(),
           getMSDDataFilter(),

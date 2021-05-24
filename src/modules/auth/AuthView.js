@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image } from 'react-native';
 import { endPoint } from '../../api/config';
 import { createPostMethodWithoutToken } from '../../api/Apis'
 import save from '../../localStorage/saveLogin';
@@ -31,33 +31,33 @@ export default class AuthViewContainer extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-          <Image source={require('../../../assets/images/icon.png')} style={styles.iconImage} />
-          <Text style={styles.logo}>Quản lý tài sản</Text>
-          <View style={styles.inputView}>
-            <TextInput
-              style={styles.inputText}
-              placeholder="Email..."
+        <Image source={require('../../../assets/images/icon.png')} style={styles.iconImage} />
+        <Text style={styles.logo}>Quản lý tài sản</Text>
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.inputText}
+            placeholder="Email..."
              // value='admin'
-              placeholderTextColor="#003f5c"
-              onChangeText={text => this.setState({ email: text })}
-            />
-          </View>
-          <View style={styles.inputView}>
-            <TextInput
-              secureTextEntry
-              style={styles.inputText}
-              placeholder="Mật khẩu..."
+            placeholderTextColor="#003f5c"
+            onChangeText={text => this.setState({ email: text })}
+          />
+        </View>
+        <View style={styles.inputView}>
+          <TextInput
+            secureTextEntry
+            style={styles.inputText}
+            placeholder="Mật khẩu..."
              // value='123qwe'
-              placeholderTextColor="#003f5c"
-              onChangeText={text => this.setState({ password: text })}
-            />
-          </View>
-          <TouchableOpacity style={styles.loginBtn} onPress={() => this.signIn(this.state.email, this.state.password)}>
-            <Text style={styles.loginText}>Đăng nhập</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.forgotpassBtn} >
-            <Text style={styles.forgotpassBtn}>Quên mật khẩu</Text>
-          </TouchableOpacity>
+            placeholderTextColor="#003f5c"
+            onChangeText={text => this.setState({ password: text })}
+          />
+        </View>
+        <TouchableOpacity style={styles.loginBtn} onPress={() => this.signIn(this.state.email, this.state.password)}>
+          <Text style={styles.loginText}>Đăng nhập</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.forgotpassBtn}>
+          <Text style={styles.forgotpassBtn}>Quên mật khẩu</Text>
+        </TouchableOpacity>
       </View>
     );
   }

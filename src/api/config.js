@@ -1,6 +1,6 @@
 
 // define the api
-export const baseUrl = 'http://qlts-server.mobifone.vn/api/';
+export const baseUrl = 'http://10.6.71.64:9080/api/';
 export const headerWithoutToken = ({
   'Content-Type': 'application/json',
   Accept: 'application/json'

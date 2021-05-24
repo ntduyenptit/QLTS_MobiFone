@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PieChartView from './PieChartView';
 import LineChartView from './LineChartView';
 import { getDVQLDataFilter } from '../global/FilterApis'
-import { tabs } from '../../api/config';
+import { tabs, screens } from '../../api/config';
 import { getDVQLDataAction } from '../../redux/actions/filter.actions';
 import { store } from '../../redux/store';
 import { currentDate, getDateFromLastMonth, getPercent, getDates, convertFormatDate } from '../global/Helper';
@@ -70,7 +70,6 @@ class DashBoard extends React.Component {
           }
         }
       });
-      console.log('item: ',item);
       finalData.push(item);
     });
     return finalData;
@@ -167,7 +166,7 @@ class DashBoard extends React.Component {
 
 
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={{ flexDirection: 'row' }}>
           <Text style={[styles.chart_title, { flex: 1 }]}>Thông tin tài sản</Text>
           <Text style={{ alignItems: 'flex-end', paddingRight: 10 }}>Toàn bộ tài sản: {toanbotaisanTotal}</Text>
@@ -248,9 +247,17 @@ class DashBoard extends React.Component {
             )}
           </View>
         </View>
-        <Text style={styles.chart_title}>Lịch sử ra vào của tài sản gần nhất</Text>
-        <LineChartView data={lineChartDatas} />
-      </View>
+        <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate(screens.quan_ly_tai_san)}>
+          <Text style={styles.showDetailBtn}>Xem chi tiết</Text>
+        </TouchableOpacity>
+        <View>
+          <Text style={styles.chart_title}>Lịch sử ra vào của tài sản trong 30 ngày gần nhất</Text>
+          <LineChartView data={lineChartDatas} />
+          <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate(screens.giam_sat_tai_san)}>
+            <Text style={styles.showDetailBtn}>Xem chi tiết</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -292,5 +299,13 @@ const styles = {
   selectedText: {
     fontWeight: 'bold',
     fontStyle: 'italic'
+  },
+  showDetailBtn: {
+    fontStyle: 'italic',
+    textDecorationLine: 'underline'
+  },
+  btn: {
+    alignItems: 'flex-end',
+    padding: 10
   }
 }

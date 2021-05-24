@@ -299,5 +299,5 @@ export const getDates = (startDate, endDate, jump) => {
 
 export const convertFormatDate = (date) => {
   const newDate = new Date(date);
-  return `${newDate.getDate()  }/${  newDate.getMonth() + 1}`;
+  return `${newDate.getUTCDate()  }/${  newDate.getMonth() + 1}`;
 }

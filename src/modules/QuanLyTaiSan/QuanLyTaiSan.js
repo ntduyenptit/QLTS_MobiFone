@@ -137,6 +137,7 @@ export function GetToanBoTaiSanData(parameters) {
     url += `IsSearch=${encodeURIComponent(`${textFilter !== undefined}`)}&`;
     url += `SkipCount=${encodeURIComponent(`${maxCount * skipTotal}`)}&`;
     url += `MaxResultCount=${encodeURIComponent(`${maxCount}`)}`;
+
     createGetMethod(url)
       .then(res => {
         if (res) {

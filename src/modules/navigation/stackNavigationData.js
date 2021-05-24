@@ -98,19 +98,19 @@ const headerRightComponent = () => (
 const headerBackground = require('../../../assets/images/topBarBg.png');
 
 const StackNavigationData = [
-  // {
-  //   name: screens.dash_board,
-  //   component: DashBoard,
-  //   headerLeft: null,
-  //   headerRight: null,
-  //   headerBackground: { source: headerBackground },
-  //   headerTitleStyle: {
-  //     fontFamily: fonts.primaryRegular,
-  //     color: colors.white,
-  //     fontSize: 18,
-  //     alignSelf: 'center'
-  //   },
-  // },
+  {
+    name: screens.dash_board,
+    component: DashBoard,
+    headerLeft: null,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
   {
     name: screens.quan_ly_tai_san,
     component: TabNavigator,
