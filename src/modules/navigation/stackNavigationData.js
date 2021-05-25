@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Image, View, Text } from 'react-native';
+import { TouchableOpacity, Image, View } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import TabNavigator from './MainTabNavigator';
@@ -94,26 +94,6 @@ const moreHeaderRightComponent = () => (
   >
     <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
       <Icon name="ellipsis-v" color="white" size={20} />
-    </View>
-  </TouchableOpacity>
-);
-
-const DoneHeaderRightComponent = () => (
-  <TouchableOpacity
-    style={{
-      paddingHorizontal: 16,
-      paddingVertical: 12,
-    }
-    }
-  >
-    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-      {/* <Icon name="save" color="white" size={20} /> */}
-      <Text style={{
-        fontFamily: fonts.primaryRegular,
-        color: colors.white,
-        fontSize: 18,
-        alignSelf: 'center'
-      }}> Lưu</Text>
     </View>
   </TouchableOpacity>
 );
@@ -572,7 +552,7 @@ const StackNavigationData = [
     name: screens.them_moi_tai_san,
     component: ThemmoiTaiSanScreen,
     headerLeft: headerLeftComponent,
-    headerRight: DoneHeaderRightComponent,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -585,7 +565,7 @@ const StackNavigationData = [
     name: screens.khai_bao_tai_san,
     component: KhaiBaoTaiSanScreen,
     headerLeft: headerLeftComponent,
-    headerRight: DoneHeaderRightComponent,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -598,7 +578,7 @@ const StackNavigationData = [
     name: screens.them_moi_dau_doc,
     component: ThemmoiDauDocScreen,
     headerLeft: headerLeftComponent,
-    headerRight: DoneHeaderRightComponent,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,

@@ -12,6 +12,20 @@ export function createPostMethodWithoutToken(endPoint, params) {
     .catch(err => console.log(err))
 };
 
+export function createPostMethodWithToken(endPoint, params) {
+    return _getStorageValue().then(token => 
+        // eslint-disable-next-line no-undef
+         fetch(`${baseUrl}${endPoint}`, {
+            method: 'POST',
+            headers: headers(token),
+            body: params
+        })
+            .then(res => res.json())
+            .then(data => data)
+            .catch(err => console.log(err))
+        );
+}
+
 export function createGetMethod(endPoint, params = null) {
        return _getStorageValue().then(token => 
         // eslint-disable-next-line no-undef

@@ -3,10 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { Animated, SafeAreaView, StatusBar, Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import find from 'lodash/find';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
 import LoaderComponent from '../global/LoaderComponent';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
-import ThemmoiTaiSanScreen from './capnhattaisan/ThemmoiTaisan';
 import { createGetMethod } from '../../api/Apis';
 import { endPoint, screens, tabs } from '../../api/config';
 import { store } from '../../redux/store';
@@ -34,8 +35,6 @@ import {
   khaibaohongmatGetData
 } from '../../redux/actions/quanlytaisan.actions';
 import QuanLyTaiSanFilter from './filter/QuanLyTaiSanFilter';
-import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 export function GetToanBoTaiSanData(parameters) {
   const { datas, tab, skipCount, maxResultCount, loaitaisan, nhacungcap, masudung, isFilter } = parameters;
@@ -331,14 +330,15 @@ const QuanLyTaiSan = (state) => {
       case tabs.tai_san_huy:
       case tabs.tai_san_thanh_ly:
       case tabs.tai_san_sua_chua_bao_duong:
-        return <ActionButton buttonColor="rgba(231,76,60,1)" position='right' >
-          <ActionButton.Item buttonColor='#9b59b6' title="Thêm mới" onPress={() => LoadScreenThemmoi()}>
-            <Icon name="md-create" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-        </ActionButton>;
+        return (
+          <ActionButton buttonColor="rgba(231,76,60,1)" position='right'>
+            <ActionButton.Item buttonColor='#9b59b6' title="Thêm mới" onPress={() => LoadScreenThemmoi()}>
+              <Icon name="md-create" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+          </ActionButton>
+);
       case tabs.tai_san_chua_su_dung:
       case tabs.tai_san_dang_su_dung:
-
       case tabs.bao_hong_mat_tai_san:
       default:
         return null;
@@ -364,7 +364,7 @@ const QuanLyTaiSan = (state) => {
   }
   return (
     <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-      {/* Rest of the app comes ABOVE the action button component !*/}
+      {/* Rest of the app comes ABOVE the action button component ! */}
       <Animated.View>
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
@@ -408,14 +408,14 @@ const QuanLyTaiSan = (state) => {
 
         </SafeAreaView>
 
-        {<View style={{
+        <View style={{
           bottom: 5,
           right: 5,
           position: 'absolute',
         }}
         >
           {totalDisplayForTab()}
-        </View>}
+        </View>
 
         <FilterComponent
           screen={screens.quan_ly_tai_san}
