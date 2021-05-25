@@ -132,6 +132,7 @@ export const screens = ({
   khai_bao_tai_san: "Khai báo tài sản",
   them_moi_dau_doc: "Thêm mới đầu đọc",
   them_moi_kiem_ke: "Thêm mới đợt kiểm kê",
+  them_moi_du_tru_mua_sam: "Thêm mới",
 
 });
 
