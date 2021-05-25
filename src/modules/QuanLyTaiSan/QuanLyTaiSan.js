@@ -331,8 +331,10 @@ const QuanLyTaiSan = (state) => {
       case tabs.tai_san_thanh_ly:
       case tabs.tai_san_sua_chua_bao_duong:
         return (
-          <ActionButton buttonColor="rgba(231,76,60,1)" position='right' title="Thêm mới" onPress={() => LoadScreenThemmoi()}>
-            <Icon name="md-create" style={styles.actionButtonIcon} />
+          <ActionButton buttonColor="rgba(231,76,60,1)" position='right'>
+            <ActionButton.Item buttonColor='#9b59b6' title="Thêm mới" onPress={() => LoadScreenThemmoi()}>
+              <Icon name="md-create" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
           </ActionButton>
 );
       case tabs.tai_san_chua_su_dung:
@@ -356,8 +358,6 @@ const QuanLyTaiSan = (state) => {
         return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản thanh lý" });
       case tabs.tai_san_sua_chua_bao_duong:
         return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản sửa chữa/bảo dưỡng" });
-      case tabs.bao_hong_mat_tai_san:
-        return props.navigation.navigate(screens.them_moi_tai_san, { screen: "báo hỏng/mất tài sản" });
       default:
         return null;
     }

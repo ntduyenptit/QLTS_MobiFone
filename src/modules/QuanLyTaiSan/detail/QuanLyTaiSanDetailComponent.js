@@ -52,6 +52,7 @@ function QuanLyTaiSanDetailComponent({ route }) {
             {bullet('Trạng thái', paramKey.trangThai)}
             {/* Ngày mua */}
             {bullet('Ngày mua', paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua))}
+            {bullet('Nguyên giá', paramKey.nguyenGia)}
           </View>
 
         </ScrollView>
