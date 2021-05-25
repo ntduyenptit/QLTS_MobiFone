@@ -301,3 +301,22 @@ export const convertFormatDate = (date) => {
   const newDate = new Date(date);
   return `${newDate.getUTCDate()  }/${  newDate.getMonth() + 1}`;
 }
+
+export const convertDateToIOSString = (date) => {
+  const dt = convertDateFormatTo(moment(date,"DD, MM YYYY"));
+  return dt;
+}
+
+export const addYearToDate = (date, num) => {
+  if (date) {
+    const number = convertDateFormatTo(moment(date,"DD, MM YYYY"));
+    const d = new Date(number);
+      const year = d.getFullYear() + Number(num);
+      const month = d.getMonth() + 1;
+      const day = d.getDate();
+      
+      const c = `${day  }/${ month  }/${ year}`;
+      return c;
+  }
+  return null;
+}

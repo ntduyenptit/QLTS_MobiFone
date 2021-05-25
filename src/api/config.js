@@ -20,6 +20,7 @@ export const endPoint = ({
   getAllTinhTrangMaSuDungTaiSan: 'services/app/LookupTable/GetAllTinhTrangMaSuDungTaiSan',
   getAllTrangThaiSuDung: 'services/app/LookupTable/GetAllTrangThaiTaiSanTimKiem',
   getAllLoaiTaiSanTree: 'services/app/LookupTable/GetAllLoaiTaiSanTree',
+  getAllNguonKinhPhi: 'services/app/LookupTable/GetAllNguonKinhPhi',
   // Quản lý tài sản
   getToanBoTaiSan: 'services/app/ToanBoTaiSan/GetAll',
   getTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/GetAllTaiSanSuaChuaBaoDuong',
@@ -62,27 +63,35 @@ export const endPoint = ({
   // Quản lý nhà cung cấp
   getNhaCungcap: 'services/app/NhaCungCap/GetAll',
   getViewNhacungcap: 'services/app/NhaCungCap/GetForEdit',
+
   // Quản lý vị trí địa lý
   getAllVitriDialy: 'services/app/ViTriDiaLy/GetAll',
   getAllTinhthanh: 'services/app/ViTriDiaLy/GetAllDtoTinhThanh',
+
   // Quản lý loại tài sản
   getAllLoaiTaiSan: 'services/app/LoaiTaiSan/GetAll',
+
   // Quản lý đơn vị
   getAllDonvi:  'services/app/ToChuc/GetAll',
-  //Quản lý người dùng
+
+  // Quản lý người dùng
   getAllNguoidung: 'services/app/User/GetAll',
   getTochucNguoidangnhap: 'services/app/LookupTable/GetAllToChucCuaNguoiDangNhapTree',
   getDetailNguoidung: 'services/app/User/GetForEdit',
-  //Quản lý phân quyền
+
+  // Quản lý phân quyền
   getALLRoleName: 'services/app/Role/GetAll',
   getMailServerEdit: 'services/app/MailServer/GetForEdit',
 
-  //getAllTS
+  // getAllTS
   TsMatgetAll: 'services/app/TaiSanMat/GetAllTaiSan',
   TsHonggetAll: 'services/app/TaiSanHong/GetAllTaiSan',
   TsThanhlygetAll: 'services/app/TaiSanThanhLy/GetAllTaiSan',
   TsHuygetAll: 'services/app/TaiSanHuy/GetAllTaiSan',
   TsSuachuabaoduonggetAll: 'services/app/TaiSanSuaChuaBaoDuong/GetAllTaiSan',
+
+  // Thêm mới
+  TsAllCreateOrEdit: 'services/app/ToanBoTaiSan/CreateOrEdit',
 });
 
 // Quản lý màn hình

@@ -306,6 +306,7 @@ const styles = {
   },
   btn: {
     alignItems: 'flex-end',
-    padding: 10
+    padding: 10,
+    top: -20
   }
 }
