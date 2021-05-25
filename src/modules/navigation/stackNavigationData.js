@@ -578,7 +578,7 @@ const StackNavigationData = [
     name: screens.them_moi_dau_doc,
     component: ThemmoiDauDocScreen,
     headerLeft: headerLeftComponent,
-    headerRight: DoneHeaderRightComponent,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
