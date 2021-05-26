@@ -43,6 +43,8 @@ export function GetToanBoTaiSanData(parameters) {
   const skipTotal = skipCount !== undefined ? skipCount : 0;
   const tabChosen = tab || store.getState().currentTabReducer.tabName;
 
+  console.log(phongbanquanly);
+
   store.dispatch(toanbotaisanLoading());
   if (phongbanquanly && phongbanquanly.length > 0) {
     let url;
@@ -109,11 +111,19 @@ export function GetToanBoTaiSanData(parameters) {
 
     if (tabChosen === tabs.tai_san_dang_su_dung || tabChosen === tabs.tai_san_chua_su_dung) {
       phongbanquanly.forEach(e => {
-        url += `PhongBanQuanLyId=${encodeURIComponent(`${e.id}`)}&`;
+        if (e.id) {
+          url += `PhongBanQuanLyId=${encodeURIComponent(`${e.id}`)}&`;
+        } else {
+          url += `PhongBanQuanLyId=${encodeURIComponent(`${e}`)}&`;
+        }
       });
     } else {
       phongbanquanly.forEach(e => {
-        url += `PhongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
+        if (e.id) {
+          url += `PhongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
+        } else {
+          url += `PhongBanqQL=${encodeURIComponent(`${e}`)}&`;
+        }
       });
     }
 
@@ -136,6 +146,8 @@ export function GetToanBoTaiSanData(parameters) {
     url += `IsSearch=${encodeURIComponent(`${textFilter !== undefined}`)}&`;
     url += `SkipCount=${encodeURIComponent(`${maxCount * skipTotal}`)}&`;
     url += `MaxResultCount=${encodeURIComponent(`${maxCount}`)}`;
+
+    console.log(url);
 
     createGetMethod(url)
       .then(res => {
