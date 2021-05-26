@@ -6,7 +6,7 @@ import { endPoint, } from '../../../api/config';
 import RNPickerSelect from 'react-native-picker-select';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { buildTree } from '../../global/Helper';
+import { buildTree, convertDateFormatTo, convertTimeFormatToLocaleDate, convertTimeFormatToLocaleDateFullTime } from '../../global/Helper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
 export const deviceWidth = Dimensions.get('window').width;
@@ -53,7 +53,7 @@ const TenBaocaoList = [
     },
 ]
 
-
+let idPhongban = '';
 
 class ThemmoiCaidatScreen extends React.Component {
     constructor(props) {
@@ -63,6 +63,7 @@ class ThemmoiCaidatScreen extends React.Component {
             lapLai: '',
             gioGuiBaocao: new Date(1598051730000),
             phongBanNhan: '',
+            phongBanNhanId: '',
             nguoiNhanBaocao: [],
             ghiChu: '',
             phongBanList: [],
@@ -73,42 +74,48 @@ class ThemmoiCaidatScreen extends React.Component {
 
     componentDidMount() {
         this.danhsachPhongban(this.props.DvqlData);
-        this.danhsachNguoidung();
+        //this.danhsachNguoidung(this.state.phongBanNhanId);
     }
 
     danhsachPhongban(data) {
         if (data) {
-            dvqlTreeData = buildTree(data);
             this.setState({
-                phongBanList: dvqlTreeData,
+                phongBanList: data,
             });
         }
+     
     };
-    danhsachNguoidung() {
-        let url;
-        url = `${endPoint.getNguoidung}`;
-        createGetMethod(url)
-            .then(res => {
-                if (res) {
-                    const list = res.result.map(e => ({
-                        name: e.user.name,
-                        id: e.user.id,
-                    }));
-                    this.setState({
-                        userList: list,
-                    });
-                } else {
-                    // Alert.alert('Lỗi khi load toàn bộ tài sản!');
-                }
-            })
-            .catch(err => console.log(err));
+    danhsachNguoidung(id) {
+            let url;
+            url = `services/app/LookupTable/GetAllNguoiDungTheoPBLookupTable?phongBan=` + id;
+            createGetMethod(url)
+                .then(res => {
+                    if (res) {
+                        const list = res.result.map(e => ({
+                            name: e.user.name,
+                            id: e.user.id,
+                        }));
+                        this.setState({
+                            userList: list,
+                        });
+                    } else {
+                        // Alert.alert('Lỗi khi load toàn bộ tài sản!');
+                    }
+                })
+                .catch(err => console.log(err));
     }
 
     onSelectedItemsChange = nguoiNhanBaocao => {
         this.setState({ nguoiNhanBaocao });
     };
     onSelectedDVQLChange = phongBanNhan => {
-        this.setState({ phongBanNhan })
+        console.log("phongbanNhan: "+ phongBanNhan);
+        this.setState(
+            {
+                phongBanNhan: phongBanNhan,
+            })
+        
+            this.danhsachNguoidung(phongBanNhan);
     }
 
     showDatetimePicker = () => {
@@ -123,22 +130,16 @@ class ThemmoiCaidatScreen extends React.Component {
         });
     };
 
-    handleSelectDate = (time) => {
-        this.closeDatetimePicker();
-        this.setState({
-            gioGuiBaocao: time
-        });
-    };
-    onChange = (event, selectedDate) => {
+    handleSelectDate = (event, selectedDate) => {
         console.log("giobaocao: " + selectedDate);
-        const currentTime = selectedDate || new Date(1598051730000) ;
+        const currentTime = selectedDate || new Date(1598051730000);
         this.setState({
             isDateTimePickerVisible: false
         });
         this.setState({
             gioGuiBaocao: currentTime
         });
-      };
+    };
     render() {
         const {
             gioGuiBaocao,
@@ -155,7 +156,7 @@ class ThemmoiCaidatScreen extends React.Component {
         };
         const { screen } = this.props.route.params;
         tab = screen;
-        
+
         return (
             <Animated.View>
                 <StatusBar barStyle="dark-content" />
@@ -221,6 +222,7 @@ class ThemmoiCaidatScreen extends React.Component {
                             <TextInput
                                 placeholderTextColor={'black'}
                                 style={styles.bordered}
+                                placeholder={convertDateFormatTo(gioGuiBaocao)}
                                 inlineImageLeft='time_icon'
                                 editable={false}
                                 selectTextOnFocus={false}
@@ -238,7 +240,6 @@ class ThemmoiCaidatScreen extends React.Component {
                             <Text style={styles.boldText}>Phòng ban nhận báo cáo</Text>
                             <MultiSelect
                                 ref={(component) => { this.multiSelect = component }}
-                                isTree
                                 getCollapsedNodeHeight={{ height: 200 }}
                                 items={phongBanList}
                                 IconRenderer={Icon}
