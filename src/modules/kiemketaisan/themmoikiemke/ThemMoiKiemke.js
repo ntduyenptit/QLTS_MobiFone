@@ -49,7 +49,7 @@ class ThemmoiDotKiemke extends React.Component {
    
     renderUserList() {
         let url;
-        url = `${endPoint.getNguoidungKiemke}`;
+        url = `${endPoint.getNguoidung}`;
         createGetMethod(url)
             .then(res => {
                 if (res) {

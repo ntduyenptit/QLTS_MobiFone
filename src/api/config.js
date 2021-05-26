@@ -13,7 +13,7 @@ export const headers = (token) => ({
 export const endPoint = ({
   login: 'TokenAuth/Authenticate',
   getuserDangnhap: 'services/app/ToanBoTaiSan/GetUserDangNhap',
-  getNguoidungKiemke: 'services/app/LookupTable/GetAllNguoiDung?Keyword=',
+  getNguoidung: 'services/app/LookupTable/GetAllNguoiDung?Keyword=',
   // Filter
   getAllToChucTheoNguoiDung: 'services/app/LookupTable/GetAllToChucTheoNguoiDung',
   getAllTrangThaiTaiSan: 'services/app/LookupTable/GetAllTrangThaiTaiSan',
@@ -142,6 +142,7 @@ export const screens = ({
   them_moi_dau_doc: "Thêm mới đầu đọc",
   them_moi_kiem_ke: "Thêm mới đợt kiểm kê",
   them_moi_du_tru_mua_sam: "Thêm mới",
+  them_moi_cai_dat_lich_xuat_bao_cao: "Thêm mới cài đặt",
 
 });
 
