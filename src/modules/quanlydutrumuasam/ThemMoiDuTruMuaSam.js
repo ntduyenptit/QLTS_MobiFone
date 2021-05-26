@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text, TextInput, Dimensions, Animated, SafeAreaView, FlatList, CheckBox, KeyboardAvoidingView, TouchableOpacity, ScrollView, Modal, Pressable } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Dimensions, Animated, SafeAreaView, FlatList, CheckBox, KeyboardAvoidingView, TouchableOpacity, ScrollView, Modal, Pressable, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { endPoint } from '../../api/config';
@@ -117,19 +117,114 @@ class ThemMoiDuTruMuaSam extends React.Component {
         </View>
     )
     addTaisan(donGia, ghiChu, hangSanXuat, nhaCungCap, productNumber, soLuong, tenTaiSan, modalVisible) {
-        let item = {
-            tenTaiSan: tenTaiSan,
-            ghiChu: ghiChu,
-            hangSanXuat: hangSanXuat,
-            nhaCungCap: nhaCungCap,
-            productNumber: productNumber,
-            soLuong: soLuong,
-            donGia: donGia,
+        if (tenTaiSan == '') {
+            Alert.alert("Chú ý",
+                "Hãy nhập tên tài sản",
+                [
+                    {
+                        text: "OK", onPress: () => this.setState({
+                            modalVisible: modalVisible,
+                        })
+                    }
+                ]);
+            return;
         }
-        toanboTaisan.push(item);
+        if (donGia == '') {
+            Alert.alert("Chú ý",
+                "Hãy nhập đơn giá",
+                [
+                    {
+                        text: "OK", onPress: () => this.setState({
+                            modalVisible: modalVisible,
+                        })
+                    }
+                ]);
+            return;
+        }
+
+        if (ghiChu == '') {
+            Alert.alert("Chú ý",
+                "Hãy nhập Mục đích sử dụng",
+                [
+                    {
+                        text: "OK", onPress: () => this.setState({
+                            modalVisible: modalVisible,
+                        })
+                    }
+                ]);
+            return;
+        }
+        if (hangSanXuat == '') {
+            Alert.alert("Chú ý",
+                "Hãy nhập hãng sản xuất",
+                [
+                    {
+                        text: "OK", onPress: () => this.setState({
+                            modalVisible: modalVisible,
+                        })
+                    }
+                ]);
+            return;
+        }
+
+        if (nhaCungCap == '') {
+            Alert.alert("Chú ý",
+                "Hãy nhập nhà cung cấp",
+                [
+                    {
+                        text: "OK", onPress: () => this.setState({
+                            modalVisible: modalVisible,
+                        })
+                    }
+                ]);
+            return;
+        }
+
+        if (productNumber == '') {
+            Alert.alert("Chú ý",
+                "Hãy nhập product number",
+                [
+                    {
+                        text: "OK", onPress: () => this.setState({
+                            modalVisible: modalVisible,
+                        })
+                    }
+                ]);
+            return;
+        }
+
+        if (soLuong =='') {
+            Alert.alert("Chú ý",
+                "Hãy nhập số lượng tài sản",
+                [
+                    {
+                        text: "OK", onPress: () => this.setState({
+                            modalVisible: modalVisible,
+                        })
+                    }
+                ]);
+            return;
+        }
+
+     
+
+        if (donGia != null && ghiChu != null && hangSanXuat != null && nhaCungCap != null && soLuong != null && tenTaiSan != null) {
+            let item = {
+                tenTaiSan: tenTaiSan,
+                ghiChu: ghiChu,
+                hangSanXuat: hangSanXuat,
+                nhaCungCap: nhaCungCap,
+                productNumber: productNumber,
+                soLuong: soLuong,
+                donGia: donGia,
+            }
+            toanboTaisan.push(item);
+            this.setState({
+                listTaisanMuaSam: toanboTaisan,
+            })
+        }
         this.setState({
             modalVisible: !modalVisible,
-            listTaisanMuaSam: toanboTaisan,
         })
     }
     render() {
@@ -234,7 +329,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
                                 style={styles.modalView}
                             >
                                 <Text style={styles.modalText}>Thêm tài sản vào phiếu</Text>
-                                <ScrollView style={{ padding: 5 , height : deviceHeight - 300, marginBottom: 5}}>
+                                <ScrollView style={{ padding: 5, height: deviceHeight - 300, marginBottom: 5 }}>
                                     <Text style={styles.boldText}>Tên tài sản*: </Text>
                                     <TextInput
                                         placeholderTextColor={'black'}
