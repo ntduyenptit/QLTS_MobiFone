@@ -118,8 +118,8 @@ class ThemMoiDuTruMuaSam extends React.Component {
     )
     addTaisan(donGia, ghiChu, hangSanXuat, nhaCungCap, productNumber, soLuong, tenTaiSan, modalVisible) {
         if (tenTaiSan == '') {
-            Alert.alert("Chú ý",
-                "Hãy nhập tên tài sản",
+            Alert.alert(
+                "Hãy nhập Tên tài sản",
                 [
                     {
                         text: "OK", onPress: () => this.setState({
@@ -130,7 +130,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
             return;
         }
         if (donGia == '') {
-            Alert.alert("Chú ý",
+            Alert.alert(
                 "Hãy nhập đơn giá",
                 [
                     {
@@ -143,7 +143,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
         }
 
         if (ghiChu == '') {
-            Alert.alert("Chú ý",
+            Alert.alert(
                 "Hãy nhập Mục đích sử dụng",
                 [
                     {
@@ -155,7 +155,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
             return;
         }
         if (hangSanXuat == '') {
-            Alert.alert("Chú ý",
+            Alert.alert(
                 "Hãy nhập hãng sản xuất",
                 [
                     {
@@ -168,7 +168,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
         }
 
         if (nhaCungCap == '') {
-            Alert.alert("Chú ý",
+            Alert.alert(
                 "Hãy nhập nhà cung cấp",
                 [
                     {
@@ -181,7 +181,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
         }
 
         if (productNumber == '') {
-            Alert.alert("Chú ý",
+            Alert.alert(
                 "Hãy nhập product number",
                 [
                     {
@@ -194,7 +194,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
         }
 
         if (soLuong =='') {
-            Alert.alert("Chú ý",
+            Alert.alert(
                 "Hãy nhập số lượng tài sản",
                 [
                     {
@@ -316,7 +316,6 @@ class ThemMoiDuTruMuaSam extends React.Component {
                         transparent={true}
                         visible={modalVisible}
                         onRequestClose={() => {
-                            Alert.alert("Modal has been closed.");
                             this.setState({
                                 modalVisible: !modalVisible,
                             });
