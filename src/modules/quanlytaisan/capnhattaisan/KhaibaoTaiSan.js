@@ -20,7 +20,6 @@ import { endPoint } from '../../../api/config';
 import { 
     createGetMethod, 
     createPostMethodWithToken,
-    CreateTaiSanHong,
  } from '../../../api/Apis';
 import { convertHinhthucTaisan, currentDate } from '../../global/Helper';
 import SearchComponent from '../../global/SearchComponent';
@@ -175,17 +174,18 @@ class KhaiBaoMatTaiSan extends React.Component {
 
     checkBoxChanged(id) {
         const { checkBoxChecked } = this.state;
-        const index = checkBoxChecked.findIndex((ch) => ch === id);
-        if (index !== -1) {
+        const index = checkBoxChecked.indexOf(id);
+        if (index > -1) {
             checkBoxChecked.splice(index, 1);
             this.setState({
                 checkBoxChecked,
             });
         } else {
-            this.setState({
-                checkBoxChecked: [...checkBoxChecked, id],
-            })
+            checkBoxChecked.push(id);
         }
+        this.setState({
+            checkBoxChecked,
+        });
 
     }
 
@@ -364,7 +364,7 @@ class KhaiBaoMatTaiSan extends React.Component {
     renderItemComponent = (data) => (
       <View style={styles.listItem}>
         <CheckBox
-          isChecked={this.state.checkBoxChecked.find(e => e === data.item.id)}
+          isChecked={this.state.checkBoxChecked.indexOf(data.item.id) > -1}
           onClick={() => this.checkBoxChanged(data.item.id)}
         />
         <View style={styles.infor}>
