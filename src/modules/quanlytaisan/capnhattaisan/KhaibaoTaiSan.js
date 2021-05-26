@@ -64,27 +64,30 @@ class KhaiBaoMatTaiSan extends React.Component {
     }
 
     componentDidMount() {
-        this.props.navigation.setOptions({headerRight: () => (
-          <TouchableOpacity
-            onPress={() => this.saveNewTaiSan()}
-            style={{
+        const { screen } = this.props.route.params;
+        this.props.navigation.setOptions({
+            title: `Khai báo ${  screen}`,
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => this.saveNewTaiSan()}
+                style={{
                     paddingHorizontal: 16,
                     paddingVertical: 12,
                   }
                   }
-          >
-            <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-              <Text style={{
+              >
+                <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                  <Text style={{
                           fontFamily: fonts.primaryRegular,
                           color: colors.white,
                           fontSize: 18,
                           alignSelf: 'center'
                       }}
-              > Lưu
-              </Text>
+                  > Lưu
+                  </Text>
   
-            </View>
-          </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
               )})
         this.getUserDangnhap();
         this.renderDataList();
@@ -252,7 +255,6 @@ class KhaiBaoMatTaiSan extends React.Component {
             case "tài sản hủy":
                 return (
                   <View>
-                    <Text style={styles.title}>Khai báo {tab} </Text>
                     <Text style={styles.boldText}>Người khai báo: </Text>
                     <TextInput
                       placeholderTextColor="black"
@@ -284,7 +286,6 @@ class KhaiBaoMatTaiSan extends React.Component {
             case "tài sản sửa chữa/bảo dưỡng":
                 return (
                   <View>
-                    <Text style={styles.title}>Khai báo sửa chữa/bảo dưỡng </Text>
                     <Text style={styles.boldText}>Hình thức: </Text>
                     <RNPickerSelect
                       placeholder={placeholder}
@@ -470,13 +471,6 @@ const styles = StyleSheet.create({
     containerListTaisan: {
         padding: 5,
     },
-    title: {
-        paddingBottom: 10,
-        fontSize: 18,
-        fontStyle: 'italic',
-        alignSelf: 'center',
-
-    },
     boldText: {
         fontWeight: 'bold',
         alignItems: 'flex-start',
@@ -486,7 +480,10 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: 'black',
         borderRadius: 10,
-        paddingHorizontal: 10,
+        paddingHorizontal: 20,
+        height: 35,
+        marginLeft: 5,
+        marginRight: 5
     },
     borderedContent: {
         borderWidth: 0.5,
@@ -494,6 +491,8 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderRadius: 10,
         paddingHorizontal: 10,
+        marginLeft: 5,
+        marginRight: 5
     },
     borderedContentSuachuabaoduong: {
         borderWidth: 0.5,

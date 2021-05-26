@@ -575,10 +575,11 @@ const styles = StyleSheet.create({
     bordered: {
         borderWidth: 0.5,
         borderColor: 'black',
-        borderRadius: 5,
+        borderRadius: 10,
         paddingHorizontal: 20,
         height: 35,
         marginLeft: 5,
+        marginRight: 5
     },
     boldText: {
         fontWeight: 'bold',
