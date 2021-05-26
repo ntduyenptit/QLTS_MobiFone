@@ -109,11 +109,19 @@ export function GetToanBoTaiSanData(parameters) {
 
     if (tabChosen === tabs.tai_san_dang_su_dung || tabChosen === tabs.tai_san_chua_su_dung) {
       phongbanquanly.forEach(e => {
-        url += `PhongBanQuanLyId=${encodeURIComponent(`${e.id}`)}&`;
+        if (e.id) {
+          url += `PhongBanQuanLyId=${encodeURIComponent(`${e.id}`)}&`;
+        } else {
+          url += `PhongBanQuanLyId=${encodeURIComponent(`${e}`)}&`;
+        }
       });
     } else {
       phongbanquanly.forEach(e => {
-        url += `PhongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
+        if (e.id) {
+          url += `PhongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
+        } else {
+          url += `PhongBanqQL=${encodeURIComponent(`${e}`)}&`;
+        }
       });
     }
 
@@ -134,7 +142,7 @@ export function GetToanBoTaiSanData(parameters) {
     }
 
     url += `IsSearch=${encodeURIComponent(`${textFilter !== undefined}`)}&`;
-    url += `SkipCount=${encodeURIComponent(`${maxCount * skipTotal}`)}&`;
+    url += `SkipCount=${encodeURIComponent(`${skipTotal}`)}&`;
     url += `MaxResultCount=${encodeURIComponent(`${maxCount}`)}`;
 
     createGetMethod(url)
@@ -209,7 +217,7 @@ export function GetToanBoTaiSanData(parameters) {
           // Alert.alert('Lỗi khi load toàn bộ tài sản!');
         }
       })
-      .catch(err => console.log(err));
+      .catch();
   }
 }
 
@@ -271,6 +279,81 @@ const QuanLyTaiSan = (state) => {
       default:
         break;
     }
+  }
+
+  const isLoadMore = () => {
+    const {
+      tab,
+      toanbotaisanData,
+      taisanmatData,
+      taisanhongData,
+      taisanhuyData,
+      taisanthanhlyData,
+      taisanchuasudungData,
+      taisandangsudungData,
+      taisansuachuabaoduongData,
+      baohongmatData,
+
+      toanbotaisanTotal,
+      taisanthanhlyTotal,
+      taisanmatTotal,
+      taisanhongTotal,
+      taisanhuyTotal,
+      taisanchuasudungTotal,
+      taisandangsudungTotal,
+      taisansuachuabaoduongTotal,
+      baohongmatTotal,
+     } = state;
+    switch (tab) {
+      case tabs.toan_bo_tai_san:
+        if (toanbotaisanData.length === toanbotaisanTotal) {
+          return false;
+        }
+        break;
+      case tabs.tai_san_mat:
+        if (taisanmatData.length === taisanmatTotal) {
+          return false;
+        }
+        break;
+      case tabs.tai_san_hong:
+        if (taisanhongData.length === taisanhongTotal) {
+          return false;
+        }
+        break;
+      case tabs.tai_san_huy:
+        if (taisanhuyData.length === taisanhuyTotal) {
+          return false;
+        }
+        break;
+      case tabs.tai_san_thanh_ly:
+        if (taisanthanhlyData.length === taisanthanhlyTotal) {
+          return false;
+        }
+        break;
+      case tabs.tai_san_chua_su_dung:
+        if (taisanchuasudungData.length === taisanchuasudungTotal) {
+          return false;
+        }
+        break;
+      case tabs.tai_san_dang_su_dung:
+        if (taisandangsudungData.length === taisandangsudungTotal) {
+          return false;
+        }
+        break;
+      case tabs.tai_san_sua_chua_bao_duong:
+        if (taisansuachuabaoduongData.length === taisansuachuabaoduongTotal) {
+          return false;
+        }
+        break;
+      case tabs.bao_hong_mat_tai_san:
+        if (baohongmatData.length === baohongmatTotal) {
+          return false;
+        }
+        break;
+      default:
+        return true;
+    }
+    return true;
   }
 
   const getSkipCount = () => {
@@ -392,7 +475,7 @@ const QuanLyTaiSan = (state) => {
               {
                 useNativeDriver: true,
                 listener: event => {
-                  if (isCloseToBottom(event.nativeEvent) && !state.isLoading) {
+                  if (isCloseToBottom(event.nativeEvent) && !state.isLoading && isLoadMore()) {
                     setTimeout(() => {
                       setSkipCount(getSkipCount());
                     }, 2000)

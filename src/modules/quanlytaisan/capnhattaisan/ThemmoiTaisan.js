@@ -160,7 +160,13 @@ class TaomoiTaisanScreen extends React.Component {
 
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
             if (res.success) {
-                Alert.alert('Thêm mới tài sản thành công');
+                Alert.alert('Thêm mới tài sản thành công',
+                [
+                    {text: 'OK', onPress: this.props.navigation.goBack()},
+                ],
+                { cancelable: false }
+                );
+
             }
         })
     }
@@ -624,7 +630,7 @@ const styles = StyleSheet.create({
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
         fontSize: 10,
-        //width: '100%',
+        // width: '100%',
         paddingVertical: 12,
         paddingHorizontal: 10,
         borderWidth: 1,

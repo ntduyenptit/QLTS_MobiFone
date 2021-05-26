@@ -351,7 +351,8 @@ export default class MultiSelect extends Component {
       single,
       uniqueKey,
       selectedItems,
-      onSelectedItemsChange
+      onSelectedItemsChange,
+      isTree
     } = this.props;
     if (single) {
       this._submitSelection();
@@ -360,12 +361,25 @@ export default class MultiSelect extends Component {
       const status = this._itemSelected(item);
       let newItems = [];
       if (status) {
+        if (item.children.length > 0 && isTree) {
+          item.children.forEach(e => {
+            const index = selectedItems.indexOf(e[uniqueKey]);
+            if (index !== -1) {
+              selectedItems.splice(index, 1);
+            }
+          })
+        }
         newItems = reject(
           selectedItems,
           singleItem => item[uniqueKey] === singleItem
         );
       } else {
         newItems = [...selectedItems, item[uniqueKey]];
+        if (item.children.length > 0 && isTree) {
+          item.children.forEach(e => {
+            newItems.push(e[uniqueKey]);
+          });
+        }
       }
       // broadcast new selected items state to parent component
       onSelectedItemsChange(newItems);
@@ -401,9 +415,7 @@ export default class MultiSelect extends Component {
   _toggleDropDown = (level) => {
     const { listExpanded } = this.state;
     if (listExpanded.find(a => a === level) === undefined) {
-      this.setState({ listExpanded: [...listExpanded, level] }, () => {
-        console.log('co vao day k nao e owi', listExpanded);
-      });
+      this.setState({ listExpanded: [...listExpanded, level] });
     } else {
       const array = [...listExpanded]; // make a separate copy of the array
       const index = array.indexOf(level)
