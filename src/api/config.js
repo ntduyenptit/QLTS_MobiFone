@@ -93,6 +93,7 @@ export const endPoint = ({
 
   // Thêm mới
   TsAllCreateOrEdit: 'services/app/ToanBoTaiSan/CreateOrEdit',
+  CreateTaiSanMat: 'services/app/TaiSanMat/CreateTaiSanMat',
 });
 
 // Quản lý màn hình

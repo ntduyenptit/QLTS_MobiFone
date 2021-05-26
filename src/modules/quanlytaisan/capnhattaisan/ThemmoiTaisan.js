@@ -630,7 +630,7 @@ const styles = StyleSheet.create({
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
         fontSize: 10,
-        //width: '100%',
+        // width: '100%',
         paddingVertical: 12,
         paddingHorizontal: 10,
         borderWidth: 1,

@@ -10,6 +10,9 @@ import { screens } from '../../api/config';
 const SearchComponent = (props) => {
   const {
     clampedScroll,
+    screen,
+    tab,
+    action
   } = props;
   const searchBarTranslate = clampedScroll.interpolate({
     inputRange: [0, 50],
@@ -23,12 +26,12 @@ const SearchComponent = (props) => {
   });
   const textSearch = store.getState().SearchReducer.searchData;
   let value = "";
-  if (props.screen === screens.quan_ly_tai_san) {
-    value = find(textSearch, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === props.tab)
-    && find(textSearch, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === props.tab).data;
+  if (screen === screens.quan_ly_tai_san) {
+    value = find(textSearch, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === tab)
+    && find(textSearch, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === tab).data;
   } else {
-    value = find(textSearch, itemSelected => itemSelected.screen === props.screen)
-    && find(textSearch, itemSelected => itemSelected.screen === props.screen).data;
+    value = find(textSearch, itemSelected => itemSelected.screen === screen)
+    && find(textSearch, itemSelected => itemSelected.screen === screen).data;
   }
 
   return (
@@ -50,13 +53,15 @@ const SearchComponent = (props) => {
         placeholderTextColor="#888888"
         value={value}
         onChangeText={(text) => {
-          if (props.screen === screens.quan_ly_tai_san) {
-              store.dispatch(removeSearch({ data: text, screen: props.screen, tab: props.tab }));
-            store.dispatch(addSearch({ data: text, screen: props.screen, tab: props.tab }));
-          } else {
-              store.dispatch(removeSearch({ data: text, screen: props.screen }));
-            store.dispatch(addSearch({ data: text, screen: props.screen }));
-          }
+          if (screen === screens.quan_ly_tai_san) {
+              store.dispatch(removeSearch({ data: text, screen, tab }));
+            store.dispatch(addSearch({ data: text, screen, tab }));
+          } else if (action) {
+            action(text);
+            } else {
+              store.dispatch(removeSearch({ data: text, screen }));
+            store.dispatch(addSearch({ data: text, screen }));
+            }
         }}
       />
     </Animated.View>
