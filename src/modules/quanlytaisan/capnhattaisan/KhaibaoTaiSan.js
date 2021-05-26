@@ -1,12 +1,26 @@
 import React from 'react'
-import { StyleSheet, View, Text, TextInput, Dimensions, Animated, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
+import { 
+    StyleSheet, 
+    View, 
+    Text, 
+    TextInput, 
+    Dimensions, 
+    Animated, 
+    SafeAreaView, 
+    FlatList, 
+    TouchableOpacity, 
+    Alert 
+} from 'react-native';
 import CheckBox from 'react-native-check-box'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 import RNPickerSelect from 'react-native-picker-select';
 import { endPoint } from '../../../api/config';
-import { createGetMethod } from '../../../api/Apis';
+import { 
+    createGetMethod, 
+    createPostMethodWithToken,
+ } from '../../../api/Apis';
 import { convertHinhthucTaisan, currentDate } from '../../global/Helper';
 import SearchComponent from '../../global/SearchComponent';
 import { colors, fonts } from '../../../styles';
@@ -35,13 +49,11 @@ class KhaiBaoMatTaiSan extends React.Component {
         this.state = {
             scrollYValue: new Animated.Value(0),
             toanboTaisan: [],
-            listTaisanKhaibao: [],
             userKhaibao: "",
             dateKhaibao: "",
             contentKhaibao: "",
             checkBoxChecked: [],
             hinhthuc: '',
-            diachiSuachua: '',
             dateSuachua: '',
             searchText: ''
         }
@@ -62,7 +74,6 @@ class KhaiBaoMatTaiSan extends React.Component {
                   }
           >
             <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-              {/* <Icon name="save" color="white" size={20} /> */}
               <Text style={{
                           fontFamily: fonts.primaryRegular,
                           color: colors.white,
@@ -103,38 +114,78 @@ class KhaiBaoMatTaiSan extends React.Component {
             contentKhaibao,
             checkBoxChecked
         } = this.state;
-        const url = `${endPoint.CreateTaiSanMat}`;
-        const taiSanMatList = checkBoxChecked.map(e => {
-            return {
+        let url = '';
+        let phanLoaiId;
+        let message = '';
+        switch (tab) {
+            case "tài sản mất":
+                url = `${endPoint.CreateTaiSanMat}`;
+                phanLoaiId = 7;
+                message = 'Khai báo tài sản mất thành công';
+                break;
+            case "tài sản hỏng":
+                url = `${endPoint.CreateTaiSanHong}`;
+                phanLoaiId = 8;
+                message = 'Khai báo tài sản hỏng thành công';
+                break;
+            case "tài sản thanh lý":
+                url = `${endPoint.TsThanhlygetAll}?`;
+                break;
+            case "tài sản hủy":
+                url = `${endPoint.TsHuygetAll}?`;
+                break;
+            case "tài sản sửa chữa/bảo dưỡng":
+                url = `${endPoint.TsSuachuabaoduonggetAll}?`;
+                break;
+                default:
+                    break;
+        }
+        const taiSanMatList = checkBoxChecked.map(e => ({
                 taiSanId: e
-            }
-        });
+            }));
         const params  = {
             ngayKhaiBao: currentDate(),
             nguoiKhaiBao: userKhaibao,
             noiDung: contentKhaibao,
             noiDungKhaiBao: contentKhaibao,
-            phanLoaiId: 7,
+            phanLoaiId,
             phieuTaiSanChiTietList: taiSanMatList,
             thoiGianKhaiBao: currentDate(),
         }
 
-        console.log(params);
+        createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
+            if (res.success) {
+                Alert.alert(message,
+                [
+                    {text: 'OK', onPress: this.goBack()},
+                ],
+                { cancelable: false }
+                );
+
+            }
+        })
+    }
+
+    goBack() {
+        const { navigation, route } = this.props;
+        route.params.onGoBack();
+        navigation.goBack();
     }
 
     checkBoxChanged(id) {
         const { checkBoxChecked } = this.state;
-        const index = checkBoxChecked.findIndex((ch) => ch === id);
-        if (index !== -1) {
+        const index = checkBoxChecked.indexOf(id);
+        if (index > -1) {
             checkBoxChecked.splice(index, 1);
             this.setState({
                 checkBoxChecked,
             });
         } else {
-            this.setState({
-                checkBoxChecked: [...checkBoxChecked, id],
-            })
+            checkBoxChecked.push(id);
         }
+        this.setState({
+            checkBoxChecked,
+        });
 
     }
 
@@ -313,7 +364,7 @@ class KhaiBaoMatTaiSan extends React.Component {
     renderItemComponent = (data) => (
       <View style={styles.listItem}>
         <CheckBox
-          isChecked={this.state.checkBoxChecked.find(e => e === data.item.id)}
+          isChecked={this.state.checkBoxChecked.indexOf(data.item.id) > -1}
           onClick={() => this.checkBoxChanged(data.item.id)}
         />
         <View style={styles.infor}>

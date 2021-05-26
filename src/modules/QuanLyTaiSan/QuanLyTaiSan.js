@@ -256,6 +256,10 @@ const QuanLyTaiSan = (state) => {
       contentSize.height - paddingToBottom;
   };
 
+  const refresh = () => {
+    GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab, skipCount: getSkipCount() });
+  }
+
   function LoaderComponentByTab() {
     switch (state.tab) {
       case tabs.toan_bo_tai_san:
@@ -430,17 +434,17 @@ const QuanLyTaiSan = (state) => {
   const LoadScreenThemmoi = () => {
     switch (state.tab) {
       case tabs.toan_bo_tai_san:
-        return props.navigation.navigate(screens.them_moi_tai_san, { screen: "toàn bộ tài sản" });
+        return props.navigation.navigate(screens.them_moi_tai_san, { screen: "toàn bộ tài sản", onGoBack: () => refresh() });
       case tabs.tai_san_mat:
-        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản mất" });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản mất", onGoBack: () => refresh() });
       case tabs.tai_san_hong:
-        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản hỏng" });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản hỏng", onGoBack: () => refresh() });
       case tabs.tai_san_huy:
-        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản hủy" });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản hủy", onGoBack: () => refresh() });
       case tabs.tai_san_thanh_ly:
-        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản thanh lý" });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản thanh lý", onGoBack: () => refresh() });
       case tabs.tai_san_sua_chua_bao_duong:
-        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản sửa chữa/bảo dưỡng" });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản sửa chữa/bảo dưỡng", onGoBack: () => refresh() });
       default:
         return null;
     }

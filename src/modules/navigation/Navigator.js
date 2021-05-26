@@ -57,10 +57,6 @@ function CustomDrawerContent(props) {
         if (userNameOrEmailAddress !== null) {
           setUser(userNameOrEmailAddress);
         }
-        // const {isShowFilter} = store.getState().filterReducer;
-        // if (isShowFilter) {
-        //   props.navigation.navigate('Filter');
-        // }
       } catch (e) {
         console.log(e)
       }

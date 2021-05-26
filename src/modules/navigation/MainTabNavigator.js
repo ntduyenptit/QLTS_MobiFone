@@ -20,7 +20,7 @@ export default function BottomTabs() {
           listeners={{
             tabPress: e => {
               const tabName = e.target.substring(0, e.target.indexOf('-')); 
-              store.dispatch(setCurrentTab(tabName))
+              store.dispatch(setCurrentTab(tabName));
             },
           }}
           options={{
