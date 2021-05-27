@@ -12,7 +12,8 @@ import {
     Image, 
     TouchableOpacity, 
     FlatList,
-    Alert
+    Alert,
+    Platform
  } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-datepicker';
@@ -105,16 +106,24 @@ class TaomoiTaisanScreen extends React.Component {
             height: 200,
             compressImageMaxHeight: 400,
             compressImageMaxWidth: 400,
-            cropping: true,
             multiple: true
         }).then(images => {
             if (images && images.length < 4) {
-                this.setState({
-                    imageList: images.map(e => ({
-                        tenFile: e.filename || moment().toString(),
-                        linkFile: e.sourceURL,
-                    }))
-                });
+                if (Platform.OS === 'ios') {
+                    this.setState({
+                        imageList: images.map(e => ({
+                            tenFile: e.filename || moment().toString(),
+                            linkFile: e.sourceURL.replace('file://', ''),
+                        }))
+                    });
+                } else {
+                    this.setState({
+                        imageList: images.map(e => ({
+                            tenFile: e.path.split('/').pop(),
+                            linkFile: e.path.replace('file://', ''),
+                        }))
+                    });
+                }
             }
         });
     }
@@ -162,13 +171,19 @@ class TaomoiTaisanScreen extends React.Component {
             if (res.success) {
                 Alert.alert('Thêm mới tài sản thành công',
                 [
-                    {text: 'OK', onPress: this.props.navigation.goBack()},
+                    {text: 'OK', onPress: this.goBack()},
                 ],
                 { cancelable: false }
                 );
 
             }
         })
+    }
+
+    goBack() {
+        const { navigation, route } = this.props;
+        route.params.onGoBack();
+        navigation.goBack();
     }
 
     danhsachMaSD(data) {
@@ -524,7 +539,7 @@ class TaomoiTaisanScreen extends React.Component {
                                       <View style={{flex: 3}}>
                                         <Image
                                           key={item.tenFile}
-                                          source={{ uri: item.linkFile }}
+                                          source={{ uri: `file://${  item.linkFile}` }}
                                           style={{ width: 110, height: 110, borderRadius: 5 }}
                                         />
                                       </View>
