@@ -95,6 +95,9 @@ export const endPoint = ({
   TsAllCreateOrEdit: 'services/app/ToanBoTaiSan/CreateOrEdit',
   CreateTaiSanMat: 'services/app/TaiSanMat/CreateTaiSanMat',
   CreateTaiSanHong: 'services/app/TaiSanHong/CreateTaiSanHong',
+  CreateTaiSanThanhLy: 'services/app/TaiSanThanhLy/CreateTaiSanThanhLy',
+  CreateTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/CreateTaiSanSuaChuaBaoDuong',
+  CreateTaiSanHuy: 'services/app/TaiSanHuy/CreateTaiSanHuy',
 });
 
 // Quản lý màn hình
