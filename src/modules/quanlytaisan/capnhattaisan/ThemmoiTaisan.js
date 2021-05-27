@@ -160,7 +160,9 @@ class TaomoiTaisanScreen extends React.Component {
 
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
             if (res.success) {
-                Alert.alert('Thêm mới tài sản thành công',
+                Alert.alert(
+                    'Thêm mới tài sản thành công',
+                    '',
                 [
                     {text: 'OK', onPress: this.props.navigation.goBack()},
                 ],

@@ -361,7 +361,7 @@ export default class MultiSelect extends Component {
       const status = this._itemSelected(item);
       let newItems = [];
       if (status) {
-        if (item.children.length > 0 && isTree) {
+        if ( isTree && item.children.length > 0) {
           item.children.forEach(e => {
             const index = selectedItems.indexOf(e[uniqueKey]);
             if (index !== -1) {
@@ -375,10 +375,12 @@ export default class MultiSelect extends Component {
         );
       } else {
         newItems = [...selectedItems, item[uniqueKey]];
-        if (item.children.length > 0 && isTree) {
+        if (isTree && item.children.length > 0 ) {
           item.children.forEach(e => {
             newItems.push(e[uniqueKey]);
           });
+        } else {
+          newItems.push[item[uniqueKey]]
         }
       }
       // broadcast new selected items state to parent component
