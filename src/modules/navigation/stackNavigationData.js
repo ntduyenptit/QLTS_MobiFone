@@ -47,6 +47,7 @@ import ThemmoiVitriDialy from '../quanlydanhmuc/quanlyvitridialy/ThemmoiVitriDia
 import ThemmoiLoaiTaisan from '../quanlydanhmuc/quanlyloaitaisan/ThemmoiLoaiTS';
 import ThemmoiDonvi from '../quanlydanhmuc/quanlydonvi/ThemmoiDonvi';
 import ThemmoiNguoidung from '../quanlyhethong/quanlynguoidung/ThemmoiNguoidung';
+import ThemmoiVaitro from '../quanlyhethong/quanlyphanquyen/ThemVaitro';
 import DashBoard from '../dashboard/DashBoardView';
 
 import { colors, fonts } from '../../styles';
@@ -688,6 +689,19 @@ const StackNavigationData = [
   {
     name: screens.them_moi_nguoi_dung,
     component: ThemmoiNguoidung,
+    headerLeft: headerLeftComponent,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.them_moi_vai_tro,
+    component: ThemmoiVaitro,
     headerLeft: headerLeftComponent,
     headerRight: null,
     headerBackground: { source: headerBackground },

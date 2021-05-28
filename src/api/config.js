@@ -89,7 +89,7 @@ export const endPoint = ({
   // Quản lý phân quyền
   getALLRoleName: 'services/app/Role/GetAll',
   getMailServerEdit: 'services/app/MailServer/GetForEdit',
-
+  getAllPermissions: 'services/app/Role/GetAllPermissions',
   // getAllTS
   TsMatgetAll: 'services/app/TaiSanMat/GetAllTaiSan',
   TsHonggetAll: 'services/app/TaiSanHong/GetAllTaiSan',
@@ -115,6 +115,9 @@ export const endPoint = ({
   CreateTaiSanThanhLy: 'services/app/TaiSanThanhLy/CreateTaiSanThanhLy',
   CreateTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/CreateTaiSanSuaChuaBaoDuong',
   CreateTaiSanHuy: 'services/app/TaiSanHuy/CreateTaiSanHuy',
+  CreateVaitro:'services/app/Role/Create',
+  checkExitVaitro: 'services/app/Role/CheckExist',
+  //check exit user
 
   // check exit user
   checkExitUser: 'services/app/User/CheckExist?',
@@ -124,6 +127,7 @@ export const endPoint = ({
 
   // get tài sản
   GetTaiSan: 'services/app/ToanBoTaiSan/GetForEdit',
+  
 
   // xóa tài sản
   DeleteTaiSan: 'services/app/ToanBoTaiSan/Deleted',
@@ -182,6 +186,7 @@ export const screens = ({
   them_moi_loai_tai_san: "Thêm mới loại tài sản",
   them_moi_don_vi: "Thêm mới đơn vị",
   them_moi_nguoi_dung: "Thêm mới người dùng",
+  them_moi_vai_tro: "Thêm mới vai trò",
 });
 
 // Quản lý tabs
