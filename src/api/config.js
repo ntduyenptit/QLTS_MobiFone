@@ -116,7 +116,7 @@ export const endPoint = ({
   CreateTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/CreateTaiSanSuaChuaBaoDuong',
   CreateTaiSanHuy: 'services/app/TaiSanHuy/CreateTaiSanHuy',
 
-  //check exit user
+  // check exit user
   checkExitUser: 'services/app/User/CheckExist?',
   creatUser: 'services/app/User/Create',
   // Upload
@@ -124,6 +124,9 @@ export const endPoint = ({
 
   // get tài sản
   GetTaiSan: 'services/app/ToanBoTaiSan/GetForEdit',
+
+  // xóa tài sản
+  DeleteTaiSan: 'services/app/ToanBoTaiSan/Deleted',
 });
 
 // Quản lý màn hình
