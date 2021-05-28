@@ -263,7 +263,7 @@ const QuanLyTaiSan = (state) => {
   function LoaderComponentByTab() {
     switch (state.tab) {
       case tabs.toan_bo_tai_san:
-        return LoaderComponent(state.toanbotaisanData, state, screens.chi_tiet_tai_san);
+        return LoaderComponent(state.toanbotaisanData, state, screens.chi_tiet_tai_san, refresh);
       case tabs.tai_san_mat:
         return LoaderComponent(state.taisanmatData, state, screens.chi_tiet_tai_san);
       case tabs.tai_san_hong:

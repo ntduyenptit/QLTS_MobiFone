@@ -6,11 +6,12 @@ import {
     TouchableOpacity,
     Image,
     ScrollView,
+    Alert,
 } from 'react-native';
 import { SliderBox } from "react-native-image-slider-box";
 import { endPoint, imageBaseUrl } from '../../../api/config';
 import { deviceWidth } from '../../global/LoaderComponent';
-import { createGetMethod } from '../../../api/Apis';
+import { createGetMethod, deleteMethod } from '../../../api/Apis';
 import { convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
 
 const bullet = (title, text) => (
@@ -33,7 +34,7 @@ const bullet = (title, text) => (
   </View>
 );
 
-function QuanLyTaiSanDetailComponent({ route }) {
+function QuanLyTaiSanDetailComponent({ navigation, route }) {
     const { paramKey, tabKey } = route.params;
     const [images, setImages] = useState([]);
     useEffect(() => {
@@ -51,6 +52,38 @@ function QuanLyTaiSanDetailComponent({ route }) {
         }
       });
     }
+
+    function deleteThisAsset(id) {
+      Alert.alert('Bạn có chắc chắn muốn xóa không?',
+      '',
+      [
+          {text: 'OK', onPress:() => {
+            let url = `${endPoint.DeleteTaiSan}?`;
+            url += `input=${  id}`;
+      
+            deleteMethod(url).then(res => {
+              if (res.success) {
+                Alert.alert('Xóa tài sản thành công',
+                '',
+                [
+                    {text: 'OK', onPress: goBack()},
+                ],
+                { cancelable: false }
+                );
+              }
+              });
+          }},
+          {text: 'Hủy'},
+      ],
+      { cancelable: true }
+      );
+    }
+
+    function goBack() {
+      route.params.onGoBack();
+      navigation.goBack();
+  }
+
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -98,7 +131,10 @@ function QuanLyTaiSanDetailComponent({ route }) {
         </ScrollView>
         <View style={styles.separator} />
         <View style={styles.addToCarContainer}>
-          <TouchableOpacity style={styles.shareButton}>
+          <TouchableOpacity
+            onPress={() => deleteThisAsset(paramKey.id)}
+            style={styles.shareButton}
+          >
             <Text style={styles.shareButtonText}>Xóa</Text>
           </TouchableOpacity>
         </View>

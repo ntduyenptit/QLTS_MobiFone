@@ -118,6 +118,8 @@ export const endPoint = ({
   CreateVaitro:'services/app/Role/Create',
   checkExitVaitro: 'services/app/Role/CheckExist',
   //check exit user
+
+  // check exit user
   checkExitUser: 'services/app/User/CheckExist?',
   creatUser: 'services/app/User/Create',
   // Upload
@@ -126,6 +128,9 @@ export const endPoint = ({
   // get tài sản
   GetTaiSan: 'services/app/ToanBoTaiSan/GetForEdit',
   
+
+  // xóa tài sản
+  DeleteTaiSan: 'services/app/ToanBoTaiSan/Deleted',
 });
 
 // Quản lý màn hình

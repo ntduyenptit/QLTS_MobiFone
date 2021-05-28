@@ -51,6 +51,20 @@ export function createGetMethod(endPoint, params = null) {
         );
 };
 
+export function deleteMethod(endPoint, params = null) {
+    return _getStorageValue().then(token => 
+        // eslint-disable-next-line no-undef
+         fetch(`${baseUrl}${endPoint}`, {
+            method: 'DELETE',
+            headers: headers(token),
+            body: params
+        })
+            .then(res => res.json())
+            .then(data => data)
+            .catch(err => console.log(err))
+        );
+}
+
 async function _getStorageValue() {
     const value = await AsyncStorage.getItem('@token')
     return value

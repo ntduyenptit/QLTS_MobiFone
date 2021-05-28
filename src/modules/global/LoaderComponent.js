@@ -10,7 +10,7 @@ export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
 
-const loadInfo = (screen, item, props) => {
+const loadInfo = (screen, item, props, action) => {
   let maTaiSanKey;
   let tenTaiSanKey;
   maTaiSan.forEach(e => {
@@ -39,7 +39,7 @@ const loadInfo = (screen, item, props) => {
           </View>
           <TouchableOpacity
             style={{ height: 40, width: 20, alignItems: "flex-end" }}
-            onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab })}
+            onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab, onGoBack: () => action() })}
           >
             <Icon name="chevron-right" color='#0080FF' size={15} />
           </TouchableOpacity>
@@ -235,12 +235,11 @@ const loadInfo = (screen, item, props) => {
   }
 };
 
-function LoaderComponent(array, props, screen) {
-
+function LoaderComponent(array, props, screen, action) {
   if (array && array.length > 0) {
     const items = () => array.map((item, index) => (
       <View key={`loader-component-${index + 1}`} style={styles.listItem}>
-        {loadInfo(screen, item, props)}
+        {loadInfo(screen, item, props, action)}
       </View>
     ))
 
