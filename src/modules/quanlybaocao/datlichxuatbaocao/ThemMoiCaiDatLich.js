@@ -216,13 +216,8 @@ class ThemmoiCaidatScreen extends React.Component {
             if (res.success) {
                 Alert.alert(
                     "Thêm mới cài đặt thành công",
-                    "Bạn có muốn tiếp tục thêm?",
+                    "",
                     [
-                      {
-                        text: "Tiếp tục thêm mới",
-                        onPress: () => console.log("Cancel Pressed"),
-                        style: "cancel"
-                      },
                       { text: "Thoát", onPress: () => this.props.navigation.goBack() }
                     ]
                   );

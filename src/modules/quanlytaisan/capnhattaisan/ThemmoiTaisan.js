@@ -579,7 +579,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderRadius: 5,
         paddingHorizontal: 20,
-        height: 35,
+        height: 40,
         marginLeft: 5,
     },
     boldText: {
