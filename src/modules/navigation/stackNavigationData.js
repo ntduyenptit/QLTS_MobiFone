@@ -44,6 +44,8 @@ import ThemmoiPhieuDutruMuaSam from '../quanlydutrumuasam/ThemMoiDuTruMuaSam';
 import ThemmoiCaidatLich from '../quanlybaocao/datlichxuatbaocao/ThemMoiCaiDatLich';
 import ThemmoiNhaCungcap from '../quanlydanhmuc/quanlynhacungcap/ThemmoiNhacungcap';
 import ThemmoiVitriDialy from '../quanlydanhmuc/quanlyvitridialy/ThemmoiVitriDialy';
+import ThemmoiLoaiTaisan from '../quanlydanhmuc/quanlyloaitaisan/ThemmoiLoaiTS';
+import ThemmoiDonvi from '../quanlydanhmuc/quanlydonvi/ThemmoiDonvi';
 import DashBoard from '../dashboard/DashBoardView';
 
 import { colors, fonts } from '../../styles';
@@ -646,6 +648,32 @@ const StackNavigationData = [
   {
     name: screens.them_moi_vi_tri_dia_ly,
     component: ThemmoiVitriDialy,
+    headerLeft: headerLeftComponent,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.them_moi_loai_tai_san,
+    component: ThemmoiLoaiTaisan,
+    headerLeft: headerLeftComponent,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.them_moi_don_vi,
+    component: ThemmoiDonvi,
     headerLeft: headerLeftComponent,
     headerRight: null,
     headerBackground: { source: headerBackground },

@@ -91,6 +91,9 @@ export const endPoint = ({
   TsHuygetAll: 'services/app/TaiSanHuy/GetAllTaiSan',
   TsSuachuabaoduonggetAll: 'services/app/TaiSanSuaChuaBaoDuong/GetAllTaiSan',
 
+  //getAll vị trí địa lý
+  getAllVitriDialy: 'services/app/LookupTable/GetAllViTriDiaLyLookupTable',
+
   // Thêm mới
   TsAllCreateOrEdit: 'services/app/ToanBoTaiSan/CreateOrEdit',
   CreateTaiSanMat: 'services/app/TaiSanMat/CreateTaiSanMat',
@@ -98,6 +101,8 @@ export const endPoint = ({
   CreatLichBaocao: 'services/app/DatLichXuatBaoCao/CreateOrEdit',
   CreatNhaCungcap: 'services/app/NhaCungCap/CreateOrEdit',
   CreatVitriDialy: 'services/app/ViTriDiaLy/CreateOrEdit',
+  CreatLoaiTaisan: 'services/app/LoaiTaiSan/CreateOrEdit',
+  CreatDonvi: 'services/app/ToChuc/CreateOrEdit',
   //get lĩnh vực kinh doanh
   getAllLinhvucKD : 'services/app/LookupTable/GetAllLinhVucKinhDoanh',
   CreateTaiSanThanhLy: 'services/app/TaiSanThanhLy/CreateTaiSanThanhLy',
@@ -155,7 +160,8 @@ export const screens = ({
   them_moi_cai_dat_lich_xuat_bao_cao: "Thêm mới cài đặt",
   them_moi_nha_cung_cap: "Thêm mới nhà cung cấp",
   them_moi_vi_tri_dia_ly: "Thêm mới vị trí địa lý",
-
+  them_moi_loai_tai_san: "Thêm mới loại tài sản",
+  them_moi_don_vi: "Thêm mới đơn vị",
 });
 
 // Quản lý tabs
