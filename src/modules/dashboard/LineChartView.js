@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { XAxis } from 'react-native-svg-charts'
 import { View, Text } from 'react-native';
@@ -15,7 +16,6 @@ export default class LineChartView extends React.PureComponent {
         const { data }= this.props;
         const axesSvg = { fontSize: 10, fill: 'grey' };
         const xAxisHeight = 30
-        // const dataLines = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
         const outLineChartData = data.map(e => e.tsRaTotal);
 
         const inLineChartData = data.map(e => e.tsVaoTotal);

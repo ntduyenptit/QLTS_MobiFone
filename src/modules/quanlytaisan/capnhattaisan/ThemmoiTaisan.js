@@ -21,8 +21,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 import { endPoint } from '../../../api/config';
-import { convertDateToIOSString, addYearToDate } from '../../global/Helper';
-import { createGetMethod, createPostMethodWithToken } from '../../../api/Apis';
+import { convertDateToIOSString, addYearToDate, getLinkFile } from '../../global/Helper';
+import { createGetMethod, createPostMethodWithToken, createPostMultiFiles } from '../../../api/Apis';
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
 
@@ -63,7 +63,6 @@ class TaomoiTaisanScreen extends React.Component {
                 }
           >
             <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-              {/* <Icon name="save" color="white" size={20} /> */}
               <Text style={{
                         fontFamily: fonts.primaryRegular,
                         color: colors.white,
@@ -108,19 +107,22 @@ class TaomoiTaisanScreen extends React.Component {
             compressImageMaxWidth: 400,
             multiple: true
         }).then(images => {
+            // console.log(images);
             if (images && images.length < 4) {
                 if (Platform.OS === 'ios') {
                     this.setState({
                         imageList: images.map(e => ({
-                            tenFile: e.filename || moment().toString(),
-                            linkFile: e.sourceURL.replace('file://', ''),
+                            tenFile: e.path.split('/').pop() || moment().toString(),
+                            linkFile: e.sourceURL,
+                            path: e.path,
+                            mime: e.mime,
                         }))
                     });
                 } else {
                     this.setState({
                         imageList: images.map(e => ({
                             tenFile: e.path.split('/').pop(),
-                            linkFile: e.path.replace('file://', ''),
+                            linkFile: e.path,
                         }))
                     });
                 }
@@ -146,40 +148,56 @@ class TaomoiTaisanScreen extends React.Component {
             ngayMua
          } = this.state;
         const url = `${endPoint.TsAllCreateOrEdit}`;
-        const params  = {
-            dropdownMultiple: maSudung,
-            ghiChu: "",
-            giaCuoiTS: "",
-            hangSanXuat: hangSx,
-            listFile: [],
-            listHA: imageList,
-            loaiTS: loaiTaisan,
-            ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
-            hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
-            ngayMua: ngayMua && convertDateToIOSString(ngayMua),
-            nguonKinhPhiId: nguonKinhphi,
-            nguyenGia,
-            nhaCC: nhaCungcap,
-            noiDungChotGia: "",
-            productNumber: PN,
-            serialNumber: SN,
-            tenTS,
-            thoiGianChietKhauHao: trichKhauhao
-        }
+        const urlUpload = `${endPoint.ToanBoTSUpload}`;
+        // eslint-disable-next-line no-undef
+        const fromData = new FormData();
 
-        createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
+            imageList.forEach((e, index) => {
+                fromData.append(`${index + 1}`, { type: e.mime, uri: e.path, name: e.path.split("/").pop() })
+            });
+
+        createPostMultiFiles(urlUpload, fromData).then((res) => {
             if (res.success) {
-                Alert.alert(
-                    'Thêm mới tài sản thành công',
-                    '',
-                [
-                    {text: 'OK', onPress: this.goBack()},
-                ],
-                { cancelable: false }
-                );
+                const images = imageList.map(e => ({
+                        tenFile: e.tenFile,
+                        linkFile: getLinkFile(res, e.tenFile)
+                    }));
+                const params  = {
+                    dropdownMultiple: maSudung,
+                    ghiChu: "",
+                    giaCuoiTS: "",
+                    hangSanXuat: hangSx,
+                    listFile: [],
+                    listHA: images,
+                    loaiTS: loaiTaisan,
+                    ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
+                    hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
+                    ngayMua: ngayMua && convertDateToIOSString(ngayMua),
+                    nguonKinhPhiId: nguonKinhphi,
+                    nguyenGia,
+                    nhaCC: nhaCungcap,
+                    noiDungChotGia: "",
+                    productNumber: PN,
+                    serialNumber: SN,
+                    tenTS,
+                    thoiGianChietKhauHao: trichKhauhao
+                }
 
+                createPostMethodWithToken(url, JSON.stringify(params)).then((result) => {
+                    if (result.success) {
+                        Alert.alert('Thêm mới tài sản thành công',
+                        '',
+                        [
+                            {text: 'OK', onPress: this.goBack()},
+                        ],
+                        { cancelable: false }
+                        );
+                    }
+                })
             }
-        })
+        });
+
+
     }
 
     goBack() {
@@ -538,10 +556,10 @@ class TaomoiTaisanScreen extends React.Component {
                       numColumns={3}
                       renderItem={({ item }) =>
                                     (
-                                      <View style={{flex: 3}}>
+                                      <View style={{padding: 5}}>
                                         <Image
                                           key={item.tenFile}
-                                          source={{ uri: `file://${  item.linkFile}` }}
+                                          source={{ uri: item.linkFile }}
                                           style={{ width: 110, height: 110, borderRadius: 5 }}
                                         />
                                       </View>
