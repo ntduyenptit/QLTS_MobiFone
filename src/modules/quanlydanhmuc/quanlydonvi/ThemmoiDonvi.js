@@ -73,7 +73,7 @@ class TaomoiDonviScreen extends React.Component {
     };
 
     getAllVitridialy() {
-        const url = `${endPoint.getAllVitriDialy}`;
+        const url = `${endPoint.getVitriDialy}`;
         createGetMethod(url)
             .then(res => {
                 if (res) {
