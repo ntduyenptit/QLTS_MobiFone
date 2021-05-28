@@ -1,8 +1,8 @@
-/* eslint-disable import/no-cycle */
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar, Dimensions, Text, View, StyleSheet } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Dimensions, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import find from 'lodash/find';
+import ActionButton from 'react-native-action-button';
 import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
 import QuanLyDauDocFilter from '../filter/QuanLyDauDocFilter';
@@ -13,7 +13,6 @@ import { getTTSDDataFilter } from '../../global/FilterApis';
 import {
   getTTSDDataAction
 } from '../../../redux/actions/filter.actions';
-import ActionButton from 'react-native-action-button';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
@@ -87,12 +86,8 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
             // Alert.alert('Lỗi khi load toàn bộ tài sản!');
           }
         })
-        .catch(err => console.log(err));
+        .catch();
     }
-  }
-
-  LoadScreenThemmoi() {
-
   }
 
   render() {
@@ -160,19 +155,12 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
             action={this.getToanBoDauDocCoDinhData}
           />
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_dau_doc, { screen: "Thêm mới đầu đọc cố định" })}></ActionButton>
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_dau_doc, { screen: "Thêm mới đầu đọc cố định" })} />
       </View>
     );
   }
 
 }
-const styles = StyleSheet.create({
-  actionButtonIcon: {
-    fontSize: 20,
-    height: 22,
-    color: 'white',
-  },
-});
 
 const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,

@@ -257,7 +257,7 @@ const QuanLyTaiSan = (state) => {
   };
 
   const refresh = () => {
-    GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab, skipCount: getSkipCount() });
+    GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab, isFilter: true });
   }
 
   function LoaderComponentByTab() {

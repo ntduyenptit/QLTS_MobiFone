@@ -4,7 +4,6 @@ import {
     View, 
     Text, 
     TextInput, 
-    Dimensions, 
     Animated, 
     SafeAreaView, 
     FlatList, 
@@ -16,7 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 import RNPickerSelect from 'react-native-picker-select';
-import { endPoint } from '../../../api/config';
+import { endPoint, hinhThucData } from '../../../api/config';
 import { 
     createGetMethod, 
     createPostMethodWithToken,
@@ -24,17 +23,17 @@ import {
 import { convertHinhthucTaisan, currentDate } from '../../global/Helper';
 import SearchComponent from '../../global/SearchComponent';
 import { colors, fonts } from '../../../styles';
+import { deviceWidth } from '../../global/LoaderComponent';
 
-const deviceWidth = Dimensions.get("window").width;
 let tab = '';
 const hinhThucList = [
     {
         label: 'Sửa chữa',
-        value: 'Sửa chữa',
+        value: 5,
     },
     {
         label: 'Bảo dưỡng',
-        value: 'Bảo dưỡng',
+        value: 6,
     },
 
 ]
@@ -55,7 +54,8 @@ class KhaiBaoMatTaiSan extends React.Component {
             checkBoxChecked: [],
             hinhthuc: '',
             dateSuachua: '',
-            searchText: ''
+            searchText: '',
+            diachiSuachua: ''
         }
         this.screen = {
             param: props.route.params
@@ -64,27 +64,30 @@ class KhaiBaoMatTaiSan extends React.Component {
     }
 
     componentDidMount() {
-        this.props.navigation.setOptions({headerRight: () => (
-          <TouchableOpacity
-            onPress={() => this.saveNewTaiSan()}
-            style={{
+        const { screen } = this.props.route.params;
+        this.props.navigation.setOptions({
+            title: `Khai báo ${  screen}`,
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => this.saveNewTaiSan()}
+                style={{
                     paddingHorizontal: 16,
                     paddingVertical: 12,
                   }
                   }
-          >
-            <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-              <Text style={{
+              >
+                <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                  <Text style={{
                           fontFamily: fonts.primaryRegular,
                           color: colors.white,
                           fontSize: 18,
                           alignSelf: 'center'
                       }}
-              > Lưu
-              </Text>
+                  > Lưu
+                  </Text>
   
-            </View>
-          </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
               )})
         this.getUserDangnhap();
         this.renderDataList();
@@ -112,7 +115,9 @@ class KhaiBaoMatTaiSan extends React.Component {
         const {
             userKhaibao,
             contentKhaibao,
-            checkBoxChecked
+            checkBoxChecked,
+            diachiSuachua,
+            hinhthuc
         } = this.state;
         let url = '';
         let phanLoaiId;
@@ -129,29 +134,53 @@ class KhaiBaoMatTaiSan extends React.Component {
                 message = 'Khai báo tài sản hỏng thành công';
                 break;
             case "tài sản thanh lý":
-                url = `${endPoint.TsThanhlygetAll}?`;
+                url = `${endPoint.CreateTaiSanThanhLy}`;
+                phanLoaiId = 9;
+                message = "Khai báo tài sản thanh lý thành công";
                 break;
             case "tài sản hủy":
-                url = `${endPoint.TsHuygetAll}?`;
+                url = `${endPoint.CreateTaiSanHuy}`;
                 break;
             case "tài sản sửa chữa/bảo dưỡng":
-                url = `${endPoint.TsSuachuabaoduonggetAll}?`;
+                url = `${endPoint.CreateTaiSanSuaChuaBaoDuong}`;
+                phanLoaiId = 6;
+                message = "Khai báo tài sản sửa chữa/bảo dưỡng thành công";
                 break;
                 default:
                     break;
         }
-        const taiSanMatList = checkBoxChecked.map(e => ({
-                taiSanId: e
-            }));
-        const params  = {
-            ngayKhaiBao: currentDate(),
-            nguoiKhaiBao: userKhaibao,
-            noiDung: contentKhaibao,
-            noiDungKhaiBao: contentKhaibao,
-            phanLoaiId,
-            phieuTaiSanChiTietList: taiSanMatList,
-            thoiGianKhaiBao: currentDate(),
-        }
+        let assetList;
+            let params = {};
+            if (tab === "tài sản sửa chữa/bảo dưỡng") {
+                assetList = checkBoxChecked.map(e => ({
+                    taiSanId: e,
+                    trangThaiId: 1
+                }));
+                params  = {
+                    diaChi: diachiSuachua,
+                    diaChiSuaChuaBaoDuong: diachiSuachua,
+                    hinhThuc: hinhThucData.find(e => e.id === hinhthuc),
+                    ngayKhaiBao: currentDate(),
+                    noiDung: contentKhaibao,
+                    noiDungKhaiBaoSuaChuaBaoDuong: contentKhaibao,
+                    phanLoaiId,
+                    phieuTaiSanChiTietList: assetList,
+                    thoiGianBatDau: currentDate(),
+                }
+            } else {
+                assetList = checkBoxChecked.map(e => ({
+                    taiSanId: e
+                }));
+                params  = {
+                    ngayKhaiBao: currentDate(),
+                    nguoiKhaiBao: userKhaibao,
+                    noiDung: contentKhaibao,
+                    noiDungKhaiBao: contentKhaibao,
+                    phanLoaiId,
+                    phieuTaiSanChiTietList: assetList,
+                    thoiGianKhaiBao: currentDate(),
+                }
+            }
 
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
             if (res.success) {
@@ -252,7 +281,6 @@ class KhaiBaoMatTaiSan extends React.Component {
             case "tài sản hủy":
                 return (
                   <View>
-                    <Text style={styles.title}>Khai báo {tab} </Text>
                     <Text style={styles.boldText}>Người khai báo: </Text>
                     <TextInput
                       placeholderTextColor="black"
@@ -284,7 +312,6 @@ class KhaiBaoMatTaiSan extends React.Component {
             case "tài sản sửa chữa/bảo dưỡng":
                 return (
                   <View>
-                    <Text style={styles.title}>Khai báo sửa chữa/bảo dưỡng </Text>
                     <Text style={styles.boldText}>Hình thức: </Text>
                     <RNPickerSelect
                       placeholder={placeholder}
@@ -470,13 +497,6 @@ const styles = StyleSheet.create({
     containerListTaisan: {
         padding: 5,
     },
-    title: {
-        paddingBottom: 10,
-        fontSize: 18,
-        fontStyle: 'italic',
-        alignSelf: 'center',
-
-    },
     boldText: {
         fontWeight: 'bold',
         alignItems: 'flex-start',
@@ -486,7 +506,10 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: 'black',
         borderRadius: 10,
-        paddingHorizontal: 10,
+        paddingHorizontal: 20,
+        height: 35,
+        marginLeft: 5,
+        marginRight: 5
     },
     borderedContent: {
         borderWidth: 0.5,
@@ -494,6 +517,8 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderRadius: 10,
         paddingHorizontal: 10,
+        marginLeft: 5,
+        marginRight: 5
     },
     borderedContentSuachuabaoduong: {
         borderWidth: 0.5,

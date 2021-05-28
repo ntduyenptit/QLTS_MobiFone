@@ -99,6 +99,9 @@ export const endPoint = ({
   CreatNhaCungcap: 'services/app/NhaCungCap/CreateOrEdit',
   //get lĩnh vực kinh doanh
   getAllLinhvucKD : 'services/app/LookupTable/GetAllLinhVucKinhDoanh',
+  CreateTaiSanThanhLy: 'services/app/TaiSanThanhLy/CreateTaiSanThanhLy',
+  CreateTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/CreateTaiSanSuaChuaBaoDuong',
+  CreateTaiSanHuy: 'services/app/TaiSanHuy/CreateTaiSanHuy',
 });
 
 // Quản lý màn hình
@@ -107,7 +110,7 @@ export const screens = ({
   quan_ly_tai_san: 'Quản lý tài sản',
   // quản lý đầu đọc
   quan_ly_dau_doc: 'Quản lý đầu đọc',
-  quan_ly_dau_doc_di_dong: 'Quản lý đầu đọc di đông',
+  quan_ly_dau_doc_di_dong: 'Quản lý đầu đọc di động',
   quan_ly_dau_doc_co_dinh: 'Quản lý đầu đọc cố định',
   giam_sat_tai_san: 'Giám sát tài sản',
   theo_doi_ket_noi_thiet_bi: 'Theo dõi kết nối thiết bị',
