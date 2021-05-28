@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,7 +7,10 @@ import {
     Image,
     ScrollView,
 } from 'react-native';
+import { SliderBox } from "react-native-image-slider-box";
+import { endPoint, imageBaseUrl } from '../../../api/config';
 import { deviceWidth } from '../../global/LoaderComponent';
+import { createGetMethod } from '../../../api/Apis';
 import { convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
 
 const bullet = (title, text) => (
@@ -32,28 +35,64 @@ const bullet = (title, text) => (
 
 function QuanLyTaiSanDetailComponent({ route }) {
     const { paramKey, tabKey } = route.params;
-    // console.log(paramKey);
+    const [images, setImages] = useState([]);
+    useEffect(() => {
+      getAssetMoreInfo(paramKey.id);
+    }, []);
+
+    function getAssetMoreInfo(id) {
+      let url = `${endPoint.GetTaiSan  }?`;
+      url += `input=${  id}&isView=true`;
+
+      createGetMethod(url).then(res => {
+        if (res.success) {
+          const imageList = res.result.listHinhAnh.map(e => `${imageBaseUrl  }${  e.linkFile.replace(/\\/g, "/")}`);
+          setImages(imageList);
+        }
+      });
+    }
     return (
       <View style={styles.container}>
         <ScrollView>
-          <View style={{ alignItems: 'flex-start', marginHorizontal: 30 }}>
-            <Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} style={styles.iconImage} />
-            <Text style={styles.title}>Thông tin {convertTextToLowerCase(tabKey)}:</Text>
-            {/* Mã tài sản */}
-            {bullet('Mã tài sản',paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
-            {/* Tên tài sản */}
-            {bullet('Tên tài sản',paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan)}
-            {/* Loại tài sản */}
-            {bullet('Loại tài sản',paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan)}
-            {/* Phòng ban quản lý */}
-            {bullet('Phòng ban quản lý',paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy)}
-            {/* Vị trí tài sản */}
-            {bullet('Vị trí tài sản',paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan)}
-            {/* Trạng thái */}
-            {bullet('Trạng thái', paramKey.trangThai)}
-            {/* Ngày mua */}
-            {bullet('Ngày mua', paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua))}
-            {bullet('Nguyên giá', paramKey.nguyenGia)}
+          <View style={{ alignItems: 'flex-start'}}>
+            {images.length > 0 ? 
+            (
+              <View style={{height: 200, paddingBottom: 20}}>
+                <SliderBox 
+                  images={images}
+                  dotColor="#FFEE58"
+                  sliderBoxHeight={200}
+                  dotStyle={{
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 0,
+    padding: 0,
+    margin: 0,
+    backgroundColor: "rgba(128, 128, 128, 0.92)"
+  }}
+                />
+              </View>
+) : 
+            (<Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} />)}
+            <View style={{marginHorizontal: 30}}>
+              <Text style={styles.title}>Thông tin {convertTextToLowerCase(tabKey)}:</Text>
+              {/* Mã tài sản */}
+              {bullet('Mã tài sản',paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
+              {/* Tên tài sản */}
+              {bullet('Tên tài sản',paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan)}
+              {/* Loại tài sản */}
+              {bullet('Loại tài sản',paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan)}
+              {/* Phòng ban quản lý */}
+              {bullet('Phòng ban quản lý',paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy)}
+              {/* Vị trí tài sản */}
+              {bullet('Vị trí tài sản',paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan)}
+              {/* Trạng thái */}
+              {bullet('Trạng thái', paramKey.trangThai)}
+              {/* Ngày mua */}
+              {bullet('Ngày mua', paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua))}
+              {bullet('Nguyên giá', paramKey.nguyenGia)}
+            </View>
           </View>
 
         </ScrollView>
@@ -70,7 +109,11 @@ function QuanLyTaiSanDetailComponent({ route }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 20,
+    },
+    productImg: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginHorizontal: 30
     },
     row: {
         flexDirection: 'row',

@@ -1,6 +1,7 @@
 
 // define the api
 export const baseUrl = 'http://10.6.71.64:9080/api/';
+export const imageBaseUrl = 'http://10.6.71.64:9080/Upload/ToanBoTS';
 export const headerWithoutToken = ({
   'Content-Type': 'application/json',
   Accept: 'application/json'
@@ -96,7 +97,7 @@ export const endPoint = ({
   TsHuygetAll: 'services/app/TaiSanHuy/GetAllTaiSan',
   TsSuachuabaoduonggetAll: 'services/app/TaiSanSuaChuaBaoDuong/GetAllTaiSan',
 
-  //getAll vị trí địa lý
+  // getAll vị trí địa lý
   getAllVitriDialy: 'services/app/LookupTable/GetAllViTriDiaLyLookupTable',
 
   // Thêm mới
@@ -108,7 +109,7 @@ export const endPoint = ({
   CreatVitriDialy: 'services/app/ViTriDiaLy/CreateOrEdit',
   CreatLoaiTaisan: 'services/app/LoaiTaiSan/CreateOrEdit',
   CreatDonvi: 'services/app/ToChuc/CreateOrEdit',
-  //get lĩnh vực kinh doanh
+  // get lĩnh vực kinh doanh
   getAllLinhvucKD : 'services/app/LookupTable/GetAllLinhVucKinhDoanh',
   CreateTaiSanThanhLy: 'services/app/TaiSanThanhLy/CreateTaiSanThanhLy',
   CreateTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/CreateTaiSanSuaChuaBaoDuong',
@@ -116,6 +117,9 @@ export const endPoint = ({
 
   // Upload
   ToanBoTSUpload: 'Upload/ToanBoTSUpload',
+
+  // get tài sản
+  GetTaiSan: 'services/app/ToanBoTaiSan/GetForEdit',
 });
 
 // Quản lý màn hình
