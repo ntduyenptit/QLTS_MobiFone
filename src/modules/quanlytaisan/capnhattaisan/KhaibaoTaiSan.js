@@ -203,6 +203,7 @@ class KhaiBaoMatTaiSan extends React.Component {
 
     checkBoxChanged(id) {
         const { checkBoxChecked } = this.state;
+
         const index = checkBoxChecked.indexOf(id);
         if (index > -1) {
             checkBoxChecked.splice(index, 1);
@@ -230,19 +231,19 @@ class KhaiBaoMatTaiSan extends React.Component {
         let url;
         switch (tab) {
             case "tài sản mất":
-                url = `${endPoint.TsMatgetAll}?`;
+                url = `${endPoint.getTaiSanMat}?`;
                 break;
             case "tài sản hỏng":
-                url = `${endPoint.TsHonggetAll}?`;
+                url = `${endPoint.getTaiSanHong}?`;
                 break;
             case "tài sản thanh lý":
-                url = `${endPoint.TsThanhlygetAll}?`;
+                url = `${endPoint.getTaiSanThanhLy}?`;
                 break;
             case "tài sản hủy":
-                url = `${endPoint.TsHuygetAll}?`;
+                url = `${endPoint.getTaiSanHuy}?`;
                 break;
             case "tài sản sửa chữa/bảo dưỡng":
-                url = `${endPoint.TsSuachuabaoduonggetAll}?`;
+                url = `${endPoint.getTaiSanSuaChuaBaoDuong}?`;
                 break;
                 default:
                     break;
@@ -258,13 +259,10 @@ class KhaiBaoMatTaiSan extends React.Component {
 
             url += `IsSearch=${encodeURIComponent(`${true}`)}&`;
             url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
-            url += `MaxResultCount=${encodeURIComponent(`${20}`)}`;
+            url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
 
             createGetMethod(url)
                 .then(res => {
-                    this.setState({
-                        toanboTaisan: '',
-                    })
                     this.setState({
                         toanboTaisan: res.result.items,
                     })
@@ -440,7 +438,9 @@ class KhaiBaoMatTaiSan extends React.Component {
           <View style={styles.container}>
             {this.renderTabInfor(userKhaibao, dateKhaibao, dateSuachua)}
             <Text style={styles.boldText}> Chọn tài sản khai báo</Text>
-            <SafeAreaView>
+            <SafeAreaView
+              style={{flex: 1}}
+            >
               <SearchComponent
                 clampedScroll={clampedScroll}
                 action={this.updateSearchText}
@@ -600,8 +600,6 @@ const pickerSelectStyles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-    toanbotaisanData: state.toanbotaisanReducer.toanbotaisanData,
-    tokenUser: state.userReducer.token,
 });
 
 export default connect(mapStateToProps)(KhaiBaoMatTaiSan);

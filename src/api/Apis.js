@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import { baseUrl, headers, headerWithoutToken} from './config';
+import { baseUrl, headers, headerWithoutToken, headerContainFiles} from './config';
 
 export function createPostMethodWithoutToken(endPoint, params) {
     // eslint-disable-next-line no-undef
@@ -24,6 +24,17 @@ export function createPostMethodWithToken(endPoint, params) {
             .then(data => data)
             .catch(err => console.log(err))
         );
+}
+
+export function createPostMultiFiles(endPoint, params) {
+      // eslint-disable-next-line no-undef
+    return fetch(`${baseUrl}${endPoint}`, {
+        method: 'POST',
+        headers: headerContainFiles(),
+        body: params
+    })
+        .then(res => res.json())
+        .catch(err => console.log(err))
 }
 
 export function createGetMethod(endPoint, params = null) {

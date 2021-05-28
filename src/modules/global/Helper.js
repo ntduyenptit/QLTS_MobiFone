@@ -233,11 +233,42 @@ export const convertDateFormatTo = (date) => {
 
 export const currentDate = () => new Date(`${new Date().toString().split('GMT')[0]} UTC`).toISOString().split('.')[0];
 
+export const currentDateForUpload = () => {
+  let date = `${  new Date().getDate()}`; // Current Date
+  let month = `${  new Date().getMonth() + 1}`; // Current Month
+  const year = new Date().getFullYear(); // Current Year
+  let hours = `${  new Date().getHours()}`; // Current Hours
+  let min = `${  new Date().getMinutes()}`; // Current Minutes
+  let sec = `${  new Date().getSeconds()}`; // Current Seconds
+
+  if (month.length < 2) {
+    month = `0${month}`;
+  }
+  if (date.length < 2) {
+    date = `0${date}`;
+  }
+  if (hours.length < 2) {
+    hours = `0${hours}`;
+  }
+  if (min.length < 2) {
+    min = `0${min}`;
+  }
+
+  if (sec.length < 2) {
+    sec = `0${sec}`;
+  }
+
+  return `${year}${month}${date}_${hours}${min}${sec}`;
+};
+
 export const getDateFromLastMonth = () => {
   const x = new Date();
   x.setMonth(x.getMonth()-1);
   return convertDateFormatTo(x);
 }
+
+export const getLinkFile = (res, fileName) => res ? `\\${  res.result[res.result
+      .findIndex(e => e.includes(fileName))].split('\\').slice(-2).join('\\')}` : ''
 
 export const countNumberOfExitsTotal = (items) => {
   let count = 0;

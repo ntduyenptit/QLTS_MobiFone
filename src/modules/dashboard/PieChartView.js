@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { Text } from 'react-native-svg';
 import { PieChart } from 'react-native-svg-charts'
@@ -33,7 +34,7 @@ export default class PieChartView extends React.PureComponent {
 
         const Labels = ({ slices }) => slices.map((slice, index) => {
             const { pieCentroid, data } = slice;
-            if (data.value > 0)
+            if (data.value > 0) {
               return (
                 <Text
                   key={index}
@@ -49,6 +50,8 @@ export default class PieChartView extends React.PureComponent {
                   {`${data.value}%`}
                 </Text>
               )
+            }
+            return null;
           });
 
           return(

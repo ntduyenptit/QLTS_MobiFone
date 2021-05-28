@@ -497,7 +497,7 @@ const QuanLyTaiSan = (state) => {
 
         <View style={{
           bottom: 5,
-          right: 5,
+          right: 15,
           position: 'absolute',
         }}
         >

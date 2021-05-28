@@ -10,6 +10,11 @@ export const headers = (token) => ({
   'Content-Type': 'application/json',
   Accept: 'application/json'
 });
+
+export const headerContainFiles = () => ({
+  'Content-Type': 'multipart/form-data',
+});
+
 export const endPoint = ({
   login: 'TokenAuth/Authenticate',
   getuserDangnhap: 'services/app/ToanBoTaiSan/GetUserDangNhap',
@@ -98,6 +103,9 @@ export const endPoint = ({
   CreateTaiSanThanhLy: 'services/app/TaiSanThanhLy/CreateTaiSanThanhLy',
   CreateTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/CreateTaiSanSuaChuaBaoDuong',
   CreateTaiSanHuy: 'services/app/TaiSanHuy/CreateTaiSanHuy',
+
+  // Upload
+  ToanBoTSUpload: 'Upload/ToanBoTSUpload',
 });
 
 // Quản lý màn hình

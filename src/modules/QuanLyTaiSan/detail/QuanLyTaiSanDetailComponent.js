@@ -32,7 +32,7 @@ const bullet = (title, text) => (
 
 function QuanLyTaiSanDetailComponent({ route }) {
     const { paramKey, tabKey } = route.params;
-    console.log(paramKey);
+    // console.log(paramKey);
     return (
       <View style={styles.container}>
         <ScrollView>
