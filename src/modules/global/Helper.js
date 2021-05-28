@@ -337,6 +337,10 @@ export const convertDateToIOSString = (date) => {
   const dt = convertDateFormatTo(moment(date,"DD, MM YYYY"));
   return dt;
 }
+export const convertTimeToIOSString = (time) => {
+  const dt = (moment(time).format().toISOString());
+  return dt;
+}
 
 export const addYearToDate = (date, num) => {
   if (date) {

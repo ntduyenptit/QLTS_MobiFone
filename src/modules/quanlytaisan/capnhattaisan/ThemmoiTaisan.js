@@ -186,6 +186,7 @@ class TaomoiTaisanScreen extends React.Component {
                 createPostMethodWithToken(url, JSON.stringify(params)).then((result) => {
                     if (result.success) {
                         Alert.alert('Thêm mới tài sản thành công',
+                        '',
                         [
                             {text: 'OK', onPress: this.goBack()},
                         ],
@@ -611,7 +612,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderRadius: 10,
         paddingHorizontal: 20,
-        height: 35,
+        height: 40,
         marginLeft: 5,
         marginRight: 5
     },

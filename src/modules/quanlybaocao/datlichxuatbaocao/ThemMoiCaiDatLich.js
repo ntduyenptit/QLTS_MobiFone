@@ -1,59 +1,60 @@
-/* eslint-disable import/no-cycle */
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar, Dimensions, Text, StyleSheet, View, TextInput, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { createGetMethod } from '../../../api/Apis';
+import { Animated, SafeAreaView, StatusBar, Dimensions, Text, StyleSheet, View, TextInput, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { createGetMethod, createPostMethodWithToken } from '../../../api/Apis';
 import { endPoint, } from '../../../api/config';
 import RNPickerSelect from 'react-native-picker-select';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { buildTree, convertDateFormatTo, convertTimeFormatToLocaleDate, convertTimeFormatToLocaleDateFullTime } from '../../global/Helper';
+import { buildTree, convertDateFormatTo, convertDateToIOSString, convertFormatDate, convertTimeFormatToLocaleDateFullTime, convertTimeToIOSString } from '../../global/Helper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
+import { colors, fonts } from '../../../styles';
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
 const LaplaiList = [
     {
         label: "Ngày",
-        value: 1,
+        value: 0,
+
     },
     {
         label: "Tuần",
-        value: 2,
+        value: 1,
     },
     {
         label: "Tháng",
-        value: 3,
+        value: 2,
     },
     {
         label: "Quý",
-        value: 4,
+        value: 3,
     },
     {
         label: "Năm",
-        value: 5,
+        value: 4,
     },
 ]
 const TenBaocaoList = [
     {
         label: "Báo cáo người dùng",
-        value: 1,
+        value: 0,
     },
     {
         label: "Báo cáo cảnh báo",
-        value: 2,
+        value: 1,
     },
     {
         label: "Báo cáo thông tin thiết bị RFID",
-        value: 3,
+        value: 2,
     },
     {
         label: "Báo cáo thông tin tài sản",
-        value: 4,
+        value: 3,
     },
 ]
 
-let idPhongban = '';
+let listCheckphongBan = [];
 
 class ThemmoiCaidatScreen extends React.Component {
     constructor(props) {
@@ -63,9 +64,8 @@ class ThemmoiCaidatScreen extends React.Component {
             lapLai: '',
             gioGuiBaocao: new Date(1598051730000),
             phongBanNhan: '',
-            phongBanNhanId: '',
             nguoiNhanBaocao: [],
-            ghiChu: '',
+            ghiChu: "",
             phongBanList: [],
             userList: [],
             isDateTimePickerVisible: false,
@@ -73,27 +73,53 @@ class ThemmoiCaidatScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.props.navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity
+                    onPress={() => this.saveNewLichXuatbaocao()}
+                    style={{
+                        paddingHorizontal: 16,
+                        paddingVertical: 12,
+                    }
+                    }
+                >
+                    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                        {/* <Icon name="save" color="white" size={20} /> */}
+                        <Text style={{
+                            fontFamily: fonts.primaryRegular,
+                            color: colors.white,
+                            fontSize: 18,
+                            alignSelf: 'center'
+                        }}
+                        > Lưu
+                </Text>
+
+                    </View>
+                </TouchableOpacity>
+            )
+        })
         this.danhsachPhongban(this.props.DvqlData);
-        //this.danhsachNguoidung(this.state.phongBanNhanId);
+        this.danhsachNguoidung();
     }
 
     danhsachPhongban(data) {
         if (data) {
+            dvqlTreeData = buildTree(data);
             this.setState({
-                phongBanList: data,
+                phongBanList: dvqlTreeData,
             });
         }
-     
     };
     danhsachNguoidung(id) {
+        if (id != null) {
             let url;
             url = `services/app/LookupTable/GetAllNguoiDungTheoPBLookupTable?phongBan=` + id;
             createGetMethod(url)
                 .then(res => {
                     if (res) {
                         const list = res.result.map(e => ({
-                            name: e.user.name,
-                            id: e.user.id,
+                            name: e.displayName,
+                            id: e.id,
                         }));
                         this.setState({
                             userList: list,
@@ -103,19 +129,17 @@ class ThemmoiCaidatScreen extends React.Component {
                     }
                 })
                 .catch(err => console.log(err));
+        }
     }
 
     onSelectedItemsChange = nguoiNhanBaocao => {
+        console.log("nguoiNhan: " + nguoiNhanBaocao);
         this.setState({ nguoiNhanBaocao });
     };
     onSelectedDVQLChange = phongBanNhan => {
-        console.log("phongbanNhan: "+ phongBanNhan);
-        this.setState(
-            {
-                phongBanNhan: phongBanNhan,
-            })
-        
-            this.danhsachNguoidung(phongBanNhan);
+        console.log("phongBanNhan: " + phongBanNhan);
+        this.setState({ phongBanNhan });
+        this.danhsachNguoidung(phongBanNhan);
     }
 
     showDatetimePicker = () => {
@@ -130,6 +154,12 @@ class ThemmoiCaidatScreen extends React.Component {
         });
     };
 
+    // handleSelectDate = (time) => {
+    //     this.closeDatetimePicker();
+    //     this.setState({
+    //         gioGuiBaocao: time
+    //     });
+    // };
     handleSelectDate = (event, selectedDate) => {
         console.log("giobaocao: " + selectedDate);
         const currentTime = selectedDate || new Date(1598051730000);
@@ -140,6 +170,95 @@ class ThemmoiCaidatScreen extends React.Component {
             gioGuiBaocao: currentTime
         });
     };
+    convertListnguoiNhanbaocao(list) {
+        let stringList = '';
+        for (let i = 0; i < list.length; i++) {
+            stringList += list[i];
+            if (i < list.length - 1) stringList += ",";
+        }
+        return stringList;
+    }
+    convertTime(time) {
+        let str = "";
+        return str + convertDateFormatTo(time).toString() + ".881Z";
+    }
+    convertphongBanNhan(pbNhan) {
+        return pbNhan[0];
+    }
+    saveNewLichXuatbaocao() {
+        const {
+            tenBaocao,
+            lapLai,
+            gioGuiBaocao,
+            phongBanNhan,
+            nguoiNhanBaocao,
+            ghiChu,
+        } = this.state;
+        const url = `${endPoint.CreatLichBaocao}`;
+        let s = '';
+        let check = false;
+        switch("") {
+            case tenBaocao: 
+            {
+                s = "tên báo cáo";
+                check = true;
+                break;
+            }
+            case lapLai: {
+                s = "lặp lại báo cáo";
+                check = true;
+                break;
+            }
+            case gioGuiBaocao: {
+                s = "giờ gửi báo cáo";
+                check = true;
+                break;
+            } 
+            case phongBanNhan: {
+                s = "phòng ban nhận báo cáo";
+                check = true;
+                break;
+            }
+            case nguoiNhanBaocao: {
+                s = "người nhận báo cáo";
+                check = true;
+                break;
+            }
+        }
+        if (check) {
+            Alert.alert(
+                '',
+                'Hãy nhập '+ s,
+                [
+                    { text: 'OK', style: "cancel" },
+                ],
+
+            );
+            return;
+        }
+        const params = {
+            baoCaoId: tenBaocao,
+            ghiChu: ghiChu,
+            lapLaiId: lapLai,
+            gioGuiBaoCao: this.convertTime(gioGuiBaocao),
+            nguoiNhanBaoCaoId: this.convertListnguoiNhanbaocao(nguoiNhanBaocao),
+            phongBanNhanId: this.convertphongBanNhan(phongBanNhan),
+        }
+        
+        createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
+          
+            if (res.success) {
+                Alert.alert(
+                    "Thêm mới cài đặt thành công",
+                    "",
+                    [
+                      { text: "OK", onPress: () => this.props.navigation.goBack() }
+                    ]
+                  );
+            }
+        })
+    }
+
     render() {
         const {
             gioGuiBaocao,
@@ -213,7 +332,7 @@ class ThemmoiCaidatScreen extends React.Component {
                             />
 
                             <View style={styles.containerButton}>
-                                <Text style={styles.boldText}>Giờ gửi báo cáo</Text>
+                                <Text style={styles.boldText}>Giờ gửi báo cáo*</Text>
                                 <Icon style={{ alignContent: "flex-end", paddingLeft: 220 }} name="user-clock" color="black" size={27}
                                     onPress={() => this.setState({
                                         isDateTimePickerVisible: true,
@@ -237,11 +356,12 @@ class ThemmoiCaidatScreen extends React.Component {
                                     onChange={this.handleSelectDate}
                                 />
                             )}
-                            <Text style={styles.boldText}>Phòng ban nhận báo cáo</Text>
+                            <Text style={styles.boldText}>Phòng ban nhận báo cáo*</Text>
                             <MultiSelect
                                 ref={(component) => { this.multiSelect = component }}
                                 getCollapsedNodeHeight={{ height: 200 }}
                                 items={phongBanList}
+                                single={true}
                                 IconRenderer={Icon}
                                 searchInputPlaceholderText="Tìm kiếm..."
                                 styleListContainer={phongBanList && phongBanList.length > 9 ? { height: 200 } : null}
@@ -257,16 +377,18 @@ class ThemmoiCaidatScreen extends React.Component {
                                 <MultiSelect
                                     items={userList}
                                     uniqueKey="id"
+                                    isTree={false}
+                                    single={false}
                                     getCollapsedNodeHeight={{ height: 150 }}
                                     ref={(component) => { this.multiSelect = component }}
-                                    onSelectedItemsChange={this.onSelectedItemsChange}
+                                    onSelectedItemsChange={(item) => this.onSelectedItemsChange(item)}
                                     selectedItems={nguoiNhanBaocao}
                                     IconRenderer={Icon}
-                                    styleListContainer={userList && userList.length > 9 ? { height: 200 } : null}
                                     selectText="Bấm để chọn tên"
                                     searchInputPlaceholderText="Tìm kiếm..."
                                     searchInputStyle={{ color: '#CCC' }}
                                     submitButtonColor="#2196F3"
+
                                 />
                             </ScrollView>
 
