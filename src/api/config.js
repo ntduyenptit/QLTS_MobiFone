@@ -97,6 +97,7 @@ export const endPoint = ({
   CreateTaiSanHong: 'services/app/TaiSanHong/CreateTaiSanHong',
   CreatLichBaocao: 'services/app/DatLichXuatBaoCao/CreateOrEdit',
   CreatNhaCungcap: 'services/app/NhaCungCap/CreateOrEdit',
+  CreatVitriDialy: 'services/app/ViTriDiaLy/CreateOrEdit',
   //get lĩnh vực kinh doanh
   getAllLinhvucKD : 'services/app/LookupTable/GetAllLinhVucKinhDoanh',
   CreateTaiSanThanhLy: 'services/app/TaiSanThanhLy/CreateTaiSanThanhLy',
@@ -153,6 +154,7 @@ export const screens = ({
   them_moi_du_tru_mua_sam: "Thêm mới",
   them_moi_cai_dat_lich_xuat_bao_cao: "Thêm mới cài đặt",
   them_moi_nha_cung_cap: "Thêm mới nhà cung cấp",
+  them_moi_vi_tri_dia_ly: "Thêm mới vị trí địa lý",
 
 });
 

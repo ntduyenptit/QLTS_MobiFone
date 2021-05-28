@@ -195,7 +195,47 @@ class ThemmoiCaidatScreen extends React.Component {
             ghiChu,
         } = this.state;
         const url = `${endPoint.CreatLichBaocao}`;
+        let s = '';
+        let check = false;
+        switch("") {
+            case tenBaocao: 
+            {
+                s = "tên báo cáo";
+                check = true;
+                break;
+            }
+            case lapLai: {
+                s = "lặp lại báo cáo";
+                check = true;
+                break;
+            }
+            case gioGuiBaocao: {
+                s = "giờ gửi báo cáo";
+                check = true;
+                break;
+            } 
+            case phongBanNhan: {
+                s = "phòng ban nhận báo cáo";
+                check = true;
+                break;
+            }
+            case nguoiNhanBaocao: {
+                s = "người nhận báo cáo";
+                check = true;
+                break;
+            }
+        }
+        if (check) {
+            Alert.alert(
+                '',
+                'Hãy nhập '+ s,
+                [
+                    { text: 'OK', style: "cancel" },
+                ],
 
+            );
+            return;
+        }
         const params = {
             baoCaoId: tenBaocao,
             ghiChu: ghiChu,
@@ -204,21 +244,15 @@ class ThemmoiCaidatScreen extends React.Component {
             nguoiNhanBaoCaoId: this.convertListnguoiNhanbaocao(nguoiNhanBaocao),
             phongBanNhanId: this.convertphongBanNhan(phongBanNhan),
         }
-        console.log("baoCaoId " + params.baoCaoId);
-        console.log("ghiChu " + params.ghiChu);
-        console.log("lapLaiId " + params.lapLaiId);
-        console.log("gioGuiBaoCao " + params.gioGuiBaoCao);
-        console.log("nguoiNhanBaoCaoId " + params.nguoiNhanBaoCaoId);
-        console.log("phongBanNhanId " + params.phongBanNhanId);
-
+        
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
-            console.log("Them moi res:" + res)
+          
             if (res.success) {
                 Alert.alert(
                     "Thêm mới cài đặt thành công",
                     "",
                     [
-                      { text: "Thoát", onPress: () => this.props.navigation.goBack() }
+                      { text: "OK", onPress: () => this.props.navigation.goBack() }
                     ]
                   );
             }
@@ -298,7 +332,7 @@ class ThemmoiCaidatScreen extends React.Component {
                             />
 
                             <View style={styles.containerButton}>
-                                <Text style={styles.boldText}>Giờ gửi báo cáo</Text>
+                                <Text style={styles.boldText}>Giờ gửi báo cáo*</Text>
                                 <Icon style={{ alignContent: "flex-end", paddingLeft: 220 }} name="user-clock" color="black" size={27}
                                     onPress={() => this.setState({
                                         isDateTimePickerVisible: true,
@@ -322,7 +356,7 @@ class ThemmoiCaidatScreen extends React.Component {
                                     onChange={this.handleSelectDate}
                                 />
                             )}
-                            <Text style={styles.boldText}>Phòng ban nhận báo cáo</Text>
+                            <Text style={styles.boldText}>Phòng ban nhận báo cáo*</Text>
                             <MultiSelect
                                 ref={(component) => { this.multiSelect = component }}
                                 getCollapsedNodeHeight={{ height: 200 }}
