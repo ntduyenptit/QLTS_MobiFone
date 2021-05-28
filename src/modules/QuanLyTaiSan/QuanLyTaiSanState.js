@@ -1,4 +1,4 @@
-import { TOANBOTAISAN_DATA, TOANBOTAISAN_FAILED, TOANBOTAISAN_LOADING, TOANBOTAISAN_SEARCH,
+import { TOANBOTAISAN_DATA, TOANBOTAISAN_FAILED, TOANBOTAISAN_LOADING, TOANBOTAISAN_SEARCH, TOANBOTAISAN_REMOVE,
 TAISANHONG_DATA, TAISANHONG_FAILED, TAISANHONG_LOADING, TAISANHONG_SEARCH,
 TAISANMAT_DATA, TAISANMAT_FAILED, TAISANMAT_LOADING, TAISANMAT_SEARCH,
 TAISANHUY_DATA, TAISANHUY_FAILED, TAISANHUY_LOADING, TAISANHUY_SEARCH,
@@ -60,6 +60,14 @@ export const toanbotaisanReducer = (state = initialState, action) => {
         isSuccess: true,
         toanbotaisanTotal: action.payload.data.result.totalCount,
         toanbotaisanData: result
+      }
+    }
+    case TOANBOTAISAN_REMOVE: {
+      return {
+        isLoading: false,
+        isSuccess: true,
+        toanbotaisanTotal: 0,
+        toanbotaisanData: []
       }
     }
     case TOANBOTAISAN_FAILED: {

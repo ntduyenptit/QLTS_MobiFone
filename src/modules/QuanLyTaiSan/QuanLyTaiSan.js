@@ -21,17 +21,17 @@ import {
   taisanchuasudungGetData,
   taisanbaoduongsuachuaGetData,
 
-  taisanhongSearchData,
-  taisanhuySearchData,
-  taisanmatSearchData,
-  taisanthanhlySearchData,
-  toanbotaisanSearchData,
-  taisandangsudungSearchData,
-  taisanchuasudungSearchData,
-  taisanbaoduongsuachuaSearchData,
+  removeToanbotaisanData,
+  removeTaisanhongData,
+  removeTaisanhuyData,
+  removeTaisanmatData,
+  removeTaisanthanhlyData,
+  removeTaisandangsudungData,
+  removeTaisanchuasudungData,
+  removeTaisanbaoduongsuachuaData,
+  removeKhaibaohongmatData,
 
   toanbotaisanLoading,
-  khaibaohongmatSearchData,
   khaibaohongmatGetData
 } from '../../redux/actions/quanlytaisan.actions';
 import QuanLyTaiSanFilter from './filter/QuanLyTaiSanFilter';
@@ -145,42 +145,43 @@ export function GetToanBoTaiSanData(parameters) {
     url += `SkipCount=${encodeURIComponent(`${skipTotal}`)}&`;
     url += `MaxResultCount=${encodeURIComponent(`${maxCount}`)}`;
 
+    if (textFilter || isFilter) {
+      switch (tabChosen) {
+        case tabs.toan_bo_tai_san:
+          store.dispatch(removeToanbotaisanData());
+          break;
+        case tabs.tai_san_thanh_ly:
+          store.dispatch(removeTaisanthanhlyData());
+          break;
+        case tabs.tai_san_mat:
+          store.dispatch(removeTaisanmatData());
+          break;
+        case tabs.tai_san_hong:
+          store.dispatch(removeTaisanhongData());
+          break;
+        case tabs.tai_san_huy:
+          store.dispatch(removeTaisanhuyData());
+          break;
+        case tabs.tai_san_dang_su_dung:
+          store.dispatch(removeTaisandangsudungData());
+          break;
+        case tabs.tai_san_chua_su_dung:
+          store.dispatch(removeTaisanchuasudungData());
+          break;
+        case tabs.tai_san_sua_chua_bao_duong:
+          store.dispatch(removeTaisanbaoduongsuachuaData());
+          break;
+        case tabs.bao_hong_mat_tai_san:
+          store.dispatch(removeKhaibaohongmatData());
+          break;
+        default:
+          break;
+      }
+    }
+
     createGetMethod(url)
       .then(res => {
         if (res) {
-          if (textFilter || isFilter) {
-            switch (tabChosen) {
-              case tabs.toan_bo_tai_san:
-                store.dispatch(toanbotaisanSearchData(res));
-                break;
-              case tabs.tai_san_thanh_ly:
-                store.dispatch(taisanthanhlySearchData(res));
-                break;
-              case tabs.tai_san_mat:
-                store.dispatch(taisanmatSearchData(res));
-                break;
-              case tabs.tai_san_hong:
-                store.dispatch(taisanhongSearchData(res));
-                break;
-              case tabs.tai_san_huy:
-                store.dispatch(taisanhuySearchData(res));
-                break;
-              case tabs.tai_san_dang_su_dung:
-                store.dispatch(taisandangsudungSearchData(res));
-                break;
-              case tabs.tai_san_chua_su_dung:
-                store.dispatch(taisanchuasudungSearchData(res));
-                break;
-              case tabs.tai_san_sua_chua_bao_duong:
-                store.dispatch(taisanbaoduongsuachuaSearchData(res));
-                break;
-              case tabs.bao_hong_mat_tai_san:
-                store.dispatch(khaibaohongmatSearchData(res));
-                break;
-              default:
-                break;
-            }
-          } else {
             switch (tabChosen) {
               case tabs.toan_bo_tai_san:
                 store.dispatch(toanbotaisanGetData(res));
@@ -212,7 +213,6 @@ export function GetToanBoTaiSanData(parameters) {
               default:
                 break;
             }
-          }
         } else {
           // Alert.alert('Lỗi khi load toàn bộ tài sản!');
         }
