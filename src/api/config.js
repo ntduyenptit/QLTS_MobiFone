@@ -110,6 +110,7 @@ export const endPoint = ({
   CreatVitriDialy: 'services/app/ViTriDiaLy/CreateOrEdit',
   CreatLoaiTaisan: 'services/app/LoaiTaiSan/CreateOrEdit',
   CreatDonvi: 'services/app/ToChuc/CreateOrEdit',
+  CreatPhieuMuasam: 'services/app/PhieuDuTruMuaSam/CreateOrEdit',
   // get lĩnh vực kinh doanh
   getAllLinhvucKD : 'services/app/LookupTable/GetAllLinhVucKinhDoanh',
   CreateTaiSanThanhLy: 'services/app/TaiSanThanhLy/CreateTaiSanThanhLy',
@@ -117,6 +118,9 @@ export const endPoint = ({
   CreateTaiSanHuy: 'services/app/TaiSanHuy/CreateTaiSanHuy',
   CreateVaitro:'services/app/Role/Create',
   checkExitVaitro: 'services/app/Role/CheckExist',
+  creatReaderdidong: 'services/app/DauDocTheRFID/CreateOrEdit',
+  creatReadercodinh: 'services/app/AngTenRFID/CreateOrEdit',
+  creatKiemke: 'services/app/KiemKeTaiSan/CreateOrEdit',
   //check exit user
 
   // check exit user

@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text, TextInput, Dimensions, Animated, SafeAreaView, FlatList, CheckBox, Button, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Dimensions, Animated, SafeAreaView, FlatList, Button, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { endPoint } from '../../../api/config';
-import { createGetMethod } from '../../../api/Apis';
-import SearchComponent from '../../global/SearchComponent';
+import { createGetMethod, createPostMethodWithToken } from '../../../api/Apis';
 import DatePicker from 'react-native-datepicker';
 import RNPickerSelect from 'react-native-picker-select';
+import { colors, fonts } from '../../../styles';
+import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
+import { convertDateToIOSString } from '../../global/Helper';
 const deviceWidth = Dimensions.get("window").width;
 let tab = '';
 var tempCheckValues = [];
@@ -24,13 +26,13 @@ class ThemmoiDotKiemke extends React.Component {
             trangThai: 'Chưa bắt đầu',
             boPhanKiemke: '',
             bophanKiemkeList: [],
-            checkBoxChecked: [],
+            userKiemke: [],
         }
         this.screen = {
             param: props.route.params
         }
     }
-    
+
     checkBoxChanged(id, value) {
         this.setState({
             checkBoxChecked: tempCheckValues
@@ -43,18 +45,126 @@ class ThemmoiDotKiemke extends React.Component {
     }
 
     componentDidMount() {
+        this.props.navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity
+                    onPress={() => this.saveNewKiemke()}
+                    style={{
+                        paddingHorizontal: 16,
+                        paddingVertical: 12,
+                    }
+                    }
+                >
+                    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                        {/* <Icon name="save" color="white" size={20} /> */}
+                        <Text style={{
+                            fontFamily: fonts.primaryRegular,
+                            color: colors.white,
+                            fontSize: 18,
+                            alignSelf: 'center'
+                        }}
+                        > Lưu
+              </Text>
+
+                    </View>
+                </TouchableOpacity>
+            )
+        })
         this.renderUserList(this.props.DvqlDataFilter);
         this.renderBophanKiemkeList(this.props.DvqlDataFilter);
     }
-   
+
+    convertList(array) {
+        let list =  [];
+        for (let i = 0; i < array.length; i++) {
+            list.push(array[i]);
+        }
+        return list;
+    }
+    saveNewKiemke() {
+        const {
+            tenKiemke,
+            maKiemke,
+            dateBatdau,
+            dateKethuc,
+            boPhanKiemke,
+            userKiemke,
+        } = this.state;
+        let s = '';
+        let check = false;
+        switch ("") {
+            case tenKiemke:
+                {
+                    s = "tên đợt kiểm kê";
+                    check = true;
+                    break;
+                }
+            case maKiemke: {
+                s = "mã đợt kiểm kê";
+                check = true;
+                break;
+            }
+            case dateBatdau:
+                {
+                    s = "ngày bắt đầu";
+                    check = true;
+                    break;
+                }
+            case dateKethuc: {
+                s = "ngày kết thúc";
+                check = true;
+                break;
+            }
+        }
+        if (check) {
+            Alert.alert(
+                '',
+                'Hãy nhập ' + s,
+                [
+                    { text: 'OK', style: "cancel" },
+                ],
+
+            );
+            return;
+        }
+        const url = `${endPoint.creatKiemke}`;
+        const params = {
+            boPhanDuocKiemKeId: boPhanKiemke,
+            doiKiemKeIdList: this.convertList(userKiemke),
+            maKiemKe: maKiemke,
+            tenKiemKe: tenKiemke,
+            thoiGianBatDauDuKien: dateBatdau && convertDateToIOSString(dateBatdau),
+            thoiGianKetThucDuKien: dateKethuc && convertDateToIOSString(dateKethuc),
+            trangThaiId: 0,
+        }
+        console.log("doiKiemKeIdList: " + userKiemke);
+        createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
+            if (res.success) {
+                Alert.alert(
+                    '',
+                    'Thêm mới đợt kiểm kê thành công',
+                    [
+                        { text: 'OK', onPress: this.props.navigation.goBack() },
+                    ],
+
+                );
+
+            }
+        })
+    }
+
     renderUserList() {
         let url;
         url = `${endPoint.getNguoidung}`;
         createGetMethod(url)
             .then(res => {
                 if (res) {
+                    const list = res.result.map(e => ({
+                        name: e.user.name,
+                        id: e.user.id,
+                    }))
                     this.setState({
-                        toanboUser: res.result,
+                        toanboUser: list,
                     });
                 } else {
                     // Alert.alert('Lỗi khi load toàn bộ tài sản!');
@@ -67,30 +177,19 @@ class ThemmoiDotKiemke extends React.Component {
         let list = [];
         for (let i = 0; i < data.length; i++) {
             let item = {
-                label : data[i].displayName,
-                value: data[i].displayName,
+                label: data[i].displayName,
+                value: data[i].id,
             }
             list.push(item);
         }
         this.setState({
-            bophanKiemkeList : list,
+            bophanKiemkeList: list,
         })
     }
-
-    renderItemComponent = (data) => (
-        <View style={styles.listItem}>
-            <CheckBox
-                value={this.state.checkBoxChecked[data.item.user.id]}
-                onValueChange={() => this.checkBoxChanged(data.item.user.id, this.state.checkBoxChecked[data.item.user.id])}
-            />
-            <View style={styles.infor}>
-                <Text numberOfLines={1} style={{ fontWeight: "bold", paddingBottom: 3 }}>Họ và Tên: {data.item.user.name}</Text>
-                <Text numberOfLines={1} style={[{ paddingBottom: 3 }]}>Tên đăng nhập: {data.item.user.userName}</Text>
-                <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Địa chỉ email: {data.item.user.emailAddress}</Text>
-                <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Chức vụ: {data.item.user.chucVu}</Text>
-            </View>
-        </View>
-    )
+    onSelectedItemsChange = userKiemke => {
+        
+        this.setState({ userKiemke });
+    };
 
     render() {
         const { scrollYValue,
@@ -98,7 +197,8 @@ class ThemmoiDotKiemke extends React.Component {
             dateBatdau,
             dateKethuc,
             trangThai,
-            bophanKiemkeList
+            bophanKiemkeList,
+            userKiemke
         } = this.state;
         const { screen } = this.props.route.params;
         tab = screen;
@@ -226,39 +326,24 @@ class ThemmoiDotKiemke extends React.Component {
                     selectTextOnFocus={false}
                 />
                 <Text style={styles.boldText}> Thêm người kiểm kê</Text>
-                <SafeAreaView>
-                    <SearchComponent
-                        clampedScroll={clampedScroll}
-                    />
-                    <Animated.ScrollView
-                        showsVerticalScrollIndicator={false}
-                        style={{
-                            margin: 10,
-                            paddingTop: 55,
-                            paddingBottom: 15,
-                        }}
-                        contentContainerStyle={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            flexWrap: 'wrap',
-                            justifyContent: 'space-around',
-                            paddingBottom: 55,
-                        }}
-                        onScroll={Animated.event(
-                            [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
-                            { useNativeDriver: true },
-                            () => { },          // Optional async listener
-                        )}
-                        contentInsetAdjustmentBehavior="automatic"
-                    >
-                        <FlatList
-                            scrollEnabled={false}
-                            data={toanboUser}
-                            renderItem={item => this.renderItemComponent(item)}
-                        />
-                    </Animated.ScrollView>
-                </SafeAreaView>
+                <ScrollView style={{ height: 200 }}>
+                    <MultiSelect
+                        items={toanboUser}
+                        uniqueKey="id"
+                        isTree={false}
+                        single={false}
+                        getCollapsedNodeHeight={{ height: 150 }}
+                        ref={(component) => { this.multiSelect = component }}
+                        onSelectedItemsChange={(item) => this.onSelectedItemsChange(item)}
+                        selectedItems={userKiemke}
+                        IconRenderer={Icon}
+                        selectText="Bấm để chọn tên"
+                        searchInputPlaceholderText="Tìm kiếm..."
+                        searchInputStyle={{ color: '#CCC' }}
+                        submitButtonColor="#2196F3"
 
+                    />
+                </ScrollView>
             </ScrollView>
         )
     }

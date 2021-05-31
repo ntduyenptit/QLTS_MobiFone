@@ -124,7 +124,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
     items.addSelectedLTS({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
   }
   const onSelectedNCCChange = (newSelectItems) => {
-    items.removeSelectedLTS({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+    items.removeSelectedNCC({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
     items.addSelectedNCC({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
   }
   const onSelectedMSDChange = (newSelectItems) => {

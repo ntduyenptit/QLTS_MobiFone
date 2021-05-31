@@ -84,6 +84,9 @@ class QuanLyDauDocDiDongScreen extends React.Component {
         .catch();
     }
   }
+  refresh() {
+    this.getToanBoDauDocDiDongData({ datas: this.props.DvqlDataFilter });
+  }
 
   render() {
     const {
@@ -151,7 +154,7 @@ class QuanLyDauDocDiDongScreen extends React.Component {
             action={this.getToanBoDauDocDiDongData}
           />
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_dau_doc, { screen: "Thêm mới đầu đọc di động" })} />
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_dau_doc, { screen: "Thêm mới đầu đọc di động", onGoBack: () => this.refresh() })} />
       </View>
     );
 

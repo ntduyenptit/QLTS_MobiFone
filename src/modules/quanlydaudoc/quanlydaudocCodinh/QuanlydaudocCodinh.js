@@ -89,6 +89,9 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
         .catch();
     }
   }
+  refresh() {
+    this.getToanBoDauDocCoDinhData({ datas: this.props.DvqlDataFilter });
+  }
 
   render() {
     const {
@@ -155,7 +158,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
             action={this.getToanBoDauDocCoDinhData}
           />
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_dau_doc, { screen: "Thêm mới đầu đọc cố định" })} />
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_dau_doc, { screen: "Thêm mới đầu đọc cố định", onGoBack: () => this.refresh() })} />
       </View>
     );
   }

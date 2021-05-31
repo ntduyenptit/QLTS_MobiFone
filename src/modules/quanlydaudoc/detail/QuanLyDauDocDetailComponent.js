@@ -37,7 +37,7 @@ function QuanLyDauDocDetailComponent({ route }) {
         <ScrollView>
           <View style={{ alignItems: 'flex-start', marginHorizontal: 30 }}>
             <Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} style={styles.iconImage} />
-            <Text style={styles.title}>Thông tin {convertTextToLowerCase(tabKey)}:</Text>
+            <Text style={styles.title}>Thông tin đầu đọc:</Text>
             {/* Mã tài sản */}
             {bullet('Mã tài sản',paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
             {/* Tên tài sản */}
