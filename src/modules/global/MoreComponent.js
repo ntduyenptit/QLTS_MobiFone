@@ -1,22 +1,37 @@
+import React from 'react';
 import {
     Alert,
     Modal,
     StyleSheet,
     Text,
-    Pressable,
+    TouchableOpacity,
     View,
     KeyboardAvoidingView,
-    Platform
+    Platform,
   } from "react-native";
 
-const FilterComponent = () => (
-    <Modal
+const MoreComponent = () => (
+  <Modal
     animationType="slide"
     transparent
-    visible={store.getState().filterReducer.isShowFilter}
+    visible={store.getState().moreReducer.isShowMore}
     onRequestClose={() => {
       Alert.alert("Modal has been closed.");
     }}
   >
-    </Modal>
-);
+    <TouchableOpacity>
+      <Text>Điều chuyển</Text>
+    </TouchableOpacity>
+    <TouchableOpacity>
+      <Text>Điều chuyển</Text>
+    </TouchableOpacity>
+    <TouchableOpacity>
+      <Text>Điều chuyển</Text>
+    </TouchableOpacity>
+    <TouchableOpacity>
+      <Text>Điều chuyển</Text>
+    </TouchableOpacity>
+  </Modal>
+  );
+
+export default MoreComponent;

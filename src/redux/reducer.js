@@ -18,7 +18,8 @@ import {
   khaibaohongmatReducer
 } from '../modules/quanlytaisan/QuanLyTaiSanState';
 import { 
-  filterReducer, 
+  filterReducer,
+  moreReducer,
   filterDVQLDataReducer,
   filterLTSDataReducer,
   filterMSDDataReducer,
@@ -51,6 +52,7 @@ import {
   userReducer,
 // filter get
   filterReducer,
+  moreReducer,
   filterDVQLDataReducer,
   filterLTSDataReducer,
   filterMSDDataReducer,

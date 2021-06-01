@@ -13,7 +13,9 @@ import {
     TouchableOpacity, 
     FlatList,
     Alert,
-    Platform
+    Platform,
+    ImageBackground,
+    TouchableHighlight
  } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-datepicker';
@@ -554,14 +556,25 @@ class TaomoiTaisanScreen extends React.Component {
                       data={imageList}
                       keyExtractor={(item) => item.filename}
                       numColumns={3}
-                      renderItem={({ item }) =>
+                      renderItem={({ item, index }) =>
                                     (
-                                      <View style={{padding: 5}}>
+                                      <View style={{padding: 5, flexDirection: 'row'}}>
                                         <Image
                                           key={item.tenFile}
                                           source={{ uri: item.linkFile }}
-                                          style={{ width: 110, height: 110, borderRadius: 5 }}
+                                          style={{ width: 100, height: 100, borderRadius: 5 }}
                                         />
+                                        <TouchableHighlight
+                                          onPress={()=> {
+                                              const newImages = [...imageList];
+                                              newImages.splice(index, 1);
+                                              this.setState({
+                                                  imageList: newImages,
+                                              });
+                                          }}
+                                        >
+                                          <Icon style={{alignItems: 'flex-end', top: -11, right: -8,  position: 'absolute'}} name="times" color='#DC143C' size={28} />
+                                        </TouchableHighlight>
                                       </View>
                                     )}
                     />
