@@ -155,22 +155,58 @@ class TaomoiTaisanScreen extends React.Component {
         const fromData = new FormData();
 
             imageList.forEach((e, index) => {
-                fromData.append(`${index + 1}`, { type: e.mime, uri: e.path, name: e.path.split("/").pop() })
+                fromData.append(`${index + 1}`, { type: e.mime, uri: e.path, name: e.tenFile })
             });
-
-        createPostMultiFiles(urlUpload, fromData).then((res) => {
-            if (res.success) {
-                const images = imageList.map(e => ({
-                        tenFile: e.tenFile,
-                        linkFile: getLinkFile(res, e.tenFile)
-                    }));
+            
+            if (imageList.length > 0) {
+                createPostMultiFiles(urlUpload, fromData).then((res) => {
+                    if (res.success) {
+                        const images = imageList.map(e => ({
+                                tenFile: e.tenFile,
+                                linkFile: getLinkFile(res, e.tenFile)
+                            }));
+                        const params  = {
+                            dropdownMultiple: maSudung,
+                            ghiChu: "",
+                            giaCuoiTS: "",
+                            hangSanXuat: hangSx,
+                            listFile: [],
+                            listHA: images,
+                            loaiTS: loaiTaisan,
+                            ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
+                            hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
+                            ngayMua: ngayMua && convertDateToIOSString(ngayMua),
+                            nguonKinhPhiId: nguonKinhphi,
+                            nguyenGia,
+                            nhaCC: nhaCungcap,
+                            noiDungChotGia: "",
+                            productNumber: PN,
+                            serialNumber: SN,
+                            tenTS,
+                            thoiGianChietKhauHao: trichKhauhao
+                        }
+        
+                        createPostMethodWithToken(url, JSON.stringify(params)).then((result) => {
+                            if (result.success) {
+                                Alert.alert('Thêm mới tài sản thành công',
+                                '',
+                                [
+                                    {text: 'OK', onPress: this.goBack()},
+                                ],
+                                { cancelable: false }
+                                );
+                            }
+                        })
+                    }
+                });
+            } else {
                 const params  = {
                     dropdownMultiple: maSudung,
                     ghiChu: "",
                     giaCuoiTS: "",
                     hangSanXuat: hangSx,
                     listFile: [],
-                    listHA: images,
+                    listHA: [],
                     loaiTS: loaiTaisan,
                     ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                     hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
@@ -184,7 +220,6 @@ class TaomoiTaisanScreen extends React.Component {
                     tenTS,
                     thoiGianChietKhauHao: trichKhauhao
                 }
-
                 createPostMethodWithToken(url, JSON.stringify(params)).then((result) => {
                     if (result.success) {
                         Alert.alert('Thêm mới tài sản thành công',
@@ -197,7 +232,6 @@ class TaomoiTaisanScreen extends React.Component {
                     }
                 })
             }
-        });
 
 
     }
@@ -304,7 +338,7 @@ class TaomoiTaisanScreen extends React.Component {
                   />
                   <Text style={styles.boldText}>Loại tài sản*</Text>
                   <RNPickerSelect
-                    placeholder={placeholder}
+                    // placeholder={placeholder}
                     items={loaiTSList}
                     onValueChange={value => {
                                     this.setState({
@@ -346,7 +380,7 @@ class TaomoiTaisanScreen extends React.Component {
                   />
                   <Text style={styles.boldText}>Nhà cung cấp</Text>
                   <RNPickerSelect
-                    placeholder={placeholder}
+                    // placeholder={placeholder}
                     items={nhaCCList}
                     onValueChange={value => {
                                     this.setState({
@@ -504,7 +538,7 @@ class TaomoiTaisanScreen extends React.Component {
                   />
                   <Text style={styles.boldText}>Nguồn kinh phí</Text>
                   <RNPickerSelect
-                    placeholder={placeholder}
+                    // placeholder={placeholder}
                     items={nguonKinhphiList}
                     onValueChange={value => {
                                     this.setState({
@@ -525,7 +559,7 @@ class TaomoiTaisanScreen extends React.Component {
                   />
                   <Text style={styles.boldText}>Mã sử dụng</Text>
                   <RNPickerSelect
-                    placeholder={placeholder}
+                    // placeholder={placeholder}
                     items={maSudungList}
                     onValueChange={(value) => {
                                     this.setState({
