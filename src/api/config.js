@@ -135,6 +135,10 @@ export const endPoint = ({
 
   // xóa tài sản
   DeleteTaiSan: 'services/app/ToanBoTaiSan/Deleted',
+  deleteReaderdidong: 'services/app/DauDocTheRFID/Deleted',
+  deleteKiemke: 'services/app/KiemKeTaiSan/Delete',
+  deletePhieuMuasam: 'services/app/PhieuDuTruMuaSam/Deleted',
+  deleteNhaCC: 'services/app/NhaCungCap/Delete',
 });
 
 // Quản lý màn hình

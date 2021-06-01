@@ -4,11 +4,10 @@ import {
   View,
   Text,
   Dimensions,
-  TouchableOpacity, FlatList, ScrollView,
+  TouchableOpacity, FlatList, ScrollView, Alert,
 } from 'react-native';
-import { createGetMethod } from '../../api/Apis';
+import { createGetMethod, deleteMethod } from '../../api/Apis';
 import { endPoint } from '../../api/config';
-import Icon from 'react-native-vector-icons/FontAwesome';
 const deviceWidth = Dimensions.get("window").width;
 
 const bullet = (title, text) => (
@@ -51,7 +50,6 @@ export default class QuanLyMuasamDetail extends React.Component {
     url = `${endPoint.getChitietPhieuMuasam}?`;
     url += `input=${encodeURIComponent(`${2}`)}&`;
     url += `isView=${encodeURIComponent(`${true}`)}`;
-    console.log("url: " + url);
 
     createGetMethod(url)
       .then(res => {
@@ -66,6 +64,33 @@ export default class QuanLyMuasamDetail extends React.Component {
       .catch(err => console.log(err));
   }
 
+  deleteThisAsset(id) {
+    Alert.alert('Bạn có chắc chắn muốn xóa không?',
+      '',
+      [
+        {
+          text: 'OK', onPress: () => {
+            let url = `${endPoint.deletePhieuMuasam}?`;
+            url += `input=${id}`;
+
+            deleteMethod(url).then(res => {
+              if (res.success) {
+                Alert.alert('Xóa phiếu mua sắm thành công',
+                  '',
+                  [
+                    { text: 'OK', onPress: this.props.navigation.goBack() },
+                  ],
+                  { cancelable: false }
+                );
+              }
+            });
+          }
+        },
+        { text: 'Hủy' },
+      ],
+      { cancelable: true }
+    );
+  }
   renderItemComponent = (data) =>
     <View style={styles.listItem}>
       <Text style={{ alignItems: "flex-start", paddingRight: 10 }}> {data.item.tenantId}</Text>
@@ -84,23 +109,30 @@ export default class QuanLyMuasamDetail extends React.Component {
   render() {
     const { chitietPhieuMuasam } = this.state;
     const { paramKey, tabKey } = this.props.route.params;
-
+    const idPhieu = paramKey.id;
     return (
-      <View style={{ alignItems: 'flex-start', backgroundColor: 'white', width: deviceWidth }}>
+      <View style={styles.container}>
         <Text style={styles.title}>Thông tin Phiếu dự trù mua sắm:</Text>
         {bullet('Mã phiếu', chitietPhieuMuasam.maPhieu)}
         {bullet('Tên phiếu', chitietPhieuMuasam.tenPhieu)}
         {bullet('Đơn vị', chitietPhieuMuasam.toChucId)}
         {bullet('Người lập phiếu', chitietPhieuMuasam.nguoiLapPhieuId)}
         <Text style={styles.title}>Danh sách tài sản đề xuất mua sắm</Text>
-        <ScrollView style = {{height: 'auto'}}>
+        <ScrollView style={{ height: 'auto', padding: 10 }}>
           <FlatList
             scrollEnabled={false}
             data={chitietPhieuMuasam.listPhieuChiTiet}
             renderItem={item => this.renderItemComponent(item)}
           />
         </ScrollView>
-
+        <View style={styles.separator} />
+        <View style={styles.addToCarContainer}>
+          <TouchableOpacity
+            onPress={() => this.deleteThisAsset(idPhieu)}
+            style={styles.shareButton}>
+            <Text style={styles.shareButtonText}>Xóa</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -165,4 +197,27 @@ const styles = StyleSheet.create({
     width: "85%",
     paddingBottom: 10,
   },
+  separator: {
+    height: 2,
+    backgroundColor: "#eeeeee",
+    marginTop: 20,
+    marginHorizontal: 30
+  },
+  shareButton: {
+    marginTop: 10,
+    height: 45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
+    backgroundColor: "red",
+  },
+  shareButtonText: {
+    color: "#FFFFFF",
+    fontSize: 20,
+  },
+  addToCarContainer: {
+    marginHorizontal: 30,
+    paddingBottom: 30,
+  }
 });

@@ -92,6 +92,10 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
     }
   }
 
+  refresh() {
+    this.getToanTaisan({ datas: this.props.DvqlDataFilter });
+  }
+
   render() {
     const {
       scrollYValue,
@@ -140,7 +144,7 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
               )}
               contentInsetAdjustmentBehavior="automatic"
             >
-              {LoaderComponent(toanboTaiSanData, this.props, screens.chi_tiet_kiem_ke_tai_san)}
+              {LoaderComponent(toanboTaiSanData, this.props, screens.chi_tiet_kiem_ke_tai_san, this.refresh())}
             </Animated.ScrollView>
           </SafeAreaView>
           <Text
@@ -157,7 +161,7 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
             action={this.getToanTaisan}
           />
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_kiem_ke, { screen: "Thêm mới đợt kiểm kê" })}></ActionButton>
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_kiem_ke, { screen: "Thêm mới đợt kiểm kê" }, this.refresh())}></ActionButton>
       </View>
 
     );

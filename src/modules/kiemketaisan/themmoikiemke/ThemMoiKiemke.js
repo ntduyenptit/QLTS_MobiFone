@@ -33,17 +33,6 @@ class ThemmoiDotKiemke extends React.Component {
         }
     }
 
-    checkBoxChanged(id, value) {
-        this.setState({
-            checkBoxChecked: tempCheckValues
-        })
-        var tempCheckBoxChecked = this.state.checkBoxChecked;
-        tempCheckBoxChecked[id] = !value;
-        this.setState({
-            checkBoxChecked: tempCheckBoxChecked
-        })
-    }
-
     componentDidMount() {
         this.props.navigation.setOptions({
             headerRight: () => (

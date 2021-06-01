@@ -1,15 +1,14 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import React from 'react';
 import {
     StyleSheet,
     View,
     Text,
     Dimensions,
-    TouchableOpacity, FlatList, ScrollView,
+    TouchableOpacity, FlatList, ScrollView, Alert,
 } from 'react-native';
-import { createGetMethod } from '../../../api/Apis';
+import { createGetMethod, deleteMethod } from '../../../api/Apis';
 import { endPoint } from '../../../api/config';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { connect } from 'react-redux';
 const deviceWidth = Dimensions.get("window").width;
 var idNhacungcap;
 
@@ -66,23 +65,68 @@ class NhaCungcapDetail extends React.Component {
             .catch(err => console.log(err));
     }
 
+    delete(id) {
+        console.log("id: " + id);
+        Alert.alert('Bạn có chắc chắn muốn xóa không?',
+            '',
+            [
+                {
+                    text: 'OK', onPress: () => {
+                        let url = `${endPoint.deleteNhaCC}?`;
+                        url += `Id=${id}`;
+
+                        deleteMethod(url).then(res => {
+                            if (res.success) {
+                                Alert.alert('Xóa nhà cung cấp thành công',
+                                    '',
+                                    [
+                                        { text: 'OK', onPress: this.goBack() },
+                                    ],
+                                    { cancelable: false }
+                                );
+                            }
+                        });
+                    }
+                },
+                { text: 'Hủy' },
+            ],
+            { cancelable: true }
+        );
+    }
+    
+    goBack() {
+        const { navigation, route } = this.props;
+        route.params.onGoBack();
+        navigation.goBack();
+    }
     render() {
         const { chitietData } = this.state;
         const { paramKey, tabKey, idNCC } = this.props.route.params;
         idNhacungcap = idNCC;
         return (
-            <View style={{ alignItems: 'flex-start', backgroundColor: 'white', width: deviceWidth }}>
-                <Text style={styles.title}>Thông tin nhà cung cấp:</Text>
-                {bullet('Mã nhà cung cấp', chitietData.maNhaCungCap)}
-                {bullet('Tên nhà cung cấp', chitietData.tenNhaCungCap)}
-                {bullet('Lĩnh vực kinh doanh', paramKey.tenLinhVuc)}
-                {bullet('Mã số thuế', chitietData.maSoThue)}
-                {bullet('Địa chỉ', chitietData.diaChi)}
-                {bullet('Số điện thoại', chitietData.soDienThoai)}
-                {bullet('Email', chitietData.email)}
-                {bullet('Ghi chú', chitietData.ghiChu)}
-                {bullet('Tài liệu đính kèm', chitietData.listFile)}
+            <View style={styles.container}>
+                <View style={{ alignItems: 'flex-start', backgroundColor: 'white', width: deviceWidth, height: 'auto', padding: 10 }}>
+                    <Text style={styles.title}>Thông tin nhà cung cấp:</Text>
+                    {bullet('Mã nhà cung cấp', chitietData.maNhaCungCap)}
+                    {bullet('Tên nhà cung cấp', chitietData.tenNhaCungCap)}
+                    {bullet('Lĩnh vực kinh doanh', paramKey.tenLinhVuc)}
+                    {bullet('Mã số thuế', chitietData.maSoThue)}
+                    {bullet('Địa chỉ', chitietData.diaChi)}
+                    {bullet('Số điện thoại', chitietData.soDienThoai)}
+                    {bullet('Email', chitietData.email)}
+                    {bullet('Ghi chú', chitietData.ghiChu)}
+                    {bullet('Tài liệu đính kèm', chitietData.listFile)}
+                </View>
+                <View style={styles.separator} />
+                <View style={styles.addToCarContainer}>
+                    <TouchableOpacity
+                        onPress={() => this.delete(idNhacungcap)}
+                        style={styles.shareButton}>
+                        <Text style={styles.shareButtonText}>Xóa</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
+
         )
     }
 }
@@ -125,27 +169,35 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 15,
     },
-    listItem: {
-        padding: 10,
-        paddingTop: 10,
-        width: deviceWidth - 50,
-        flex: 1,
-        backgroundColor: "#FFF",
-        alignSelf: "flex-start",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        flexDirection: "row",
-        borderRadius: 5,
-        height: 200,
+
+    separator: {
+        height: 2,
+        backgroundColor: "#eeeeee",
+        marginTop: 20,
+        marginHorizontal: 30
     },
-    infor: {
-        marginLeft: 10,
-        justifyContent: "flex-start",
-        alignSelf: "flex-start",
-        height: 50,
-        width: "85%",
-        paddingBottom: 10,
+    shareButton: {
+        marginTop: 10,
+        width: '100%',
+        height: 45,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        alignItems: 'center',
+        borderRadius: 30,
+        backgroundColor: "red",
     },
+    shareButtonText: {
+        color: "#FFFFFF",
+        fontSize: 20,
+    },
+    addToCarContainer: {
+        marginHorizontal: 30,
+        paddingBottom: 30,
+        alignSelf: 'center',
+        position: 'absolute',
+        bottom: 5,
+    }
 });
 
 

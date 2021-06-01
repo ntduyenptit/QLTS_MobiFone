@@ -137,7 +137,7 @@ class QuanLyDauDocDiDongScreen extends React.Component {
               )}
               contentInsetAdjustmentBehavior="automatic"
             >
-              {LoaderComponent(daudocdidongData, this.props, screens.chi_tiet_dau_doc)}
+              {LoaderComponent(daudocdidongData, this.props, screens.chi_tiet_dau_doc, this.refresh())}
             </Animated.ScrollView>
           </SafeAreaView>
           <Text
@@ -154,7 +154,7 @@ class QuanLyDauDocDiDongScreen extends React.Component {
             action={this.getToanBoDauDocDiDongData}
           />
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_dau_doc, { screen: "Thêm mới đầu đọc di động", onGoBack: () => this.refresh() })} />
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_dau_doc, { screen: "Thêm mới đầu đọc di động" }, this.refresh())} />
       </View>
     );
 
