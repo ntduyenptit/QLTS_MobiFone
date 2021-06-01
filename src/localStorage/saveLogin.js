@@ -20,7 +20,16 @@ const localStorage = {
             console.log(error);
         }
     },
-    saveLogin(token, userNameOrEmail) { localStorage.saveToken(token); localStorage.saveUserNameOrEmail(userNameOrEmail) }
+    async saveUserId(userID) {
+        try {
+            await AsyncStorage.setItem('@userId', userId);
+            console.log('luu userId thanh cong');
+        } catch (error) {
+            console.log('Loi khi luu userId');
+            console.log(error);
+        }
+    },
+    saveLogin(token, userNameOrEmail,userId) { localStorage.saveToken(token); localStorage.saveUserNameOrEmail(userNameOrEmail); localStorage.saveUserId(userId) }
 };
 
 

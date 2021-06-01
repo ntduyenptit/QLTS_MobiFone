@@ -9,9 +9,11 @@ import ActionButton from 'react-native-action-button';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
+let isNeedRefresh = false;
 
 class QuanLyNhaCungCapScreen extends React.Component {
     constructor(props) {
@@ -20,7 +22,9 @@ class QuanLyNhaCungCapScreen extends React.Component {
             scrollYValue: new Animated.Value(0),
             nhacungcapData: [],
             total: 0,
+            isRefresh: false,
         }
+
     }
 
     componentDidMount() {
@@ -49,6 +53,9 @@ class QuanLyNhaCungCapScreen extends React.Component {
             })
             .catch(err => console.log(err));
     }
+    refreshrefresh = () => {
+         this.getAllNhacungcapData();
+    }
 
     render() {
         const {
@@ -56,6 +63,12 @@ class QuanLyNhaCungCapScreen extends React.Component {
             nhacungcapData,
             total
         } = this.state;
+        if (this.props.route.params) {
+            const {onGoBack} = this.props.route.params;
+            isNeedRefresh = onGoBack;
+            console.log ("isNeedRefresh "+onGoBack);
+        }
+        //isNeedRefresh = onGoBack;
         const clampedScroll = Animated.diffClamp(
             Animated.add(
                 scrollYValue.interpolate({
@@ -97,7 +110,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
                             )}
                             contentInsetAdjustmentBehavior="automatic"
                         >
-                            {LoaderComponent(nhacungcapData, this.props, screens.chi_tiet_nha_cung_cap)}
+                            {LoaderComponent(nhacungcapData, this.props, screens.chi_tiet_nha_cung_cap, {onGoBack: () => this.refresh()})}
                         </Animated.ScrollView>
                     </SafeAreaView>
                     <Text
@@ -110,7 +123,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
                     </Text>
                     <FilterComponent filter={<QuanLyNCCFilter />} />
                 </Animated.View>
-                <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_nha_cung_cap, { screen: "Thêm mới nhà cung cấp" })}></ActionButton>
+                <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_nha_cung_cap, { screen: "Thêm mới nhà cung cấp" ,onGoBack: () => this.refresh()})}></ActionButton>
             </View>
         );
     }

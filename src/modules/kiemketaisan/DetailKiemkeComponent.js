@@ -5,10 +5,11 @@ import {
   Text,
   StatusBar,
   Dimensions,
-  TouchableOpacity, FlatList,
+  TouchableOpacity, FlatList, Alert,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import ScrollableTabView, { DefaultTabBar, } from 'rn-collapsing-tab-bar';
-import { createGetMethod } from '../../api/Apis';
+import { createGetMethod, deleteMethod } from '../../api/Apis';
 import { endPoint } from '../../api/config';
 import { convertTextToLowerCase, convertTimeFormatToLocaleDate, convertTrangThai } from '../global/Helper';
 
@@ -42,8 +43,6 @@ const bullet = (title, text) => (
 export default class QuanLyKiemKeDetail extends React.Component {
   constructor(props) {
     super(props);
-
-
     this.state = {
       tabOneHeight: containerHeight,
       tabTwoHeight: containerHeight,
@@ -188,53 +187,110 @@ export default class QuanLyKiemKeDetail extends React.Component {
     )
   }
 
+  deleteThisAsset(id,trangthai) {
+    if (trangthai == 1) {
+      Alert.alert('Không được phép xóa',
+      'Đợt kiểm kê đang trong trạng thái kiểm kê',
+      [
+        { text: 'OK', style: 'cancel'},
+      ],
+      { cancelable: false }
+    );
+    return;
+    }
+    if (trangthai == 2) {
+      Alert.alert('Không được phép xóa',
+      'Đợt kiểm kê trong trạng thái kết thúc',
+      [
+        { text: 'OK', style: 'cancel'},
+      ],
+      { cancelable: false }
+    );
+    return;
+    }
+    Alert.alert('Bạn có chắc chắn muốn xóa không?',
+      '',
+      [
+        {
+          text: 'OK', onPress: () => {
+            let url = `${endPoint.deleteKiemke}?`;
+            url += `input=${id}`;
+          
+            deleteMethod(url).then(res => {
+              if (res.success) {
+                Alert.alert('Xóa đợt kiểm kê thành công',
+                  '',
+                  [
+                    { text: 'OK', onPress: this.props.navigation.goBack() },
+                  ],
+                  { cancelable: false }
+                );
+              }
+            });
+          }
+        },
+        { text: 'Hủy' },
+      ],
+      { cancelable: true }
+    );
+  }
+
   render() {
     const { tabOneHeight, tabTwoHeight, tabThirtHeight, danhsachUserKiemke, danhsachTSFound,
       danhsachTSNotFound,
       danhsachTSNgoaiHT } = this.state;
     const { paramKey, tabKey } = this.props.route.params;
-
+      const idKiemke = paramKey.kiemKeTaiSan.id;
+      const trangthaiId = paramKey.kiemKeTaiSan.trangThaiId;
     return (
-      <ScrollableTabView
-        collapsableBar={this.collapsableComponent(paramKey, tabKey, danhsachUserKiemke)}
-        initialPage={0}
-        tabContentHeights={[tabOneHeight, tabTwoHeight, tabThirtHeight]}
-        scrollEnabled
-        prerenderingSiblingsNumber={Infinity}
-        renderTabBar={() => <DefaultTabBar inactiveTextColor="white" activeTextColor="white" backgroundColor="blue" />}
-      >
-        <View onLayout={(event) => this.measureTabOne(event)} tabLabel='TS tìm thấy'>
-          <View style={{ height: 'auto', backgroundColor: "white" }}>
+      <View style = {styles.container}>
+        <ScrollableTabView
+          collapsableBar={this.collapsableComponent(paramKey, tabKey, danhsachUserKiemke)}
+          initialPage={0}
+          tabContentHeights={[tabOneHeight, tabTwoHeight, tabThirtHeight]}
+          scrollEnabled
+          prerenderingSiblingsNumber={Infinity}
+          renderTabBar={() => <DefaultTabBar inactiveTextColor="white" activeTextColor="white" backgroundColor="blue" />}
+        >
+          <View onLayout={(event) => this.measureTabOne(event)} tabLabel='TS tìm thấy'>
+            <ScrollView style={{ height: 'auto', backgroundColor: "white" }}>
+              <FlatList
+                scrollEnabled={false}
+                data={danhsachTSFound}
+                renderItem={item => this.renderItemComponent(item)}
+              />
+            </ScrollView>
 
-            <FlatList
-              scrollEnabled={false}
-              data={danhsachTSFound}
-              renderItem={item => this.renderItemComponent(item)}
-            />
           </View>
-
-        </View>
-        <View onLayout={(event) => this.measureTabTwo(event)} tabLabel='TS không tìm thấy'>
-          <View style={{ height: 'auto', backgroundColor: "white" }}>
-
-            <FlatList
-              scrollEnabled={false}
-              data={danhsachTSNotFound}
-              renderItem={item => this.renderItemComponent(item)}
-            />
+          <View onLayout={(event) => this.measureTabTwo(event)} tabLabel='TS không tìm thấy'>
+            <ScrollView style={{ height: 'auto', backgroundColor: "white" }}>
+              <FlatList
+                scrollEnabled={false}
+                data={danhsachTSNotFound}
+                renderItem={item => this.renderItemComponent(item)}
+              />
+            </ScrollView>
           </View>
-        </View>
-        <View onLayout={(event) => this.measureTabThirt(event)} tabLabel='TS ngoài danh sách'>
-          <View style={{ height: 'auto', backgroundColor: "white" }}>
-
-            <FlatList
-              scrollEnabled={false}
-              data={danhsachTSNgoaiHT}
-              renderItem={item => this.renderItemComponent(item)}
-            />
+          <View onLayout={(event) => this.measureTabThirt(event)} tabLabel='TS ngoài danh sách'>
+            <ScrollView style={{ height: 'auto', backgroundColor: "white" }}>
+              <FlatList
+                scrollEnabled={false}
+                data={danhsachTSNgoaiHT}
+                renderItem={item => this.renderItemComponent(item)}
+              />
+            </ScrollView>
           </View>
+        </ScrollableTabView>
+        <View style={styles.separator} />
+        <View style={styles.addToCarContainer}>
+          <TouchableOpacity
+            onPress={() => this.deleteThisAsset(idKiemke,trangthaiId)}
+            style={styles.shareButton}>
+            <Text style={styles.shareButtonText}>Xóa</Text>
+          </TouchableOpacity>
         </View>
-      </ScrollableTabView>
+      </View>
+
     );
   }
 }
@@ -319,4 +375,27 @@ const styles = StyleSheet.create({
     height: 50,
     paddingBottom: 10,
   },
+  separator: {
+    height: 2,
+    backgroundColor: "#eeeeee",
+    marginTop: 20,
+    marginHorizontal: 30
+  },
+  shareButton: {
+    marginTop: 10,
+    height: 45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
+    backgroundColor: "red",
+  },
+  shareButtonText: {
+    color: "#FFFFFF",
+    fontSize: 20,
+  },
+  addToCarContainer: {
+    marginHorizontal: 30,
+    paddingBottom: 30
+  }
 });

@@ -17,7 +17,7 @@ export default class AuthViewContainer extends React.Component {
     createPostMethodWithoutToken(endPoint.login, JSON.stringify({ userNameOrEmailAddress, password }))
       .then(res => {
         if (res) {
-          save.saveLogin(res.result.accessToken,userNameOrEmailAddress);
+          save.saveLogin(res.result.accessToken,userNameOrEmailAddress,res.result.userId);
           this.props.userLogin(res.result.accessToken);
           // Global.onSignIn(res.user);
           // this.props.navigation.goBack();

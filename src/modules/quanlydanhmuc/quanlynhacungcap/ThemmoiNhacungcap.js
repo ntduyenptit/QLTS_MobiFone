@@ -13,7 +13,7 @@ import {
     Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { endPoint } from '../../../api/config';
+import { endPoint, screens } from '../../../api/config';
 import { createGetMethod, createPostMethodWithToken } from '../../../api/Apis';
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
@@ -80,6 +80,9 @@ class TaomoiNhaCungCapScreen extends React.Component {
                 }
             })
     }
+    goBack() {
+        this.props.navigation.goBack();
+    }
 
     saveNewNhaCC() {
         const {
@@ -93,27 +96,27 @@ class TaomoiNhaCungCapScreen extends React.Component {
             ghiChu,
             linhvucKDList,
         } = this.state;
-        
+
         let s = '';
         let check = false;
-        switch("") {
-            case tenNhaCC: 
-            {
-                s = "tên nhà cung cấp";
-                check = true;
-                break;
-            }
+        switch ("") {
+            case tenNhaCC:
+                {
+                    s = "tên nhà cung cấp";
+                    check = true;
+                    break;
+                }
             case maNhaCC: {
                 s = "mã nhà cung cấp";
                 check = true;
                 break;
             }
-            
+
         }
         if (check) {
             Alert.alert(
                 '',
-                'Hãy nhập '+ s,
+                'Hãy nhập ' + s,
                 [
                     { text: 'OK', style: "cancel" },
                 ],
@@ -133,7 +136,7 @@ class TaomoiNhaCungCapScreen extends React.Component {
             soDienThoai: sodienthoai,
             tenNhaCungCap: tenNhaCC,
         }
-        
+
 
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
             if (res.success) {
@@ -141,17 +144,21 @@ class TaomoiNhaCungCapScreen extends React.Component {
                     '',
                     'Thêm mới nhà cung cấp thành công',
                     [
-                        { text: 'OK', onPress: this.props.navigation.goBack() },
+                        { text: 'OK', onPress: this.goBack() },
                     ],
-                   
+
                 );
 
             }
         })
     }
-
+    goBack() {
+        const { navigation, route } = this.props;
+        route.params.onGoBack();
+        navigation.goBack();
+    }
     render() {
-        const { 
+        const {
             linhVucKinhdoanh,
             linhvucKDList,
         } = this.state;

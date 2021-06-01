@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar, Dimensions,View } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
@@ -41,7 +41,6 @@ class QuanlyDutruMuaSamScreen extends React.Component {
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
       createGetMethod(url)
         .then(res => {
-          console.log("muasam: " + res.result);
           if (res) {
             this.setState({
               toanboTaiSanData: res.result.items,
@@ -54,7 +53,9 @@ class QuanlyDutruMuaSamScreen extends React.Component {
         .catch(err => console.log(err));
     }
   }
-
+  refresh() {
+    this.getToanTaisan(this.props.DvqlDataFilter);
+  }
   render() {
     const {
       scrollYValue,
@@ -103,12 +104,12 @@ class QuanlyDutruMuaSamScreen extends React.Component {
               )}
               contentInsetAdjustmentBehavior="automatic"
             >
-              {LoaderComponent(toanboTaiSanData, this.props, screens.chi_tiet_du_tru_mua_sam)}
+              {LoaderComponent(toanboTaiSanData, this.props, screens.chi_tiet_du_tru_mua_sam, this.refresh())}
             </Animated.ScrollView>
           </SafeAreaView>
           <FilterComponent filter={<QuanLyKiemkeFilter />} />
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_du_tru_mua_sam, { screen: "Thêm mới Phiếu dự trù mua sắm" })}></ActionButton>
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_du_tru_mua_sam, { screen: "Thêm mới Phiếu dự trù mua sắm" }, this.refresh())}></ActionButton>
       </View>
 
     );
