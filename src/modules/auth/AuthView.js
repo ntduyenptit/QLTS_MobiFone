@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, Modal } from 'react-native';
 import { endPoint } from '../../api/config';
 import { createPostMethodWithoutToken } from '../../api/Apis'
 import save from '../../localStorage/saveLogin';
@@ -10,6 +10,7 @@ export default class AuthViewContainer extends React.Component {
     this.state = {
       email: 'admin',
       password: '123qwe',
+      modalVisible: false,
     };
   }
 
@@ -17,7 +18,7 @@ export default class AuthViewContainer extends React.Component {
     createPostMethodWithoutToken(endPoint.login, JSON.stringify({ userNameOrEmailAddress, password }))
       .then(res => {
         if (res) {
-          save.saveLogin(res.result.accessToken,userNameOrEmailAddress,res.result.userId);
+          save.saveLogin(res.result.accessToken, userNameOrEmailAddress, res.result.userId);
           this.props.userLogin(res.result.accessToken);
           // Global.onSignIn(res.user);
           // this.props.navigation.goBack();
@@ -27,8 +28,12 @@ export default class AuthViewContainer extends React.Component {
       })
       .catch(err => console.log(err));
   }
+  forgotPassword() {
+
+  }
 
   render() {
+    const {modalVisible} = this.state;
     return (
       <View style={styles.container}>
         <Image source={require('../../../assets/images/icon.png')} style={styles.iconImage} />
@@ -37,7 +42,7 @@ export default class AuthViewContainer extends React.Component {
           <TextInput
             style={styles.inputText}
             placeholder="Email..."
-             // value='admin'
+            // value='admin'
             placeholderTextColor="#003f5c"
             onChangeText={text => this.setState({ email: text })}
           />
@@ -47,7 +52,7 @@ export default class AuthViewContainer extends React.Component {
             secureTextEntry
             style={styles.inputText}
             placeholder="Mật khẩu..."
-             // value='123qwe'
+            // value='123qwe'
             placeholderTextColor="#003f5c"
             onChangeText={text => this.setState({ password: text })}
           />
@@ -55,9 +60,30 @@ export default class AuthViewContainer extends React.Component {
         <TouchableOpacity style={styles.loginBtn} onPress={() => this.signIn(this.state.email, this.state.password)}>
           <Text style={styles.loginText}>Đăng nhập</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.forgotpassBtn}>
+        <TouchableOpacity style={styles.forgotpassBtn} onPress={this.setState({modalVisible: true})}>
           <Text style={styles.forgotpassBtn}>Quên mật khẩu</Text>
         </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            this.setState({modalVisible: !modalVisible});
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Quên mật khẩu</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => this.setState({modalVisible: !modalVisible})}
+              >
+                <Text style={styles.textStyle}>Hide Modal</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
@@ -79,7 +105,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    fontFamily : "Lato-Semibold",
+    fontFamily: "Lato-Semibold",
     fontSize: 40,
     color: "#1f76c3",
     marginBottom: 40,
@@ -106,7 +132,7 @@ const styles = StyleSheet.create({
     height: 50,
     color: "black",
   },
-  
+
   loginBtn: {
     width: "80%",
     backgroundColor: "#526be8",
@@ -120,9 +146,9 @@ const styles = StyleSheet.create({
   loginText: {
     color: "white",
     fontSize: 15,
-    fontWeight:'bold'
+    fontWeight: 'bold'
   },
-  forgotpassBtn:{
+  forgotpassBtn: {
     textDecorationLine: 'underline',
     color: "black",
     marginTop: 15,
@@ -135,5 +161,46 @@ const styles = StyleSheet.create({
     bottom: 10,
     position: 'absolute',
     fontSize: 14
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
   }
 });

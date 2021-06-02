@@ -53,7 +53,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
             })
             .catch(err => console.log(err));
     }
-    refreshrefresh = () => {
+    refresh = () => {
          this.getAllNhacungcapData();
     }
 
@@ -110,7 +110,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
                             )}
                             contentInsetAdjustmentBehavior="automatic"
                         >
-                            {LoaderComponent(nhacungcapData, this.props, screens.chi_tiet_nha_cung_cap, {onGoBack: () => this.refresh()})}
+                            {LoaderComponent(nhacungcapData, this.props, screens.chi_tiet_nha_cung_cap, this.refresh())}
                         </Animated.ScrollView>
                     </SafeAreaView>
                     <Text
@@ -123,7 +123,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
                     </Text>
                     <FilterComponent filter={<QuanLyNCCFilter />} />
                 </Animated.View>
-                <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_nha_cung_cap, { screen: "Thêm mới nhà cung cấp" ,onGoBack: () => this.refresh()})}></ActionButton>
+                <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_nha_cung_cap, { screen: "Thêm mới nhà cung cấp" , onGoBack: () => this.refresh()})}></ActionButton>
             </View>
         );
     }

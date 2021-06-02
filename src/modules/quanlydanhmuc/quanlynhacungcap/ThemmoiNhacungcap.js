@@ -81,6 +81,7 @@ class TaomoiNhaCungCapScreen extends React.Component {
             })
     }
     goBack() {
+        this.props.route.params.onGoBack();
         this.props.navigation.goBack();
     }
 
@@ -152,11 +153,11 @@ class TaomoiNhaCungCapScreen extends React.Component {
             }
         })
     }
-    goBack() {
-        const { navigation, route } = this.props;
-        route.params.onGoBack();
-        navigation.goBack();
-    }
+    // goBack() {
+    //     const { navigation, route } = this.props;
+    //     route.params.onGoBack();
+    //     navigation.goBack();
+    // }
     render() {
         const {
             linhVucKinhdoanh,
