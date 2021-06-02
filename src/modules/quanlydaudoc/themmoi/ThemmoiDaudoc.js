@@ -177,6 +177,10 @@ class ThemmoiDaudocScreen extends React.Component {
         }
     }
 
+    saveNewReader() {
+        
+    }
+
     renderLoaiTS() {
         if (tab === 'Thêm mới đầu đọc di động') {
             this.setState({

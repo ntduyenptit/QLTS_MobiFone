@@ -70,7 +70,7 @@ const loadInfo = (screen, item, props, action) => {
     case screens.chi_tiet_kiem_ke_tai_san:
       return (
         <>
-         <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="server" color="#0080FF" size={15} />
+          <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="server" color="#0080FF" size={15} />
           <View style={styles.infor}>
             <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>Mã kiểm kê: {item.kiemKeTaiSan.maKiemKe}</Text>
             <Text numberOfLines={1}>Tên kiểm kê: {item.kiemKeTaiSan.tenKiemKe}</Text>

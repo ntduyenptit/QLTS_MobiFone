@@ -860,7 +860,7 @@ export default class MultiSelect extends Component {
                     style={{
                       flex: 1,
                       flexDirection: 'row',
-                      alignItems: 'center'
+                      alignItems: 'center',
                     }}
                   >
                     <Text

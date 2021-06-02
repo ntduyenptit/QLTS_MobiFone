@@ -1,6 +1,10 @@
 export const FILTER = '[FILTER]';
 export const SHOW_FILTER = `${FILTER} Show filter modal`;
 export const HIDE_FILTER = `${FILTER} Hide filter modal`;
+// more modal
+export const MORE = '[MORE]';
+export const SHOW_MORE = `${MORE} Show more modal`;
+export const HIDE_MORE = `${MORE} Hide more modal`;
 // get
 export const DVQL_FILTER = `${FILTER} Get DON_VI_QUAN_LY data`;
 export const LTS_FILTER = `${FILTER} Get LOAI_TAI_SAN data`;

@@ -37,34 +37,34 @@ class ThemmoiVaitroScreen extends React.Component {
     componentDidMount() {
         this.props.navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity
-                    onPress={() => this.saveNewVaitro()}
-                    style={{
+              <TouchableOpacity
+                onPress={() => this.saveNewVaitro()}
+                style={{
                         paddingHorizontal: 16,
                         paddingVertical: 12,
                     }
                     }
-                >
-                    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-                        {/* <Icon name="save" color="white" size={20} /> */}
-                        <Text style={{
+              >
+                <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                  {/* <Icon name="save" color="white" size={20} /> */}
+                  <Text style={{
                             fontFamily: fonts.primaryRegular,
                             color: colors.white,
                             fontSize: 18,
                             alignSelf: 'center'
                         }}
-                        > Lưu
-              </Text>
+                  > Lưu
+                  </Text>
 
-                    </View>
-                </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
             )
         })
         this.getAllPermissions();
     }
 
     getAllPermissions() {
-        let url = `${endPoint.getAllPermissions}`;
+        const url = `${endPoint.getAllPermissions}`;
         createGetMethod(url)
             .then(res => {
                 if (res) {
@@ -77,6 +77,7 @@ class ThemmoiVaitroScreen extends React.Component {
             })
             .catch(err => console.log(err));
     }
+
     saveNewVaitro() {
         const {
             tenVaitro,
@@ -105,7 +106,7 @@ class ThemmoiVaitroScreen extends React.Component {
         if (check) {
             Alert.alert(
                 '',
-                'Hãy nhập ' + s,
+                `Hãy nhập ${  s}`,
                 [
                     { text: 'OK', style: "cancel" },
                 ],
@@ -120,7 +121,7 @@ class ThemmoiVaitroScreen extends React.Component {
             grantedPermissions: roleListID,
             name: tenVaitro,
         }
-        const urlCheck = `${endPoint.checkExitVaitro}?` + 'roleName=' + tenVaitro + '&displayRoleName=' + tenHienthi + '&id=0';
+        const urlCheck = `${`${endPoint.checkExitVaitro}?` + 'roleName='}${  tenVaitro  }&displayRoleName=${  tenHienthi  }&id=0`;
         createPostMethodWithToken(urlCheck, null).then((res) => {
             if (!res.success) {
                 Alert.alert(
@@ -131,7 +132,7 @@ class ThemmoiVaitroScreen extends React.Component {
                     ],
 
                 );
-                return;
+                
             }
         })
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
@@ -159,67 +160,66 @@ class ThemmoiVaitroScreen extends React.Component {
             roleList,
         } = this.state;
         return (
-            <Animated.View>
-                <StatusBar barStyle="dark-content" />
-                <SafeAreaView>
-                    <Animated.ScrollView
-                    >
-                        <View style={styles.container}>
-                            <Text style={styles.boldText}>Tên vai trò*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                placeholder="Nhập tên"
-                                style={styles.bordered}
-                                onChangeText={(tenVaitro) => {
+          <Animated.View>
+            <StatusBar barStyle="dark-content" />
+            <SafeAreaView>
+              <Animated.ScrollView>
+                <View style={styles.container}>
+                  <Text style={styles.boldText}>Tên vai trò*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    placeholder="Nhập tên"
+                    style={styles.bordered}
+                    onChangeText={(tenVaitro) => {
                                     this.setState({
                                         tenVaitro,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Tên hiển thị*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(tenHienthi) => {
+                  />
+                  <Text style={styles.boldText}>Tên hiển thị*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(tenHienthi) => {
                                     this.setState({
                                         tenHienthi
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Phân quyền</Text>
-                            <MultiSelect
-                                ref={(component) => { this.multiSelect = component }}
-                                getCollapsedNodeHeight={{ height: 200 }}
-                                items={roleList}
-                                single={false}
-                                IconRenderer={Icon}
-                                searchInputPlaceholderText="Tìm kiếm..."
-                                styleListContainer={roleList && roleList.length > 9 ? { height: 200 } : null}
-                                uniqueKey="name"
-                                displayKey="displayName"
-                                selectText="Chọn ..."
-                                onSelectedItemsChange={(roleListID) => this.setState({
+                  />
+                  <Text style={styles.boldText}>Phân quyền</Text>
+                  <MultiSelect
+                    ref={(component) => { this.multiSelect = component }}
+                    getCollapsedNodeHeight={{ height: 200 }}
+                    items={roleList}
+                    single={false}
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleListContainer={roleList && roleList.length > 9 ? { height: 200 } : null}
+                    uniqueKey="name"
+                    displayKey="displayName"
+                    selectText="Chọn ..."
+                    onSelectedItemsChange={(roleListID) => this.setState({
                                     roleListID
                                 })}
-                                selectedItems={roleListID}
-                                submitButtonColor="#2196F3"
-                            />
-                            <Text style={styles.boldText}>Ghi chú</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.borderedGhichu}
-                                onChangeText={(ghiChu) => {
+                    selectedItems={roleListID}
+                    submitButtonColor="#2196F3"
+                  />
+                  <Text style={styles.boldText}>Ghi chú</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.borderedGhichu}
+                    onChangeText={(ghiChu) => {
                                     this.setState({
                                         ghiChu
                                     });
                                 }}
-                            />
-                        </View>
+                  />
+                </View>
 
-                    </Animated.ScrollView>
-                </SafeAreaView>
+              </Animated.ScrollView>
+            </SafeAreaView>
 
-            </Animated.View>
+          </Animated.View>
         );
     }
 

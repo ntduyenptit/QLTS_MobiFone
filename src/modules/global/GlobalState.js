@@ -1,6 +1,10 @@
 import { 
   SHOW_FILTER, 
-  HIDE_FILTER, 
+  HIDE_FILTER,
+
+  SHOW_MORE,
+  HIDE_MORE,
+
   DVQL_FILTER, 
   LTS_FILTER, 
   NCC_FILTER, 
@@ -40,6 +44,7 @@ import { SEARCH_ADD, SEARCH_REMOVE } from '../../redux/actions/search.actions';
 
 const initialState = {
     isShowFilter: false,
+    isShowMore: false,
     screenName: screens.quan_ly_tai_san,
     tabName: tabs.toan_bo_tai_san,
     dvqlDataFilter: [],
@@ -80,6 +85,24 @@ export const filterReducer = (state = initialState, action) => {
     }
     default: {
       return state
+    }
+  }
+}
+
+export const moreReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case SHOW_MORE: {
+      return {
+        isShowMore: true,
+      }
+    }
+    case HIDE_MORE: {
+      return {
+        isShowMore: false
+      }
+    }
+    default: {
+      return state;
     }
   }
 }

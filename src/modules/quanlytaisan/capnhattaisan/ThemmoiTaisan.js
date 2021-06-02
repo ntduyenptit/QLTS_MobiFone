@@ -1,31 +1,33 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
 import moment from 'moment';
-import {
-    Animated,
-    SafeAreaView,
-    StatusBar,
-    Text,
-    StyleSheet,
-    View,
-    TextInput,
-    Image,
-    TouchableOpacity,
+import { 
+    Animated, 
+    SafeAreaView, 
+    StatusBar, 
+    Text, 
+    StyleSheet, 
+    View, 
+    TextInput, 
+    Image, 
+    TouchableOpacity, 
     FlatList,
     Alert,
-    Platform
-} from 'react-native';
+    Platform,
+    ImageBackground,
+    TouchableHighlight
+ } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
+import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { endPoint } from '../../../api/config';
 import { convertDateToIOSString, addYearToDate, getLinkFile } from '../../global/Helper';
 import { createGetMethod, createPostMethodWithToken, createPostMultiFiles } from '../../../api/Apis';
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
-import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 
 class TaomoiTaisanScreen extends React.Component {
     constructor(props) {
@@ -54,30 +56,28 @@ class TaomoiTaisanScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.props.navigation.setOptions({
-            headerRight: () => (
-                <TouchableOpacity
-                    onPress={() => this.saveNewTaiSan()}
-                    style={{
-                        paddingHorizontal: 16,
-                        paddingVertical: 12,
-                    }
-                    }
-                >
-                    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-                        <Text style={{
-                            fontFamily: fonts.primaryRegular,
-                            color: colors.white,
-                            fontSize: 18,
-                            alignSelf: 'center'
-                        }}
-                        > Lưu
+        this.props.navigation.setOptions({headerRight: () => (
+          <TouchableOpacity
+            onPress={() => this.saveNewTaiSan()}
+            style={{
+                  paddingHorizontal: 16,
+                  paddingVertical: 12,
+                }
+                }
+          >
+            <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+              <Text style={{
+                        fontFamily: fonts.primaryRegular,
+                        color: colors.white,
+                        fontSize: 18,
+                        alignSelf: 'center'
+                    }}
+              > Lưu
               </Text>
 
-                    </View>
-                </TouchableOpacity>
-            )
-        })
+            </View>
+          </TouchableOpacity>
+            )})
         Promise.all([
             this.danhsachLoaiTS(this.props.LoaiTSData),
             this.danhsachNhaCC(this.props.NhaCCData),
@@ -93,7 +93,7 @@ class TaomoiTaisanScreen extends React.Component {
                 if (res) {
                     const list = res.result.map(e => ({
                         label: e.displayName,
-                        value: e.id
+                        value: e.id 
                     }));
                     this.setState({
                         nguonKinhphiList: list,
@@ -134,10 +134,10 @@ class TaomoiTaisanScreen extends React.Component {
     }
 
     saveNewTaiSan() {
-        const {
-            maSudung,
-            hangSx,
-            imageList,
+        const { 
+            maSudung, 
+            hangSx, 
+            imageList, 
             loaiTaisan,
             ngayHetBh,
             nguonKinhphi,
@@ -149,30 +149,66 @@ class TaomoiTaisanScreen extends React.Component {
             trichKhauhao,
             ngayHetSd,
             ngayMua
-        } = this.state;
+         } = this.state;
         const url = `${endPoint.TsAllCreateOrEdit}`;
         const urlUpload = `${endPoint.ToanBoTSUpload}`;
         // eslint-disable-next-line no-undef
         const fromData = new FormData();
 
-        imageList.forEach((e, index) => {
-            fromData.append(`${index + 1}`, { type: e.mime, uri: e.path, name: e.path.split("/").pop() })
-        });
-
-        createPostMultiFiles(urlUpload, fromData).then((res) => {
-            if (res.success) {
-                const images = imageList.map(e => ({
-                    tenFile: e.tenFile,
-                    linkFile: getLinkFile(res, e.tenFile)
-                }));
-                const params = {
+            imageList.forEach((e, index) => {
+                fromData.append(`${index + 1}`, { type: e.mime, uri: e.path, name: e.tenFile })
+            });
+            
+            if (imageList.length > 0) {
+                createPostMultiFiles(urlUpload, fromData).then((res) => {
+                    if (res.success) {
+                        const images = imageList.map(e => ({
+                                tenFile: e.tenFile,
+                                linkFile: getLinkFile(res, e.tenFile)
+                            }));
+                        const params  = {
+                            dropdownMultiple: maSudung,
+                            ghiChu: "",
+                            giaCuoiTS: "",
+                            hangSanXuat: hangSx,
+                            listFile: [],
+                            listHA: images,
+                            loaiTS: loaiTaisan,
+                            ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
+                            hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
+                            ngayMua: ngayMua && convertDateToIOSString(ngayMua),
+                            nguonKinhPhiId: nguonKinhphi,
+                            nguyenGia,
+                            nhaCC: nhaCungcap,
+                            noiDungChotGia: "",
+                            productNumber: PN,
+                            serialNumber: SN,
+                            tenTS,
+                            thoiGianChietKhauHao: trichKhauhao
+                        }
+        
+                        createPostMethodWithToken(url, JSON.stringify(params)).then((result) => {
+                            if (result.success) {
+                                Alert.alert('Thêm mới tài sản thành công',
+                                '',
+                                [
+                                    {text: 'OK', onPress: this.goBack()},
+                                ],
+                                { cancelable: false }
+                                );
+                            }
+                        })
+                    }
+                });
+            } else {
+                const params  = {
                     dropdownMultiple: maSudung,
                     ghiChu: "",
                     giaCuoiTS: "",
                     hangSanXuat: hangSx,
                     listFile: [],
-                    listHA: images,
-                    loaiTS: loaiTaisan[0],
+                    listHA: [],
+                    loaiTS: loaiTaisan,
                     ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                     hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
                     ngayMua: ngayMua && convertDateToIOSString(ngayMua),
@@ -185,20 +221,18 @@ class TaomoiTaisanScreen extends React.Component {
                     tenTS,
                     thoiGianChietKhauHao: trichKhauhao
                 }
-
                 createPostMethodWithToken(url, JSON.stringify(params)).then((result) => {
                     if (result.success) {
                         Alert.alert('Thêm mới tài sản thành công',
-                            '',
-                            [
-                                { text: 'OK', onPress: this.goBack() },
-                            ],
-                            { cancelable: false }
+                        '',
+                        [
+                            {text: 'OK', onPress: this.goBack()},
+                        ],
+                        { cancelable: false }
                         );
                     }
                 })
             }
-        });
 
 
     }
@@ -224,8 +258,8 @@ class TaomoiTaisanScreen extends React.Component {
     danhsachLoaiTS(data) {
         if (data) {
             const list = data.map(e => ({
-                name: e.text,
-                id: e.value,
+                label: e.text,
+                value: e.value,
             }));
             this.setState({
                 loaiTSList: list,
@@ -268,48 +302,84 @@ class TaomoiTaisanScreen extends React.Component {
             color: '#9EA0A4',
         };
         return (
-            <Animated.View>
-                <StatusBar barStyle="dark-content" />
-                <SafeAreaView>
-                    <Animated.ScrollView
-                        showsVerticalScrollIndicator={false}
-                        style={{
+          <Animated.View>
+            <StatusBar barStyle="dark-content" />
+            <SafeAreaView>
+              <Animated.ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{
                             margin: 10,
                             paddingBottom: 15,
                         }}
-                        contentContainerStyle={{
+                contentContainerStyle={{
                             display: 'flex',
                             flexDirection: 'row',
                             flexWrap: 'wrap',
                             justifyContent: 'space-around',
                             paddingBottom: 55,
                         }}
-                        onScroll={Animated.event(
+                onScroll={Animated.event(
                             [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
                             { useNativeDriver: true },
                             () => { },          // Optional async listener
                         )}
-                        contentInsetAdjustmentBehavior="automatic"
-                    >
-                        <View style={styles.container}>
-                            <Text style={styles.boldText}>Tên tài sản*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                placeholder="Nhập tên tài sản"
-                                style={styles.bordered}
-                                onChangeText={(tenTS) => {
+                contentInsetAdjustmentBehavior="automatic"
+              >
+                <View style={styles.container}>
+                  <Text style={styles.boldText}>Tên tài sản*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    placeholder="Nhập tên tài sản"
+                    style={styles.bordered}
+                    onChangeText={(tenTS) => {
                                     this.setState({
                                         tenTS,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Loại tài sản*</Text>
-                            {/* <RNPickerSelect
-                    placeholder={placeholder}
-                    items={loaiTSList}
+                  />
+                  <Text style={styles.boldText}>Loại tài sản*</Text>
+                  <MultiSelect
+                    single
+                    items={this.props.LoaiTSData}
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                    uniqueKey="value"
+                    displayKey="text"
+                    selectText="Chọn loại tài sản..."
+                    onSelectedItemsChange={(item) => this.setState({
+                                        loaiTaisan: item,
+                                    })}
+                    selectedItems={loaiTaisan}
+                  />
+
+                  <Text style={styles.boldText}>S/N (Serial Number)</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(SN) => {
+                                    this.setState({
+                                        SN,
+                                    });
+                                }}
+                  />
+                  <Text style={styles.boldText}>P/N (Product Number)</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(PN) => {
+                                    this.setState({
+                                        PN,
+                                    });
+                                }}
+                  />
+                  <Text style={styles.boldText}>Nhà cung cấp</Text>
+                  <RNPickerSelect
+                    // placeholder={placeholder}
+                    items={nhaCCList}
                     onValueChange={value => {
                                     this.setState({
-                                        loaiTaisan: value,
+                                        nhaCungcap: value,
                                     });
                                 }}
                     style={{
@@ -319,100 +389,42 @@ class TaomoiTaisanScreen extends React.Component {
                                         right: 12,
                                     },
                                 }}
-                    value={loaiTaisan}
+                    value={nhaCungcap}
                     useNativeAndroidPickerStyle={false}
                     textInputProps={{ underlineColor: 'yellow' }}
                     Icon={() => <Icon name="caret-down" size={25} color="black" />}
-                  /> */}
-                            <MultiSelect
-                                ref={(component) => { this.multiSelect = component }}
-                                getCollapsedNodeHeight={{ height: 200 }}
-                                items={loaiTSList}
-                                single={true}
-                                IconRenderer={Icon}
-                                searchInputPlaceholderText="Tìm kiếm..."
-                                styleListContainer={loaiTSList && loaiTSList.length > 9 ? { height: 200 } : null}
-                                uniqueKey="id"
-                                selectText="Chọn loại tài sản..."
-                                onSelectedItemsChange={(loaiTaisan) => this.setState({
-                                    loaiTaisan
-                                })}
-                                selectedItems={loaiTaisan}
-                                submitButtonColor="#2196F3"
-                            />
-
-                            <Text style={styles.boldText}>S/N (Serial Number)</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(SN) => {
-                                    this.setState({
-                                        SN,
-                                    });
-                                }}
-                            />
-                            <Text style={styles.boldText}>P/N (Product Number)</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(PN) => {
-                                    this.setState({
-                                        PN,
-                                    });
-                                }}
-                            />
-                            <Text style={styles.boldText}>Nhà cung cấp</Text>
-                            <RNPickerSelect
-                                placeholder={placeholder}
-                                items={nhaCCList}
-                                onValueChange={value => {
-                                    this.setState({
-                                        nhaCungcap: value,
-                                    });
-                                }}
-                                style={{
-                                    ...pickerSelectStyles,
-                                    iconContainer: {
-                                        top: 10,
-                                        right: 12,
-                                    },
-                                }}
-                                value={nhaCungcap}
-                                useNativeAndroidPickerStyle={false}
-                                textInputProps={{ underlineColor: 'yellow' }}
-                                Icon={() => <Icon name="caret-down" size={25} color="black" />}
-                            />
-                            <Text style={styles.boldText}>Hãng sản xuất</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(hangsx) => {
+                  />
+                  <Text style={styles.boldText}>Hãng sản xuất</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(hangsx) => {
                                     this.setState({
                                         hangSx: hangsx,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Nguyên giá (VND)</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(price) => {
+                  />
+                  <Text style={styles.boldText}>Nguyên giá (VND)</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(price) => {
                                     this.setState({
                                         nguyenGia: price,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Ngày mua</Text>
-                            <DatePicker
-                                style={styles.datePickerStyle}
-                                date={ngayMua} // Initial date from state
-                                mode="date" // The enum of date, datetime and time
-                                borderRadius='15'
-                                placeholder="Chọn ngày"
-                                format="DD-MM-YYYY"
-                                confirmBtnText="Chọn"
-                                cancelBtnText="Thoát"
-                                customStyles={{
+                  />
+                  <Text style={styles.boldText}>Ngày mua</Text>
+                  <DatePicker
+                    style={styles.datePickerStyle}
+                    date={ngayMua} // Initial date from state
+                    mode="date" // The enum of date, datetime and time
+                    borderRadius='15'
+                    placeholder="Chọn ngày"
+                    format="DD-MM-YYYY"
+                    confirmBtnText="Chọn"
+                    cancelBtnText="Thoát"
+                    customStyles={{
                                     dateIcon: {
                                         // display: 'none',
                                         position: 'absolute',
@@ -424,23 +436,23 @@ class TaomoiTaisanScreen extends React.Component {
                                         marginLeft: 5,
                                     },
                                 }}
-                                onDateChange={(date) => {
+                    onDateChange={(date) => {
                                     this.setState({
                                         ngayMua: date,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Ngày hết hạn bảo hành</Text>
-                            <DatePicker
-                                style={styles.datePickerStyle}
-                                date={ngayHetBh} // Initial date from state
-                                mode="date" // The enum of date, datetime and time
-                                borderRadius='15'
-                                placeholder="Chọn ngày"
-                                format="DD-MM-YYYY"
-                                confirmBtnText="Chọn"
-                                cancelBtnText="Thoát"
-                                customStyles={{
+                  />
+                  <Text style={styles.boldText}>Ngày hết hạn bảo hành</Text>
+                  <DatePicker
+                    style={styles.datePickerStyle}
+                    date={ngayHetBh} // Initial date from state
+                    mode="date" // The enum of date, datetime and time
+                    borderRadius='15'
+                    placeholder="Chọn ngày"
+                    format="DD-MM-YYYY"
+                    confirmBtnText="Chọn"
+                    cancelBtnText="Thoát"
+                    customStyles={{
                                     dateIcon: {
                                         // display: 'none',
                                         position: 'absolute',
@@ -452,23 +464,23 @@ class TaomoiTaisanScreen extends React.Component {
                                         marginLeft: 5,
                                     },
                                 }}
-                                onDateChange={(date) => {
+                    onDateChange={(date) => {
                                     this.setState({
                                         ngayHetBh: date,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Ngày hết hạn sử dụng</Text>
-                            <DatePicker
-                                style={styles.datePickerStyle}
-                                date={ngayHetSd} // Initial date from state
-                                mode="date" // The enum of date, datetime and time
-                                borderRadius='15'
-                                placeholder="Chọn ngày"
-                                format="DD-MM-YYYY"
-                                confirmBtnText="Chọn"
-                                cancelBtnText="Thoát"
-                                customStyles={{
+                  />
+                  <Text style={styles.boldText}>Ngày hết hạn sử dụng</Text>
+                  <DatePicker
+                    style={styles.datePickerStyle}
+                    date={ngayHetSd} // Initial date from state
+                    mode="date" // The enum of date, datetime and time
+                    borderRadius='15'
+                    placeholder="Chọn ngày"
+                    format="DD-MM-YYYY"
+                    confirmBtnText="Chọn"
+                    cancelBtnText="Thoát"
+                    customStyles={{
                                     dateIcon: {
                                         // display: 'none',
                                         position: 'absolute',
@@ -480,33 +492,33 @@ class TaomoiTaisanScreen extends React.Component {
                                         marginLeft: 5,
                                     },
                                 }}
-                                onDateChange={(date) => {
+                    onDateChange={(date) => {
                                     this.setState({
                                         ngayHetSd: date,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Thời gian trích khấu hao (năm)</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(time) => {
+                  />
+                  <Text style={styles.boldText}>Thời gian trích khấu hao (năm)</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(time) => {
                                     this.setState({
                                         trichKhauhao: time,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Thời gian hết khấu hao</Text>
-                            <DatePicker
-                                style={styles.datePickerStyle}
-                                date={addYearToDate(ngayMua, trichKhauhao)} // Initial date from state
-                                mode="date" // The enum of date, datetime and time
-                                borderRadius='15'
-                                disabled
-                                format="DD-MM-YYYY"
-                                confirmBtnText="Chọn"
-                                cancelBtnText="Thoát"
-                                customStyles={{
+                  />
+                  <Text style={styles.boldText}>Thời gian hết khấu hao</Text>
+                  <DatePicker
+                    style={styles.datePickerStyle}
+                    date={addYearToDate(ngayMua, trichKhauhao)} // Initial date from state
+                    mode="date" // The enum of date, datetime and time
+                    borderRadius='15'
+                    disabled
+                    format="DD-MM-YYYY"
+                    confirmBtnText="Chọn"
+                    cancelBtnText="Thoát"
+                    customStyles={{
                                     dateIcon: {
                                         // display: 'none',
                                         position: 'absolute',
@@ -518,80 +530,91 @@ class TaomoiTaisanScreen extends React.Component {
                                         marginLeft: 5,
                                     },
                                 }}
-                            />
-                            <Text style={styles.boldText}>Nguồn kinh phí</Text>
-                            <RNPickerSelect
-                                placeholder={placeholder}
-                                items={nguonKinhphiList}
-                                onValueChange={value => {
+                  />
+                  <Text style={styles.boldText}>Nguồn kinh phí</Text>
+                  <RNPickerSelect
+                    // placeholder={placeholder}
+                    items={nguonKinhphiList}
+                    onValueChange={value => {
                                     this.setState({
                                         nguonKinhphi: value,
                                     });
                                 }}
-                                style={{
+                    style={{
                                     ...pickerSelectStyles,
                                     iconContainer: {
                                         top: 10,
                                         right: 12,
                                     },
                                 }}
-                                value={nguonKinhphi}
-                                useNativeAndroidPickerStyle={false}
-                                textInputProps={{ underlineColor: 'yellow' }}
-                                Icon={() => <Icon name="caret-down" size={25} color="black" />}
-                            />
-                            <Text style={styles.boldText}>Mã sử dụng</Text>
-                            <RNPickerSelect
-                                placeholder={placeholder}
-                                items={maSudungList}
-                                onValueChange={(value) => {
+                    value={nguonKinhphi}
+                    useNativeAndroidPickerStyle={false}
+                    textInputProps={{ underlineColor: 'yellow' }}
+                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                  />
+                  <Text style={styles.boldText}>Mã sử dụng</Text>
+                  <RNPickerSelect
+                    // placeholder={placeholder}
+                    items={maSudungList}
+                    onValueChange={(value) => {
                                     this.setState({
                                         maSudung: value,
                                     });
                                 }}
-                                style={{
+                    style={{
                                     ...pickerSelectStyles,
                                     iconContainer: {
                                         top: 10,
                                         right: 12,
                                     },
                                 }}
-                                value={maSudung}
-                                useNativeAndroidPickerStyle={false}
-                                textInputProps={{ underlineColor: 'yellow' }}
-                                Icon={() => <Icon name="caret-down" size={25} color="black" />}
-                            />
-                            <View style={styles.selectContainer}>
-                                <Text style={styles.boldText}>Hình ảnh</Text>
-                                <TouchableOpacity onPress={this.chosenPicker} style={styles.button}>
-                                    <Text style={styles.buttonText}> Bấm để chọn ảnh  </Text>
-                                </TouchableOpacity>
-                            </View>
+                    value={maSudung}
+                    useNativeAndroidPickerStyle={false}
+                    textInputProps={{ underlineColor: 'yellow' }}
+                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                  />
+                  <View style={styles.selectContainer}>
+                    <Text style={styles.boldText}>Hình ảnh</Text>
+                    <TouchableOpacity onPress={this.chosenPicker} style={styles.button}>
+                      <Text style={styles.buttonText}> Bấm để chọn ảnh  </Text>
+                    </TouchableOpacity>
+                  </View>
 
-                            <View style={{ flexDirection: 'row', flex: 1, paddingLeft: 20, paddingRight: 20 }}>
-                                <FlatList
-                                    data={imageList}
-                                    keyExtractor={(item) => item.filename}
-                                    numColumns={3}
-                                    renderItem={({ item }) =>
+                  <View style={{ flexDirection: 'row', flex: 1, paddingLeft: 20, paddingRight: 20 }}>
+                    <FlatList
+                      data={imageList}
+                      keyExtractor={(item) => item.filename}
+                      numColumns={3}
+                      renderItem={({ item, index }) =>
                                     (
-                                        <View style={{ padding: 5 }}>
-                                            <Image
-                                                key={item.tenFile}
-                                                source={{ uri: item.linkFile }}
-                                                style={{ width: 110, height: 110, borderRadius: 5 }}
-                                            />
-                                        </View>
+                                      <View style={{padding: 5, flexDirection: 'row'}}>
+                                        <Image
+                                          key={item.tenFile}
+                                          source={{ uri: item.linkFile }}
+                                          style={{ width: 100, height: 100, borderRadius: 5 }}
+                                        />
+                                        <TouchableHighlight
+                                          onPress={()=> {
+                                              const newImages = [...imageList];
+                                              newImages.splice(index, 1);
+                                              this.setState({
+                                                  imageList: newImages,
+                                              });
+                                          }}
+                                        >
+                                          <Icon style={{alignItems: 'flex-end', top: -11, right: -8,  position: 'absolute'}} name="times" color='#DC143C' size={28} />
+                                        </TouchableHighlight>
+                                      </View>
                                     )}
-                                />
+                    />
 
-                            </View>
-                        </View>
+                  </View>
+                </View>
 
-                    </Animated.ScrollView>
-                </SafeAreaView>
+              </Animated.ScrollView>
+            </SafeAreaView>
 
-            </Animated.View>
+          </Animated.View>
         );
     }
 
@@ -621,6 +644,11 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         paddingLeft: 10
     },
+    searchText: {
+        backgroundColor: 'transparent',
+        height: 50,
+        paddingLeft: 15
+    },
     title: {
         alignSelf: 'center',
         fontSize: 18,
@@ -628,6 +656,7 @@ const styles = StyleSheet.create({
     },
     bordered: {
         borderWidth: 0.5,
+        borderBottomWidth: 0.5,
         borderColor: 'black',
         borderRadius: 10,
         paddingHorizontal: 20,
