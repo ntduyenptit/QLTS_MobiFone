@@ -521,6 +521,9 @@ class TaomoiTaisanScreen extends React.Component {
                                           style={{ width: 100, height: 100, borderRadius: 5 }}
                                         />
                                         <TouchableHighlight
+                                          style={{
+                                            alignItems: 'flex-end', top: 0, right: -8,  position: 'absolute', backgroundColor: 'transparent'
+                                        }}
                                           onPress={()=> {
                                               const newImages = [...imageList];
                                               newImages.splice(index, 1);
@@ -529,7 +532,7 @@ class TaomoiTaisanScreen extends React.Component {
                                               });
                                           }}
                                         >
-                                          <Icon style={{alignItems: 'flex-end', top: -11, right: -8,  position: 'absolute'}} name="times" color='#DC143C' size={28} />
+                                          <Icon name="times" color='#DC143C' size={28} />
                                         </TouchableHighlight>
                                       </View>
                                     )}
