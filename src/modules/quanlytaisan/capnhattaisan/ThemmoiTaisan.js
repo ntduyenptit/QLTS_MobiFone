@@ -22,6 +22,7 @@ import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
+import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { endPoint } from '../../../api/config';
 import { convertDateToIOSString, addYearToDate, getLinkFile } from '../../global/Helper';
 import { createGetMethod, createPostMethodWithToken, createPostMultiFiles } from '../../../api/Apis';
@@ -337,25 +338,19 @@ class TaomoiTaisanScreen extends React.Component {
                                 }}
                   />
                   <Text style={styles.boldText}>Loại tài sản*</Text>
-                  <RNPickerSelect
-                    // placeholder={placeholder}
-                    items={loaiTSList}
-                    onValueChange={value => {
-                                    this.setState({
-                                        loaiTaisan: value,
-                                    });
-                                }}
-                    style={{
-                                    ...pickerSelectStyles,
-                                    iconContainer: {
-                                        top: 10,
-                                        right: 12,
-                                    },
-                                }}
-                    value={loaiTaisan}
-                    useNativeAndroidPickerStyle={false}
-                    textInputProps={{ underlineColor: 'yellow' }}
-                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                  <MultiSelect
+                    single
+                    items={this.props.LoaiTSData}
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                    uniqueKey="value"
+                    displayKey="text"
+                    selectText="Chọn loại tài sản..."
+                    onSelectedItemsChange={(item) => this.setState({
+                                        loaiTaisan: item,
+                                    })}
+                    selectedItems={loaiTaisan}
                   />
 
                   <Text style={styles.boldText}>S/N (Serial Number)</Text>
@@ -649,6 +644,11 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         paddingLeft: 10
     },
+    searchText: {
+        backgroundColor: 'transparent',
+        height: 50,
+        paddingLeft: 15
+    },
     title: {
         alignSelf: 'center',
         fontSize: 18,
@@ -656,6 +656,7 @@ const styles = StyleSheet.create({
     },
     bordered: {
         borderWidth: 0.5,
+        borderBottomWidth: 0.5,
         borderColor: 'black',
         borderRadius: 10,
         paddingHorizontal: 20,
