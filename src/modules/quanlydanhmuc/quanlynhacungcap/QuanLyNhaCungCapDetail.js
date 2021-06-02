@@ -93,12 +93,12 @@ class NhaCungcapDetail extends React.Component {
             { cancelable: true }
         );
     }
-    
+
     goBack() {
-        const { navigation, route } = this.props;
-        route.params.onGoBack();
-        navigation.goBack();
+        this.props.route.params.onGoBack();
+        this.props.navigation.goBack();
     }
+    
     render() {
         const { chitietData } = this.state;
         const { paramKey, tabKey, idNCC } = this.props.route.params;
