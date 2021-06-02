@@ -16,11 +16,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import NavigatorView from './RootNavigation';
 import AuthScreen from '../auth/AuthViewContainer';
+import ForgotPassword from '../auth/ForgotPassword';
 import { userLogin, userLogout } from '../../redux/actions/user.actions';
 import { setCurrentScreen } from '../../redux/actions/screen.actions';
 import { store } from '../../redux/store';
 import { drawerData } from '../../api/config';
-import { fonts } from '../../styles';
+import { fonts,colors } from '../../styles';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -68,8 +69,14 @@ function CustomDrawerContent(props) {
     <View style={styles.container}>
       <ImageBackground source={require('../../../assets/images/background.png')} style={styles.backgroundImage}>
         <View style={styles.profile}>
-          <Image source={require('../../../assets/images/drawer/user.png')} resizeMode="contain" style={{ margin: 15, width: 60, height: 60, borderRadius: 20, alignSelf: 'center' }} />
-          <View style={{ justifyContent: 'center', alignSelf: 'center' }}>
+          <Icon
+                      name='cog'
+                      size={27}
+                      style = {{position: 'absolute' , right: 5,padding:10}}
+                      color='white'
+                    />
+          <Image source={require('../../../assets/images/drawer/user.png')} resizeMode="contain" style={{ marginTop: 40, width: 80, height: 80, borderRadius: 20, alignSelf: 'center' }} />
+          <View style={{  alignSelf: 'center' , marginTop: 15}}>
             <Text style={{ fontWeight: '200', fontSize: 25, color: 'white', textAlign: 'center' }}>{user}</Text>
             <Text style={{ fontWeight: '200', color: 'white', maxWidth: 200, textAlign: 'center' }}>{user}@mobifone.vn</Text>
           </View>
@@ -167,7 +174,46 @@ const AuthStack = () => (
     }}
     headerMode='none'
   >
-    <Stack.Screen name="Login" component={AuthScreen} />
+
+    <Stack.Screen name="Auth" component={AuthScreen} />
+  </Stack.Navigator>
+);
+const headerLeftComponent = (props) => (
+  <TouchableOpacity
+    onPress={props.onPress}
+    style={{
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+    }}
+  >
+    <Image
+      source={require('../../../assets/images/icons/arrow-back.png')}
+      resizeMode="contain"
+      style={{
+        height: 20,
+      }}
+    />
+  </TouchableOpacity>
+)
+const ForgotPasswordStack = () => (
+  <Stack.Navigator
+    initialRouteName="Quên mật khẩu"
+    screenOptions={{
+      headerLeft: headerLeftComponent,
+      headerRight: null,
+      headerBackground: () => (
+        <Image style={styles.headerImage} source={require('../../../assets/images/topBarBg.png')} />
+      ),
+      headerTitleStyle: {
+        fontFamily: fonts.primaryRegular,
+        color: colors.white,
+        fontSize: 18,
+        alignSelf: 'center'
+      },
+    }}
+  >
+
+    <Stack.Screen name="Quên mật khẩu" component={ForgotPassword} />
   </Stack.Navigator>
 );
 function App(stateToProps) {
@@ -196,6 +242,7 @@ function App(stateToProps) {
         <Stack.Screen name='App' component={DrawerStack} />
 
       }
+      <Stack.Screen name = 'Quên mật khẩu' component = {ForgotPasswordStack} />
     </Stack.Navigator>
   );
 }
@@ -219,7 +266,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   profile: {
-    height: '20%',
+    height: '25%',
     flexDirection: 'column',
 
   },

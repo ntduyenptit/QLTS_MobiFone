@@ -147,6 +147,7 @@ export const endPoint = ({
 export const screens = ({
   dash_board: 'Tổng quan',
   quan_ly_tai_san: 'Quản lý tài sản',
+  forgot_password: 'Quên mật khẩu',
   // quản lý đầu đọc
   quan_ly_dau_doc: 'Quản lý đầu đọc',
   quan_ly_dau_doc_di_dong: 'Quản lý đầu đọc di động',

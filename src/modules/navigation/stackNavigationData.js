@@ -50,6 +50,7 @@ import ThemmoiNguoidung from '../quanlyhethong/quanlynguoidung/ThemmoiNguoidung'
 import ThemmoiVaitro from '../quanlyhethong/quanlyphanquyen/ThemVaitro';
 import DashBoard from '../dashboard/DashBoardView';
 
+import ForgotPassword from  '../auth/ForgotPassword';
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
 import { showFilter } from '../../redux/actions/filter.actions';
@@ -121,6 +122,7 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
+  
   {
     name: screens.quan_ly_tai_san,
     component: TabNavigator,

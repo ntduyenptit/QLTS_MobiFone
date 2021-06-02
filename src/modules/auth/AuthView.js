@@ -1,8 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, Modal } from 'react-native';
-import { endPoint } from '../../api/config';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, Modal, Dimensions } from 'react-native';
+import { endPoint, screens } from '../../api/config';
 import { createPostMethodWithoutToken } from '../../api/Apis'
 import save from '../../localStorage/saveLogin';
+
+const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get("window").height;
 
 export default class AuthViewContainer extends React.Component {
   constructor(props) {
@@ -33,7 +36,7 @@ export default class AuthViewContainer extends React.Component {
   }
 
   render() {
-    const {modalVisible} = this.state;
+    const { modalVisible } = this.state;
     return (
       <View style={styles.container}>
         <Image source={require('../../../assets/images/icon.png')} style={styles.iconImage} />
@@ -60,30 +63,10 @@ export default class AuthViewContainer extends React.Component {
         <TouchableOpacity style={styles.loginBtn} onPress={() => this.signIn(this.state.email, this.state.password)}>
           <Text style={styles.loginText}>Đăng nhập</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.forgotpassBtn} onPress={this.setState({modalVisible: true})}>
+        <TouchableOpacity style={styles.forgotpassBtn} onPress = { () => this.props.navigation.navigate(screens.forgot_password)} >
           <Text style={styles.forgotpassBtn}>Quên mật khẩu</Text>
         </TouchableOpacity>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            this.setState({modalVisible: !modalVisible});
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Quên mật khẩu</Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => this.setState({modalVisible: !modalVisible})}
-              >
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
+        
       </View>
     );
   }
@@ -170,10 +153,10 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    paddingTop: 50,
+    backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
+    padding: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -181,15 +164,25 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
+    height: '30%',
+    width: '80%',
   },
   button: {
     borderRadius: 20,
     padding: 10,
     elevation: 2
   },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
+  modalInputView: {
+    width: "80%",
+    marginTop: 30,
+    backgroundColor: "#e5e5e5",
+    borderRadius: 10,
+    height: 50,
+    marginBottom: 20,
+    alignSelf: 'center',
+    justifyContent: "center",
+    padding: 20
   },
   buttonClose: {
     backgroundColor: "#2196F3",
@@ -200,7 +193,8 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   modalText: {
-    marginBottom: 15,
-    textAlign: "center"
+    color: '#333',
+    fontSize: 24,
+    marginLeft: 25
   }
 });
