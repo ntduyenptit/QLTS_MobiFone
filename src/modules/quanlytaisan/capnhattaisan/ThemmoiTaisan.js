@@ -14,10 +14,8 @@ import {
     FlatList,
     Alert,
     Platform,
-    ImageBackground,
     TouchableHighlight
  } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -45,43 +43,37 @@ class TaomoiTaisanScreen extends React.Component {
             ngayHetBh: '',
             ngayHetSd: '',
             maSudung: '',
-            maSudungList: [],
             nhaCungcap: '',
             trichKhauhao: '',
             imageList: [],
-            loaiTSList: [],
-            nhaCCList: [],
         };
         this.chosenPicker = this.chosenPicker.bind(this)
     }
 
     componentDidMount() {
-        this.props.navigation.setOptions({headerRight: () => (
-          <TouchableOpacity
-            onPress={() => this.saveNewTaiSan()}
-            style={{
-                  paddingHorizontal: 16,
-                  paddingVertical: 12,
-                }
-                }
-          >
-            <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-              <Text style={{
-                        fontFamily: fonts.primaryRegular,
-                        color: colors.white,
-                        fontSize: 18,
-                        alignSelf: 'center'
-                    }}
-              > Lưu
-              </Text>
-
-            </View>
-          </TouchableOpacity>
-            )})
         Promise.all([
-            this.danhsachLoaiTS(this.props.LoaiTSData),
-            this.danhsachNhaCC(this.props.NhaCCData),
-            this.danhsachMaSD(this.props.MaSuDungData),
+            this.props.navigation.setOptions({headerRight: () => (
+              <TouchableOpacity
+                onPress={() => this.saveNewTaiSan()}
+                style={{
+                        paddingHorizontal: 16,
+                        paddingVertical: 12,
+                      }
+                      }
+              >
+                <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                  <Text style={{
+                              fontFamily: fonts.primaryRegular,
+                              color: colors.white,
+                              fontSize: 18,
+                              alignSelf: 'center'
+                          }}
+                  > Lưu
+                  </Text>
+      
+                </View>
+              </TouchableOpacity>
+                  )}),
             this.getNguonKinhPhi()
         ]);
     }
@@ -91,12 +83,8 @@ class TaomoiTaisanScreen extends React.Component {
         createGetMethod(url)
             .then(res => {
                 if (res) {
-                    const list = res.result.map(e => ({
-                        label: e.displayName,
-                        value: e.id 
-                    }));
                     this.setState({
-                        nguonKinhphiList: list,
+                        nguonKinhphiList: res.result,
                     });
                 }
             })
@@ -110,7 +98,6 @@ class TaomoiTaisanScreen extends React.Component {
             compressImageMaxWidth: 400,
             multiple: true
         }).then(images => {
-            // console.log(images);
             if (images && images.length < 4) {
                 if (Platform.OS === 'ios') {
                     this.setState({
@@ -126,6 +113,8 @@ class TaomoiTaisanScreen extends React.Component {
                         imageList: images.map(e => ({
                             tenFile: e.path.split('/').pop(),
                             linkFile: e.path,
+                            path: e.path,
+                            mime: e.mime
                         }))
                     });
                 }
@@ -195,7 +184,7 @@ class TaomoiTaisanScreen extends React.Component {
                                 linkFile: getLinkFile(res, e.tenFile)
                             }));
                         const params  = {
-                            dropdownMultiple: maSudung,
+                            dropdownMultiple: maSudung[0],
                             ghiChu: "",
                             giaCuoiTS: "",
                             hangSanXuat: hangSx,
@@ -205,9 +194,9 @@ class TaomoiTaisanScreen extends React.Component {
                             ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                             hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
                             ngayMua: ngayMua && convertDateToIOSString(ngayMua),
-                            nguonKinhPhiId: nguonKinhphi,
+                            nguonKinhPhiId: nguonKinhphi[0],
                             nguyenGia,
-                            nhaCC: nhaCungcap,
+                            nhaCC: nhaCungcap[0],
                             noiDungChotGia: "",
                             productNumber: PN,
                             serialNumber: SN,
@@ -230,7 +219,7 @@ class TaomoiTaisanScreen extends React.Component {
                 });
             } else {
                 const params  = {
-                    dropdownMultiple: maSudung,
+                    dropdownMultiple: maSudung[0],
                     ghiChu: "",
                     giaCuoiTS: "",
                     hangSanXuat: hangSx,
@@ -240,9 +229,9 @@ class TaomoiTaisanScreen extends React.Component {
                     ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                     hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
                     ngayMua: ngayMua && convertDateToIOSString(ngayMua),
-                    nguonKinhPhiId: nguonKinhphi,
+                    nguonKinhPhiId: nguonKinhphi[0],
                     nguyenGia,
-                    nhaCC: nhaCungcap,
+                    nhaCC: nhaCungcap[0],
                     noiDungChotGia: "",
                     productNumber: PN,
                     serialNumber: SN,
@@ -271,42 +260,6 @@ class TaomoiTaisanScreen extends React.Component {
         navigation.goBack();
     }
 
-    danhsachMaSD(data) {
-        if (data) {
-            const list = data.map(e => ({
-                label: e.displayName,
-                value: e.id,
-            }));
-            this.setState({
-                maSudungList: list,
-            });
-        }
-    }
-
-    danhsachLoaiTS(data) {
-        if (data) {
-            const list = data.map(e => ({
-                label: e.text,
-                value: e.value,
-            }));
-            this.setState({
-                loaiTSList: list,
-            });
-        }
-    };
-
-    danhsachNhaCC(data) {
-        if (data) {
-            const list = data.map(e => ({
-                label: e.displayName,
-                value: e.id,
-            }));
-            this.setState({
-                nhaCCList: list,
-            });
-        }
-    };
-
     render() {
         const {
             scrollYValue,
@@ -317,18 +270,10 @@ class TaomoiTaisanScreen extends React.Component {
             ngayMua,
             ngayHetBh,
             ngayHetSd,
-            maSudungList,
             maSudung,
-            loaiTSList,
-            nhaCCList,
             nhaCungcap,
             nguonKinhphiList,
         } = this.state;
-        const placeholder = {
-            label: 'Chọn ...',
-            value: null,
-            color: '#9EA0A4',
-        };
         return (
           <Animated.View>
             <StatusBar barStyle="dark-content" />
@@ -402,25 +347,19 @@ class TaomoiTaisanScreen extends React.Component {
                                 }}
                   />
                   <Text style={styles.boldText}>Nhà cung cấp</Text>
-                  <RNPickerSelect
-                    // placeholder={placeholder}
-                    items={nhaCCList}
-                    onValueChange={value => {
-                                    this.setState({
-                                        nhaCungcap: value,
-                                    });
-                                }}
-                    style={{
-                                    ...pickerSelectStyles,
-                                    iconContainer: {
-                                        top: 10,
-                                        right: 12,
-                                    },
-                                }}
-                    value={nhaCungcap}
-                    useNativeAndroidPickerStyle={false}
-                    textInputProps={{ underlineColor: 'yellow' }}
-                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                  <MultiSelect
+                    single
+                    items={this.props.NhaCCData}
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText="Chọn nhà cung cấp..."
+                    onSelectedItemsChange={(item) => this.setState({
+                        nhaCungcap: item,
+                                    })}
+                    selectedItems={nhaCungcap}
                   />
                   <Text style={styles.boldText}>Hãng sản xuất</Text>
                   <TextInput
@@ -560,46 +499,34 @@ class TaomoiTaisanScreen extends React.Component {
                                 }}
                   />
                   <Text style={styles.boldText}>Nguồn kinh phí</Text>
-                  <RNPickerSelect
-                    // placeholder={placeholder}
+                  <MultiSelect
+                    single
                     items={nguonKinhphiList}
-                    onValueChange={value => {
-                                    this.setState({
-                                        nguonKinhphi: value,
-                                    });
-                                }}
-                    style={{
-                                    ...pickerSelectStyles,
-                                    iconContainer: {
-                                        top: 10,
-                                        right: 12,
-                                    },
-                                }}
-                    value={nguonKinhphi}
-                    useNativeAndroidPickerStyle={false}
-                    textInputProps={{ underlineColor: 'yellow' }}
-                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText="Chọn nguồn kinh phí..."
+                    onSelectedItemsChange={(item) => this.setState({
+                        nguonKinhphi: item,
+                                    })}
+                    selectedItems={nguonKinhphi}
                   />
                   <Text style={styles.boldText}>Mã sử dụng</Text>
-                  <RNPickerSelect
-                    // placeholder={placeholder}
-                    items={maSudungList}
-                    onValueChange={(value) => {
-                                    this.setState({
-                                        maSudung: value,
-                                    });
-                                }}
-                    style={{
-                                    ...pickerSelectStyles,
-                                    iconContainer: {
-                                        top: 10,
-                                        right: 12,
-                                    },
-                                }}
-                    value={maSudung}
-                    useNativeAndroidPickerStyle={false}
-                    textInputProps={{ underlineColor: 'yellow' }}
-                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                  <MultiSelect
+                    single
+                    items={this.props.MaSuDungData}
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText="Chọn mã sử dụng..."
+                    onSelectedItemsChange={(item) => this.setState({
+                        maSudung: item,
+                                    })}
+                    selectedItems={maSudung}
                   />
                   <View style={styles.selectContainer}>
                     <Text style={styles.boldText}>Hình ảnh</Text>
@@ -622,6 +549,9 @@ class TaomoiTaisanScreen extends React.Component {
                                           style={{ width: 100, height: 100, borderRadius: 5 }}
                                         />
                                         <TouchableHighlight
+                                          style={{
+                                            alignItems: 'flex-end', top: 0, right: -8,  position: 'absolute', backgroundColor: 'transparent'
+                                        }}
                                           onPress={()=> {
                                               const newImages = [...imageList];
                                               newImages.splice(index, 1);
@@ -630,7 +560,7 @@ class TaomoiTaisanScreen extends React.Component {
                                               });
                                           }}
                                         >
-                                          <Icon style={{alignItems: 'flex-end', top: -11, right: -8,  position: 'absolute'}} name="times" color='#DC143C' size={28} />
+                                          <Icon name="times" color='#DC143C' size={28} />
                                         </TouchableHighlight>
                                       </View>
                                     )}
@@ -737,31 +667,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: '#fff'
     }
-});
-
-const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-        fontSize: 10,
-        // width: '100%',
-        paddingVertical: 12,
-        paddingHorizontal: 10,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 4,
-        color: 'black',
-        marginLeft: 5,
-        paddingRight: 30, // to ensure the text is never behind the icon
-    },
-    inputAndroid: {
-        fontSize: 16,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        borderWidth: 0.5,
-        borderColor: 'purple',
-        borderRadius: 8,
-        color: 'black',
-        paddingRight: 10, // to ensure the text is never behind the icon
-    },
 });
 
 const mapStateToProps = state => ({
