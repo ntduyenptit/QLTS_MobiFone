@@ -29,7 +29,7 @@ import { createGetMethod, createPostMethodWithToken, createPostMultiFiles } from
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
 
-class TaomoiTaisanScreen extends React.Component {
+class UpdateTaisanScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -329,6 +329,7 @@ class TaomoiTaisanScreen extends React.Component {
             value: null,
             color: '#9EA0A4',
         };
+        const {item} = this.props.route.params;
         return (
           <Animated.View>
             <StatusBar barStyle="dark-content" />
@@ -357,7 +358,7 @@ class TaomoiTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>Tên tài sản*</Text>
                   <TextInput
                     placeholderTextColor="black"
-                    placeholder="Nhập tên tài sản"
+                    placeholder={item.tenTS}
                     style={styles.bordered}
                     onChangeText={(tenTS) => {
                                     this.setState({
@@ -374,7 +375,7 @@ class TaomoiTaisanScreen extends React.Component {
                     styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
                     uniqueKey="value"
                     displayKey="text"
-                    selectText="Chọn loại tài sản..."
+                    selectText={item.loaiTS}
                     onSelectedItemsChange={(item) => this.setState({
                                         loaiTaisan: item,
                                     })}
@@ -384,6 +385,7 @@ class TaomoiTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>S/N (Serial Number)</Text>
                   <TextInput
                     placeholderTextColor="black"
+                    placeholder={item.serialNumber}
                     style={styles.bordered}
                     onChangeText={(SN) => {
                                     this.setState({
@@ -394,6 +396,7 @@ class TaomoiTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>P/N (Product Number)</Text>
                   <TextInput
                     placeholderTextColor="black"
+                    placeholder={item.productNumber}
                     style={styles.bordered}
                     onChangeText={(PN) => {
                                     this.setState({
@@ -402,30 +405,25 @@ class TaomoiTaisanScreen extends React.Component {
                                 }}
                   />
                   <Text style={styles.boldText}>Nhà cung cấp</Text>
-                  <RNPickerSelect
-                    // placeholder={placeholder}
+                  <MultiSelect
+                    single
                     items={nhaCCList}
-                    onValueChange={value => {
-                                    this.setState({
-                                        nhaCungcap: value,
-                                    });
-                                }}
-                    style={{
-                                    ...pickerSelectStyles,
-                                    iconContainer: {
-                                        top: 10,
-                                        right: 12,
-                                    },
-                                }}
-                    value={nhaCungcap}
-                    useNativeAndroidPickerStyle={false}
-                    textInputProps={{ underlineColor: 'yellow' }}
-                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                    uniqueKey="value"
+                    displayKey="text"
+                    selectText={item.nhaCungCap}
+                    onSelectedItemsChange={(item) => this.setState({
+                                        nhaCungcap: item,
+                                    })}
+                    selectedItems={nhaCungcap}
                   />
                   <Text style={styles.boldText}>Hãng sản xuất</Text>
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
+                    placeholder={item.productNumber}
                     onChangeText={(hangsx) => {
                                     this.setState({
                                         hangSx: hangsx,
@@ -435,6 +433,7 @@ class TaomoiTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>Nguyên giá (VND)</Text>
                   <TextInput
                     placeholderTextColor="black"
+                    placeholder={item.nguyenGia}
                     style={styles.bordered}
                     onChangeText={(price) => {
                                     this.setState({
@@ -445,7 +444,7 @@ class TaomoiTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>Ngày mua</Text>
                   <DatePicker
                     style={styles.datePickerStyle}
-                    date={ngayMua} // Initial date from state
+                    date={item.ngayMua} // Initial date from state
                     mode="date" // The enum of date, datetime and time
                     borderRadius='15'
                     placeholder="Chọn ngày"
@@ -770,4 +769,4 @@ const mapStateToProps = state => ({
     MaSuDungData: state.filterMSDDataReducer.msdDataFilter
 });
 
-export default connect(mapStateToProps)(TaomoiTaisanScreen);
+export default connect(mapStateToProps)(UpdateTaisanScreen);
