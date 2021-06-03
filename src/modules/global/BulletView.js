@@ -5,28 +5,39 @@ import {
   Text,
   Dimensions
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 const deviceWidth = Dimensions.get("window").width;
 
-export default function bullet(title, text) {
+export default function bullet(props) {
     return(
       <View style={styles.row}>
-        <View style={styles.bullet}>
-          <Text>{'\u2022' + " "}</Text>
-        </View>
-        <View style={styles.bulletText}>
+        {props.isBullet ? (
+          <View style={styles.bullet}>
+            <Text>{'\u2022' + " "}</Text>
+          </View>
+) : null} 
+        <View style={[styles.bulletText, {flex: props.flexTitle ? props.flexTitle : 2}]}>
           <Text styles={styles.text}>
-            <Text style={styles.boldText}>{`${title}: `}</Text>
+            <Text style={styles.boldText}>{`${props.title}: `}</Text>
           </Text>
         </View>
         <View style={styles.bulletTextNormal}>
           <Text styles={styles.text}>
-            <Text style={styles.normalText}>{text}</Text>
+            <Text style={styles.normalText}>{props.text}</Text>
           </Text>
         </View>
       </View>
     );
 }
+
+bullet.propTypes = {
+  title: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  isBullet: PropTypes.bool,
+  flexTitle: PropTypes.number,
+  flexText: PropTypes.number
+};
 
 const styles = StyleSheet.create({
     titleStyle: {
@@ -51,11 +62,10 @@ const styles = StyleSheet.create({
       width: 15
     },
     bulletText: {
-      flex: 2,
       paddingRight: 5
     },
     bulletTextNormal: {
-      flex: 2
+      flex: 2,
     },
     boldText: {
       fontWeight: 'bold',

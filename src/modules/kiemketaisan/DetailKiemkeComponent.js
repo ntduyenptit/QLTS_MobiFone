@@ -140,24 +140,26 @@ export default class QuanLyKiemKeDetail extends React.Component {
     const items = () => userList.map((item, index) => (
       <View style={styles.listItem}>
         <View style={styles.infor}>
-          <Text numberOfLines={1} style={[{ paddingBottom: 3 }]}>Tên: {item.user.name}</Text>
-          <Text numberOfLines={1} style={{ paddingBottom: 3 }}>Chức vụ: {item.user.roleNames}</Text>
-          <Text numberOfLines={2} tyle={{ paddingBottom: 3 }}>Phòng ban: {item.tenToChuc}</Text>
-          <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Email: {item.user.emailAddress}</Text>
+          <BulletView title="Tên" text={item.user.name} isBullet={false} flexTitle={0.6} />
+          <BulletView title="Chức vụ" text={item.user.roleNames} isBullet={false} flexTitle={0.6} />
+          <BulletView title="Phòng ban" text={item.tenToChuc} isBullet={false} flexTitle={0.6} />
+          <BulletView title="Email" text={item.user.emailAddress} isBullet={false} flexTitle={0.6} />
         </View>
       </View>
     ))
     return (
       <View style={{ alignItems: 'flex-start', height: 450, backgroundColor: 'white', width: deviceWidth }}>
         <Text style={styles.title}>Thông tin kiểm kê tài sản:</Text>
-        {BulletView('Mã kiểm kê', paramKey.kiemKeTaiSan.maKiemKe)}
-        {BulletView('Tên kiểm kê', paramKey.kiemKeTaiSan.tenKiemKe)}
-        {BulletView('Thời gian bắt đầu dự kiến', paramKey.kiemKeTaiSan.thoiGianBatDauDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauDuKien))}
-        {BulletView('Thời gian bắt đầu thực tế', paramKey.kiemKeTaiSan.thoiGianBatDauThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauThucTe))}
-        {BulletView('Thời gian kết thúc dự kiến', paramKey.kiemKeTaiSan.thoiGianKetThucDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucDuKien))}
-        {BulletView('Thời gian kết thúc thực tế', paramKey.kiemKeTaiSan.thoiGianKetThucThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucThucTe))}
-        {BulletView('Bộ phận được kiểm kê', paramKey.phongBan)}
-        {BulletView('Trạng thái', paramKey.kiemKeTaiSan.trangThaiId && convertTrangThai(paramKey.kiemKeTaiSan.trangThaiId))}
+        <View style={{paddingLeft: 2}}>
+          <BulletView title="Mã kiểm kê" text={paramKey.kiemKeTaiSan.maKiemKe} isBullet={false} />
+          <BulletView title="Tên kiểm kê" text={paramKey.kiemKeTaiSan.tenKiemKe} isBullet={false} />
+          <BulletView title="Thời gian bắt đầu dự kiến" text={paramKey.kiemKeTaiSan.thoiGianBatDauDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauDuKien)} isBullet={false} />
+          <BulletView title="Thời gian bắt đầu thực tế" text={paramKey.kiemKeTaiSan.thoiGianBatDauThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauThucTe)} isBullet={false} />
+          <BulletView title="Thời gian kết thúc dự kiến" text={paramKey.kiemKeTaiSan.thoiGianKetThucDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucDuKien)} isBullet={false} />
+          <BulletView title="Thời gian kết thúc thực tế" text={paramKey.kiemKeTaiSan.thoiGianKetThucThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucThucTe)} isBullet={false} />
+          <BulletView title="Bộ phận được kiểm kê" text={paramKey.kiemKeTaiSan.phongBan} isBullet={false} />
+          <BulletView title="Trạng thái" text={paramKey.kiemKeTaiSan.trangThaiId && convertTrangThai(paramKey.kiemKeTaiSan.trangThaiId)} isBullet={false} />
+        </View>
         <View
           style={{
             padding: 10,
@@ -168,9 +170,7 @@ export default class QuanLyKiemKeDetail extends React.Component {
           }}
         />
         <Text style={styles.title}>Danh sách người kiểm kê</Text>
-        <View>
-          {items()}
-        </View>
+        {items()}
       </View>
     )
   }
@@ -238,7 +238,7 @@ export default class QuanLyKiemKeDetail extends React.Component {
           tabContentHeights={[tabOneHeight, tabTwoHeight, tabThirtHeight]}
           scrollEnabled
           prerenderingSiblingsNumber={Infinity}
-          renderTabBar={() => <DefaultTabBar inactiveTextColor="white" activeTextColor="white" backgroundColor="blue" />}
+          renderTabBar={() => <DefaultTabBar inactiveTextColor="gray" activeTextColor="black" backgroundColor="white" />}
         >
           <View onLayout={(event) => this.measureTabOne(event)} tabLabel='TS tìm thấy'>
             <ScrollView style={{ height: 'auto', backgroundColor: "white" }}>
@@ -286,6 +286,7 @@ export default class QuanLyKiemKeDetail extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white'
   },
   contentContainer: {
     flexGrow: 1,
@@ -310,9 +311,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
   },
-
   title: {
-    padding: 10,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 5,
     fontSize: 15,
     fontStyle: 'italic'
   },
@@ -328,7 +330,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   listItem: {
-    padding: 5,
     flex: 1,
     width: deviceWidth - 50,
     backgroundColor: "#FFF",
@@ -337,14 +338,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 5,
-    height: 95,
+    bottom: 0
   },
   infor: {
-    marginLeft: 10,
+    padding: 20,
     justifyContent: "flex-start",
     alignSelf: "flex-start",
-    height: 50,
-    paddingBottom: 10,
+    height: 'auto',
   },
   separator: {
     height: 2,
@@ -367,6 +367,6 @@ const styles = StyleSheet.create({
   },
   addToCarContainer: {
     marginHorizontal: 30,
-    paddingBottom: 30
+    paddingBottom: 30,
   }
 });
