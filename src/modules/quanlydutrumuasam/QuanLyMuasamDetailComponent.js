@@ -6,9 +6,10 @@ import {
   Dimensions,
   TouchableOpacity, FlatList, ScrollView, Alert,
 } from 'react-native';
+import BulletView from '@app/modules/global/BulletView';
 import { createGetMethod, deleteMethod } from '../../api/Apis';
 import { endPoint } from '../../api/config';
-import BulletView from '@app/modules/global/BulletView';
+
 const deviceWidth = Dimensions.get("window").width;
 
 export default class QuanLyMuasamDetail extends React.Component {
@@ -74,19 +75,21 @@ export default class QuanLyMuasamDetail extends React.Component {
       { cancelable: true }
     );
   }
-  renderItemComponent = (data) =>
+
+  renderItemComponent = (data) => (
     <View style={styles.listItem}>
       <Text style={{ alignItems: "flex-start", paddingRight: 10 }}> {data.item.tenantId}</Text>
       <View style={styles.infor}>
         <Text numberOfLines={1} style={[{ fontWeight: "bold", paddingBottom: 3 }]}>Tên tài sản: {data.item.tenTaiSan}</Text>
         <Text numberOfLines={1} style={[{ paddingBottom: 3 }]}>ProducNumber: {data.item.productNumber}</Text>
         <Text numberOfLines={1} style={{ paddingBottom: 3 }}>Hãng sản xuất: {data.item.hangSanXuat}</Text>
-        <Text numberOfLines={1} tyle={{ paddingBottom: 3 }} >Nhà cung cấp: {data.item.nhaCungCap}</Text>
-        <Text numberOfLines={1} tyle={{ paddingBottom: 3 }} >Số lượng: {data.item.soLuong}</Text>
-        <Text numberOfLines={1} tyle={{ paddingBottom: 3 }} >Đơn giá: {data.item.donGia}</Text>
-        <Text numberOfLines={1} tyle={{ paddingBottom: 3 }} >Ghi chú: {data.item.ghiChu}</Text>
+        <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Nhà cung cấp: {data.item.nhaCungCap}</Text>
+        <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Số lượng: {data.item.soLuong}</Text>
+        <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Đơn giá: {data.item.donGia}</Text>
+        <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Ghi chú: {data.item.ghiChu}</Text>
       </View>
     </View>
+  )
 
 
   render() {
@@ -96,10 +99,10 @@ export default class QuanLyMuasamDetail extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Thông tin Phiếu dự trù mua sắm:</Text>
-        {BulletView('Mã phiếu', chitietPhieuMuasam.maPhieu)}
-        {BulletView('Tên phiếu', chitietPhieuMuasam.tenPhieu)}
-        {BulletView('Đơn vị', chitietPhieuMuasam.toChucId)}
-        {BulletView('Người lập phiếu', chitietPhieuMuasam.nguoiLapPhieuId)}
+        <BulletView title='Mã phiếu' text={chitietPhieuMuasam.maPhieu} />
+        <BulletView title='Tên phiếu' text={chitietPhieuMuasam.tenPhieu} />
+        <BulletView title='Đơn vị' text={chitietPhieuMuasam.toChucId} />
+        <BulletView title='Người lập phiếu' text={chitietPhieuMuasam.nguoiLapPhieuId} />
         <Text style={styles.title}>Danh sách tài sản đề xuất mua sắm</Text>
         <ScrollView style={{ height: 'auto', padding: 10 }}>
           <FlatList
@@ -112,7 +115,8 @@ export default class QuanLyMuasamDetail extends React.Component {
         <View style={styles.addToCarContainer}>
           <TouchableOpacity
             onPress={() => this.deleteThisAsset(idPhieu)}
-            style={styles.shareButton}>
+            style={styles.shareButton}
+          >
             <Text style={styles.shareButtonText}>Xóa</Text>
           </TouchableOpacity>
         </View>

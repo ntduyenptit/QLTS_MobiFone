@@ -90,15 +90,15 @@ class NhaCungcapDetail extends React.Component {
           <View style={styles.container}>
             <View style={{ alignItems: 'flex-start', backgroundColor: 'white', width: deviceWidth, height: 'auto', padding: 10 }}>
               <Text style={styles.title}>Thông tin nhà cung cấp:</Text>
-              {BulletView('Mã nhà cung cấp', chitietData.maNhaCungCap)}
-              {BulletView('Tên nhà cung cấp', chitietData.tenNhaCungCap)}
-              {BulletView('Lĩnh vực kinh doanh', paramKey.tenLinhVuc)}
-              {BulletView('Mã số thuế', chitietData.maSoThue)}
-              {BulletView('Địa chỉ', chitietData.diaChi)}
-              {BulletView('Số điện thoại', chitietData.soDienThoai)}
-              {BulletView('Email', chitietData.email)}
-              {BulletView('Ghi chú', chitietData.ghiChu)}
-              {BulletView('Tài liệu đính kèm', chitietData.listFile)}
+              <BulletView title='Mã nhà cung cấp' text={chitietData.maNhaCungCap} />
+              <BulletView title='Tên nhà cung cấp' text={chitietData.tenNhaCungCap} />
+              <BulletView title='Lĩnh vực kinh doanh' text={paramKey.tenLinhVuc} />
+              <BulletView title='Mã số thuế' text={chitietData.maSoThue} />
+              <BulletView title='Địa chỉ' text={chitietData.diaChi} />
+              <BulletView title='Số điện thoại' text={chitietData.soDienThoai} />
+              <BulletView title='Email' text={chitietData.email} />
+              <BulletView title='Ghi chú' text={chitietData.ghiChu} />
+              <BulletView title='Tài liệu đính kèm' text={chitietData.listFile} />
             </View>
             <View style={styles.separator} />
             <View style={styles.addToCarContainer}>

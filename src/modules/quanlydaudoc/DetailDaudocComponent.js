@@ -18,14 +18,14 @@ function DetailDaudocComponent({ route, navigation }) {
             <Image style={styles.productImg} source={require('../../../assets/images/icon.png')} style={styles.iconImage} />
             <Text style={styles.title}>Thông tin đầu đọc:</Text>
             {/* Mã tài sản */}
-            {BulletView('Mã tài sản',paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
+            <BulletView title='Mã tài sản' text={paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode} />
             {/* Tên tài sản */}
             {/* Phòng ban quản lý */}
-            {BulletView('Phòng ban quản lý',paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy)}
+            <BulletView title='Phòng ban quản lý' text={paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy} />
             {/* Vị trí tài sản */}
-            {BulletView('Vị trí tài sản',paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan)}
+            <BulletView title='Vị trí tài sản' text={paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan} />
             {/* Trạng thái */}
-            {BulletView('Trạng thái', paramKey.tinhTrangSuDung)}
+            <BulletView title='Trạng thái' text={paramKey.tinhTrangSuDung} />
           </View>
 
         </ScrollView>

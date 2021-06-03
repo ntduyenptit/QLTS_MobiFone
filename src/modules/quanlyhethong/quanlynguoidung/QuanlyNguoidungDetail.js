@@ -74,15 +74,15 @@ class NguoidungDetailScreen extends React.Component {
         return (
           <View style={{ alignItems: 'flex-start', backgroundColor: 'white', width: deviceWidth }}>
             <Text style={styles.title}>Thông tin chi tiết</Text>
-            {BulletView('Họ tên', chitietData.name)}
-            {BulletView('Chức vụ', chitietData.chucVu)}
-            {BulletView('Đơn vị', phongBan)}
-            {BulletView('Tên đăng nhập', chitietData.userName)}
-            {BulletView('Email', chitietData.emailAddress)}
-            {BulletView('Số điện thoại', chitietData.phoneNumber)}
-            {BulletView('Kích hoạt', this.convertActiveData(chitietData.isActive))}
-            {BulletView('Vai trò', chitietData.roleNames)}
-            {BulletView('Ghi chú', chitietData.ghiChu)}
+            <BulletView title='Họ tên' text={chitietData.name} />
+            <BulletView title='Chức vụ' text={chitietData.chucVu} />
+            <BulletView title='Đơn vị' text={phongBan} />
+            <BulletView title='Tên đăng nhập' text={chitietData.userName} />
+            <BulletView title='Email' text={chitietData.emailAddress} />
+            <BulletView title='Số điện thoại' text={chitietData.phoneNumber} />
+            <BulletView title='Kích hoạt' text={this.convertActiveData(chitietData.isActive)} />
+            <BulletView title='Vai trò' text={chitietData.roleNames} />
+            <BulletView title='Ghi chú' text={chitietData.ghiChu} />
           </View>
         )
     }

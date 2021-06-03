@@ -97,17 +97,15 @@ class LichXuatBaocaoDetail extends React.Component {
         const { paramKey, tabKey } = this.props.route.params;
         idPB = idPhongban;
         idNN = idNguoiNhan;
-        console.log(`nguoiNhan: ${  nguoiNhan}`);
         return (
           <View style={StyleSheet.listItem}>
             <Text style={styles.title}>Thông tin lịch xuất báo cáo:</Text>
-            {BulletView('Tên báo cáo', paramKey.tenBaoCao)}
-            {BulletView('Giờ gửi báo cáo', paramKey.ngayGio)}
-            {BulletView('Lặp lại', paramKey.lapLai)}
-            {BulletView('Người nhận báo cáo', nguoiNhan)}
-            {BulletView('Phòng ban nhận báo cáo', phongBan)}
-            {BulletView('Ghi chú', chitietData.ghiChu)}
-
+            <BulletView title='Tên báo cáo' text={paramKey.tenBaoCao} />
+            <BulletView title='Giờ gửi báo cáo' text={paramKey.ngayGio} />
+            <BulletView title='Lặp lại' text={paramKey.lapLai} />
+            <BulletView title='Người nhận báo cáo' text={nguoiNhan} />
+            <BulletView title='Phòng ban nhận báo cáo' text={phongBan} />
+            <BulletView title='Ghi chú' text={chitietData.ghiChu} />
           </View>
         )
     }

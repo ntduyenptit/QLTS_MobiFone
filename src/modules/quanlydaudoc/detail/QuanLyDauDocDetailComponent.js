@@ -52,19 +52,19 @@ function QuanLyDauDocDetailComponent({ navigation, route }) {
           <Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} />
           <Text style={styles.title}>Thông tin đầu đọc:</Text>
           {/* Mã tài sản */}
-          {BulletView('Mã tài sản', paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
+          <BulletView title='Mã tài sản' text={paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode} />
           {/* Tên tài sản */}
-          {BulletView('Tên tài sản', paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan)}
+          <BulletView title='Tên tài sản' text={paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan} />
           {/* Loại tài sản */}
-          {BulletView('Loại tài sản', paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan)}
+          <BulletView title='Loại tài sản' text={paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan} />
           {/* Phòng ban quản lý */}
-          {BulletView('Phòng ban quản lý', paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy)}
+          <BulletView title='Phòng ban quản lý' text={paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy} />
           {/* Vị trí tài sản */}
-          {BulletView('Vị trí tài sản', paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan)}
+          <BulletView title='Vị trí tài sản' text={paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan} />
           {/* Trạng thái */}
-          {BulletView('Trạng thái', paramKey.trangThai)}
+          <BulletView title='Trạng thái' text={paramKey.trangThai} />
           {/* Ngày mua */}
-          {BulletView('Ngày mua', paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua))}
+          <BulletView title='Ngày mua' text={paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua)} />
         </View>
 
       </ScrollView>
