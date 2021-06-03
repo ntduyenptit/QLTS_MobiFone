@@ -187,6 +187,7 @@ export const screens = ({
   chi_tiet_bao_hongmat_tai_san: 'Xem chi tiết khai báo',
   // them moi tai san
   them_moi_tai_san: "Thêm mới tài sản",
+  cap_nhat_tai_san: "Cập nhật tài sản",
   khai_bao_tai_san: "Khai báo tài sản",
   them_moi_dau_doc: "Thêm mới đầu đọc",
   them_moi_kiem_ke: "Thêm mới đợt kiểm kê",

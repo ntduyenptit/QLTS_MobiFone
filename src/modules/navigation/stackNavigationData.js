@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import TabNavigator from './MainTabNavigator';
 import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
 import QuanLyTaiSanDetailComponentScreen from '../quanlytaisan/detail/QuanLyTaiSanDetailComponent';
+import CapnhatTaisanScreen from '../quanlytaisan/detail/UpdateTaisan';
 
 import QuanLyDauDocCodinhScreen from '../quanlydaudoc/quanlydaudocCodinh/QuanlydaudocCodinh';
 import QuanLyDauDocDiDongScreen from '../quanlydaudoc/quanlydaudocDidong/QuanlydaudocDiDong';
@@ -49,7 +50,7 @@ import ThemmoiDonvi from '../quanlydanhmuc/quanlydonvi/ThemmoiDonvi';
 import ThemmoiNguoidung from '../quanlyhethong/quanlynguoidung/ThemmoiNguoidung';
 import ThemmoiVaitro from '../quanlyhethong/quanlyphanquyen/ThemVaitro';
 import DashBoard from '../dashboard/DashBoardView';
-
+import moreHeaderRightComponent from '../global/MoreComponent';
 import ForgotPassword from  '../auth/ForgotPassword';
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
@@ -88,20 +89,6 @@ const headerRightComponent = () => (
   >
     <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
       <Icon name="filter" color="white" size={20} />
-    </View>
-  </TouchableOpacity>
-);
-
-const moreHeaderRightComponent = () => (
-  <TouchableOpacity
-    style={{
-      paddingHorizontal: 16,
-      paddingVertical: 12,
-    }
-    }
-  >
-    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-      <Icon name="ellipsis-v" color="white" size={20} />
     </View>
   </TouchableOpacity>
 );
@@ -533,7 +520,20 @@ const StackNavigationData = [
     name: screens.chi_tiet_tai_san,
     component: QuanLyTaiSanDetailComponentScreen,
     headerLeft: headerLeftComponent,
-    headerRight: moreHeaderRightComponent,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.cap_nhat_tai_san,
+    component: CapnhatTaisanScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,

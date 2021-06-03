@@ -69,6 +69,11 @@ function CustomDrawerContent(props) {
     <View style={styles.container}>
       <ImageBackground source={require('../../../assets/images/background.png')} style={styles.backgroundImage}>
         <View style={styles.profile}>
+        {/* <Collapsible collapsed={!state[item.name]}>
+                <View style={{ flex: 20, paddingLeft: 30 }}>
+                  {handler(props, item.children)}
+                </View>
+              </Collapsible> */}
           <Icon
                       name='cog'
                       size={27}

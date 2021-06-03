@@ -14,8 +14,10 @@ import {
     FlatList,
     Alert,
     Platform,
+    ImageBackground,
     TouchableHighlight
  } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -27,7 +29,7 @@ import { createGetMethod, createPostMethodWithToken, createPostMultiFiles } from
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
 
-class TaomoiTaisanScreen extends React.Component {
+class UpdateTaisanScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -43,37 +45,43 @@ class TaomoiTaisanScreen extends React.Component {
             ngayHetBh: '',
             ngayHetSd: '',
             maSudung: '',
+            maSudungList: [],
             nhaCungcap: '',
             trichKhauhao: '',
             imageList: [],
+            loaiTSList: [],
+            nhaCCList: [],
         };
         this.chosenPicker = this.chosenPicker.bind(this)
     }
 
     componentDidMount() {
+        this.props.navigation.setOptions({headerRight: () => (
+          <TouchableOpacity
+            onPress={() => this.saveNewTaiSan()}
+            style={{
+                  paddingHorizontal: 16,
+                  paddingVertical: 12,
+                }
+                }
+          >
+            <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+              <Text style={{
+                        fontFamily: fonts.primaryRegular,
+                        color: colors.white,
+                        fontSize: 18,
+                        alignSelf: 'center'
+                    }}
+              > Lưu
+              </Text>
+
+            </View>
+          </TouchableOpacity>
+            )})
         Promise.all([
-            this.props.navigation.setOptions({headerRight: () => (
-              <TouchableOpacity
-                onPress={() => this.saveNewTaiSan()}
-                style={{
-                        paddingHorizontal: 16,
-                        paddingVertical: 12,
-                      }
-                      }
-              >
-                <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-                  <Text style={{
-                              fontFamily: fonts.primaryRegular,
-                              color: colors.white,
-                              fontSize: 18,
-                              alignSelf: 'center'
-                          }}
-                  > Lưu
-                  </Text>
-      
-                </View>
-              </TouchableOpacity>
-                  )}),
+            this.danhsachLoaiTS(this.props.LoaiTSData),
+            this.danhsachNhaCC(this.props.NhaCCData),
+            this.danhsachMaSD(this.props.MaSuDungData),
             this.getNguonKinhPhi()
         ]);
     }
@@ -83,8 +91,12 @@ class TaomoiTaisanScreen extends React.Component {
         createGetMethod(url)
             .then(res => {
                 if (res) {
+                    const list = res.result.map(e => ({
+                        label: e.displayName,
+                        value: e.id 
+                    }));
                     this.setState({
-                        nguonKinhphiList: res.result,
+                        nguonKinhphiList: list,
                     });
                 }
             })
@@ -98,6 +110,7 @@ class TaomoiTaisanScreen extends React.Component {
             compressImageMaxWidth: 400,
             multiple: true
         }).then(images => {
+            // console.log(images);
             if (images && images.length < 4) {
                 if (Platform.OS === 'ios') {
                     this.setState({
@@ -113,8 +126,6 @@ class TaomoiTaisanScreen extends React.Component {
                         imageList: images.map(e => ({
                             tenFile: e.path.split('/').pop(),
                             linkFile: e.path,
-                            path: e.path,
-                            mime: e.mime
                         }))
                     });
                 }
@@ -184,7 +195,7 @@ class TaomoiTaisanScreen extends React.Component {
                                 linkFile: getLinkFile(res, e.tenFile)
                             }));
                         const params  = {
-                            dropdownMultiple: maSudung[0],
+                            dropdownMultiple: maSudung,
                             ghiChu: "",
                             giaCuoiTS: "",
                             hangSanXuat: hangSx,
@@ -194,9 +205,9 @@ class TaomoiTaisanScreen extends React.Component {
                             ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                             hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
                             ngayMua: ngayMua && convertDateToIOSString(ngayMua),
-                            nguonKinhPhiId: nguonKinhphi[0],
+                            nguonKinhPhiId: nguonKinhphi,
                             nguyenGia,
-                            nhaCC: nhaCungcap[0],
+                            nhaCC: nhaCungcap,
                             noiDungChotGia: "",
                             productNumber: PN,
                             serialNumber: SN,
@@ -219,7 +230,7 @@ class TaomoiTaisanScreen extends React.Component {
                 });
             } else {
                 const params  = {
-                    dropdownMultiple: maSudung[0],
+                    dropdownMultiple: maSudung,
                     ghiChu: "",
                     giaCuoiTS: "",
                     hangSanXuat: hangSx,
@@ -229,9 +240,9 @@ class TaomoiTaisanScreen extends React.Component {
                     ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                     hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
                     ngayMua: ngayMua && convertDateToIOSString(ngayMua),
-                    nguonKinhPhiId: nguonKinhphi[0],
+                    nguonKinhPhiId: nguonKinhphi,
                     nguyenGia,
-                    nhaCC: nhaCungcap[0],
+                    nhaCC: nhaCungcap,
                     noiDungChotGia: "",
                     productNumber: PN,
                     serialNumber: SN,
@@ -260,6 +271,42 @@ class TaomoiTaisanScreen extends React.Component {
         navigation.goBack();
     }
 
+    danhsachMaSD(data) {
+        if (data) {
+            const list = data.map(e => ({
+                label: e.displayName,
+                value: e.id,
+            }));
+            this.setState({
+                maSudungList: list,
+            });
+        }
+    }
+
+    danhsachLoaiTS(data) {
+        if (data) {
+            const list = data.map(e => ({
+                label: e.text,
+                value: e.value,
+            }));
+            this.setState({
+                loaiTSList: list,
+            });
+        }
+    };
+
+    danhsachNhaCC(data) {
+        if (data) {
+            const list = data.map(e => ({
+                label: e.displayName,
+                value: e.id,
+            }));
+            this.setState({
+                nhaCCList: list,
+            });
+        }
+    };
+
     render() {
         const {
             scrollYValue,
@@ -270,10 +317,19 @@ class TaomoiTaisanScreen extends React.Component {
             ngayMua,
             ngayHetBh,
             ngayHetSd,
+            maSudungList,
             maSudung,
+            loaiTSList,
+            nhaCCList,
             nhaCungcap,
             nguonKinhphiList,
         } = this.state;
+        const placeholder = {
+            label: 'Chọn ...',
+            value: null,
+            color: '#9EA0A4',
+        };
+        const {item} = this.props.route.params;
         return (
           <Animated.View>
             <StatusBar barStyle="dark-content" />
@@ -302,7 +358,7 @@ class TaomoiTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>Tên tài sản*</Text>
                   <TextInput
                     placeholderTextColor="black"
-                    placeholder="Nhập tên tài sản"
+                    placeholder={item.tenTS}
                     style={styles.bordered}
                     onChangeText={(tenTS) => {
                                     this.setState({
@@ -319,7 +375,7 @@ class TaomoiTaisanScreen extends React.Component {
                     styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
                     uniqueKey="value"
                     displayKey="text"
-                    selectText="Chọn loại tài sản..."
+                    selectText={item.loaiTS}
                     onSelectedItemsChange={(item) => this.setState({
                                         loaiTaisan: item,
                                     })}
@@ -329,6 +385,7 @@ class TaomoiTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>S/N (Serial Number)</Text>
                   <TextInput
                     placeholderTextColor="black"
+                    placeholder={item.serialNumber}
                     style={styles.bordered}
                     onChangeText={(SN) => {
                                     this.setState({
@@ -339,6 +396,7 @@ class TaomoiTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>P/N (Product Number)</Text>
                   <TextInput
                     placeholderTextColor="black"
+                    placeholder={item.productNumber}
                     style={styles.bordered}
                     onChangeText={(PN) => {
                                     this.setState({
@@ -349,15 +407,15 @@ class TaomoiTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>Nhà cung cấp</Text>
                   <MultiSelect
                     single
-                    items={this.props.NhaCCData}
+                    items={nhaCCList}
                     IconRenderer={Icon}
                     searchInputPlaceholderText="Tìm kiếm..."
                     styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
-                    uniqueKey="id"
-                    displayKey="displayName"
-                    selectText="Chọn nhà cung cấp..."
+                    uniqueKey="value"
+                    displayKey="text"
+                    selectText={item.nhaCungCap}
                     onSelectedItemsChange={(item) => this.setState({
-                        nhaCungcap: item,
+                                        nhaCungcap: item,
                                     })}
                     selectedItems={nhaCungcap}
                   />
@@ -365,6 +423,7 @@ class TaomoiTaisanScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
+                    placeholder={item.productNumber}
                     onChangeText={(hangsx) => {
                                     this.setState({
                                         hangSx: hangsx,
@@ -374,6 +433,7 @@ class TaomoiTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>Nguyên giá (VND)</Text>
                   <TextInput
                     placeholderTextColor="black"
+                    placeholder={item.nguyenGia}
                     style={styles.bordered}
                     onChangeText={(price) => {
                                     this.setState({
@@ -384,7 +444,7 @@ class TaomoiTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>Ngày mua</Text>
                   <DatePicker
                     style={styles.datePickerStyle}
-                    date={ngayMua} // Initial date from state
+                    date={item.ngayMua} // Initial date from state
                     mode="date" // The enum of date, datetime and time
                     borderRadius='15'
                     placeholder="Chọn ngày"
@@ -499,34 +559,46 @@ class TaomoiTaisanScreen extends React.Component {
                                 }}
                   />
                   <Text style={styles.boldText}>Nguồn kinh phí</Text>
-                  <MultiSelect
-                    single
+                  <RNPickerSelect
+                    // placeholder={placeholder}
                     items={nguonKinhphiList}
-                    IconRenderer={Icon}
-                    searchInputPlaceholderText="Tìm kiếm..."
-                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
-                    uniqueKey="id"
-                    displayKey="displayName"
-                    selectText="Chọn nguồn kinh phí..."
-                    onSelectedItemsChange={(item) => this.setState({
-                        nguonKinhphi: item,
-                                    })}
-                    selectedItems={nguonKinhphi}
+                    onValueChange={value => {
+                                    this.setState({
+                                        nguonKinhphi: value,
+                                    });
+                                }}
+                    style={{
+                                    ...pickerSelectStyles,
+                                    iconContainer: {
+                                        top: 10,
+                                        right: 12,
+                                    },
+                                }}
+                    value={nguonKinhphi}
+                    useNativeAndroidPickerStyle={false}
+                    textInputProps={{ underlineColor: 'yellow' }}
+                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
                   />
                   <Text style={styles.boldText}>Mã sử dụng</Text>
-                  <MultiSelect
-                    single
-                    items={this.props.MaSuDungData}
-                    IconRenderer={Icon}
-                    searchInputPlaceholderText="Tìm kiếm..."
-                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
-                    uniqueKey="id"
-                    displayKey="displayName"
-                    selectText="Chọn mã sử dụng..."
-                    onSelectedItemsChange={(item) => this.setState({
-                        maSudung: item,
-                                    })}
-                    selectedItems={maSudung}
+                  <RNPickerSelect
+                    // placeholder={placeholder}
+                    items={maSudungList}
+                    onValueChange={(value) => {
+                                    this.setState({
+                                        maSudung: value,
+                                    });
+                                }}
+                    style={{
+                                    ...pickerSelectStyles,
+                                    iconContainer: {
+                                        top: 10,
+                                        right: 12,
+                                    },
+                                }}
+                    value={maSudung}
+                    useNativeAndroidPickerStyle={false}
+                    textInputProps={{ underlineColor: 'yellow' }}
+                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
                   />
                   <View style={styles.selectContainer}>
                     <Text style={styles.boldText}>Hình ảnh</Text>
@@ -549,9 +621,6 @@ class TaomoiTaisanScreen extends React.Component {
                                           style={{ width: 100, height: 100, borderRadius: 5 }}
                                         />
                                         <TouchableHighlight
-                                          style={{
-                                            alignItems: 'flex-end', top: 0, right: -8,  position: 'absolute', backgroundColor: 'transparent'
-                                        }}
                                           onPress={()=> {
                                               const newImages = [...imageList];
                                               newImages.splice(index, 1);
@@ -560,7 +629,7 @@ class TaomoiTaisanScreen extends React.Component {
                                               });
                                           }}
                                         >
-                                          <Icon name="times" color='#DC143C' size={28} />
+                                          <Icon style={{alignItems: 'flex-end', top: -11, right: -8,  position: 'absolute'}} name="times" color='#DC143C' size={28} />
                                         </TouchableHighlight>
                                       </View>
                                     )}
@@ -669,10 +738,35 @@ const styles = StyleSheet.create({
     }
 });
 
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        fontSize: 10,
+        // width: '100%',
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        color: 'black',
+        marginLeft: 5,
+        paddingRight: 30, // to ensure the text is never behind the icon
+    },
+    inputAndroid: {
+        fontSize: 16,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        borderWidth: 0.5,
+        borderColor: 'purple',
+        borderRadius: 8,
+        color: 'black',
+        paddingRight: 10, // to ensure the text is never behind the icon
+    },
+});
+
 const mapStateToProps = state => ({
     LoaiTSData: state.filterLTSDataReducer.ltsDataFilter,
     NhaCCData: state.filterNCCDataReducer.nccDataFilter,
     MaSuDungData: state.filterMSDDataReducer.msdDataFilter
 });
 
-export default connect(mapStateToProps)(TaomoiTaisanScreen);
+export default connect(mapStateToProps)(UpdateTaisanScreen);

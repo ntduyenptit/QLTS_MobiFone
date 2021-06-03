@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,10 +9,13 @@ import {
   Alert,
 } from 'react-native';
 import { SliderBox } from "react-native-image-slider-box";
-import { endPoint, imageBaseUrl } from '../../../api/config';
+import { endPoint, imageBaseUrl, screens, tabs } from '../../../api/config';
 import { deviceWidth } from '../../global/LoaderComponent';
 import { createGetMethod, deleteMethod } from '../../../api/Apis';
 import { convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import store from '../../../redux/store';
 
 const bullet = (title, text) => (
   <View style={styles.row}>
@@ -37,9 +40,118 @@ const bullet = (title, text) => (
 function QuanLyTaiSanDetailComponent({ navigation, route }) {
   const { paramKey, tabKey } = route.params;
   const [images, setImages] = useState([]);
+  console.log("tabkey: " + tabKey);
+  const menu = useRef();
+  const screen = store.getState().currentScreenReducer.screenName || store.getState().currentTabReducer.tabName;
+
+  function hideMenu() {
+    menu.current.hide();
+  }
+  function showMenu() {
+    menu.current.show();
+  }
   useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => showMenu()}
+        >
+          <View style={styles.containerMenu}>
+            <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
+              <MenuItem onPress={() => { capnhat() }} >Cập nhật</MenuItem>
+              <MenuDivider />
+            </Menu>
+          </View>
+        </TouchableOpacity>
+      )
+    })
     getAssetMoreInfo(paramKey.id);
   }, []);
+
+  function capnhat(tabKey) {
+    hideMenu();
+    navigation.navigate(screens.cap_nhat_tai_san, { paramKey: paramKey });
+  }
+  function hoantac(tabKey, id) {
+    hideMenu();
+  }
+  function khaibaosudung(id) {
+    hideMenu();
+  }
+  function capphat(id) {
+    hideMenu();
+  }
+  function dieuchuyen(id) {
+    hideMenu();
+  }
+  function thuhoi(id) {
+    hideMenu();
+  }
+  function thanhcong(id) {
+    hideMenu();
+  }
+  function khongthanhcong(id) {
+    hideMenu();
+  }
+  function menuforTab(tabKey) {
+    switch (tabKey) {
+      case tabs.toan_bo_tai_san:
+        return <View style={styles.containerMenu}>
+          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
+            <MenuItem onPress={capnhat(tabKey)}>Cập nhật</MenuItem>
+            <MenuDivider />
+          </Menu>
+        </View>
+      case tabs.tai_san_mat:
+      case tabs.tai_san_huy:
+      case tabs.tai_san_hong:
+      case tabs.tai_san_thanh_ly:
+        return <View style={styles.containerMenu}>
+          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
+            <MenuItem onPress={hoantac(tabKey, paramKey.id)}>Hoàn tác</MenuItem>
+            <MenuDivider />
+          </Menu>
+        </View>
+
+      case tabs.tai_san_chua_su_dung:
+        return <View style={styles.containerMenu}>
+          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
+            <MenuItem onPress={capnhat(tabKey, paramKey.id)}>Cập nhật</MenuItem>
+            <MenuDivider />
+            <MenuItem >Khai báo sử dụng</MenuItem>
+            <MenuDivider />
+            <MenuItem >Cấp phát</MenuItem>
+
+          </Menu>
+        </View>
+      case tabs.tai_san_dang_su_dung:
+        return <View style={styles.containerMenu}>
+          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
+            <MenuItem onPress={capnhat(tabKey, paramKey.id)}>Cập nhật</MenuItem>
+            <MenuDivider />
+            <MenuItem >Điều chuyển</MenuItem>
+            <MenuDivider />
+            <MenuItem >Thu hồi</MenuItem>
+          </Menu>
+        </View>
+
+      case tabs.tai_san_sua_chua_bao_duong:
+        return <View style={styles.containerMenu}>
+          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
+            <MenuItem >Thành công</MenuItem>
+            <MenuDivider />
+            <MenuItem>Không thành công</MenuItem>
+            <MenuDivider />
+            <MenuItem >Hoàn tác</MenuItem>
+          </Menu>
+        </View>
+      case tabs.bao_hong_mat_tai_san:
+        return null;
+      default:
+        break;
+    }
+  }
+
 
   function getAssetMoreInfo(id) {
     let url = `${endPoint.GetTaiSan}?`;
@@ -52,7 +164,9 @@ function QuanLyTaiSanDetailComponent({ navigation, route }) {
       }
     });
   }
+  function setMoreMenu(tabKey) {
 
+  }
   function deleteThisAsset(id) {
     Alert.alert('Bạn có chắc chắn muốn xóa không?',
       '',
@@ -147,6 +261,13 @@ function QuanLyTaiSanDetailComponent({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  containerMenu: {
+    flex: 1,
+    alignItems: 'center',
+    margin: 10,
+    marginRight: 15,
+    justifyContent: 'center',
   },
   productImg: {
     justifyContent: 'center',
