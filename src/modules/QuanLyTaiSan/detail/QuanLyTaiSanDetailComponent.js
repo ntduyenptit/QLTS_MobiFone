@@ -16,27 +16,9 @@ import { createGetMethod, deleteMethod } from '../../../api/Apis';
 import { addYearToDate, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import BulletView from '@app/modules/global/BulletView';
 
 let idTaisan = null;
-const bullet = (title, text) => (
-  <View style={styles.row}>
-    <View style={styles.bullet}>
-      <Text>{'\u2022' + " "}</Text>
-    </View>
-    <View style={styles.bulletText}>
-      <Text styles={styles.text}>
-        <Text style={styles.boldText}>{`${title}: `}</Text>
-        {/* <Text style={styles.normalText}>{text}</Text> */}
-      </Text>
-    </View>
-    <View style={styles.bulletTextNormal}>
-      <Text styles={styles.text}>
-        {/* <Text style={styles.boldText}>{`${title}: `}</Text> */}
-        <Text style={styles.normalText}>{text}</Text>
-      </Text>
-    </View>
-  </View>
-);
 
 class QuanLyTaiSanDetailComponent extends React.PureComponent {
   constructor(props) {
@@ -170,30 +152,28 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
           <View style={{ marginHorizontal: 30 }}>
             <Text style={styles.title}>Thông tin {convertTextToLowerCase(tabKey)}:</Text>
             {/* Mã tài sản */}
-            {bullet('Mã tài sản', paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
+            <BulletView title = "Mã tài sản"  text = {paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode} />
             {/* Tên tài sản */}
-            {bullet('Tên tài sản', taisan.tenTS ? taisan.tenTS : taisan.tenTaiSan)}
+            <BulletView title = 'Tên tài sản' text = { taisan.tenTS ? taisan.tenTS : taisan.tenTaiSan} />
             {/* Loại tài sản */}
-            {bullet('S/N (Serial Number)', taisan.serialNumber)}
-            {bullet('P/N (Product Number)', taisan.productNumber)}
-            {bullet('Nhà cung cấp', taisan.nhaCC)}
-            {bullet('Hãng sản xuất', taisan.hangSanXuat)}
-            {bullet('Loại tài sản', taisan.loaiTS ? taisan.loaiTS : taisan.loaiTaiSan)}
+            <BulletView title = 'S/N (Serial Number)' text = { taisan.serialNumber} />
+            <BulletView title = 'P/N (Product Number)' text = { taisan.productNumber} />
+            <BulletView title = 'Nhà cung cấp' text = { taisan.nhaCC} />
+            <BulletView title = 'Hãng sản xuất' text = { taisan.hangSanXuat} />
+            <BulletView title = 'Loại tài sản' text = { taisan.loaiTS ? taisan.loaiTS : taisan.loaiTaiSan} />
             {/* Phòng ban quản lý */}
-            {bullet('Phòng ban quản lý', paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy)}
+            <BulletView title = 'Phòng ban quản lý' text = { paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy} />
+            <BulletView title = 'Vị trí tài sản' text = { paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan} />
             {/* Vị trí tài sản */}
-            {bullet('Vị trí tài sản', paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan)}
-            {/* Trạng thái */}
-            {bullet('Trạng thái', paramKey.trangThai)}
-            {/* Ngày mua */}
-            {bullet('Ngày mua', taisan.ngayMua && convertTimeFormatToLocaleDate(taisan.ngayMua))}
-            {bullet('Nguyên giá', taisan.nguyenGia)}
-            {bullet('Ngày hết hạn bảo hành', taisan.ngayBaoHanh && convertTimeFormatToLocaleDate(taisan.ngayBaoHanh))}
-            {bullet('Ngày hết hạn sử dụng', taisan.hanSD )}
-            {bullet('Thời gian trích khấu hao', taisan.thoiGianChietKhauHao)}
-            {bullet('Thời gian hết khấu hao',taisan.ngayMua && taisan.thoiGianChietKhauHao && addYearToDate(taisan.ngayMua, taisan.thoiGianChietKhauHao) )}
-            {bullet('Nguồn kinh phí', taisan.nguonKinhPhiId)}
-            {bullet('Mã dử dụng', taisan.dropdownMultiple )}
+            <BulletView title = 'Trạng thái' text = { paramKey.trangThai} />
+            <BulletView title = 'Ngày mua' text = { taisan.ngayMua && convertTimeFormatToLocaleDate(taisan.ngayMua)} />
+            <BulletView title = 'Nguyên giá' text = { taisan.nguyenGia} />
+            <BulletView title = 'Ngày hết hạn bảo hành' text = { taisan.ngayBaoHanh && convertTimeFormatToLocaleDate(taisan.ngayBaoHanh)} />
+            <BulletView title = 'Ngày hết hạn sử dụng' text = { taisan.hanSD && convertTimeFormatToLocaleDate(taisan.hanSD)} />
+            <BulletView title = 'Thời gian trích khấu hao' text = { taisan.thoiGianChietKhauHao} />
+            <BulletView title = 'Thời gian hết khấu hao' text = { taisan.ngayMua && taisan.thoiGianChietKhauHao && addYearToDate(taisan.ngayMua, taisan.thoiGianChietKhauHao) } />
+            <BulletView title = 'Nguồn kinh phí' text = { taisan.nguonKinhPhiId} />
+            <BulletView title = 'Mã dử dụng' text = { taisan.dropdownMultiple} />
             
           </View>
         </View>
