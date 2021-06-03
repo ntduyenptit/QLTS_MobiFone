@@ -39,26 +39,26 @@ class ThemmoiDaudocScreen extends React.Component {
         this.props.navigation.setOptions({
             title: tab,
             headerRight: () => (
-                <TouchableOpacity
-                    onPress={() => this.saveNewReader()}
-                    style={{
+              <TouchableOpacity
+                onPress={() => this.saveNewReader()}
+                style={{
                         paddingHorizontal: 16,
                         paddingVertical: 12,
                     }
                     }
-                >
-                    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-                        <Text style={{
+              >
+                <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                  <Text style={{
                             fontFamily: fonts.primaryRegular,
                             color: colors.white,
                             fontSize: 18,
                             alignSelf: 'center'
                         }}
-                        > Lưu
+                  > Lưu
                   </Text>
 
-                    </View>
-                </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
             )
         })
         this.danhsachNhaCC(this.props.NhaCCData);
@@ -101,12 +101,14 @@ class ThemmoiDaudocScreen extends React.Component {
                     check = true;
                     break;
                 }
+                default:
+                    break;
 
         }
         if (check) {
             Alert.alert(
                 '',
-                'Hãy nhập ' + s,
+                `Hãy nhập ${  s}`,
                 [
                     { text: 'OK', style: "cancel" },
                 ],
@@ -119,33 +121,33 @@ class ThemmoiDaudocScreen extends React.Component {
         if (tab === 'Thêm mới đầu đọc di động') {
             url = `${endPoint.creatReaderdidong}`;
             params = {
-                ghiChu: ghiChu,
+                ghiChu,
                 hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
                 hangSanXuat: hangSx,
                 loaiTS: loaiTaisanId,
                 ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                 ngayMua: ngayMua && convertDateToIOSString(ngayMua),
-                nguyenGia: nguyenGia,
+                nguyenGia,
                 nhaCC: nhaCungcap,
                 productNumber: PN,
                 serialNumber: SN,
-                tenTS: tenTS,
+                tenTS,
             }
         } else {
             url = `${endPoint.creatReadercodinh}`;
             params = {
-                ghiChu: ghiChu,
+                ghiChu,
                 hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
                 hangSanXuat: hangSx,
                 loaiTS: loaiTaisanId,
                 ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                 ngayMua: ngayMua && convertDateToIOSString(ngayMua),
-                nguyenGia: nguyenGia,
+                nguyenGia,
                 nhaCC: nhaCungcap,
                 productNumber: PN,
                 readerMACId: ReaderMACId,
                 serialNumber: SN,
-                tenTS: tenTS,
+                tenTS,
             }
         }
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
@@ -162,6 +164,7 @@ class ThemmoiDaudocScreen extends React.Component {
             }
         })
     }
+
     danhsachNhaCC(data) {
 
         if (data) {
@@ -173,7 +176,7 @@ class ThemmoiDaudocScreen extends React.Component {
                 nhaCCList: list,
             });
         } else {
-            //get danh sach nha cc
+            // get danh sach nha cc
         }
     }
 
@@ -200,23 +203,22 @@ class ThemmoiDaudocScreen extends React.Component {
     }
 
     renderReaderMACView() {
-
         if (tab === 'Thêm mới đầu đọc di động') {
             return null;
         }
         return (
-            <View>
-                <Text style={styles.boldText}>ReaderMACId*</Text>
-                <TextInput
-                    placeholderTextColor="black"
-                    style={styles.bordered}
-                    onChangeText={(text) => {
+          <View>
+            <Text style={styles.boldText}>ReaderMACId*</Text>
+            <TextInput
+              placeholderTextColor="black"
+              style={styles.bordered}
+              onChangeText={(text) => {
                         this.setState({
                             ReaderMACId: text,
                         });
                     }}
-                />
-            </View>
+            />
+          </View>
         )
     }
 
@@ -235,104 +237,117 @@ class ThemmoiDaudocScreen extends React.Component {
         };
         const { screen } = this.props.route.params;
         tab = screen;
-        console.log(`screen: ${screen}`);
         return (
-            <Animated.View>
-                <StatusBar barStyle="dark-content" />
-                <SafeAreaView>
-                    <Animated.ScrollView>
-                        <View style={styles.container}>
-                            <Text style={styles.boldText}>Tên đầu đọc*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(years) => {
+          <Animated.View>
+            <StatusBar barStyle="dark-content" />
+            <SafeAreaView>
+              <Animated.ScrollView>
+                <View style={styles.container}>
+                  <Text style={styles.boldText}>Tên đầu đọc*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(years) => {
                                     this.setState({
                                         tenTS: years,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Loại tài sản*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                placeholder={loaiTaisan}
-                                editable={false}
-                                selectTextOnFocus={false}
-                            />
+                  />
+                  <Text style={styles.boldText}>Loại tài sản*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    placeholder={loaiTaisan}
+                    editable={false}
+                    selectTextOnFocus={false}
+                  />
 
-                            <Text style={styles.boldText}>S/N (Serial Number)</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(years) => {
+                  <Text style={styles.boldText}>S/N (Serial Number)</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(years) => {
                                     this.setState({
                                         SN: years,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>P/N (Product Number)</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(years) => {
+                  />
+                  <Text style={styles.boldText}>P/N (Product Number)</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(years) => {
                                     this.setState({
                                         PN: years,
                                     });
                                 }}
-                            />
-                            {this.renderReaderMACView()}
-                            <Text style={styles.boldText}>Nhà cung cấp</Text>
-                            <RNPickerSelect
-                                items={nhaCCList}
-                                onValueChange={value => {
+                  />
+                  {this.renderReaderMACView()}
+                  <Text style={styles.boldText}>Nhà cung cấp</Text>
+                  <MultiSelect
+                    single
+                    items={this.props.MaSuDungData}
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText="Chọn mã sử dụng..."
+                    onSelectedItemsChange={(item) => this.setState({
+                        maSudung: item,
+                                    })}
+                    selectedItems={maSudung}
+                  />
+                  <RNPickerSelect
+                    items={nhaCCList}
+                    onValueChange={value => {
                                     this.setState({
                                         nhaCungcap: value,
                                     });
                                 }}
-                                style={{
+                    style={{
                                     ...pickerSelectStyles,
                                     iconContainer: {
                                         top: 10,
                                         right: 12,
                                     },
                                 }}
-                                value={this.state.nhaCungcap}
-                                useNativeAndroidPickerStyle={false}
-                                textInputProps={{ underlineColor: 'yellow' }}
-                                Icon={() => <Icon name="caret-down" size={25} color="black" />}
-                            />
-                            <Text style={styles.boldText}>Hãng sản xuất</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(years) => {
+                    value={this.state.nhaCungcap}
+                    useNativeAndroidPickerStyle={false}
+                    textInputProps={{ underlineColor: 'yellow' }}
+                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                  />
+                  <Text style={styles.boldText}>Hãng sản xuất</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(years) => {
                                     this.setState({
                                         hangSx: years,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Nguyên giá (VND)</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(years) => {
+                  />
+                  <Text style={styles.boldText}>Nguyên giá (VND)</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(years) => {
                                     this.setState({
                                         nguyenGia: years,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Ngày mua</Text>
-                            <DatePicker
-                                style={styles.datePickerStyle}
-                                date={ngayMua} // Initial date from state
-                                mode="date" // The enum of date, datetime and time
-                                borderRadius='15'
-                                placeholder="Chọn ngày"
-                                format="DD-MM-YYYY"
-                                confirmBtnText="Chọn"
-                                cancelBtnText="Thoát"
-                                customStyles={{
+                  />
+                  <Text style={styles.boldText}>Ngày mua</Text>
+                  <DatePicker
+                    style={styles.datePickerStyle}
+                    date={ngayMua} // Initial date from state
+                    mode="date" // The enum of date, datetime and time
+                    borderRadius='15'
+                    placeholder="Chọn ngày"
+                    format="DD-MM-YYYY"
+                    confirmBtnText="Chọn"
+                    cancelBtnText="Thoát"
+                    customStyles={{
                                     dateIcon: {
                                         // display: 'none',
                                         position: 'absolute',
@@ -344,23 +359,23 @@ class ThemmoiDaudocScreen extends React.Component {
                                         marginLeft: 5,
                                     },
                                 }}
-                                onDateChange={(date) => {
+                    onDateChange={(date) => {
                                     this.setState({
                                         ngayMua: date,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Ngày hết hạn bảo hành</Text>
-                            <DatePicker
-                                style={styles.datePickerStyle}
-                                date={ngayHetBh} // Initial date from state
-                                mode="date" // The enum of date, datetime and time
-                                borderRadius='15'
-                                placeholder="Chọn ngày"
-                                format="DD-MM-YYYY"
-                                confirmBtnText="Chọn"
-                                cancelBtnText="Thoát"
-                                customStyles={{
+                  />
+                  <Text style={styles.boldText}>Ngày hết hạn bảo hành</Text>
+                  <DatePicker
+                    style={styles.datePickerStyle}
+                    date={ngayHetBh} // Initial date from state
+                    mode="date" // The enum of date, datetime and time
+                    borderRadius='15'
+                    placeholder="Chọn ngày"
+                    format="DD-MM-YYYY"
+                    confirmBtnText="Chọn"
+                    cancelBtnText="Thoát"
+                    customStyles={{
                                     dateIcon: {
                                         // display: 'none',
                                         position: 'absolute',
@@ -372,23 +387,23 @@ class ThemmoiDaudocScreen extends React.Component {
                                         marginLeft: 5,
                                     },
                                 }}
-                                onDateChange={(date) => {
+                    onDateChange={(date) => {
                                     this.setState({
                                         ngayHetBh: date,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Ngày hết hạn sử dụng</Text>
-                            <DatePicker
-                                style={styles.datePickerStyle}
-                                date={ngayHetSd} // Initial date from state
-                                mode="date" // The enum of date, datetime and time
-                                borderRadius='15'
-                                placeholder="Chọn ngày"
-                                format="DD-MM-YYYY"
-                                confirmBtnText="Chọn"
-                                cancelBtnText="Thoát"
-                                customStyles={{
+                  />
+                  <Text style={styles.boldText}>Ngày hết hạn sử dụng</Text>
+                  <DatePicker
+                    style={styles.datePickerStyle}
+                    date={ngayHetSd} // Initial date from state
+                    mode="date" // The enum of date, datetime and time
+                    borderRadius='15'
+                    placeholder="Chọn ngày"
+                    format="DD-MM-YYYY"
+                    confirmBtnText="Chọn"
+                    cancelBtnText="Thoát"
+                    customStyles={{
                                     dateIcon: {
                                         // display: 'none',
                                         position: 'absolute',
@@ -400,28 +415,28 @@ class ThemmoiDaudocScreen extends React.Component {
                                         marginLeft: 5,
                                     },
                                 }}
-                                onDateChange={(date) => {
+                    onDateChange={(date) => {
                                     this.setState({
                                         ngayHetSd: date,
                                     });
                                 }}
-                            />
+                  />
 
-                            <Text style={styles.boldText}>Ghi chú</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={[styles.bordered, { height: 100 }]}
-                                onChangeText={(text) => {
+                  <Text style={styles.boldText}>Ghi chú</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={[styles.bordered, { height: 100 }]}
+                    onChangeText={(text) => {
                                     this.setState({
                                         ghiChu: text,
                                     });
                                 }}
-                            />
-                        </View>
-                    </Animated.ScrollView>
-                </SafeAreaView>
+                  />
+                </View>
+              </Animated.ScrollView>
+            </SafeAreaView>
 
-            </Animated.View>
+          </Animated.View>
         );
     }
 

@@ -10,11 +10,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { connect } from "react-redux";
 import find from 'lodash/find';
-import { chieuDiChuyen, phanLoaiTaiSan, screens } from '../../../api/config';
-import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
-import { filterType } from '../../global/Config';
-import { buildTree , getPeriod } from '../../global/Helper';
-import { deviceWidth } from '../../global/LoaderComponent';
+import { chieuDiChuyen, phanLoaiTaiSan, screens } from '@app/api/config';
+import { filterType } from '@app/global/Config';
+import MultiSelect from '@app/libs/react-native-multiple-select/lib/react-native-multi-select';
+import { buildTree , getPeriod } from '@app/global/Helper';
+import { deviceWidth } from '@app/global/LoaderComponent';
 import {
     addSelectedStartDateAction,
     addSelectedEndDateAction,

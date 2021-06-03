@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, Modal, Dimensions } from 'react-native';
-import { endPoint, screens } from '../../api/config';
-import { createPostMethodWithoutToken } from '../../api/Apis'
+import { endPoint, screens } from '@app/api/config';
+import { createPostMethodWithoutToken } from '@app/api/Apis'
 import save from '../../localStorage/saveLogin';
 
 const deviceWidth = Dimensions.get("window").width;
