@@ -4,11 +4,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { tabs, screens } from '@app/api/config';
 import PieChartView from './PieChartView';
 import LineChartView from './LineChartView';
-import { getDVQLDataFilter } from '../global/FilterApis'
-import { getDVQLDataAction } from '../../redux/actions/filter.actions';
-import { store } from '../../redux/store';
-import { currentDate, getDateFromLastMonth, getPercent, getDates, convertFormatDate } from '../global/Helper';
-import { getGSTSDashboard, GetToanBoTaiSanData } from '../global/GlobalApis';
+import { getDVQLDataFilter } from '@app/modules/global/FilterApis'
+import { getDVQLDataAction } from '@app/redux/actions/filter.actions';
+import { store } from '@app/redux/store';
+import { currentDate, getDateFromLastMonth, getPercent, getDates, convertFormatDate } from '@app/modules/global/Helper';
+import { getGSTSDashboard, GetToanBoTaiSanData } from '@app/modules/global/GlobalApis';
 
 class DashBoard extends React.Component {
   constructor(props) {

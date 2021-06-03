@@ -8,25 +8,8 @@ import {
 } from 'react-native';
 import { createGetMethod, deleteMethod } from '../../api/Apis';
 import { endPoint } from '../../api/config';
+import BulletView from '@app/modules/global/BulletView';
 const deviceWidth = Dimensions.get("window").width;
-
-const bullet = (title, text) => (
-  <View style={styles.row}>
-    <View style={styles.bullet}>
-      <Text>{'\u2022' + " "}</Text>
-    </View>
-    <View style={styles.bulletText}>
-      <Text styles={styles.text}>
-        <Text style={styles.boldText}>{`${title}: `}</Text>
-      </Text>
-    </View>
-    <View style={styles.bulletTextNormal}>
-      <Text styles={styles.text}>
-        <Text style={styles.normalText}>{text}</Text>
-      </Text>
-    </View>
-  </View>
-);
 
 export default class QuanLyMuasamDetail extends React.Component {
   constructor(props) {
@@ -113,10 +96,10 @@ export default class QuanLyMuasamDetail extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Thông tin Phiếu dự trù mua sắm:</Text>
-        {bullet('Mã phiếu', chitietPhieuMuasam.maPhieu)}
-        {bullet('Tên phiếu', chitietPhieuMuasam.tenPhieu)}
-        {bullet('Đơn vị', chitietPhieuMuasam.toChucId)}
-        {bullet('Người lập phiếu', chitietPhieuMuasam.nguoiLapPhieuId)}
+        {BulletView('Mã phiếu', chitietPhieuMuasam.maPhieu)}
+        {BulletView('Tên phiếu', chitietPhieuMuasam.tenPhieu)}
+        {BulletView('Đơn vị', chitietPhieuMuasam.toChucId)}
+        {BulletView('Người lập phiếu', chitietPhieuMuasam.nguoiLapPhieuId)}
         <Text style={styles.title}>Danh sách tài sản đề xuất mua sắm</Text>
         <ScrollView style={{ height: 'auto', padding: 10 }}>
           <FlatList
@@ -141,29 +124,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: deviceWidth,
-    paddingBottom: 5,
-    paddingLeft: 10
-  },
   title: {
     paddingBottom: 10,
     paddingTop: 15,
     alignSelf: 'center',
     fontSize: 18,
     fontStyle: 'italic'
-  },
-  bullet: {
-    width: 15
-  },
-  bulletText: {
-    flex: 1,
-    paddingRight: 5
-  },
-  bulletTextNormal: {
-    flex: 2
   },
   boldText: {
     fontWeight: 'bold',

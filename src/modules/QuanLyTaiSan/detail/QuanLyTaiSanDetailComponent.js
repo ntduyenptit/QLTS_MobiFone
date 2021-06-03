@@ -9,38 +9,20 @@ import {
   Alert,
 } from 'react-native';
 import { SliderBox } from "react-native-image-slider-box";
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import BulletView from '@app/modules/global/BulletView';
 import { endPoint, imageBaseUrl, screens, tabs } from '../../../api/config';
 import { deviceWidth } from '../../global/LoaderComponent';
 import { createGetMethod, deleteMethod } from '../../../api/Apis';
 import { convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import store from '../../../redux/store';
 
-const bullet = (title, text) => (
-  <View style={styles.row}>
-    <View style={styles.bullet}>
-      <Text>{'\u2022' + " "}</Text>
-    </View>
-    <View style={styles.bulletText}>
-      <Text styles={styles.text}>
-        <Text style={styles.boldText}>{`${title}: `}</Text>
-        {/* <Text style={styles.normalText}>{text}</Text> */}
-      </Text>
-    </View>
-    <View style={styles.bulletTextNormal}>
-      <Text styles={styles.text}>
-        {/* <Text style={styles.boldText}>{`${title}: `}</Text> */}
-        <Text style={styles.normalText}>{text}</Text>
-      </Text>
-    </View>
-  </View>
-);
 
 function QuanLyTaiSanDetailComponent({ navigation, route }) {
   const { paramKey, tabKey } = route.params;
   const [images, setImages] = useState([]);
-  console.log("tabkey: " + tabKey);
+  console.log(`tabkey: ${  tabKey}`);
   const menu = useRef();
   const screen = store.getState().currentScreenReducer.screenName || store.getState().currentTabReducer.tabName;
 
@@ -58,7 +40,7 @@ function QuanLyTaiSanDetailComponent({ navigation, route }) {
         >
           <View style={styles.containerMenu}>
             <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-              <MenuItem onPress={() => { capnhat() }} >Cập nhật</MenuItem>
+              <MenuItem onPress={() => { capnhat() }}>Cập nhật</MenuItem>
               <MenuDivider />
             </Menu>
           </View>
@@ -70,7 +52,7 @@ function QuanLyTaiSanDetailComponent({ navigation, route }) {
 
   function capnhat(tabKey) {
     hideMenu();
-    navigation.navigate(screens.cap_nhat_tai_san, { paramKey: paramKey });
+    navigation.navigate(screens.cap_nhat_tai_san, { paramKey });
   }
   function hoantac(tabKey, id) {
     hideMenu();
@@ -96,55 +78,65 @@ function QuanLyTaiSanDetailComponent({ navigation, route }) {
   function menuforTab(tabKey) {
     switch (tabKey) {
       case tabs.toan_bo_tai_san:
-        return <View style={styles.containerMenu}>
-          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={capnhat(tabKey)}>Cập nhật</MenuItem>
-            <MenuDivider />
-          </Menu>
-        </View>
+        return (
+          <View style={styles.containerMenu}>
+            <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
+              <MenuItem onPress={capnhat(tabKey)}>Cập nhật</MenuItem>
+              <MenuDivider />
+            </Menu>
+          </View>
+)
       case tabs.tai_san_mat:
       case tabs.tai_san_huy:
       case tabs.tai_san_hong:
       case tabs.tai_san_thanh_ly:
-        return <View style={styles.containerMenu}>
-          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={hoantac(tabKey, paramKey.id)}>Hoàn tác</MenuItem>
-            <MenuDivider />
-          </Menu>
-        </View>
+        return (
+          <View style={styles.containerMenu}>
+            <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
+              <MenuItem onPress={hoantac(tabKey, paramKey.id)}>Hoàn tác</MenuItem>
+              <MenuDivider />
+            </Menu>
+          </View>
+)
 
       case tabs.tai_san_chua_su_dung:
-        return <View style={styles.containerMenu}>
-          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={capnhat(tabKey, paramKey.id)}>Cập nhật</MenuItem>
-            <MenuDivider />
-            <MenuItem >Khai báo sử dụng</MenuItem>
-            <MenuDivider />
-            <MenuItem >Cấp phát</MenuItem>
+        return (
+          <View style={styles.containerMenu}>
+            <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
+              <MenuItem onPress={capnhat(tabKey, paramKey.id)}>Cập nhật</MenuItem>
+              <MenuDivider />
+              <MenuItem>Khai báo sử dụng</MenuItem>
+              <MenuDivider />
+              <MenuItem>Cấp phát</MenuItem>
 
-          </Menu>
-        </View>
+            </Menu>
+          </View>
+)
       case tabs.tai_san_dang_su_dung:
-        return <View style={styles.containerMenu}>
-          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={capnhat(tabKey, paramKey.id)}>Cập nhật</MenuItem>
-            <MenuDivider />
-            <MenuItem >Điều chuyển</MenuItem>
-            <MenuDivider />
-            <MenuItem >Thu hồi</MenuItem>
-          </Menu>
-        </View>
+        return (
+          <View style={styles.containerMenu}>
+            <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
+              <MenuItem onPress={capnhat(tabKey, paramKey.id)}>Cập nhật</MenuItem>
+              <MenuDivider />
+              <MenuItem>Điều chuyển</MenuItem>
+              <MenuDivider />
+              <MenuItem>Thu hồi</MenuItem>
+            </Menu>
+          </View>
+)
 
       case tabs.tai_san_sua_chua_bao_duong:
-        return <View style={styles.containerMenu}>
-          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem >Thành công</MenuItem>
-            <MenuDivider />
-            <MenuItem>Không thành công</MenuItem>
-            <MenuDivider />
-            <MenuItem >Hoàn tác</MenuItem>
-          </Menu>
-        </View>
+        return (
+          <View style={styles.containerMenu}>
+            <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
+              <MenuItem>Thành công</MenuItem>
+              <MenuDivider />
+              <MenuItem>Không thành công</MenuItem>
+              <MenuDivider />
+              <MenuItem>Hoàn tác</MenuItem>
+            </Menu>
+          </View>
+)
       case tabs.bao_hong_mat_tai_san:
         return null;
       default:
@@ -227,20 +219,20 @@ function QuanLyTaiSanDetailComponent({ navigation, route }) {
           <View style={{ marginHorizontal: 30 }}>
             <Text style={styles.title}>Thông tin {convertTextToLowerCase(tabKey)}:</Text>
             {/* Mã tài sản */}
-            {bullet('Mã tài sản', paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
+            {BulletView('Mã tài sản', paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
             {/* Tên tài sản */}
-            {bullet('Tên tài sản', paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan)}
+            {BulletView('Tên tài sản', paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan)}
             {/* Loại tài sản */}
-            {bullet('Loại tài sản', paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan)}
+            {BulletView('Loại tài sản', paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan)}
             {/* Phòng ban quản lý */}
-            {bullet('Phòng ban quản lý', paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy)}
+            {BulletView('Phòng ban quản lý', paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy)}
             {/* Vị trí tài sản */}
-            {bullet('Vị trí tài sản', paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan)}
+            {BulletView('Vị trí tài sản', paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan)}
             {/* Trạng thái */}
-            {bullet('Trạng thái', paramKey.trangThai)}
+            {BulletView('Trạng thái', paramKey.trangThai)}
             {/* Ngày mua */}
-            {bullet('Ngày mua', paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua))}
-            {bullet('Nguyên giá', paramKey.nguyenGia)}
+            {BulletView('Ngày mua', paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua))}
+            {BulletView('Nguyên giá', paramKey.nguyenGia)}
           </View>
         </View>
 
@@ -284,16 +276,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     fontSize: 18,
     fontStyle: 'italic'
-  },
-  bullet: {
-    width: 10
-  },
-  bulletText: {
-    flex: 0.8,
-    paddingRight: 5
-  },
-  bulletTextNormal: {
-    flex: 2
   },
   boldText: {
     fontWeight: 'bold',

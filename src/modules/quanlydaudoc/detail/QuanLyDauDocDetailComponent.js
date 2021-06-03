@@ -8,35 +8,16 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+import BulletView from '@app/modules/global/BulletView';
 import { deviceWidth } from '../../global/LoaderComponent';
-import { convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
+import { convertTimeFormatToLocaleDate } from '../../global/Helper';
 import { deleteMethod } from '../../../api/Apis';
 import { endPoint } from '../../../api/config';
-
-const bullet = (title, text) => (
-  <View style={styles.row}>
-    <View style={styles.bullet}>
-      <Text>{'\u2022' + " "}</Text>
-    </View>
-    <View style={styles.bulletText}>
-      <Text styles={styles.text}>
-        <Text style={styles.boldText}>{`${title}: `}</Text>
-        {/* <Text style={styles.normalText}>{text}</Text> */}
-      </Text>
-    </View>
-    <View style={styles.bulletTextNormal}>
-      <Text styles={styles.text}>
-        {/* <Text style={styles.boldText}>{`${title}: `}</Text> */}
-        <Text style={styles.normalText}>{text}</Text>
-      </Text>
-    </View>
-  </View>
-);
 
 function QuanLyDauDocDetailComponent({ navigation, route }) {
   const { paramKey, tabKey } = route.params;
   
-  function deleteThisAsset(id) {
+  function deleteThisAsset() {
     Alert.alert('Bạn có chắc chắn muốn xóa không?',
       '',
       [
@@ -68,22 +49,22 @@ function QuanLyDauDocDetailComponent({ navigation, route }) {
     <View style={styles.container}>
       <ScrollView>
         <View style={{ alignItems: 'flex-start', marginHorizontal: 30 }}>
-          <Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} style={styles.iconImage} />
+          <Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} />
           <Text style={styles.title}>Thông tin đầu đọc:</Text>
           {/* Mã tài sản */}
-          {bullet('Mã tài sản', paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
+          {BulletView('Mã tài sản', paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
           {/* Tên tài sản */}
-          {bullet('Tên tài sản', paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan)}
+          {BulletView('Tên tài sản', paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan)}
           {/* Loại tài sản */}
-          {bullet('Loại tài sản', paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan)}
+          {BulletView('Loại tài sản', paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan)}
           {/* Phòng ban quản lý */}
-          {bullet('Phòng ban quản lý', paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy)}
+          {BulletView('Phòng ban quản lý', paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy)}
           {/* Vị trí tài sản */}
-          {bullet('Vị trí tài sản', paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan)}
+          {BulletView('Vị trí tài sản', paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan)}
           {/* Trạng thái */}
-          {bullet('Trạng thái', paramKey.trangThai)}
+          {BulletView('Trạng thái', paramKey.trangThai)}
           {/* Ngày mua */}
-          {bullet('Ngày mua', paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua))}
+          {BulletView('Ngày mua', paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua))}
         </View>
 
       </ScrollView>
@@ -91,7 +72,8 @@ function QuanLyDauDocDetailComponent({ navigation, route }) {
       <View style={styles.addToCarContainer}>
         <TouchableOpacity
           onPress={() => deleteThisAsset()}
-          style={styles.shareButton}>
+          style={styles.shareButton}
+        >
           <Text style={styles.shareButtonText}>Xóa</Text>
         </TouchableOpacity>
       </View>
@@ -104,26 +86,10 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 20,
   },
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: deviceWidth - 30,
-    paddingBottom: 5
-  },
   title: {
     paddingBottom: 10,
     fontSize: 18,
     fontStyle: 'italic'
-  },
-  bullet: {
-    width: 10
-  },
-  bulletText: {
-    flex: 0.8,
-    paddingRight: 5
-  },
-  bulletTextNormal: {
-    flex: 2
   },
   boldText: {
     fontWeight: 'bold',

@@ -3,15 +3,16 @@ import {
   StyleSheet,
   View,
   Text,
-  StatusBar,
   Dimensions,
   TouchableOpacity, FlatList, Alert,
+  Platform
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import ScrollableTabView, { DefaultTabBar, } from 'rn-collapsing-tab-bar';
+import BulletView from '@app/modules/global/BulletView';
 import { createGetMethod, deleteMethod } from '../../api/Apis';
 import { endPoint } from '../../api/config';
-import { convertTextToLowerCase, convertTimeFormatToLocaleDate, convertTrangThai } from '../global/Helper';
+import { convertTimeFormatToLocaleDate, convertTrangThai } from '../global/Helper';
 
 const deviceWidth = Dimensions.get("window").width;
 const containerHeight = Dimensions.get('window').height;
@@ -21,24 +22,6 @@ const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 44 : 20) : 0;
 const HEADER_HEIGHT = Platform.OS === 'ios' ? (IS_IPHONE_X ? 88 : 64) : 64;
 const NAV_BAR_HEIGHT = HEADER_HEIGHT - STATUS_BAR_HEIGHT;
-
-const bullet = (title, text) => (
-  <View style={styles.row}>
-    <View style={styles.bullet}>
-      <Text>{'\u2022' + " "}</Text>
-    </View>
-    <View style={styles.bulletText}>
-      <Text styles={styles.text}>
-        <Text style={styles.boldText}>{`${title}: `}</Text>
-      </Text>
-    </View>
-    <View style={styles.bulletTextNormal}>
-      <Text styles={styles.text}>
-        <Text style={styles.normalText}>{text}</Text>
-      </Text>
-    </View>
-  </View>
-);
 
 export default class QuanLyKiemKeDetail extends React.Component {
   constructor(props) {
@@ -66,24 +49,6 @@ export default class QuanLyKiemKeDetail extends React.Component {
       this.getAllTaiSanKiemke(1),
       this.getAllTaiSanKiemke(2),
     ]);
-  }
-
-  measureTabOne = (event) => {
-    this.setState({
-      tabOneHeight: event.nativeEvent.layout.height
-    })
-  }
-
-  measureTabTwo = (event) => {
-    this.setState({
-      tabTwoHeight: event.nativeEvent.layout.height
-    })
-  }
-
-  measureTabThirt = (event) => {
-    this.setState({
-      tabThirstHeight: event.nativeEvent.layout.height
-    })
   }
 
   getDanhsachUserKiemke() {
@@ -120,20 +85,43 @@ export default class QuanLyKiemKeDetail extends React.Component {
               this.setState({
                 danhsachTSFound: res.result,
               });
+              break;
             case 1:
               this.setState({
                 danhsachTSNotFound: res.result,
               });
+              break;
             case 2:
               this.setState({
                 danhsachTSNgoaiHT: res.result,
               });
+              break;
+              default:
+                break;
           }
         } else {
           // Alert.alert('Lỗi khi load toàn bộ tài sản!');
         }
       })
       .catch(err => console.log(err));
+  }
+
+  measureTabOne = (event) => {
+    this.setState({
+      tabOneHeight: event.nativeEvent.layout.height
+    })
+  }
+
+  measureTabTwo = (event) => {
+    this.setState({
+      tabTwoHeight: event.nativeEvent.layout.height
+    })
+  }
+
+  measureTabThirt = (event) => {
+    this.setState({
+      tabThirstHeight: event.nativeEvent.layout.height
+    })
   }
 
   renderItemComponent = (data) => (
@@ -162,14 +150,14 @@ export default class QuanLyKiemKeDetail extends React.Component {
     return (
       <View style={{ alignItems: 'flex-start', height: 450, backgroundColor: 'white', width: deviceWidth }}>
         <Text style={styles.title}>Thông tin kiểm kê tài sản:</Text>
-        {bullet('Mã kiểm kê', paramKey.kiemKeTaiSan.maKiemKe)}
-        {bullet('Tên kiểm kê', paramKey.kiemKeTaiSan.tenKiemKe)}
-        {bullet('Thời gian bắt đầu dự kiến', paramKey.kiemKeTaiSan.thoiGianBatDauDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauDuKien))}
-        {bullet('Thời gian bắt đầu thực tế', paramKey.kiemKeTaiSan.thoiGianBatDauThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauThucTe))}
-        {bullet('Thời gian kết thúc dự kiến', paramKey.kiemKeTaiSan.thoiGianKetThucDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucDuKien))}
-        {bullet('Thời gian kết thúc thực tế', paramKey.kiemKeTaiSan.thoiGianKetThucThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucThucTe))}
-        {bullet('Bộ phận được kiểm kê', paramKey.phongBan)}
-        {bullet('Trạng thái', paramKey.kiemKeTaiSan.trangThaiId && convertTrangThai(paramKey.kiemKeTaiSan.trangThaiId))}
+        {BulletView('Mã kiểm kê', paramKey.kiemKeTaiSan.maKiemKe)}
+        {BulletView('Tên kiểm kê', paramKey.kiemKeTaiSan.tenKiemKe)}
+        {BulletView('Thời gian bắt đầu dự kiến', paramKey.kiemKeTaiSan.thoiGianBatDauDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauDuKien))}
+        {BulletView('Thời gian bắt đầu thực tế', paramKey.kiemKeTaiSan.thoiGianBatDauThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianBatDauThucTe))}
+        {BulletView('Thời gian kết thúc dự kiến', paramKey.kiemKeTaiSan.thoiGianKetThucDuKien && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucDuKien))}
+        {BulletView('Thời gian kết thúc thực tế', paramKey.kiemKeTaiSan.thoiGianKetThucThucTe && convertTimeFormatToLocaleDate(paramKey.kiemKeTaiSan.thoiGianKetThucThucTe))}
+        {BulletView('Bộ phận được kiểm kê', paramKey.phongBan)}
+        {BulletView('Trạng thái', paramKey.kiemKeTaiSan.trangThaiId && convertTrangThai(paramKey.kiemKeTaiSan.trangThaiId))}
         <View
           style={{
             padding: 10,
@@ -188,7 +176,7 @@ export default class QuanLyKiemKeDetail extends React.Component {
   }
 
   deleteThisAsset(id,trangthai) {
-    if (trangthai == 1) {
+    if (trangthai === 1) {
       Alert.alert('Không được phép xóa',
       'Đợt kiểm kê đang trong trạng thái kiểm kê',
       [
@@ -198,7 +186,7 @@ export default class QuanLyKiemKeDetail extends React.Component {
     );
     return;
     }
-    if (trangthai == 2) {
+    if (trangthai === 2) {
       Alert.alert('Không được phép xóa',
       'Đợt kiểm kê trong trạng thái kết thúc',
       [
@@ -243,7 +231,7 @@ export default class QuanLyKiemKeDetail extends React.Component {
       const idKiemke = paramKey.kiemKeTaiSan.id;
       const trangthaiId = paramKey.kiemKeTaiSan.trangThaiId;
     return (
-      <View style = {styles.container}>
+      <View style={styles.container}>
         <ScrollableTabView
           collapsableBar={this.collapsableComponent(paramKey, tabKey, danhsachUserKiemke)}
           initialPage={0}
@@ -285,7 +273,8 @@ export default class QuanLyKiemKeDetail extends React.Component {
         <View style={styles.addToCarContainer}>
           <TouchableOpacity
             onPress={() => this.deleteThisAsset(idKiemke,trangthaiId)}
-            style={styles.shareButton}>
+            style={styles.shareButton}
+          >
             <Text style={styles.shareButtonText}>Xóa</Text>
           </TouchableOpacity>
         </View>
@@ -322,28 +311,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    width: deviceWidth,
-    paddingBottom: 5,
-    paddingLeft: 10
-  },
   title: {
-    paddingBottom: 10,
-    alignSelf: 'center',
-    fontSize: 18,
+    padding: 10,
+    fontSize: 15,
     fontStyle: 'italic'
-  },
-  bullet: {
-    width: 15
-  },
-  bulletText: {
-    flex: 2,
-    paddingRight: 5
-  },
-  bulletTextNormal: {
-    flex: 2
   },
   boldText: {
     fontWeight: 'bold',

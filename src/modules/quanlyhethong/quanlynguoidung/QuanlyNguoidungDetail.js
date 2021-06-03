@@ -6,30 +6,14 @@ import {
     Dimensions,
     TouchableOpacity, FlatList, ScrollView,
 } from 'react-native';
-import { createGetMethod } from '../../../api/Apis';
-import { endPoint } from '../../../api/config';
+import BulletView from '@app/modules/global/BulletView';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-const deviceWidth = Dimensions.get("window").width;
-var idNguoidung;
+import { endPoint } from '../../../api/config';
+import { createGetMethod } from '../../../api/Apis';
 
-const bullet = (title, text) => (
-    <View style={styles.row}>
-        <View style={styles.bullet}>
-            <Text>{'\u2022' + " "}</Text>
-        </View>
-        <View style={styles.bulletText}>
-            <Text styles={styles.text}>
-                <Text style={styles.boldText}>{`${title}: `}</Text>
-            </Text>
-        </View>
-        <View style={styles.bulletTextNormal}>
-            <Text styles={styles.text}>
-                <Text style={styles.normalText}>{text}</Text>
-            </Text>
-        </View>
-    </View>
-);
+const deviceWidth = Dimensions.get("window").width;
+let idNguoidung;
 
 class NguoidungDetailScreen extends React.Component {
     constructor(props) {
@@ -51,7 +35,7 @@ class NguoidungDetailScreen extends React.Component {
  
     getchitietNguoidung() {
         let url;
-        let array = this.props.DvqlDataFilter;
+        const array = this.props.DvqlDataFilter;
         url = `${endPoint.getDetailNguoidung}?`;
         url += `Id=${encodeURIComponent(`${idNguoidung}`)}&`;
         url += `isView=${encodeURIComponent(`${true}`)}`;
@@ -63,7 +47,7 @@ class NguoidungDetailScreen extends React.Component {
                     });
                     for (let i = 0; i < array.length; i++) {
                         if (array[i].id == res.result.toChucId) {
-                            console.log("phongBan: " + array[i].displayName);
+                            console.log(`phongBan: ${  array[i].displayName}`);
                             this.setState({
                                 phongBan: array[i].displayName,
                             });
@@ -76,10 +60,11 @@ class NguoidungDetailScreen extends React.Component {
             })
             .catch(err => console.log(err));
     }
+
     convertActiveData(data) {
         if (data == true) {
             return "Đã kích hoạt";
-        } else return "Chưa kích hoạt";
+        } return "Chưa kích hoạt";
     }
 
     render() {
@@ -87,18 +72,18 @@ class NguoidungDetailScreen extends React.Component {
         const { paramKey, tabKey } = this.props.route.params;
         idNguoidung = paramKey.id;
         return (
-            <View style={{ alignItems: 'flex-start', backgroundColor: 'white', width: deviceWidth }}>
-                <Text style={styles.title}>Thông tin chi tiết</Text>
-                {bullet('Họ tên', chitietData.name)}
-                {bullet('Chức vụ', chitietData.chucVu)}
-                {bullet('Đơn vị', phongBan)}
-                {bullet('Tên đăng nhập', chitietData.userName)}
-                {bullet('Email', chitietData.emailAddress)}
-                {bullet('Số điện thoại', chitietData.phoneNumber)}
-                {bullet('Kích hoạt', this.convertActiveData(chitietData.isActive))}
-                {bullet('Vai trò', chitietData.roleNames)}
-                {bullet('Ghi chú', chitietData.ghiChu)}
-            </View>
+          <View style={{ alignItems: 'flex-start', backgroundColor: 'white', width: deviceWidth }}>
+            <Text style={styles.title}>Thông tin chi tiết</Text>
+            {BulletView('Họ tên', chitietData.name)}
+            {BulletView('Chức vụ', chitietData.chucVu)}
+            {BulletView('Đơn vị', phongBan)}
+            {BulletView('Tên đăng nhập', chitietData.userName)}
+            {BulletView('Email', chitietData.emailAddress)}
+            {BulletView('Số điện thoại', chitietData.phoneNumber)}
+            {BulletView('Kích hoạt', this.convertActiveData(chitietData.isActive))}
+            {BulletView('Vai trò', chitietData.roleNames)}
+            {BulletView('Ghi chú', chitietData.ghiChu)}
+          </View>
         )
     }
 }
@@ -106,29 +91,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    row: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        width: deviceWidth,
-        paddingBottom: 5,
-        paddingLeft: 10
-    },
     title: {
         paddingBottom: 10,
         paddingTop: 15,
         alignSelf: 'center',
         fontSize: 18,
         fontStyle: 'italic'
-    },
-    bullet: {
-        width: 15
-    },
-    bulletText: {
-        flex: 1,
-        paddingRight: 5
-    },
-    bulletTextNormal: {
-        flex: 2
     },
     boldText: {
         fontWeight: 'bold',

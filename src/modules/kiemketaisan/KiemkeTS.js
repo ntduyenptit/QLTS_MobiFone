@@ -3,13 +3,13 @@ import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Text,View } from 'react-native';
 import { connect } from 'react-redux';
 import find from 'lodash/find';
+import ActionButton from 'react-native-action-button';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
 import QuanLyKiemkeFilterComponent from './filter/QuanlyKiemkeFilter';
 import { createGetMethod } from '../../api/Apis';
 import { endPoint, screens } from '../../api/config';
 import LoaderComponent from '../global/LoaderComponent';
-import ActionButton from 'react-native-action-button';
 
 class QuanlyKiemkeTaiSanScreen extends React.Component {
   constructor(props) {
@@ -161,7 +161,7 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
             action={this.getToanTaisan}
           />
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_kiem_ke, { screen: "Thêm mới đợt kiểm kê" }, this.refresh())}></ActionButton>
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_kiem_ke, { screen: "Thêm mới đợt kiểm kê" }, this.refresh())} />
       </View>
 
     );
