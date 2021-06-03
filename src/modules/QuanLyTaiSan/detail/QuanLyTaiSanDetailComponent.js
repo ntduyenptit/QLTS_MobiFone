@@ -92,7 +92,6 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
             <View style={styles.containerMenu}>
               <Menu ref={this.setMenuRef} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
                 <MenuItem onPress={() => { this.capnhat() }} >Cập nhật</MenuItem>
-                <MenuItem onPress={this.hideMenu} >Xóa</MenuItem>
                 <MenuDivider />
               </Menu>
             </View>
@@ -190,9 +189,9 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
             {bullet('Ngày mua', taisan.ngayMua && convertTimeFormatToLocaleDate(taisan.ngayMua))}
             {bullet('Nguyên giá', taisan.nguyenGia)}
             {bullet('Ngày hết hạn bảo hành', taisan.ngayBaoHanh && convertTimeFormatToLocaleDate(taisan.ngayBaoHanh))}
-            {bullet('Ngày hết hạn sử dụng', taisan.hanSD && convertTimeFormatToLocaleDate(taisan.hanSD))}
+            {bullet('Ngày hết hạn sử dụng', taisan.hanSD )}
             {bullet('Thời gian trích khấu hao', taisan.thoiGianChietKhauHao)}
-            {bullet('Thời gian hết khấu hao',addYearToDate(taisan.ngayMua, taisan.thoiGianChietKhauHao))}
+            {bullet('Thời gian hết khấu hao',taisan.ngayMua && taisan.thoiGianChietKhauHao && addYearToDate(taisan.ngayMua, taisan.thoiGianChietKhauHao) )}
             {bullet('Nguồn kinh phí', taisan.nguonKinhPhiId)}
             {bullet('Mã dử dụng', taisan.dropdownMultiple )}
             

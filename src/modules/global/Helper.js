@@ -343,7 +343,7 @@ export const convertTimeToIOSString = (time) => {
 }
 
 export const addYearToDate = (date, num) => {
-  if (date) {
+  if (date && num != 0) {
     const number = convertDateFormatTo(moment(date,"DD, MM YYYY"));
     const d = new Date(number);
       const year = d.getFullYear() + Number(num);
