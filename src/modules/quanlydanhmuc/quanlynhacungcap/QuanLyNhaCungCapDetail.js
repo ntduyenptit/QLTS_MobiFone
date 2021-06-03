@@ -7,28 +7,12 @@ import {
     Dimensions,
     TouchableOpacity, FlatList, ScrollView, Alert,
 } from 'react-native';
+import BulletView from '@app/modules/global/BulletView';
 import { createGetMethod, deleteMethod } from '../../../api/Apis';
 import { endPoint } from '../../../api/config';
-const deviceWidth = Dimensions.get("window").width;
-var idNhacungcap;
 
-const bullet = (title, text) => (
-    <View style={styles.row}>
-        <View style={styles.bullet}>
-            <Text>{'\u2022' + " "}</Text>
-        </View>
-        <View style={styles.bulletText}>
-            <Text styles={styles.text}>
-                <Text style={styles.boldText}>{`${title}: `}</Text>
-            </Text>
-        </View>
-        <View style={styles.bulletTextNormal}>
-            <Text styles={styles.text}>
-                <Text style={styles.normalText}>{text}</Text>
-            </Text>
-        </View>
-    </View>
-);
+const deviceWidth = Dimensions.get("window").width;
+let idNhacungcap;
 
 class NhaCungcapDetail extends React.Component {
     constructor(props) {
@@ -66,7 +50,6 @@ class NhaCungcapDetail extends React.Component {
     }
 
     delete(id) {
-        console.log("id: " + id);
         Alert.alert('Bạn có chắc chắn muốn xóa không?',
             '',
             [
@@ -104,28 +87,29 @@ class NhaCungcapDetail extends React.Component {
         const { paramKey, tabKey, idNCC } = this.props.route.params;
         idNhacungcap = idNCC;
         return (
-            <View style={styles.container}>
-                <View style={{ alignItems: 'flex-start', backgroundColor: 'white', width: deviceWidth, height: 'auto', padding: 10 }}>
-                    <Text style={styles.title}>Thông tin nhà cung cấp:</Text>
-                    {bullet('Mã nhà cung cấp', chitietData.maNhaCungCap)}
-                    {bullet('Tên nhà cung cấp', chitietData.tenNhaCungCap)}
-                    {bullet('Lĩnh vực kinh doanh', paramKey.tenLinhVuc)}
-                    {bullet('Mã số thuế', chitietData.maSoThue)}
-                    {bullet('Địa chỉ', chitietData.diaChi)}
-                    {bullet('Số điện thoại', chitietData.soDienThoai)}
-                    {bullet('Email', chitietData.email)}
-                    {bullet('Ghi chú', chitietData.ghiChu)}
-                    {bullet('Tài liệu đính kèm', chitietData.listFile)}
-                </View>
-                <View style={styles.separator} />
-                <View style={styles.addToCarContainer}>
-                    <TouchableOpacity
-                        onPress={() => this.delete(idNhacungcap)}
-                        style={styles.shareButton}>
-                        <Text style={styles.shareButtonText}>Xóa</Text>
-                    </TouchableOpacity>
-                </View>
+          <View style={styles.container}>
+            <View style={{ alignItems: 'flex-start', backgroundColor: 'white', width: deviceWidth, height: 'auto', padding: 10 }}>
+              <Text style={styles.title}>Thông tin nhà cung cấp:</Text>
+              <BulletView title='Mã nhà cung cấp' text={chitietData.maNhaCungCap} />
+              <BulletView title='Tên nhà cung cấp' text={chitietData.tenNhaCungCap} />
+              <BulletView title='Lĩnh vực kinh doanh' text={paramKey.tenLinhVuc} />
+              <BulletView title='Mã số thuế' text={chitietData.maSoThue} />
+              <BulletView title='Địa chỉ' text={chitietData.diaChi} />
+              <BulletView title='Số điện thoại' text={chitietData.soDienThoai} />
+              <BulletView title='Email' text={chitietData.email} />
+              <BulletView title='Ghi chú' text={chitietData.ghiChu} />
+              <BulletView title='Tài liệu đính kèm' text={chitietData.listFile} />
             </View>
+            <View style={styles.separator} />
+            <View style={styles.addToCarContainer}>
+              <TouchableOpacity
+                onPress={() => this.delete(idNhacungcap)}
+                style={styles.shareButton}
+              >
+                <Text style={styles.shareButtonText}>Xóa</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
 
         )
     }
@@ -134,29 +118,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    row: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        width: deviceWidth,
-        paddingBottom: 5,
-        paddingLeft: 10
-    },
     title: {
         paddingBottom: 10,
         paddingTop: 15,
         alignSelf: 'center',
         fontSize: 18,
         fontStyle: 'italic'
-    },
-    bullet: {
-        width: 15
-    },
-    bulletText: {
-        flex: 1,
-        paddingRight: 5
-    },
-    bulletTextNormal: {
-        flex: 2
     },
     boldText: {
         fontWeight: 'bold',

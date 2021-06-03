@@ -7,24 +7,10 @@ import {
     Image,
     ScrollView,
 } from 'react-native';
-
-const bullet = (title, text) => (
-  <View style={styles.row}>
-    <View style={styles.bullet}>
-      <Text>{'\u2022' + " "}</Text>
-    </View>
-    <View style={styles.bulletText}>
-      <Text>
-        <Text style={styles.boldText}>{`${title}: `}</Text>
-        <Text style={styles.normalText}>{text}</Text>
-      </Text>
-    </View>
-  </View>
-);
+import BulletView from '@app/modules/global/BulletView';
 
 function DetailDaudocComponent({ route, navigation }) {
     const { paramKey } = route.params;
-    console.log(paramKey);
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -32,14 +18,14 @@ function DetailDaudocComponent({ route, navigation }) {
             <Image style={styles.productImg} source={require('../../../assets/images/icon.png')} style={styles.iconImage} />
             <Text style={styles.title}>Thông tin đầu đọc:</Text>
             {/* Mã tài sản */}
-            {bullet('Mã tài sản',paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
+            <BulletView title='Mã tài sản' text={paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode} />
             {/* Tên tài sản */}
             {/* Phòng ban quản lý */}
-            {bullet('Phòng ban quản lý',paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy)}
+            <BulletView title='Phòng ban quản lý' text={paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy} />
             {/* Vị trí tài sản */}
-            {bullet('Vị trí tài sản',paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan)}
+            <BulletView title='Vị trí tài sản' text={paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan} />
             {/* Trạng thái */}
-            {bullet('Trạng thái', paramKey.tinhTrangSuDung)}
+            <BulletView title='Trạng thái' text={paramKey.tinhTrangSuDung} />
           </View>
 
         </ScrollView>
@@ -58,23 +44,10 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 20,
     },
-    row: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        flexWrap: 'wrap',
-        flex: 1
-    },
     title: {
         paddingBottom: 10, 
         fontSize: 18, 
         fontStyle: 'italic'
-    },
-    bullet: {
-        width: 10
-    },
-    bulletText: {
-        flex: 1,
-        paddingBottom: 5
     },
     boldText: {
         fontWeight: 'bold',

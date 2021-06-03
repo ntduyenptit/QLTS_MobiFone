@@ -27,7 +27,7 @@ import {
     removeSelectedEndDateAction,
     removeSelectedChieuDiChuyenAction,
     removeSelectedPhanLoaiTaiSanAction,
-} from '../../../redux/actions/filter.actions';
+} from '@app/redux/actions/filter.actions';
 
 
 const QuanLyGiamSatFilter = (props) => {

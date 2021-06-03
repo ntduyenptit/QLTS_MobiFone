@@ -1,17 +1,15 @@
-/* eslint-disable import/no-cycle */
+/* eslint-disable import/no-unresolved */
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar, Dimensions, Text, StyleSheet, View, TextInput, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import { Animated, SafeAreaView, StatusBar, Text, StyleSheet, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+import MultiSelect from '@app/libs/react-native-multiple-select/lib/react-native-multi-select';
+import { endPoint, } from '@app/api/config';
+import { createPostMethodWithToken } from '@app/api/Apis';
+import { convertDateToIOSString } from '@app/modules/global/Helper';
 import { colors, fonts } from '../../../styles';
-import { endPoint, } from '../../../api/config';
-import { createPostMethodWithToken } from '../../../api/Apis';
-import { convertDateToIOSString } from '../../global/Helper';
 
-export const deviceWidth = Dimensions.get('window').width;
-export const deviceHeight = Dimensions.get('window').height;
 let tab = '';
 
 class ThemmoiDaudocScreen extends React.Component {
@@ -30,7 +28,6 @@ class ThemmoiDaudocScreen extends React.Component {
             ngayHetBh: '',
             ngayHetSd: '',
             ghiChu: '',
-            nhaCCList: [],
             ReaderMACId: '',
         }
     }
@@ -61,14 +58,12 @@ class ThemmoiDaudocScreen extends React.Component {
               </TouchableOpacity>
             )
         })
-        this.danhsachNhaCC(this.props.NhaCCData);
         this.renderLoaiTS();
     }
 
     saveNewReader() {
         const {
             tenTS,
-            loaiTaisan,
             loaiTaisanId,
             SN,
             PN,
@@ -128,7 +123,7 @@ class ThemmoiDaudocScreen extends React.Component {
                 ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                 ngayMua: ngayMua && convertDateToIOSString(ngayMua),
                 nguyenGia,
-                nhaCC: nhaCungcap,
+                nhaCC: nhaCungcap[0],
                 productNumber: PN,
                 serialNumber: SN,
                 tenTS,
@@ -143,7 +138,7 @@ class ThemmoiDaudocScreen extends React.Component {
                 ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                 ngayMua: ngayMua && convertDateToIOSString(ngayMua),
                 nguyenGia,
-                nhaCC: nhaCungcap,
+                nhaCC: nhaCungcap[0],
                 productNumber: PN,
                 readerMACId: ReaderMACId,
                 serialNumber: SN,
@@ -163,25 +158,6 @@ class ThemmoiDaudocScreen extends React.Component {
 
             }
         })
-    }
-
-    danhsachNhaCC(data) {
-
-        if (data) {
-            const list = data.map(e => ({
-                label: e.displayName,
-                value: e.id,
-            }));
-            this.setState({
-                nhaCCList: list,
-            });
-        } else {
-            // get danh sach nha cc
-        }
-    }
-
-    saveNewReader() {
-        
     }
 
     renderLoaiTS() {
@@ -228,13 +204,8 @@ class ThemmoiDaudocScreen extends React.Component {
             ngayMua,
             ngayHetBh,
             ngayHetSd,
-            nhaCCList,
+            nhaCungcap
         } = this.state;
-        const placeholder = {
-            label: 'Chọn',
-            value: null,
-            color: '#9EA0A4',
-        };
         const { screen } = this.props.route.params;
         tab = screen;
         return (
@@ -286,36 +257,17 @@ class ThemmoiDaudocScreen extends React.Component {
                   <Text style={styles.boldText}>Nhà cung cấp</Text>
                   <MultiSelect
                     single
-                    items={this.props.MaSuDungData}
+                    items={this.props.NhaCCData}
                     IconRenderer={Icon}
                     searchInputPlaceholderText="Tìm kiếm..."
                     styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
                     uniqueKey="id"
                     displayKey="displayName"
-                    selectText="Chọn mã sử dụng..."
+                    selectText="Chọn nhà cung cấp..."
                     onSelectedItemsChange={(item) => this.setState({
-                        maSudung: item,
+                        nhaCungcap: item,
                                     })}
-                    selectedItems={maSudung}
-                  />
-                  <RNPickerSelect
-                    items={nhaCCList}
-                    onValueChange={value => {
-                                    this.setState({
-                                        nhaCungcap: value,
-                                    });
-                                }}
-                    style={{
-                                    ...pickerSelectStyles,
-                                    iconContainer: {
-                                        top: 10,
-                                        right: 12,
-                                    },
-                                }}
-                    value={this.state.nhaCungcap}
-                    useNativeAndroidPickerStyle={false}
-                    textInputProps={{ underlineColor: 'yellow' }}
-                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                    selectedItems={nhaCungcap}
                   />
                   <Text style={styles.boldText}>Hãng sản xuất</Text>
                   <TextInput
@@ -460,13 +412,6 @@ const styles = StyleSheet.create({
     icon: {
         marginLeft: 10,
     },
-    row: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        width: deviceWidth,
-        paddingBottom: 5,
-        paddingLeft: 10
-    },
     title: {
         alignSelf: 'center',
         fontSize: 18,
@@ -474,11 +419,18 @@ const styles = StyleSheet.create({
     },
     bordered: {
         borderWidth: 0.5,
+        borderBottomWidth: 0.5,
         borderColor: 'black',
-        borderRadius: 5,
-        marginLeft: 5,
+        borderRadius: 10,
         paddingHorizontal: 20,
-        height: 40
+        height: 40,
+        marginLeft: 5,
+        marginRight: 5
+    },
+    searchText: {
+        backgroundColor: 'transparent',
+        height: 50,
+        paddingLeft: 15
     },
     boldText: {
         fontWeight: 'bold',
@@ -525,30 +477,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: '#fff'
     }
-});
-
-const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-        fontSize: 10,
-        paddingVertical: 12,
-        paddingHorizontal: 10,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 4,
-        color: 'black',
-        marginLeft: 5,
-        paddingRight: 30, // to ensure the text is never behind the icon
-    },
-    inputAndroid: {
-        fontSize: 16,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        borderWidth: 0.5,
-        borderColor: 'purple',
-        borderRadius: 8,
-        color: 'black',
-        paddingRight: 10, // to ensure the text is never behind the icon
-    },
 });
 
 const mapStateToProps = state => ({

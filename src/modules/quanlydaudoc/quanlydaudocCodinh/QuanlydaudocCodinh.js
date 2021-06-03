@@ -89,6 +89,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
         .catch();
     }
   }
+
   refresh() {
     this.getToanBoDauDocCoDinhData({ datas: this.props.DvqlDataFilter });
   }

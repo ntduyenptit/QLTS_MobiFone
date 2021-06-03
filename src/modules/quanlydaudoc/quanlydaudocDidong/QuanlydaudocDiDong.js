@@ -3,16 +3,16 @@ import { Animated, SafeAreaView, StatusBar, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import find from 'lodash/find';
 import ActionButton from 'react-native-action-button';
-import SearchComponent from '../../global/SearchComponent';
-import FilterComponent from '../../global/FilterComponent';
+import SearchComponent from '@app/modules/global/SearchComponent';
+import FilterComponent from '@app/modules/global/FilterComponent';
 import QuanLyDauDocFilter from '../filter/QuanLyDauDocFilter';
-import { createGetMethod } from '../../../api/Apis';
-import { endPoint, screens } from '../../../api/config';
-import LoaderComponent from '../../global/LoaderComponent';
-import { getTTSDDataFilter } from '../../global/FilterApis';
+import { createGetMethod } from '@app/api/Apis';
+import { endPoint, screens } from '@app/api/config';
+import LoaderComponent from '@app/modules/global/LoaderComponent';
+import { getTTSDDataFilter } from '@app/modules/global/FilterApis';
 import {
   getTTSDDataAction
-} from '../../../redux/actions/filter.actions';
+} from '@app/redux/actions/filter.actions';
 
 class QuanLyDauDocDiDongScreen extends React.Component {
   constructor(props) {
@@ -84,6 +84,7 @@ class QuanLyDauDocDiDongScreen extends React.Component {
         .catch();
     }
   }
+
   refresh() {
     this.getToanBoDauDocDiDongData({ datas: this.props.DvqlDataFilter });
   }
