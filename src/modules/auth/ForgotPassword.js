@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, Modal, Dimensions } from 'react-native';
-import { endPoint } from '../../api/config';
+import { endPoint } from '@app/api/config';
 import { createPostMethodWithoutToken } from '../../api/Apis'
 import { black } from 'react-native-paper/lib/typescript/src/styles/colors';
 

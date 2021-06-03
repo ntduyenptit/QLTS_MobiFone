@@ -1,10 +1,10 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { tabs, screens } from '@app/api/config';
 import PieChartView from './PieChartView';
 import LineChartView from './LineChartView';
 import { getDVQLDataFilter } from '../global/FilterApis'
-import { tabs, screens } from '../../api/config';
 import { getDVQLDataAction } from '../../redux/actions/filter.actions';
 import { store } from '../../redux/store';
 import { currentDate, getDateFromLastMonth, getPercent, getDates, convertFormatDate } from '../global/Helper';
