@@ -14,10 +14,8 @@ import {
     FlatList,
     Alert,
     Platform,
-    ImageBackground,
     TouchableHighlight
  } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -29,79 +27,103 @@ import { createGetMethod, createPostMethodWithToken, createPostMultiFiles } from
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
 
+let idTaisan = null;
+let Taisan= '';
+let list = '';
 class UpdateTaisanScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            scrollYValue: new Animated.Value(0),
-            tenTS: '',
-            loaiTaisan: '',
-            SN: '',
-            PN: '',
-            hangSx: '',
-            nguyenGia: '',
             nguonKinhphiList: [],
-            ngayMua: '',
-            ngayHetBh: '',
-            ngayHetSd: '',
-            maSudung: '',
-            maSudungList: [],
-            nhaCungcap: '',
-            trichKhauhao: '',
-            imageList: [],
-            loaiTSList: [],
-            nhaCCList: [],
+            tenTS: this.props.route.params.paramKey.tenTS,
+            loaiTaisan: this.props.route.params.paramKey.loaiTS,
+            SN: this.props.route.params.paramKey.serialNumber,
+            PN: this.props.route.params.paramKey.productNumber,
+            hangSx: this.props.route.params.paramKey.hangSanXuat,
+            nguyenGia: this.props.route.params.paramKey.nguyenGia,
+            ngayMua: this.props.route.params.paramKey.ngaymua,
+            ngayHetBh: this.props.route.params.paramKey.ngayBaoHanh,
+            ngayHetSd: this.props.route.params.paramKey.hanSD,
+            maSudung: this.props.route.params.paramKey.dropdownMultiple,
+            nhaCungcap: this.props.route.params.paramKey.nhaCC,
+            trichKhauhao: this.props.route.params.paramKey.thoiGianChietKhauHao,
+            imageList: this.props.route.params.paramKey.listHinhAnh,
         };
         this.chosenPicker = this.chosenPicker.bind(this)
     }
 
     componentDidMount() {
-        this.props.navigation.setOptions({headerRight: () => (
-          <TouchableOpacity
-            onPress={() => this.saveNewTaiSan()}
-            style={{
-                  paddingHorizontal: 16,
-                  paddingVertical: 12,
-                }
-                }
-          >
-            <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-              <Text style={{
-                        fontFamily: fonts.primaryRegular,
-                        color: colors.white,
-                        fontSize: 18,
-                        alignSelf: 'center'
-                    }}
-              > Lưu
-              </Text>
-
-            </View>
-          </TouchableOpacity>
-            )})
         Promise.all([
-            this.danhsachLoaiTS(this.props.LoaiTSData),
-            this.danhsachNhaCC(this.props.NhaCCData),
-            this.danhsachMaSD(this.props.MaSuDungData),
-            this.getNguonKinhPhi()
+            this.props.navigation.setOptions({headerRight: () => (
+              <TouchableOpacity
+                onPress={() => this.saveNewTaiSan()}
+                style={{
+                        paddingHorizontal: 16,
+                        paddingVertical: 12,
+                      }
+                      }
+              >
+                <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                  <Text style={{
+                              fontFamily: fonts.primaryRegular,
+                              color: colors.white,
+                              fontSize: 18,
+                              alignSelf: 'center'
+                          }}
+                  > Lưu
+                  </Text>
+      
+                </View>
+              </TouchableOpacity>
+                  )}),
+            this.getNguonKinhPhi(),
+           // this.setData(Taisan),
         ]);
     }
+    setData(paramKey) {
+        console.log ("paramKey.tenTS: "+paramKey.tenTS);
+        this.setState ({
+            tenTS: paramKey.tenTS,
+            loaiTaisan: paramKey.loaiTS,
+            SN: paramKey.serialNumber,
+            PN: paramKey.productNumber,
+            hangSx: paramKey.hangSanXuat,
+            nguyenGia: paramKey.nguyenGia,
+            ngayMua: paramKey.ngaymua,
+            ngayHetBh: paramKey.ngayBaoHanh,
+            ngayHetSd: paramKey.hanSD,
+            maSudung: paramKey.dropdownMultiple,
+            nhaCungcap: paramKey.nhaCC,
+            trichKhauhao: paramKey.thoiGianChietKhauHao,
+            imageList: paramKey.listHinhAnh,
 
+        })
+    }
     getNguonKinhPhi() {
         const url = `${endPoint.getAllNguonKinhPhi}`;
         createGetMethod(url)
             .then(res => {
                 if (res) {
-                    const list = res.result.map(e => ({
-                        label: e.displayName,
-                        value: e.id 
-                    }));
                     this.setState({
-                        nguonKinhphiList: list,
+                        nguonKinhphiList: res.result,
                     });
                 }
             })
     }
-
+    getAssetMoreInfo() {
+        let url = `${endPoint.GetTaiSan}?`;
+        url += `input=${idTaisan}&isView=true`;
+      
+        createGetMethod(url).then(res => {
+          if (res.success) {
+            const imageList = res.result.listHinhAnh.map(e => `${imageBaseUrl}${e.linkFile.replace(/\\/g, "/")}`);
+            this.setState({
+              images: imageList,
+              taisan: res.result,
+            });
+          }
+        });
+      }
     chosenPicker = () => {
         ImagePicker.openPicker({
             width: 200,
@@ -110,7 +132,6 @@ class UpdateTaisanScreen extends React.Component {
             compressImageMaxWidth: 400,
             multiple: true
         }).then(images => {
-            // console.log(images);
             if (images && images.length < 4) {
                 if (Platform.OS === 'ios') {
                     this.setState({
@@ -126,6 +147,8 @@ class UpdateTaisanScreen extends React.Component {
                         imageList: images.map(e => ({
                             tenFile: e.path.split('/').pop(),
                             linkFile: e.path,
+                            path: e.path,
+                            mime: e.mime
                         }))
                     });
                 }
@@ -152,7 +175,7 @@ class UpdateTaisanScreen extends React.Component {
          } = this.state;
         const url = `${endPoint.TsAllCreateOrEdit}`;
         const urlUpload = `${endPoint.ToanBoTSUpload}`;
-
+        console.log("idTaisan: " + idTaisan);
         let s = '';
         let check = false;
         switch ("") {
@@ -195,9 +218,10 @@ class UpdateTaisanScreen extends React.Component {
                                 linkFile: getLinkFile(res, e.tenFile)
                             }));
                         const params  = {
-                            dropdownMultiple: maSudung,
+                            dropdownMultiple: maSudung[0],
                             ghiChu: "",
-                            giaCuoiTS: "",
+                            giaCuoiTS: '',
+                            id: idTaisan,
                             hangSanXuat: hangSx,
                             listFile: [],
                             listHA: images,
@@ -205,9 +229,9 @@ class UpdateTaisanScreen extends React.Component {
                             ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                             hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
                             ngayMua: ngayMua && convertDateToIOSString(ngayMua),
-                            nguonKinhPhiId: nguonKinhphi,
+                            nguonKinhPhiId: nguonKinhphi && nguonKinhphi[0],
                             nguyenGia,
-                            nhaCC: nhaCungcap,
+                            nhaCC: nhaCungcap && nhaCungcap[0],
                             noiDungChotGia: "",
                             productNumber: PN,
                             serialNumber: SN,
@@ -230,19 +254,20 @@ class UpdateTaisanScreen extends React.Component {
                 });
             } else {
                 const params  = {
-                    dropdownMultiple: maSudung,
+                    dropdownMultiple: maSudung[0],
                     ghiChu: "",
                     giaCuoiTS: "",
                     hangSanXuat: hangSx,
                     listFile: [],
                     listHA: [],
                     loaiTS: loaiTaisan[0],
+                    id: idTaisan,
                     ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                     hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
                     ngayMua: ngayMua && convertDateToIOSString(ngayMua),
-                    nguonKinhPhiId: nguonKinhphi,
+                    nguonKinhPhiId: nguonKinhphi && nguonKinhphi[0],
                     nguyenGia,
-                    nhaCC: nhaCungcap,
+                    nhaCC: nhaCungcap && nhaCungcap[0],
                     noiDungChotGia: "",
                     productNumber: PN,
                     serialNumber: SN,
@@ -251,7 +276,7 @@ class UpdateTaisanScreen extends React.Component {
                 }
                 createPostMethodWithToken(url, JSON.stringify(params)).then((result) => {
                     if (result.success) {
-                        Alert.alert('Thêm mới tài sản thành công',
+                        Alert.alert('Cập nhật tài sản thành công',
                         '',
                         [
                             {text: 'OK', onPress: this.goBack()},
@@ -271,45 +296,9 @@ class UpdateTaisanScreen extends React.Component {
         navigation.goBack();
     }
 
-    danhsachMaSD(data) {
-        if (data) {
-            const list = data.map(e => ({
-                label: e.displayName,
-                value: e.id,
-            }));
-            this.setState({
-                maSudungList: list,
-            });
-        }
-    }
-
-    danhsachLoaiTS(data) {
-        if (data) {
-            const list = data.map(e => ({
-                label: e.text,
-                value: e.value,
-            }));
-            this.setState({
-                loaiTSList: list,
-            });
-        }
-    };
-
-    danhsachNhaCC(data) {
-        if (data) {
-            const list = data.map(e => ({
-                label: e.displayName,
-                value: e.id,
-            }));
-            this.setState({
-                nhaCCList: list,
-            });
-        }
-    };
-
     render() {
         const {
-            scrollYValue,
+            tenTS,
             imageList,
             trichKhauhao,
             loaiTaisan,
@@ -317,48 +306,25 @@ class UpdateTaisanScreen extends React.Component {
             ngayMua,
             ngayHetBh,
             ngayHetSd,
-            maSudungList,
             maSudung,
-            loaiTSList,
-            nhaCCList,
             nhaCungcap,
             nguonKinhphiList,
         } = this.state;
-        const placeholder = {
-            label: 'Chọn ...',
-            value: null,
-            color: '#9EA0A4',
-        };
-        const {item} = this.props.route.params;
+        const {paramKey,idTs} = this.props.route.params;
+        console.log("loaiTaisan "+ loaiTaisan);
+        Taisan = paramKey;
+        idTaisan = idTs;
         return (
           <Animated.View>
             <StatusBar barStyle="dark-content" />
             <SafeAreaView>
               <Animated.ScrollView
-                showsVerticalScrollIndicator={false}
-                style={{
-                            margin: 10,
-                            paddingBottom: 15,
-                        }}
-                contentContainerStyle={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            flexWrap: 'wrap',
-                            justifyContent: 'space-around',
-                            paddingBottom: 55,
-                        }}
-                onScroll={Animated.event(
-                            [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
-                            { useNativeDriver: true },
-                            () => { },          // Optional async listener
-                        )}
-                contentInsetAdjustmentBehavior="automatic"
-              >
+                              >
                 <View style={styles.container}>
                   <Text style={styles.boldText}>Tên tài sản*</Text>
                   <TextInput
                     placeholderTextColor="black"
-                    placeholder={item.tenTS}
+                    placeholder={tenTS}
                     style={styles.bordered}
                     onChangeText={(tenTS) => {
                                     this.setState({
@@ -375,7 +341,7 @@ class UpdateTaisanScreen extends React.Component {
                     styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
                     uniqueKey="value"
                     displayKey="text"
-                    selectText={item.loaiTS}
+                    selectText=""
                     onSelectedItemsChange={(item) => this.setState({
                                         loaiTaisan: item,
                                     })}
@@ -385,8 +351,8 @@ class UpdateTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>S/N (Serial Number)</Text>
                   <TextInput
                     placeholderTextColor="black"
-                    placeholder={item.serialNumber}
                     style={styles.bordered}
+                   // placeholder={paramKey.serialNumber}
                     onChangeText={(SN) => {
                                     this.setState({
                                         SN,
@@ -396,7 +362,7 @@ class UpdateTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>P/N (Product Number)</Text>
                   <TextInput
                     placeholderTextColor="black"
-                    placeholder={item.productNumber}
+                   // placeholder={paramKey.productNumber}
                     style={styles.bordered}
                     onChangeText={(PN) => {
                                     this.setState({
@@ -407,23 +373,23 @@ class UpdateTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>Nhà cung cấp</Text>
                   <MultiSelect
                     single
-                    items={nhaCCList}
+                    items={this.props.NhaCCData}
                     IconRenderer={Icon}
                     searchInputPlaceholderText="Tìm kiếm..."
                     styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
-                    uniqueKey="value"
-                    displayKey="text"
-                    selectText={item.nhaCungCap}
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText={paramKey.nhaCungCap}
                     onSelectedItemsChange={(item) => this.setState({
-                                        nhaCungcap: item,
+                        nhaCungcap: item,
                                     })}
                     selectedItems={nhaCungcap}
                   />
                   <Text style={styles.boldText}>Hãng sản xuất</Text>
                   <TextInput
                     placeholderTextColor="black"
+                    placeholder={paramKey.hangSanXuat}
                     style={styles.bordered}
-                    placeholder={item.productNumber}
                     onChangeText={(hangsx) => {
                                     this.setState({
                                         hangSx: hangsx,
@@ -433,7 +399,7 @@ class UpdateTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>Nguyên giá (VND)</Text>
                   <TextInput
                     placeholderTextColor="black"
-                    placeholder={item.nguyenGia}
+                    placeholder={paramKey.nguyenGia}
                     style={styles.bordered}
                     onChangeText={(price) => {
                                     this.setState({
@@ -444,7 +410,7 @@ class UpdateTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>Ngày mua</Text>
                   <DatePicker
                     style={styles.datePickerStyle}
-                    date={item.ngayMua} // Initial date from state
+                    date={ngayMua} // Initial date from state
                     mode="date" // The enum of date, datetime and time
                     borderRadius='15'
                     placeholder="Chọn ngày"
@@ -528,6 +494,7 @@ class UpdateTaisanScreen extends React.Component {
                   <Text style={styles.boldText}>Thời gian trích khấu hao (năm)</Text>
                   <TextInput
                     placeholderTextColor="black"
+                    placeholder = {paramKey.thoiGianChietKhauHao}
                     style={styles.bordered}
                     onChangeText={(time) => {
                                     this.setState({
@@ -559,46 +526,34 @@ class UpdateTaisanScreen extends React.Component {
                                 }}
                   />
                   <Text style={styles.boldText}>Nguồn kinh phí</Text>
-                  <RNPickerSelect
-                    // placeholder={placeholder}
+                  <MultiSelect
+                    single
                     items={nguonKinhphiList}
-                    onValueChange={value => {
-                                    this.setState({
-                                        nguonKinhphi: value,
-                                    });
-                                }}
-                    style={{
-                                    ...pickerSelectStyles,
-                                    iconContainer: {
-                                        top: 10,
-                                        right: 12,
-                                    },
-                                }}
-                    value={nguonKinhphi}
-                    useNativeAndroidPickerStyle={false}
-                    textInputProps={{ underlineColor: 'yellow' }}
-                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText=""
+                    onSelectedItemsChange={(item) => this.setState({
+                        nguonKinhphi: item,
+                                    })}
+                    selectedItems={nguonKinhphi}
                   />
                   <Text style={styles.boldText}>Mã sử dụng</Text>
-                  <RNPickerSelect
-                    // placeholder={placeholder}
-                    items={maSudungList}
-                    onValueChange={(value) => {
-                                    this.setState({
-                                        maSudung: value,
-                                    });
-                                }}
-                    style={{
-                                    ...pickerSelectStyles,
-                                    iconContainer: {
-                                        top: 10,
-                                        right: 12,
-                                    },
-                                }}
-                    value={maSudung}
-                    useNativeAndroidPickerStyle={false}
-                    textInputProps={{ underlineColor: 'yellow' }}
-                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                  <MultiSelect
+                    single
+                    items={this.props.MaSuDungData}
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText={paramKey.maSudung}
+                    onSelectedItemsChange={(item) => this.setState({
+                        maSudung: item,
+                                    })}
+                    selectedItems={maSudung}
                   />
                   <View style={styles.selectContainer}>
                     <Text style={styles.boldText}>Hình ảnh</Text>
@@ -621,6 +576,9 @@ class UpdateTaisanScreen extends React.Component {
                                           style={{ width: 100, height: 100, borderRadius: 5 }}
                                         />
                                         <TouchableHighlight
+                                          style={{
+                                            alignItems: 'flex-end', top: 0, right: -8,  position: 'absolute', backgroundColor: 'transparent'
+                                        }}
                                           onPress={()=> {
                                               const newImages = [...imageList];
                                               newImages.splice(index, 1);
@@ -629,7 +587,7 @@ class UpdateTaisanScreen extends React.Component {
                                               });
                                           }}
                                         >
-                                          <Icon style={{alignItems: 'flex-end', top: -11, right: -8,  position: 'absolute'}} name="times" color='#DC143C' size={28} />
+                                          <Icon name="times" color='#DC143C' size={28} />
                                         </TouchableHighlight>
                                       </View>
                                     )}
@@ -736,31 +694,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: '#fff'
     }
-});
-
-const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-        fontSize: 10,
-        // width: '100%',
-        paddingVertical: 12,
-        paddingHorizontal: 10,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 4,
-        color: 'black',
-        marginLeft: 5,
-        paddingRight: 30, // to ensure the text is never behind the icon
-    },
-    inputAndroid: {
-        fontSize: 16,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        borderWidth: 0.5,
-        borderColor: 'purple',
-        borderRadius: 8,
-        color: 'black',
-        paddingRight: 10, // to ensure the text is never behind the icon
-    },
 });
 
 const mapStateToProps = state => ({

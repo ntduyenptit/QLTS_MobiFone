@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+/* eslint-disable import/no-cycle */
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,11 +13,11 @@ import { SliderBox } from "react-native-image-slider-box";
 import { endPoint, imageBaseUrl, screens, tabs } from '../../../api/config';
 import { deviceWidth } from '../../global/LoaderComponent';
 import { createGetMethod, deleteMethod } from '../../../api/Apis';
-import { convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
+import { addYearToDate, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import store from '../../../redux/store';
 
+let idTaisan = null;
 const bullet = (title, text) => (
   <View style={styles.row}>
     <View style={styles.bullet}>
@@ -37,137 +38,72 @@ const bullet = (title, text) => (
   </View>
 );
 
-function QuanLyTaiSanDetailComponent({ navigation, route }) {
-  const { paramKey, tabKey } = route.params;
-  const [images, setImages] = useState([]);
-  console.log("tabkey: " + tabKey);
-  const menu = useRef();
-  const screen = store.getState().currentScreenReducer.screenName || store.getState().currentTabReducer.tabName;
+class QuanLyTaiSanDetailComponent extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      taisan: '',
+      tenTS: '',
+      images: '',
+    };
+  }
+  _menu = null;
 
-  function hideMenu() {
-    menu.current.hide();
-  }
-  function showMenu() {
-    menu.current.show();
-  }
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => showMenu()}
-        >
-          <View style={styles.containerMenu}>
-            <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-              <MenuItem onPress={() => { capnhat() }} >Cập nhật</MenuItem>
-              <MenuDivider />
-            </Menu>
-          </View>
-        </TouchableOpacity>
-      )
-    })
-    getAssetMoreInfo(paramKey.id);
-  }, []);
+  setMenuRef = ref => {
+    this._menu = ref;
+  };
 
-  function capnhat(tabKey) {
-    hideMenu();
-    navigation.navigate(screens.cap_nhat_tai_san, { paramKey: paramKey });
-  }
-  function hoantac(tabKey, id) {
-    hideMenu();
-  }
-  function khaibaosudung(id) {
-    hideMenu();
-  }
-  function capphat(id) {
-    hideMenu();
-  }
-  function dieuchuyen(id) {
-    hideMenu();
-  }
-  function thuhoi(id) {
-    hideMenu();
-  }
-  function thanhcong(id) {
-    hideMenu();
-  }
-  function khongthanhcong(id) {
-    hideMenu();
-  }
-  function menuforTab(tabKey) {
-    switch (tabKey) {
-      case tabs.toan_bo_tai_san:
-        return <View style={styles.containerMenu}>
-          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={capnhat(tabKey)}>Cập nhật</MenuItem>
-            <MenuDivider />
-          </Menu>
-        </View>
-      case tabs.tai_san_mat:
-      case tabs.tai_san_huy:
-      case tabs.tai_san_hong:
-      case tabs.tai_san_thanh_ly:
-        return <View style={styles.containerMenu}>
-          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={hoantac(tabKey, paramKey.id)}>Hoàn tác</MenuItem>
-            <MenuDivider />
-          </Menu>
-        </View>
+  hideMenu = () => {
+    this._menu.hide();
+  };
 
-      case tabs.tai_san_chua_su_dung:
-        return <View style={styles.containerMenu}>
-          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={capnhat(tabKey, paramKey.id)}>Cập nhật</MenuItem>
-            <MenuDivider />
-            <MenuItem >Khai báo sử dụng</MenuItem>
-            <MenuDivider />
-            <MenuItem >Cấp phát</MenuItem>
-
-          </Menu>
-        </View>
-      case tabs.tai_san_dang_su_dung:
-        return <View style={styles.containerMenu}>
-          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={capnhat(tabKey, paramKey.id)}>Cập nhật</MenuItem>
-            <MenuDivider />
-            <MenuItem >Điều chuyển</MenuItem>
-            <MenuDivider />
-            <MenuItem >Thu hồi</MenuItem>
-          </Menu>
-        </View>
-
-      case tabs.tai_san_sua_chua_bao_duong:
-        return <View style={styles.containerMenu}>
-          <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem >Thành công</MenuItem>
-            <MenuDivider />
-            <MenuItem>Không thành công</MenuItem>
-            <MenuDivider />
-            <MenuItem >Hoàn tác</MenuItem>
-          </Menu>
-        </View>
-      case tabs.bao_hong_mat_tai_san:
-        return null;
-      default:
-        break;
-    }
-  }
-
-
-  function getAssetMoreInfo(id) {
+  showMenu = () => {
+    this._menu.show();
+  };
+  getAssetMoreInfo() {
+    console.log("idTs: "+ idTaisan);
     let url = `${endPoint.GetTaiSan}?`;
-    url += `input=${id}&isView=true`;
-
+    url += `input=${idTaisan}&isView=true`;
+  console.log ("Refresh ko" + idTaisan);
     createGetMethod(url).then(res => {
       if (res.success) {
         const imageList = res.result.listHinhAnh.map(e => `${imageBaseUrl}${e.linkFile.replace(/\\/g, "/")}`);
-        setImages(imageList);
+        this.setState({
+          images: imageList,
+          taisan: res.result,
+        });
       }
     });
   }
-  function setMoreMenu(tabKey) {
-
+  capnhat() {
+    this._menu.hide();
+    this.props.navigation.navigate(screens.cap_nhat_tai_san, { paramKey: this.state.taisan,idTs: idTaisan , onGoBack: () => this.refresh()});
   }
-  function deleteThisAsset(id) {
+  refresh = () => {
+    this.getAssetMoreInfo();
+  }
+  componentDidMount() {
+    Promise.all([
+      this.props.navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity
+            onPress={() => this.showMenu()}
+          >
+            <View style={styles.containerMenu}>
+              <Menu ref={this.setMenuRef} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
+                <MenuItem onPress={() => { this.capnhat() }} >Cập nhật</MenuItem>
+                <MenuItem onPress={this.hideMenu} >Xóa</MenuItem>
+                <MenuDivider />
+              </Menu>
+            </View>
+          </TouchableOpacity>
+        )
+      }),
+      this.getAssetMoreInfo()
+    ]);
+  }
+
+  deleteThisAsset(id) {
     Alert.alert('Bạn có chắc chắn muốn xóa không?',
       '',
       [
@@ -181,7 +117,7 @@ function QuanLyTaiSanDetailComponent({ navigation, route }) {
                 Alert.alert('Xóa tài sản thành công',
                   '',
                   [
-                    { text: 'OK', onPress: goBack() },
+                    { text: 'OK', onPress: this.goBack() },
                   ],
                   { cancelable: false }
                 );
@@ -194,14 +130,22 @@ function QuanLyTaiSanDetailComponent({ navigation, route }) {
       { cancelable: true }
     );
   }
-
-  function goBack() {
+  goBack() {
+    const { navigation, route } = this.props;
     route.params.onGoBack();
     navigation.goBack();
   }
 
-  return (
-    <View style={styles.container}>
+  render() {
+    const {
+      taisan,
+      images,
+    } = this.state;
+    const { paramKey, tabKey } = this.props.route.params;
+    console.log("item: " + paramKey.id);
+    idTaisan = paramKey.id;
+    return (
+      <View style={styles.container}>
       <ScrollView>
         <View style={{ alignItems: 'flex-start' }}>
           {images.length > 0 ?
@@ -229,9 +173,13 @@ function QuanLyTaiSanDetailComponent({ navigation, route }) {
             {/* Mã tài sản */}
             {bullet('Mã tài sản', paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode)}
             {/* Tên tài sản */}
-            {bullet('Tên tài sản', paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan)}
+            {bullet('Tên tài sản', taisan.tenTS ? taisan.tenTS : taisan.tenTaiSan)}
             {/* Loại tài sản */}
-            {bullet('Loại tài sản', paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan)}
+            {bullet('S/N (Serial Number)', taisan.serialNumber)}
+            {bullet('P/N (Product Number)', taisan.productNumber)}
+            {bullet('Nhà cung cấp', taisan.nhaCC)}
+            {bullet('Hãng sản xuất', taisan.hangSanXuat)}
+            {bullet('Loại tài sản', taisan.loaiTS ? taisan.loaiTS : taisan.loaiTaiSan)}
             {/* Phòng ban quản lý */}
             {bullet('Phòng ban quản lý', paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy)}
             {/* Vị trí tài sản */}
@@ -239,8 +187,15 @@ function QuanLyTaiSanDetailComponent({ navigation, route }) {
             {/* Trạng thái */}
             {bullet('Trạng thái', paramKey.trangThai)}
             {/* Ngày mua */}
-            {bullet('Ngày mua', paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua))}
-            {bullet('Nguyên giá', paramKey.nguyenGia)}
+            {bullet('Ngày mua', taisan.ngayMua && convertTimeFormatToLocaleDate(taisan.ngayMua))}
+            {bullet('Nguyên giá', taisan.nguyenGia)}
+            {bullet('Ngày hết hạn bảo hành', taisan.ngayBaoHanh && convertTimeFormatToLocaleDate(taisan.ngayBaoHanh))}
+            {bullet('Ngày hết hạn sử dụng', taisan.hanSD && convertTimeFormatToLocaleDate(taisan.hanSD))}
+            {bullet('Thời gian trích khấu hao', taisan.thoiGianChietKhauHao)}
+            {bullet('Thời gian hết khấu hao',addYearToDate(taisan.ngayMua, taisan.thoiGianChietKhauHao))}
+            {bullet('Nguồn kinh phí', taisan.nguonKinhPhiId)}
+            {bullet('Mã dử dụng', taisan.dropdownMultiple )}
+            
           </View>
         </View>
 
@@ -248,16 +203,18 @@ function QuanLyTaiSanDetailComponent({ navigation, route }) {
       <View style={styles.separator} />
       <View style={styles.addToCarContainer}>
         <TouchableOpacity
-          onPress={() => deleteThisAsset(paramKey.id)}
+          onPress={() => this.deleteThisAsset(paramKey.id)}
           style={styles.shareButton}
         >
           <Text style={styles.shareButtonText}>Xóa</Text>
         </TouchableOpacity>
       </View>
     </View>
-  );
+    );
+  }
 
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
