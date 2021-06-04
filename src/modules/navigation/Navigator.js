@@ -21,7 +21,8 @@ import { userLogin, userLogout } from '../../redux/actions/user.actions';
 import { setCurrentScreen } from '../../redux/actions/screen.actions';
 import { store } from '../../redux/store';
 import { drawerData } from '../../api/config';
-import { fonts,colors } from '../../styles';
+import { fonts, colors } from '../../styles';
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -50,6 +51,13 @@ function CustomDrawerContent(props) {
     AsyncStorage.clear();
     store.dispatch(userLogout());
   }
+
+  const menu = useRef();
+
+  const hideMenu = () => menu.current.hide();
+
+  const showMenu = () => menu.current.show();
+
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
@@ -69,19 +77,23 @@ function CustomDrawerContent(props) {
     <View style={styles.container}>
       <ImageBackground source={require('../../../assets/images/background.png')} style={styles.backgroundImage}>
         <View style={styles.profile}>
-        {/* <Collapsible collapsed={!state[item.name]}>
+          {/* <Collapsible collapsed={!state[item.name]}>
                 <View style={{ flex: 20, paddingLeft: 30 }}>
                   {handler(props, item.children)}
                 </View>
               </Collapsible> */}
-          <Icon
-                      name='cog'
-                      size={27}
-                      style = {{position: 'absolute' , right: 5,padding:10}}
-                      color='white'
-                    />
+
+          <Menu ref={menu} marginRight='10' button={<Icon
+            name='cog'
+            size={27}
+            style={{ position: 'absolute', right: 5, padding: 10 }}
+            color='white'
+          />}>
+            <MenuItem onPress={hideMenu} >Thay mật khẩu</MenuItem>
+            <MenuDivider />
+          </Menu>
           <Image source={require('../../../assets/images/drawer/user.png')} resizeMode="contain" style={{ marginTop: 40, width: 80, height: 80, borderRadius: 20, alignSelf: 'center' }} />
-          <View style={{  alignSelf: 'center' , marginTop: 15}}>
+          <View style={{ alignSelf: 'center', marginTop: 15 }}>
             <Text style={{ fontWeight: '200', fontSize: 25, color: 'white', textAlign: 'center' }}>{user}</Text>
             <Text style={{ fontWeight: '200', color: 'white', maxWidth: 200, textAlign: 'center' }}>{user}@mobifone.vn</Text>
           </View>
@@ -247,7 +259,7 @@ function App(stateToProps) {
         <Stack.Screen name='App' component={DrawerStack} />
 
       }
-      <Stack.Screen name = 'Quên mật khẩu' component = {ForgotPasswordStack} />
+      <Stack.Screen name='Quên mật khẩu' component={ForgotPasswordStack} />
     </Stack.Navigator>
   );
 }

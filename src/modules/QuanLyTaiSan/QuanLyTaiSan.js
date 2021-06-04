@@ -265,21 +265,21 @@ const QuanLyTaiSan = (state) => {
       case tabs.toan_bo_tai_san:
         return LoaderComponent(state.toanbotaisanData, state, screens.chi_tiet_tai_san, refresh);
       case tabs.tai_san_mat:
-        return LoaderComponent(state.taisanmatData, state, screens.chi_tiet_tai_san);
+        return LoaderComponent(state.taisanmatData, state, screens.chi_tiet_tai_san, refresh);
       case tabs.tai_san_hong:
-        return LoaderComponent(state.taisanhongData, state, screens.chi_tiet_tai_san);
+        return LoaderComponent(state.taisanhongData, state, screens.chi_tiet_tai_san, refresh);
       case tabs.tai_san_thanh_ly:
-        return LoaderComponent(state.taisanthanhlyData, state, screens.chi_tiet_tai_san);
+        return LoaderComponent(state.taisanthanhlyData, state, screens.chi_tiet_tai_san, refresh);
       case tabs.tai_san_chua_su_dung:
-        return LoaderComponent(state.taisanchuasudungData, state, screens.chi_tiet_tai_san);
+        return LoaderComponent(state.taisanchuasudungData, state, screens.chi_tiet_tai_san, refresh);
       case tabs.tai_san_dang_su_dung:
-        return LoaderComponent(state.taisandangsudungData, state, screens.chi_tiet_tai_san);
+        return LoaderComponent(state.taisandangsudungData, state, screens.chi_tiet_tai_san, refresh);
       case tabs.tai_san_huy:
-        return LoaderComponent(state.taisanhuyData, state, screens.chi_tiet_tai_san);
+        return LoaderComponent(state.taisanhuyData, state, screens.chi_tiet_tai_san, refresh);
       case tabs.tai_san_sua_chua_bao_duong:
-        return LoaderComponent(state.taisansuachuabaoduongData, state, screens.chi_tiet_tai_san);
+        return LoaderComponent(state.taisansuachuabaoduongData, state, screens.chi_tiet_tai_san, refresh);
       case tabs.bao_hong_mat_tai_san:
-        return LoaderComponent(state.baohongmatData, state, screens.chi_tiet_bao_hongmat_tai_san);
+        return LoaderComponent(state.baohongmatData, state, screens.chi_tiet_bao_hongmat_tai_san, refresh);
       default:
         break;
     }

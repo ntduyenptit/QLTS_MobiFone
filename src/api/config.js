@@ -133,8 +133,11 @@ export const endPoint = ({
 
   // get tài sản
   GetTaiSan: 'services/app/ToanBoTaiSan/GetForEdit',
-  
-
+  capphatTS: 'services/app/TaiSanChuaSuDung/CapPhatTaiSan',
+  tsHuyHoantac: 'services/app/TaiSanHuy/HoanTacTaiSanHuy',
+  tsMatHoantac: 'services/app/TaiSanMat/HoanTacTaiSanMat',
+  tsThanhlyHoantac: 'services/app/TaiSanThanhLy/HoanTacTaiSanThanhLy',
+  tsHongHoantac: 'services/app/TaiSanHong/HoanTacTaiSanHong',
   // xóa tài sản
   DeleteTaiSan: 'services/app/ToanBoTaiSan/Deleted',
   deleteReaderdidong: 'services/app/DauDocTheRFID/Deleted',
