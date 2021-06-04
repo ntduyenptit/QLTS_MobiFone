@@ -11,6 +11,9 @@ import {
   Modal, KeyboardAvoidingView
 } from 'react-native';
 import { SliderBox } from "react-native-image-slider-box";
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import BulletView from '@app/modules/global/BulletView';
 import { endPoint, imageBaseUrl, screens, tabs } from '../../../api/config';
 import { deviceWidth, deviceHeight } from '../../global/LoaderComponent';
 import { createGetMethod, createPostMethodWithToken, deleteMethod } from '../../../api/Apis';
@@ -205,6 +208,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       default:
     }
   }
+  
   deleteThisAsset(id) {
     Alert.alert('Bạn có chắc chắn muốn xóa không?',
       '',
@@ -232,11 +236,13 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       { cancelable: true }
     );
   }
+
   goBack() {
     const { navigation, route } = this.props;
     route.params.onGoBack();
     navigation.goBack();
   }
+  
   commit(phanLoai, tittle) {
     const {
       donvi,
@@ -273,6 +279,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       }
     })
   }
+  
   commitMenuItem(tittle) {
     this.setState({ modalVisible: false })
     switch (tittle) {
@@ -503,7 +510,6 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       </View>
     );
   }
-
 }
 
 const styles = StyleSheet.create({
