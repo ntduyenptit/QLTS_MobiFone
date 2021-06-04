@@ -11,9 +11,6 @@ import {
   Modal, KeyboardAvoidingView
 } from 'react-native';
 import { SliderBox } from "react-native-image-slider-box";
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import BulletView from '@app/modules/global/BulletView';
 import { endPoint, imageBaseUrl, screens, tabs } from '../../../api/config';
 import { deviceWidth, deviceHeight } from '../../global/LoaderComponent';
 import { createGetMethod, createPostMethodWithToken, deleteMethod } from '../../../api/Apis';

@@ -61,7 +61,7 @@ export const endPoint = ({
   // Báo cáo người dùng:
   getAllBaocaoNguoidung: 'services/app/BaoCaoNguoiDung/GetAllBaoCao',
   resetPassword: 'services/app/User/ResetPassword',
-  changePassword: '',
+  changePassword: 'services/app/LookupTable/ChangePassword',
   // Báo cáo cảnh báo
    getAllBaocaoCanhBao: 'services/app/BaoCaoCanhBao/GetAllBaoCao',
 

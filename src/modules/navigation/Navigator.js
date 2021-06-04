@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity, Modal, KeyboardAvoidingView, TextInput, Alert } from 'react-native';
 import {
   createDrawerNavigator,
   DrawerItem,
@@ -20,10 +20,12 @@ import ForgotPassword from '../auth/ForgotPassword';
 import { userLogin, userLogout } from '../../redux/actions/user.actions';
 import { setCurrentScreen } from '../../redux/actions/screen.actions';
 import { store } from '../../redux/store';
-import { drawerData } from '../../api/config';
+import { drawerData, endPoint } from '../../api/config';
 import { fonts, colors } from '../../styles';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+import { createPostMethodWithToken } from '@app/api/Apis';
 
+const keyboardVerticalOffset = -60;
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
@@ -47,17 +49,15 @@ function handler(props, children) {
 function CustomDrawerContent(props) {
   const [state, setState] = useState({});
   const [user, setUser] = useState('');
+  const [mkHientai, setMkHientai] = useState('');
+  const [mkMoi, setMkMoi] = useState('');
+  const [mkConfirm, setMkConfirm] = useState('');
+  const [modalVisible, setmodalVisible] = useState('');
+
   const signOut = () => {
     AsyncStorage.clear();
     store.dispatch(userLogout());
   }
-
-  const menu = useRef();
-
-  const hideMenu = () => menu.current.hide();
-
-  const showMenu = () => menu.current.show();
-
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
@@ -73,25 +73,88 @@ function CustomDrawerContent(props) {
 
     bootstrapAsync();
   }, []);
+
+  const changePassword = () => {
+    let url = '';
+    let params = '';
+
+    url = `${endPoint.changePassword}`;
+    params = {
+      currentPassword: mkHientai,
+      newPassword: mkMoi,
+    }
+
+    createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
+      if (res.success) {
+        Alert.alert(
+          '',
+          'Thay mật khẩu thành công',
+          [
+            { text: 'OK', onPress: setmodalVisible(false) },
+          ],
+
+        );
+
+      }
+    })
+  }
+
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../../../assets/images/background.png')} style={styles.backgroundImage}>
         <View style={styles.profile}>
-          {/* <Collapsible collapsed={!state[item.name]}>
-                <View style={{ flex: 20, paddingLeft: 30 }}>
-                  {handler(props, item.children)}
-                </View>
-              </Collapsible> */}
-
-          <Menu ref={menu} marginRight='10' button={<Icon
-            name='cog'
-            size={27}
-            style={{ position: 'absolute', right: 5, padding: 10 }}
-            color='white'
-          />}>
-            <MenuItem onPress={hideMenu} >Thay mật khẩu</MenuItem>
-            <MenuDivider />
-          </Menu>
+          <TouchableOpacity style={{ position: 'absolute', right: 5, padding: 10 }} onPress={() => setmodalVisible(true)}>
+            <Icon
+              name='cog'
+              size={27}
+              color='white'
+            />
+          </TouchableOpacity>
+          <View>
+            <Modal
+              animationType="fade"
+              transparent
+              visible={modalVisible}
+              onRequestClose={() => setmodalVisible(!modalVisible)}
+            >
+              <View>
+                <KeyboardAvoidingView
+                  behavior='position'
+                  keyboardVerticalOffset={keyboardVerticalOffset}
+                  style={styles.modalView}
+                >
+                  <Text style={styles.modalText}>Thay mật khẩu</Text>
+                  <Text style={styles.boldText}>Mật khẩu hiện tại*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    secureTextEntry
+                    style={styles.bordered}
+                    onChangeText={(text) => setMkHientai(text)}
+                  />
+                  <Text style={styles.boldText}>Mật khẩu mới*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    secureTextEntry
+                    onChangeText={(text) => setMkMoi(text)}
+                  />
+                  <Text style={styles.boldText}>Xác nhận mật khẩu mới*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    secureTextEntry
+                    onChangeText={(text) => setMkConfirm(text)}
+                  />
+                  <TouchableOpacity
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={changePassword}
+                  >
+                    <Text style={styles.textStyle}>Xong </Text>
+                  </TouchableOpacity>
+                </KeyboardAvoidingView>
+              </View>
+            </Modal>
+          </View>
           <Image source={require('../../../assets/images/drawer/user.png')} resizeMode="contain" style={{ marginTop: 40, width: 80, height: 80, borderRadius: 20, alignSelf: 'center' }} />
           <View style={{ alignSelf: 'center', marginTop: 15 }}>
             <Text style={{ fontWeight: '200', fontSize: 25, color: 'white', textAlign: 'center' }}>{user}</Text>
@@ -347,5 +410,62 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     alignSelf: 'center'
+  },
+  boldText: {
+    fontWeight: 'bold',
+    alignItems: 'flex-start',
+    padding: 5,
+  },
+  modalView: {
+    margin: 20,
+    paddingTop: 50,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    height: 500,
+  },
+  bordered: {
+    borderWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderColor: 'black',
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    height: 50,
+    padding: 10,
+    marginLeft: 5,
+    marginRight: 5
+  },
+
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    marginTop: 60,
+    elevation: 2,
+    alignSelf: 'center'
+  },
+
+  buttonClose: {
+    width: 150,
+    height: 45,
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    fontSize: 20,
+    marginBottom: 10,
+    fontWeight: "bold",
+    textAlign: "center"
   }
 });
