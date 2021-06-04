@@ -130,7 +130,7 @@ export const endPoint = ({
   creatUser: 'services/app/User/Create',
   // Upload
   ToanBoTSUpload: 'Upload/ToanBoTSUpload',
-
+  editTsSuachua: 'services/app/TaiSanSuaChuaBaoDuong/EditTaiSanSuaChuaBaoDuong',
   // get tài sản
   GetTaiSan: 'services/app/ToanBoTaiSan/GetForEdit',
   capphatTS: 'services/app/TaiSanChuaSuDung/CapPhatTaiSan',

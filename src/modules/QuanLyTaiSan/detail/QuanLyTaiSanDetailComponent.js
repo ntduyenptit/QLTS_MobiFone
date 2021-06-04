@@ -24,6 +24,7 @@ import MultiSelect from '@app/libs/react-native-multiple-select/lib/react-native
 const keyboardVerticalOffset = -60;
 let idTaisan = null;
 let tab = '';
+let paramTS = '';
 
 class QuanLyTaiSanDetailComponent extends React.PureComponent {
   constructor(props) {
@@ -90,14 +91,14 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
         break;
     }
     params = {
-      phieuTaiSanChiTietList: [{"id": idTaisan}],
+      phieuTaiSanChiTietList: [{ "id": idTaisan }],
     }
-    
+
     createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
       if (res.success) {
         Alert.alert(
           '',
-           'Hoàn tác thành công',
+          'Hoàn tác thành công',
           [
             { text: 'OK', onPress: this.goBack() },
           ],
@@ -150,7 +151,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       });
     }
   };
-  
+
   menuforTab() {
     switch (tab) {
       case tabs.toan_bo_tai_san:
@@ -193,11 +194,10 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       case tabs.tai_san_sua_chua_bao_duong:
         return (
           <Menu ref={this.setMenuRef} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem >Thành công</MenuItem>
+            <MenuItem onPress={() => { this.editTsSuachua(2) }} >Thành công</MenuItem>
             <MenuDivider />
-            <MenuItem>Không thành công</MenuItem>
+            <MenuItem onPress={() => { this.editTsSuachua(3) }}>Không thành công</MenuItem>
             <MenuDivider />
-            <MenuItem >Hoàn tác</MenuItem>
           </Menu>
         )
       case tabs.bao_hong_mat_tai_san:
@@ -205,7 +205,51 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       default:
     }
   }
-  
+
+  editTsSuachua(trangthaiID) {
+    let url = `${endPoint.editTsSuachua}`;
+
+    let params = '';
+    params = {
+      creationTime: paramTS.creationTime,
+      creatorUserId: paramTS.creatorUserId,
+      deleterUserId: paramTS.deleterUserId,
+      diaChiSuaChuaBaoDuong: paramTS.diaChiSuaChuaBaoDuong,
+      epcCode: paramTS.epcCode,
+      hinhThuc: paramTS.hinhThuc,
+      id: paramTS.id,
+      isDeleted: paramTS.isDeleted,
+      lastModificationTime: paramTS.lastModificationTime,
+      lastModifierUserId: paramTS.lastModifierUserId,
+      liDoSuaChuaBaoDuong: paramTS.liDoSuaChuaBaoDuong,
+      loaiTaiSan: paramTS.loaiTaiSan,
+      loaiTaiSanId: paramTS.loaiTaiSanId,
+      nguyenGia: paramTS.nguyenGia,
+      nguyenGiaStr: paramTS.nguyenGiaStr,
+      nhaCungCap: paramTS.nhaCungCap,
+      phieuTaiSanChiTietId: paramTS.phieuTaiSanChiTietId,
+      phongBanQuanLy: paramTS.phongBanQuanLy,
+      phongBanQuanLyId: paramTS.phongBanQuanLyId,
+      tenTaiSan: paramTS.tenTaiSan,
+      thoiGianBatDau: paramTS.thoiGianBatDau,
+      trangThai: trangthaiID,
+    }
+
+    createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
+      if (res.success) {
+        Alert.alert(
+          '',
+           ' Thành công',
+          [
+            { text: 'OK', onPress: this.goBack() },
+          ],
+
+        );
+
+      }
+    })
+  }
+
   deleteThisAsset(id) {
     Alert.alert('Bạn có chắc chắn muốn xóa không?',
       '',
@@ -239,14 +283,14 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     route.params.onGoBack();
     navigation.goBack();
   }
-  
+
   commit(phanLoai, tittle) {
     const {
       donvi,
       datetime,
       noidung,
     } = this.state;
-    
+
     let url = '';
     let params = '';
 
@@ -257,11 +301,11 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       noiDung: noidung,
       noiDungKhaiBao: noidung,
       phanLoaiId: phanLoai,
-      phieuTaiSanChiTietList: [{taiSanId: idTaisan}],
+      phieuTaiSanChiTietList: [{ taiSanId: idTaisan }],
       thoiGianKhaiBao: datetime,
       toChucDuocNhanId: donvi[0],
     }
-    
+
     createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
       if (res.success) {
         Alert.alert(
@@ -276,7 +320,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       }
     })
   }
-  
+
   commitMenuItem(tittle) {
     this.setState({ modalVisible: false })
     switch (tittle) {
@@ -422,6 +466,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     console.log("item chi tiet: " + paramKey.id);
     idTaisan = paramKey.id;
     tab = tabKey;
+    paramTS = paramKey,
     console.log("dataLdataLdataLdataL: " + donviList);
     return (
       <View style={styles.container}>

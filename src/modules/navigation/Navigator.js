@@ -430,7 +430,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    height: 500,
+    height: 400,
   },
   bordered: {
     borderWidth: 0.5,
@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 20,
     padding: 10,
-    marginTop: 60,
+    marginTop: 20,
     elevation: 2,
     alignSelf: 'center'
   },
