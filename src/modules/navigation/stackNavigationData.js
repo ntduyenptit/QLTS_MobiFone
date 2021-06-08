@@ -50,6 +50,8 @@ import ThemmoiDonvi from '../quanlydanhmuc/quanlydonvi/ThemmoiDonvi';
 import ThemmoiNguoidung from '../quanlyhethong/quanlynguoidung/ThemmoiNguoidung';
 import ThemmoiVaitro from '../quanlyhethong/quanlyphanquyen/ThemVaitro';
 import DashBoard from '../dashboard/DashBoardView';
+import QRScanAssetInfor from '../qrcode/AssetInforScreen';
+import QRScaner from '../qrcode/QRScanScreen';
 import moreHeaderRightComponent from '../global/MoreComponent';
 import ForgotPassword from  '../auth/ForgotPassword';
 import { colors, fonts } from '../../styles';
@@ -109,7 +111,32 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
-  
+  {
+    name: screens.qrScanAssetInfor,
+    component: QRScanAssetInfor,
+    headerLeft: null,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.qrScanAssetScreen,
+    component: QRScaner,
+    headerLeft: null,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
   {
     name: screens.quan_ly_tai_san,
     component: TabNavigator,

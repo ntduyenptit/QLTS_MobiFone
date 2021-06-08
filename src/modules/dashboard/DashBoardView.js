@@ -28,6 +28,23 @@ class DashBoard extends React.Component {
   }
 
   componentDidMount() {
+    this.props.navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+           onPress={() => this.props.navigation.navigate(screens.qrScanAssetScreen)}
+          style={{
+            paddingHorizontal: 16,
+            paddingVertical: 12,
+          }
+          }
+        >
+          <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+            <Icon name="qrcode" color="white" size={20} />
+
+          </View>
+        </TouchableOpacity>
+      )
+    });
     this.getData().then(res => {
       store.dispatch(getDVQLDataAction(res.result));
       Promise.all([
@@ -51,7 +68,7 @@ class DashBoard extends React.Component {
 
   lineChartData = (result) => {
     const finalData = [];
-    const dates = getDates(new Date().setMonth(new Date().getMonth()-1) ,new Date(), 1);
+    const dates = getDates(new Date().setMonth(new Date().getMonth() - 1), new Date(), 1);
 
     dates.forEach(e => {
       const item = {

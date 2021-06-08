@@ -202,6 +202,9 @@ export const screens = ({
   them_moi_don_vi: "Thêm mới đơn vị",
   them_moi_nguoi_dung: "Thêm mới người dùng",
   them_moi_vai_tro: "Thêm mới vai trò",
+
+  qrScanAssetInfor: "Tài sản",
+  qrScanAssetScreen: "Quét tài sản",
 });
 
 // Quản lý tabs
