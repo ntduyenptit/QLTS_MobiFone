@@ -6,9 +6,6 @@ import { userLogin } from '../../redux/actions/user.actions'
 
 export default compose(
   connect(
-    state => ({
-      items: state.calendar.items,
-    }),
     dispatch => ({
       userLogin: (token) => dispatch(userLogin(token)),
     }),

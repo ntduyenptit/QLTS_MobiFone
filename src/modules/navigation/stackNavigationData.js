@@ -16,7 +16,6 @@ import TheodoiThietbiScreen from '../giamsattaisan/theodoiketnoi/TheodoiKetnoi';
 
 import KiemKeTaiSanDetailComponent from '../kiemketaisan/DetailKiemkeComponent';
 
-import AvailableInFullVersion from "../availableInFullVersion/AvailableInFullVersionViewContainer";
 import BaoCaoThongTinTS from '../baocao/BaoCaoThongTinTS';
 import KiemkeTsScreen from '../kiemketaisan/KiemkeTS';
 
@@ -269,19 +268,6 @@ const StackNavigationData = [
     },
   },
   {
-    name: screens.quan_ly_danh_muc,
-    component: AvailableInFullVersion,
-    headerLeft: null,
-    headerRight: headerRightComponent,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-      alignSelf: 'center'
-    },
-  },
-  {
     name: screens.quan_ly_nha_cung_cap,
     component: QuanlyNhaCungcapScreen,
     headerLeft: null,
@@ -443,19 +429,6 @@ const StackNavigationData = [
     component: QuanLyPhanQuyenScreen,
     headerLeft: null,
     headerRight: moreHeaderRightComponent,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-      alignSelf: 'center'
-    },
-  },
-  {
-    name: screens.lich_su_nguoi_dung,
-    component: AvailableInFullVersion,
-    headerLeft: null,
-    headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
