@@ -1,12 +1,12 @@
-import { TOANBOTAISAN_DATA, TOANBOTAISAN_FAILED, TOANBOTAISAN_LOADING, TOANBOTAISAN_SEARCH, TOANBOTAISAN_REMOVE,
-TAISANHONG_DATA, TAISANHONG_FAILED, TAISANHONG_LOADING, TAISANHONG_SEARCH,
-TAISANMAT_DATA, TAISANMAT_FAILED, TAISANMAT_LOADING, TAISANMAT_SEARCH,
-TAISANHUY_DATA, TAISANHUY_FAILED, TAISANHUY_LOADING, TAISANHUY_SEARCH,
-TAISANTHANHLY_DATA, TAISANTHANHLY_FAILED, TAISANTHANHLY_LOADING, TAISANTHANHLY_SEARCH,
-TAISANDANGSUDUNG_LOADING, TAISANDANGSUDUNG_DATA, TAISANDANGSUDUNG_FAILED, TAISANDANGSUDUNG_SEARCH,
-TAISANCHUASUDUNG_LOADING, TAISANCHUASUDUNG_DATA, TAISANCHUASUDUNG_FAILED, TAISANCHUASUDUNG_SEARCH,
-TAISANSUACHUABAODUONG_DATA, TAISANSUACHUABAODUONG_FAILED, TAISANSUACHUABAODUONG_LOADING, TAISANSUACHUABAODUONG_SEARCH,
-KHAIBAOHONGMAT_DATA, KHAIBAOHONGMAT_FAILED, KHAIBAOHONGMAT_LOADING, KHAIBAOHONGMAT_SEARCH, } from '../../redux/actions/quanlytaisan.actions'
+import { TOANBOTAISAN_DATA, TOANBOTAISAN_FAILED, TOANBOTAISAN_LOADING, TOANBOTAISAN_REMOVE,
+TAISANHONG_DATA, TAISANHONG_FAILED, TAISANHONG_LOADING, TAISANHONG_REMOVE,
+TAISANMAT_DATA, TAISANMAT_FAILED, TAISANMAT_LOADING, TAISANMAT_REMOVE,
+TAISANHUY_DATA, TAISANHUY_FAILED, TAISANHUY_LOADING, TAISANHUY_REMOVE,
+TAISANTHANHLY_DATA, TAISANTHANHLY_FAILED, TAISANTHANHLY_LOADING, TAISANTHANHLY_REMOVE,
+TAISANDANGSUDUNG_LOADING, TAISANDANGSUDUNG_DATA, TAISANDANGSUDUNG_FAILED, TAISANDANGSUDUNG_REMOVE,
+TAISANCHUASUDUNG_LOADING, TAISANCHUASUDUNG_DATA, TAISANCHUASUDUNG_FAILED, TAISANCHUASUDUNG_REMOVE,
+TAISANSUACHUABAODUONG_DATA, TAISANSUACHUABAODUONG_FAILED, TAISANSUACHUABAODUONG_LOADING, TAISANSUACHUABAODUONG_REMOVE,
+KHAIBAOHONGMAT_DATA, KHAIBAOHONGMAT_FAILED, KHAIBAOHONGMAT_LOADING, KHAIBAOHONGMAT_REMOVE, } from '../../redux/actions/quanlytaisan.actions'
 
 const initialState = {
     toanbotaisanData: [],
@@ -53,15 +53,6 @@ export const toanbotaisanReducer = (state = initialState, action) => {
         toanbotaisanData: [...state.toanbotaisanData, ...result]
       }
     } 
-    case TOANBOTAISAN_SEARCH: {
-      const result = action.payload.data.result.items;
-      return {
-        isLoading: false,
-        isSuccess: true,
-        toanbotaisanTotal: action.payload.data.result.totalCount,
-        toanbotaisanData: result
-      }
-    }
     case TOANBOTAISAN_REMOVE: {
       return {
         isLoading: false,
@@ -99,13 +90,12 @@ export const taisanmatReducer = (state = initialState, action) => {
         taisanmatData: [...state.taisanmatData, ...result]
       }
     }
-    case TAISANMAT_SEARCH: {
-      const result = action.payload.data.result.items;
+    case TAISANMAT_REMOVE: {
       return {
         isLoading: false,
         isSuccess: true,
-        taisanmatTotal: action.payload.data.result.totalCount,
-        taisanmatData: result
+        taisanmatTotal: 0,
+        taisanmatData: []
       }
     }
     case TAISANMAT_FAILED: {
@@ -137,13 +127,12 @@ export const taisanhongReducer = (state = initialState, action) => {
         taisanhongData: [...state.taisanhongData, ...result]
       }
     }
-    case TAISANHONG_SEARCH: {
-      const result = action.payload.data.result.items;
+    case TAISANHONG_REMOVE: {
       return {
         isLoading: false,
         isSuccess: true,
-        taisanhongTotal: action.payload.data.result.totalCount,
-        taisanhongData: result
+        taisanhongTotal: 0,
+        taisanhongData: []
       }
     }
     case TAISANHONG_FAILED: {
@@ -174,13 +163,12 @@ export const taisanhuyReducer = (state = initialState, action) => {
         taisanhuyData: [...state.taisanhuyData, ...result]
       }
     }
-    case TAISANHUY_SEARCH: {
-      const result = action.payload.data.result.items;
+    case TAISANHUY_REMOVE: {
       return {
         isLoading: false,
         isSuccess: true,
-        taisanhuyTotal: action.payload.data.result.totalCount,
-        taisanhuyData: result
+        taisanhuyTotal: 0,
+        taisanhuyData: []
       }
     }
     case TAISANHUY_FAILED: {
@@ -211,13 +199,12 @@ export const taisanthanhlyReducer = (state = initialState, action) => {
         taisanthanhlyData: [...state.taisanthanhlyData, ...result]
       }
     }
-    case TAISANTHANHLY_SEARCH: {
-      const result = action.payload.data.result.items;
+    case TAISANTHANHLY_REMOVE: {
       return {
         isLoading: false,
         isSuccess: true,
-        taisanthanhlyTotal: action.payload.data.result.totalCount,
-        taisanthanhlyData: result
+        taisanthanhlyTotal: 0,
+        taisanthanhlyData: []
       }
     }
     case TAISANTHANHLY_FAILED: {
@@ -249,13 +236,12 @@ export const taisandangsudungReducer = (state = initialState, action) => {
         taisandangsudungData: [...state.taisandangsudungData, ...result]
       }
     }
-    case TAISANDANGSUDUNG_SEARCH: {
-      const result = action.payload.data.result.items;
+    case TAISANDANGSUDUNG_REMOVE: {
       return {
         isLoading: false,
         isSuccess: true,
-        taisandangsudungTotal: action.payload.data.result.totalCount,
-        taisandangsudungData: result
+        taisandangsudungTotal: 0,
+        taisandangsudungData: []
       }
     }
     case TAISANDANGSUDUNG_FAILED: {
@@ -287,13 +273,12 @@ export const taisanchuasudungReducer = (state = initialState, action) => {
         taisanchuasudungData: [...state.taisanchuasudungData, ...result]
       }
     }
-    case TAISANCHUASUDUNG_SEARCH: {
-      const result = action.payload.data.result.items;
+    case TAISANCHUASUDUNG_REMOVE: {
       return {
         isLoading: false,
         isSuccess: true,
-        taisanchuasudungTotal: action.payload.data.result.totalCount,
-        taisanchuasudungData: result
+        taisanchuasudungTotal: 0,
+        taisanchuasudungData: []
       }
     }
     case TAISANCHUASUDUNG_FAILED: {
@@ -325,13 +310,12 @@ export const taisansuachuabaoduongReducer = (state = initialState, action) => {
         taisansuachuabaoduongData: [...state.taisansuachuabaoduongData, ...result]
       }
     }
-    case TAISANSUACHUABAODUONG_SEARCH: {
-      const result = action.payload.data.result.items;
+    case TAISANSUACHUABAODUONG_REMOVE: {
       return {
         isLoading: false,
         isSuccess: true,
-        taisansuachuabaoduongTotal: action.payload.data.result.totalCount,
-        taisansuachuabaoduongData: result
+        taisansuachuabaoduongTotal: 0,
+        taisansuachuabaoduongData: []
       }
     }
     case TAISANSUACHUABAODUONG_FAILED: {
@@ -363,13 +347,12 @@ export const khaibaohongmatReducer = (state = initialState, action) => {
         khaibaohongmatData: [...state.taisansuachuabaoduongData, ...result]
       }
     }
-    case KHAIBAOHONGMAT_SEARCH: {
-      const result = action.payload.data.result.items;
+    case KHAIBAOHONGMAT_REMOVE: {
       return {
         isLoading: false,
         isSuccess: true,
-        khaibaohongmatTotal: action.payload.data.result.totalCount,
-        khaibaohongmatData: result
+        khaibaohongmatTotal: 0,
+        khaibaohongmatData: []
       }
     }
     case KHAIBAOHONGMAT_FAILED: {

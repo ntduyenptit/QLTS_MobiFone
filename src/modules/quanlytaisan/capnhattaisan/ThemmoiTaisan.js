@@ -156,7 +156,8 @@ class TaomoiTaisanScreen extends React.Component {
                 check = true;
                 break;
             }
-           
+           default:
+               break;
         }
         if (check) {
             Alert.alert(

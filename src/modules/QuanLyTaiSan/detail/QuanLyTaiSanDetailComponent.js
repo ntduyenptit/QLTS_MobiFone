@@ -11,27 +11,29 @@ import {
   Modal, KeyboardAvoidingView
 } from 'react-native';
 import { SliderBox } from "react-native-image-slider-box";
-import { endPoint, imageBaseUrl, screens, tabs } from '../../../api/config';
-import { deviceWidth, deviceHeight } from '../../global/LoaderComponent';
-import { createGetMethod, createPostMethodWithToken, deleteMethod } from '../../../api/Apis';
 import DatePicker from 'react-native-datepicker';
 import { connect } from 'react-redux';
-import { addYearToDate, buildTree, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import BulletView from '@app/modules/global/BulletView';
 import MultiSelect from '@app/libs/react-native-multiple-select/lib/react-native-multi-select';
+import { addYearToDate, buildTree, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
+import { createGetMethod, createPostMethodWithToken, deleteMethod } from '../../../api/Apis';
+import { deviceWidth, deviceHeight } from '../../global/LoaderComponent';
+import { endPoint, imageBaseUrl, screens, tabs } from '../../../api/config';
+
 const keyboardVerticalOffset = -60;
 let idTaisan = null;
 let tab = '';
 let paramTS = '';
 
 class QuanLyTaiSanDetailComponent extends React.PureComponent {
+  _menu = null;
+
   constructor(props) {
     super(props);
     this.state = {
       taisan: '',
-      tenTS: '',
       images: '',
       modalVisible: false,
       donvi: '',
@@ -41,90 +43,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       menuTitle: '',
     };
   }
-  _menu = null;
 
-  setMenuRef = ref => {
-    this._menu = ref;
-  };
-
-  hideMenu = () => {
-    this._menu.hide();
-  };
-
-  showMenu = () => {
-    this._menu.show();
-  };
-  getAssetMoreInfo() {
-    console.log("idTs: " + idTaisan);
-    let url = `${endPoint.GetTaiSan}?`;
-    url += `input=${idTaisan}&isView=true`;
-    console.log("Refresh ko" + idTaisan);
-    createGetMethod(url).then(res => {
-      if (res.success) {
-        const imageList = res.result.listHinhAnh.map(e => `${imageBaseUrl}${e.linkFile.replace(/\\/g, "/")}`);
-        this.setState({
-          images: imageList,
-          taisan: res.result,
-        });
-      }
-    });
-  }
-  capnhat() {
-    this._menu.hide();
-    this.props.navigation.navigate(screens.cap_nhat_tai_san, { paramKey: this.state.taisan, idTs: idTaisan, onGoBack: () => this.refresh() });
-  }
-  hoantac(tab) {
-    this._menu.hide();
-    let url = ''
-    switch (tab) {
-      case tabs.tai_san_mat:
-        url = `${endPoint.tsMatHoantac}`;
-        break;
-      case tabs.tai_san_huy:
-        url = `${endPoint.tsHuyHoantac}`;
-        break;
-      case tabs.tai_san_hong:
-        url = `${endPoint.tsHongHoantac}`;
-        break;
-      case tabs.tai_san_thanh_ly:
-        url = `${endPoint.tsThanhlyHoantac}`;
-        break;
-    }
-    params = {
-      phieuTaiSanChiTietList: [{ "id": idTaisan }],
-    }
-
-    createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
-      if (res.success) {
-        Alert.alert(
-          '',
-          'Hoàn tác thành công',
-          [
-            { text: 'OK', onPress: this.goBack() },
-          ],
-
-        );
-
-      }
-    })
-  }
-  onSelectedDVQLChange = donvi => {
-    console.log("phongBanNhan: " + donvi);
-    this.setState({ donvi });
-  }
-
-  showModalView(title) {
-    this._menu.hide();
-    this.setState({
-      modalVisible: true,
-      menuTitle: title,
-    })
-
-  }
-
-  refresh = () => {
-    this.getAssetMoreInfo();
-  }
   componentDidMount() {
     Promise.all([
       this.props.navigation.setOptions({
@@ -142,10 +61,98 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       this.danhsachdonvi(this.props.DvqlData)
     ]);
   }
+
+  setMenuRef = ref => {
+    this._menu = ref;
+  };
+
+  getAssetMoreInfo() {
+    let url = `${endPoint.GetTaiSan}?`;
+    url += `input=${idTaisan}&isView=true`;
+    createGetMethod(url).then(res => {
+      if (res.success) {
+        const imageList = res.result.listHinhAnh.map(e => `${imageBaseUrl}${e.linkFile.replace(/\\/g, "/")}`);
+        this.setState({
+          images: imageList,
+          taisan: res.result,
+        });
+      }
+    });
+  }
+
+  hideMenu = () => {
+    this._menu.hide();
+  };
+
+  showMenu = () => {
+    this._menu.show();
+  };
+
+  onSelectedDVQLChange = donvi => {
+    this.setState({ donvi });
+  }
+
+  refresh = () => {
+    this.getAssetMoreInfo();
+  }
+
+  showModalView(title) {
+    const { modalVisible } = this.state;
+    this._menu.hide();
+    setTimeout(() => {
+      this.setState({
+        modalVisible: !modalVisible,
+        menuTitle: title,
+      })
+    }, 500)
+  }
+
+  hoantac(Tab) {
+    this._menu.hide();
+    let url = ''
+    switch (Tab) {
+      case tabs.tai_san_mat:
+        url = `${endPoint.tsMatHoantac}`;
+        break;
+      case tabs.tai_san_huy:
+        url = `${endPoint.tsHuyHoantac}`;
+        break;
+      case tabs.tai_san_hong:
+        url = `${endPoint.tsHongHoantac}`;
+        break;
+      case tabs.tai_san_thanh_ly:
+        url = `${endPoint.tsThanhlyHoantac}`;
+        break;
+        default:
+          break;
+    }
+    const params = {
+      phieuTaiSanChiTietList: [{ "id": idTaisan }],
+    }
+
+    createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
+      if (res.success) {
+        Alert.alert(
+          '',
+          'Hoàn tác thành công',
+          [
+            { text: 'OK', onPress: this.goBack() },
+          ],
+
+        );
+
+      }
+    })
+  }
+
+  capnhat() {
+    this._menu.hide();
+    this.props.navigation.navigate(screens.cap_nhat_tai_san, { paramKey: this.state.taisan, idTs: idTaisan, onGoBack: () => this.refresh() });
+  }
+
   danhsachdonvi(data) {
-    console.log("dataLdataLdataLdataL: " + data);
     if (data) {
-      let dvqlTreeData = buildTree(data);
+      const dvqlTreeData = buildTree(data);
       this.setState({
         donviList: dvqlTreeData,
       });
@@ -157,9 +164,10 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       case tabs.toan_bo_tai_san:
         return (
           <Menu ref={this.setMenuRef} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={() => { this.capnhat() }} >Cập nhật</MenuItem>
+            <MenuItem onPress={() => { this.capnhat() }}>Cập nhật</MenuItem>
             <MenuDivider />
-          </Menu>)
+          </Menu>
+)
       case tabs.tai_san_mat:
       case tabs.tai_san_huy:
       case tabs.tai_san_hong:
@@ -174,7 +182,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       case tabs.tai_san_chua_su_dung:
         return (
           <Menu ref={this.setMenuRef} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={() => { this.capnhat() }} >Cập nhật</MenuItem>
+            <MenuItem onPress={() => { this.capnhat() }}>Cập nhật</MenuItem>
             <MenuDivider />
             <MenuItem onPress={() => { this.showModalView("Khai báo sử dụng") }}>Khai báo sử dụng</MenuItem>
             <MenuDivider />
@@ -184,9 +192,13 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       case tabs.tai_san_dang_su_dung:
         return (
           <Menu ref={this.setMenuRef} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={() => { this.capnhat() }} >Cập nhật</MenuItem>
+            <MenuItem onPress={() => { this.capnhat() }}>Cập nhật</MenuItem>
             <MenuDivider />
-            <MenuItem onPress={() => { this.showModalView("Điều chuyển") }}>Điều chuyển</MenuItem>
+            <MenuItem onPress={() => { 
+              this.showModalView("Điều chuyển");
+               }}
+            >Điều chuyển
+            </MenuItem>
             <MenuDivider />
             <MenuItem onPress={() => { this.showModalView("Thu hồi") }}>Thu hồi</MenuItem>
           </Menu>
@@ -194,7 +206,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       case tabs.tai_san_sua_chua_bao_duong:
         return (
           <Menu ref={this.setMenuRef} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={() => { this.editTsSuachua(2) }} >Thành công</MenuItem>
+            <MenuItem onPress={() => { this.editTsSuachua(2) }}>Thành công</MenuItem>
             <MenuDivider />
             <MenuItem onPress={() => { this.editTsSuachua(3) }}>Không thành công</MenuItem>
             <MenuDivider />
@@ -203,11 +215,12 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       case tabs.bao_hong_mat_tai_san:
         return null;
       default:
+        return null;
     }
   }
 
   editTsSuachua(trangthaiID) {
-    let url = `${endPoint.editTsSuachua}`;
+    const url = `${endPoint.editTsSuachua}`;
 
     let params = '';
     params = {
@@ -310,7 +323,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       if (res.success) {
         Alert.alert(
           '',
-          tittle + ' thành công',
+          `${tittle  } thành công`,
           [
             { text: 'OK', onPress: this.goBack() },
           ],
@@ -337,9 +350,10 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
         this.commit(3, tittle);
         break;
       default:
-        return null;
+        break;
     }
   }
+
   viewforMenu(tittle) {
     switch (tittle) {
       case "Khai báo sử dụng":
@@ -393,13 +407,13 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
             <Text style={styles.boldText}>Đơn vị được {convertTextToLowerCase(tittle)} tài sản*: </Text>
             <MultiSelect
               ref={(component) => { this.multiSelect = component }}
-              getCollapsedNodeHeight={{ height: 100 }}
+              getCollapsedNodeHeight={{ height: 200 }}
               items={this.state.donviList}
-              single={true}
-              isTree={true}
+              single
+              isTree
               IconRenderer={Icon}
               searchInputPlaceholderText="Tìm kiếm..."
-              styleListContainer={this.state.donviList && this.state.donviList.length > 9 ? { height: 200 } : null}
+              styleDropdownMenuSubsection={[styles.searchText, styles.inputBordered]}
               uniqueKey="id"
               displayKey="displayName"
               selectText="Chọn đơn vị quản lý..."
@@ -452,6 +466,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
         return null;
     }
   }
+
   render() {
     const {
       taisan,
@@ -463,11 +478,9 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       donvi,
     } = this.state;
     const { paramKey, tabKey } = this.props.route.params;
-    console.log("item chi tiet: " + paramKey.id);
     idTaisan = paramKey.id;
     tab = tabKey;
-    paramTS = paramKey,
-    console.log("dataLdataLdataLdataL: " + donviList);
+    paramTS = paramKey;
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -492,7 +505,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
                 </View>
               ) :
               (<Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} />)}
-            <View style={{ marginHorizontal: 30 }}>
+            <View style={{ marginHorizontal: 5 }}>
               <Text style={styles.title}>Thông tin {convertTextToLowerCase(tabKey)}:</Text>
               <BulletView title="Mã tài sản" text={paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode} />
               <BulletView title='Tên tài sản' text={taisan.tenTS ? taisan.tenTS : taisan.tenTaiSan} />
@@ -528,7 +541,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
         </View>
         <View>
           <Modal
-            animationType="fade"
+            animationType="slide"
             transparent
             visible={modalVisible}
             onRequestClose={() => {
@@ -603,6 +616,21 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
   },
+  searchText: {
+    backgroundColor: 'transparent',
+    height: 50,
+    paddingLeft: 15
+},
+inputBordered: {
+    borderWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderColor: 'black',
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    height: 40,
+    marginLeft: 5,
+    marginRight: 5
+},
   star: {
     width: 40,
     height: 40,
