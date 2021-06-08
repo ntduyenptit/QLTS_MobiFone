@@ -222,7 +222,7 @@ export const tabs = ({
 
 // Quản lý icon
 export const icons = ({
-  iconQuanlytaisan: "home",
+  iconHome: "home",
   iconQuanlydaudoc: "barcode",
   iconGiamsattaisan: "window-restore",
   iconKiemketaisan: "server",
@@ -231,10 +231,15 @@ export const icons = ({
   iconBaocao: "file",
   iconQuanlydanhmuc: "folder-open",
   iconQuanlyhethong: "cogs",
+  iconQuanlytaisan: "database",
 });
 
 // Quản lý menu
 export const drawerData = [
+ {
+  name: screens.dash_board,
+  icon: icons.iconHome,
+ },
   {
     name: screens.quan_ly_tai_san,
     icon: icons.iconQuanlytaisan,
