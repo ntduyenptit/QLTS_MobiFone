@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import {Text, View, Image} from 'react-native';
 import {StyleSheet} from 'react-native';
 import moment from 'moment/min/moment-with-locales';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class AssetInfoScreen extends Component {
   currencyFormat(num) {
@@ -16,7 +15,11 @@ export default class AssetInfoScreen extends Component {
     if (params != null) {
       return (
         <View style={assetStyles.card}>
-          <Icon name="qrcode" color="white" size={100} />
+          <Image
+            style={{width: '100%', height: 100}}
+            source={require('../../../assets/images/icons/qr-code.png')}
+            resizeMode={'contain'}
+          />
           <Text
             h1
             style={{paddingLeft: 10, fontWeight: 'bold', paddingBottom: 10}}>
