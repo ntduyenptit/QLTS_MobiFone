@@ -3,10 +3,9 @@ import React, {Component} from 'react';
 import {StyleSheet, Text, TouchableOpacity, BackHandler} from 'react-native';
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import RNCamera from 'react-native-camera';
+import {RNCamera} from 'react-native-camera';
 import { screens } from '@app/api/config';
-import { createGetMethod } from '@app/api/Apis';
-//const axios = require('axios');
+const axios = require('axios');
 export default class QRScanScreen extends Component {
   constructor(props) {
     super(props);
@@ -14,30 +13,24 @@ export default class QRScanScreen extends Component {
       isLight: true,
     };
   }
-  componentWillUnmount() {
-    this.props.route.params.onGoBack();
-  }
+  // componentWillUnmount() {
+  //   this.props.navigation.goBack();
+  // }
 
   async getAsset(input) {
-    // try {
-    //   const response = await axios.get(
-    //     'http://10.6.71.64:9080/api/services/app/LookupTable/GetAssetByQRCode?qrCode=' +
-    //       input,
-    //   );
-    //   if (response.data.success) {
-    //     this.setState({isLight: false});
-    //     this.props.navigation.navigate(screens.qrScanAssetInfor, response.data.result);
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
-    let url = 'http://10.6.71.64:9080/api/services/app/LookupTable/GetAssetByQRCode?qrCode=' +input;
-   
-    createGetMethod(url)
-                .then(res => {
-                  this.setState({isLight: false});
-                  this.props.navigation.navigate(screens.qrScanAssetInfor, res.result);
-                })
+    try {
+      const response = await axios.get(
+        'http://10.6.71.64:9080/api/services/app/LookupTable/GetAssetByQRCode?qrCode=' +
+          input,
+      );
+      if (response.data.success) {
+        this.setState({isLight: false});
+        this.props.navigation.navigate(screens.qrScanAssetInfor, response.data.result);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    
   }
 
   onSuccess = (e) => {
