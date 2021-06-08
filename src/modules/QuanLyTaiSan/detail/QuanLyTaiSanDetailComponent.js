@@ -104,7 +104,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
         modalVisible: !modalVisible,
         menuTitle: title,
       })
-    }, 500)
+    }, 300)
   }
 
   hoantac(Tab) {
@@ -354,6 +354,23 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     }
   }
 
+  renderButton = () => (
+    <View style={{flexDirection: 'row'}}>
+      <Pressable
+        style={[styles.button, styles.buttonClose]}
+        onPress={() => this.commitMenuItem(tittle)}
+      >
+        <Text style={styles.textStyle}>Xong </Text>
+      </Pressable>
+      <TouchableOpacity
+        style={[styles.button, styles.buttonClose, {marginLeft: 5, backgroundColor: 'transparent', borderWidth: 0.5}]}
+        onPress={() => this.setState({ modalVisible: false })}
+      >
+        <Text style={[styles.textStyle, {color: 'black'}]}>Hủy </Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   viewforMenu(tittle) {
     switch (tittle) {
       case "Khai báo sử dụng":
@@ -392,12 +409,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
                 });
               }}
             />
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => this.commitMenuItem(tittle)}
-            >
-              <Text style={styles.textStyle}>Xong </Text>
-            </Pressable>
+            {this.renderButton()}
           </ScrollView>
         )
       case "Điều chuyển":
@@ -453,12 +465,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
                 });
               }}
             />
-            <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => this.commitMenuItem(tittle)}
-            >
-              <Text style={styles.textStyle}>Xong </Text>
-            </TouchableOpacity>
+            {this.renderButton()}
           </ScrollView>
         )
 
@@ -524,7 +531,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
               <BulletView title='Thời gian trích khấu hao' text={taisan.thoiGianChietKhauHao} />
               {/* <BulletView title='Thời gian hết khấu hao' text={taisan.ngayMua && taisan.thoiGianChietKhauHao && addYearToDate(taisan.ngayMua, taisan.thoiGianChietKhauHao)} /> */}
               <BulletView title='Nguồn kinh phí' text={taisan.nguonKinhPhiId} />
-              <BulletView title='Mã dử dụng' text={taisan.dropdownMultiple} />
+              <BulletView title='Mã sử dụng' text={taisan.dropdownMultiple} />
 
             </View>
           </View>
