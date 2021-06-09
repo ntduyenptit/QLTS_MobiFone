@@ -20,7 +20,7 @@ import MoreMenu from '@app/modules/global/MoreComponent';
 import { buildTree, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
 import { createGetMethod, createPostMethodWithToken, deleteMethod } from '../../../api/Apis';
 import { deviceWidth, deviceHeight } from '../../global/LoaderComponent';
-import { endPoint, imageBaseUrl, screens, tabs } from '../../../api/config';
+import { endPoint, imageBaseUrl, screens, tabs, moreMenu } from '../../../api/config';
 
 const keyboardVerticalOffset = -60;
 let idTaisan = null;
@@ -82,7 +82,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     switch (tab) {
       case tabs.toan_bo_tai_san:
         subMenus = [{
-          title: 'Cập nhật',
+          title: moreMenu.cap_nhat,
           action: () => this.capnhat(),
         }];
         break;
@@ -91,56 +91,54 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       case tabs.tai_san_hong:
       case tabs.tai_san_thanh_ly:
         subMenus = [{
-          title: 'Hoàn tác',
+          title: moreMenu.hoan_tac,
           action: () => this.hoantac(tab),
         }];
         break;
       case tabs.tai_san_chua_su_dung:
         subMenus = [
           {
-          title: 'Cập nhật',
+          title: moreMenu.cap_nhat,
           action: () => this.capnhat(tab),
         },
         {
-          title: 'Khai báo sử dụng',
-          action: () => this.showModalView("Khai báo sử dụng"),
+          title: moreMenu.khai_bao_su_dung,
+          action: () => this.showModalView(moreMenu.khai_bao_su_dung),
         },
         {
-          title: 'Cấp phát',
-          action: () => this.showModalView("Cấp phát"),
+          title: moreMenu.cap_phat,
+          action: () => this.showModalView(moreMenu.cap_phat),
         },
       ];
       break;
       case tabs.tai_san_dang_su_dung:
         subMenus = [
           {
-          title: 'Cập nhật',
+          title: moreMenu.cap_nhat,
           action: () => this.capnhat(tab),
         },
         {
-          title: 'Điều chuyển',
-          action: () => this.showModalView("Điều chuyển"),
+          title: moreMenu.dieu_chuyen,
+          action: () => this.showModalView(moreMenu.dieu_chuyen),
         },
         {
-          title: 'Thu hồi',
-          action: () => this.showModalView("Thu hồi"),
+          title: moreMenu.thu_hoi,
+          action: () => this.showModalView(moreMenu.thu_hoi),
         },
       ];
       break;
       case tabs.tai_san_sua_chua_bao_duong:
         subMenus = [
           {
-          title: 'Thành công',
+          title: moreMenu.thanh_cong,
           action: () => this.editTsSuachua(2),
         },
         {
-          title: 'Không thành công',
+          title: moreMenu.khong_thanh_cong,
           action: () => this.editTsSuachua(3),
         },
       ];
       break;
-      case tabs.bao_hong_mat_tai_san:
-        return subMenus;
       default:
         return subMenus;
     }

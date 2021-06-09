@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,11 +11,24 @@ import {
 import BulletView from '@app/modules/global/BulletView';
 import { deviceWidth } from '../../global/LoaderComponent';
 import { convertTimeFormatToLocaleDate } from '../../global/Helper';
-import { deleteMethod } from '../../../api/Apis';
-import { endPoint } from '../../../api/config';
+import { deleteMethod } from '@app/api/Apis';
+import { endPoint, moreMenu } from '@app/api/config';
+import MoreMenu from '@app/modules/global/MoreComponent';
 
 function QuanLyDauDocDetailComponent({ navigation, route }) {
-  const { paramKey, tabKey } = route.params;
+  const { paramKey } = route.params;
+  const subMenu = [{
+    title: moreMenu.cap_nhat,
+    action: () => {}
+  }];
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <MoreMenu listMenu={subMenu} />
+      )
+    })
+  },[]);
   
   function deleteThisAsset() {
     Alert.alert('Bạn có chắc chắn muốn xóa không?',

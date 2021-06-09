@@ -94,7 +94,7 @@ export default class QuanLyMuasamDetail extends React.Component {
 
   render() {
     const { chitietPhieuMuasam } = this.state;
-    const { paramKey, tabKey } = this.props.route.params;
+    const { paramKey } = this.props.route.params;
     const idPhieu = paramKey.id;
     return (
       <View style={styles.container}>

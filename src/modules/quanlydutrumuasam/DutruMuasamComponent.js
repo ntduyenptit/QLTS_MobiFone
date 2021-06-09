@@ -2,13 +2,13 @@
 import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Dimensions, View } from 'react-native';
 import { connect } from 'react-redux';
+import ActionButton from 'react-native-action-button';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
 import QuanLyKiemkeFilter from './QuanlyMuaSamFilter';
 import { createGetMethod } from '../../api/Apis';
 import { endPoint, screens } from '../../api/config';
 import LoaderComponent from '../global/LoaderComponent';
-import ActionButton from 'react-native-action-button';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
@@ -53,9 +53,11 @@ class QuanlyDutruMuaSamScreen extends React.Component {
         .catch(err => console.log(err));
     }
   }
+
   refresh() {
     this.getToanTaisan(this.props.DvqlDataFilter);
   }
+
   render() {
     const {
       scrollYValue,
@@ -109,7 +111,7 @@ class QuanlyDutruMuaSamScreen extends React.Component {
           </SafeAreaView>
           <FilterComponent filter={<QuanLyKiemkeFilter />} />
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_du_tru_mua_sam, { screen: "Thêm mới Phiếu dự trù mua sắm" }, this.refresh())}></ActionButton>
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_du_tru_mua_sam, { screen: "Thêm mới Phiếu dự trù mua sắm" }, this.refresh())} />
       </View>
 
     );

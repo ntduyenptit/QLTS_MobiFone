@@ -123,7 +123,6 @@ export const endPoint = ({
   creatReaderdidong: 'services/app/DauDocTheRFID/CreateOrEdit',
   creatReadercodinh: 'services/app/AngTenRFID/CreateOrEdit',
   creatKiemke: 'services/app/KiemKeTaiSan/CreateOrEdit',
-  //check exit user
 
   // check exit user
   checkExitUser: 'services/app/User/CheckExist?',
@@ -386,5 +385,16 @@ export const phanLoaiTaiSan = [
   {id: 1, displayName: "Tài sản trong hệ thống"},
   {id: 2, displayName: "Tài sản ngoài hệ thống"},
 ];
+
+export const moreMenu = ({
+  cap_nhat: 'Cập nhật',
+  thu_hoi: 'Thu hồi',
+  dieu_chuyen: 'Điều chuyển',
+  hoan_tac: 'Hoàn tác',
+  khai_bao_su_dung: 'Khai báo sử dụng',
+  cap_phat: 'Cấp phát',
+  thanh_cong: 'Thành công',
+  khong_thanh_cong: 'Không thành công'
+});
 
  

@@ -96,7 +96,7 @@ const loadInfo = (screen, item, props, action) => {
           </View>
           <TouchableOpacity
             style={{ height: 40, width: 20, alignItems: "flex-end" }}
-            onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab, onGoBack: () => action() })}
+            onPress={() => props.navigation.navigate(screen, { paramKey: item, onGoBack: () => action() })}
           >
             <Icon name="chevron-right" color='#0080FF' size={15} />
           </TouchableOpacity>

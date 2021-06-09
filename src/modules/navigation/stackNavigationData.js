@@ -244,7 +244,7 @@ const StackNavigationData = [
   {
     name: screens.chi_tiet_du_tru_mua_sam,
     component: ChitietDutruMuasamScreen,
-    headerLeft: null,
+    headerLeft: headerLeftComponent,
     headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -573,7 +573,7 @@ const StackNavigationData = [
     name: screens.chi_tiet_dau_doc,
     component: QuanLyDauDocDetailComponentScreen,
     headerLeft: headerLeftComponent,
-    headerRight: moreHeaderRightComponent,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
