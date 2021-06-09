@@ -2,10 +2,6 @@ import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
 import PagesScreen from '../pages/PagesViewContainer';
 import { tabs } from '../../api/config';
 
-const iconHome = require('../../../assets/images/tabbar/home.png');
-const iconCalendar = require('../../../assets/images/tabbar/calendar.png');
-const iconGrids = require('../../../assets/images/tabbar/grids.png');
-const iconPages = require('../../../assets/images/tabbar/pages.png');
 const iconComponents = require('../../../assets/images/tabbar/components.png');
 
 const tshong = require('../../../assets/images/pages/hong.png');

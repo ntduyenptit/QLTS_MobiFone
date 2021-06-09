@@ -47,27 +47,27 @@ function QuanLyDauDocDetailComponent({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <View style={{ alignItems: 'flex-start', marginHorizontal: 30 }}>
+      <View style={{flex: 1}}>
+        <View style={{ alignItems: 'flex-start', marginHorizontal: 10 }}>
           <Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} />
           <Text style={styles.title}>Thông tin đầu đọc:</Text>
           {/* Mã tài sản */}
-          <BulletView title='Mã tài sản' text={paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode} />
+          <BulletView title='Mã tài sản' text={paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode} flexTitle={1.5} />
           {/* Tên tài sản */}
-          <BulletView title='Tên tài sản' text={paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan} />
+          <BulletView title='Tên tài sản' text={paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan} flexTitle={1.5} />
           {/* Loại tài sản */}
-          <BulletView title='Loại tài sản' text={paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan} />
+          <BulletView title='Loại tài sản' text={paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan} flexTitle={1.5} />
           {/* Phòng ban quản lý */}
-          <BulletView title='Phòng ban quản lý' text={paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy} />
+          <BulletView title='Phòng ban quản lý' text={paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy} flexTitle={1.5} />
           {/* Vị trí tài sản */}
-          <BulletView title='Vị trí tài sản' text={paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan} />
+          <BulletView title='Vị trí tài sản' text={paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan} flexTitle={1.5} />
           {/* Trạng thái */}
-          <BulletView title='Trạng thái' text={paramKey.trangThai} />
+          <BulletView title='Trạng thái' text={paramKey.trangThai} flexTitle={1.5} />
           {/* Ngày mua */}
-          <BulletView title='Ngày mua' text={paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua)} />
+          <BulletView title='Ngày mua' text={paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua)} flexTitle={1.5} />
         </View>
 
-      </ScrollView>
+      </View>
       <View style={styles.separator} />
       <View style={styles.addToCarContainer}>
         <TouchableOpacity

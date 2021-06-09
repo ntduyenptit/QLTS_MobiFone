@@ -53,7 +53,6 @@ import DashBoard from '../dashboard/DashBoardView';
 import QRScanAssetInfor from '../qrcode/AssetInforScreen';
 import QRScaner from '../qrcode/QRScanScreen';
 import moreHeaderRightComponent from '../global/MoreComponent';
-import ForgotPassword from  '../auth/ForgotPassword';
 import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
 import { showFilter } from '../../redux/actions/filter.actions';
@@ -77,7 +76,7 @@ const headerLeftComponent = (props) => (
   </TouchableOpacity>
 )
 
-const headerRightComponent = () => (
+export const headerRightComponent = () => (
   <TouchableOpacity
     onPress={() => {
       if (!store.getState().filterReducer.isShowFilter) {

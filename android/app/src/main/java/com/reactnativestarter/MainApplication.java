@@ -6,6 +6,7 @@ import com.facebook.react.PackageList;
 
 import com.facebook.react.ReactApplication;
 import org.reactnative.camera.RNCameraPackage;
+import org.reactnative.camera.RNCameraPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactcommunity.rnlocalize.RNLocalizePackage;
 import com.BV.LinearGradient.LinearGradientPackage;

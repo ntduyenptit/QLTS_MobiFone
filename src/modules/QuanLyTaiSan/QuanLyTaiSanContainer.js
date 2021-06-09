@@ -4,7 +4,8 @@ import { compose, lifecycle } from 'recompose';
 import QuanLyTaiSanScreen, { GetToanBoTaiSanData } from './QuanLyTaiSan';
 import { getLTSDataFilter, getMSDDataFilter, getNCCDataFilter } from '../global/FilterApis'
 import { store } from '../../redux/store';
-import { tabs } from '../../api/config'
+import { tabs } from '../../api/config';
+import { headerRightComponent } from '../navigation/stackNavigationData'
 
 import { getLTSDataAction, getMSDDataAction, getNCCDataAction } from '../../redux/actions/filter.actions';
 
@@ -42,6 +43,9 @@ const isLoadData = () => {
 export default compose(
   lifecycle({
     componentDidMount() {
+      const setHeaderOptions=()=> { 
+        this.props.navigation.dangerouslyGetParent().setOptions({headerRight: () => headerRightComponent()}); };
+      this.props.navigation.addListener('focus', setHeaderOptions); 
       if (!isLoadData()) {
         GetToanBoTaiSanData({});
       }

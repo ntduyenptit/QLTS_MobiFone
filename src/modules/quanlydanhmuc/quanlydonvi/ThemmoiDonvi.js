@@ -12,12 +12,12 @@ import {
     Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 import { endPoint } from '../../../api/config';
 import { createGetMethod, createPostMethodWithToken } from '../../../api/Apis';
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
-import { connect } from 'react-redux';
 import { buildTree } from '../../global/Helper';
 
 class TaomoiDonviScreen extends React.Component {
@@ -37,34 +37,35 @@ class TaomoiDonviScreen extends React.Component {
     componentDidMount() {
         this.props.navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity
-                    onPress={() => this.saveNewDonvi()}
-                    style={{
+              <TouchableOpacity
+                onPress={() => this.saveNewDonvi()}
+                style={{
                         paddingHorizontal: 16,
                         paddingVertical: 12,
                     }
                     }
-                >
-                    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-                        {/* <Icon name="save" color="white" size={20} /> */}
-                        <Text style={{
+              >
+                <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                  {/* <Icon name="save" color="white" size={20} /> */}
+                  <Text style={{
                             fontFamily: fonts.primaryRegular,
                             color: colors.white,
                             fontSize: 18,
                             alignSelf: 'center'
                         }}
-                        > Lưu
-              </Text>
+                  > Lưu
+                  </Text>
 
-                    </View>
-                </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
             )
         })
         this.buildTreedvlist(this.props.DvqlData);
         this.getAllVitridialy();
     }
+
     buildTreedvlist(data) {
-        let list = buildTree(data);
+        const list = buildTree(data);
         if (list) {
             this.setState({
                 dvList: list,
@@ -127,7 +128,7 @@ class TaomoiDonviScreen extends React.Component {
         if (check) {
             Alert.alert(
                 '',
-                'Hãy nhập ' + s,
+                `Hãy nhập ${  s}`,
                 [
                     { text: 'OK', style: "cancel" },
                 ],
@@ -137,7 +138,7 @@ class TaomoiDonviScreen extends React.Component {
         }
         const url = `${endPoint.CreatDonvi}`;
         const params = {
-            ghiChu: ghiChu,
+            ghiChu,
             maToChuc: maDonvi,
             tenToChuc: tenDonvi,
             trucThuocToChucId: donviChaId[0],
@@ -170,86 +171,85 @@ class TaomoiDonviScreen extends React.Component {
             diachiList,
         } = this.state;
         return (
-            <Animated.View>
-                <StatusBar barStyle="dark-content" />
-                <SafeAreaView>
-                    <Animated.ScrollView
-                    >
-                        <View style={styles.container}>
-                            <Text style={styles.boldText}>Mã đơn vị*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                placeholder="Nhập tên"
-                                style={styles.bordered}
-                                onChangeText={(maDonvi) => {
+          <Animated.View>
+            <StatusBar barStyle="dark-content" />
+            <SafeAreaView>
+              <Animated.ScrollView>
+                <View style={styles.container}>
+                  <Text style={styles.boldText}>Mã đơn vị*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    placeholder="Nhập tên"
+                    style={styles.bordered}
+                    onChangeText={(maDonvi) => {
                                     this.setState({
                                         maDonvi,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Tên đơn vị*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(tenDonvi) => {
+                  />
+                  <Text style={styles.boldText}>Tên đơn vị*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(tenDonvi) => {
                                     this.setState({
                                         tenDonvi
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Đơn vị quản lý</Text>
-                            <MultiSelect
-                                ref={(component) => { this.multiSelect = component }}
-                                getCollapsedNodeHeight={{ height: 200 }}
-                                isTree
-                                items={dvList}
-                                single={true}
-                                IconRenderer={Icon}
-                                searchInputPlaceholderText="Tìm kiếm..."
-                                styleListContainer={dvList && dvList.length > 9 ? { height: 200 } : null}
-                                uniqueKey="id"
-                                displayKey="displayName"
-                                selectText="Chọn ..."
-                                onSelectedItemsChange={(donviChaId) => this.setState({
+                  />
+                  <Text style={styles.boldText}>Đơn vị quản lý</Text>
+                  <MultiSelect
+                    ref={(component) => { this.multiSelect = component }}
+                    getCollapsedNodeHeight={{ height: 200 }}
+                    isTree
+                    items={dvList}
+                    single
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleListContainer={dvList && dvList.length > 9 ? { height: 200 } : null}
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText="Chọn ..."
+                    onSelectedItemsChange={(donviChaId) => this.setState({
                                     donviChaId
                                 })}
-                                selectedItems={donviChaId}
-                                submitButtonColor="#2196F3"
-                            />
-                            <Text style={styles.boldText}>Địa chỉ</Text>
-                            <MultiSelect
-                                ref={(component) => { this.multiSelect = component }}
-                                getCollapsedNodeHeight={{ height: 200 }}
-                                items={diachiList}
-                                single={true}
-                                IconRenderer={Icon}
-                                searchInputPlaceholderText="Tìm kiếm..."
-                                styleListContainer={diachiList && diachiList.length > 9 ? { height: 200 } : null}
-                                uniqueKey="id"
-                                selectText="Chọn ..."
-                                onSelectedItemsChange={(diachiId) => this.setState({
+                    selectedItems={donviChaId}
+                    submitButtonColor="#2196F3"
+                  />
+                  <Text style={styles.boldText}>Địa chỉ</Text>
+                  <MultiSelect
+                    ref={(component) => { this.multiSelect = component }}
+                    getCollapsedNodeHeight={{ height: 200 }}
+                    items={diachiList}
+                    single
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleListContainer={diachiList && diachiList.length > 9 ? { height: 200 } : null}
+                    uniqueKey="id"
+                    selectText="Chọn ..."
+                    onSelectedItemsChange={(diachiId) => this.setState({
                                     diachiId
                                 })}
-                                selectedItems={diachiId}
-                                submitButtonColor="#2196F3"
-                            />
+                    selectedItems={diachiId}
+                    submitButtonColor="#2196F3"
+                  />
 
-                            <Text style={styles.boldText}>Ghi chú</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(ghiChu) => {
+                  <Text style={styles.boldText}>Ghi chú</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(ghiChu) => {
                                     this.setState({
                                         ghiChu
                                     });
                                 }}
-                            />
-                        </View>
+                  />
+                </View>
 
-                    </Animated.ScrollView>
-                </SafeAreaView>
+              </Animated.ScrollView>
+            </SafeAreaView>
 
-            </Animated.View>
+          </Animated.View>
         );
     }
 

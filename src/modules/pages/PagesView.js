@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList, Dimensions } from 'react-native';
 
 import { colors, fonts } from '../../styles';
@@ -9,6 +9,14 @@ import tabPagesViewData from './tabPagesViewData';
 const { width } = Dimensions.get('window');
 const itemWidth = (width - 12) / 3;
 export default function PagesScreen(props) {
+  useEffect(() => {
+    props.navigation.addListener('focus', setHeaderOptions); 
+  },[]);
+
+  const setHeaderOptions=()=> { 
+    props.navigation.dangerouslyGetParent().setOptions({headerRight: () => 
+      null}); };
+
   return (
     <View style={styles.container}>
       <FlatList

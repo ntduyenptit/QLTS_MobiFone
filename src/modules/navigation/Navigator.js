@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity, Modal, KeyboardAvoidingView, TextInput, Alert } from 'react-native';
 import {
   createDrawerNavigator,
@@ -14,6 +14,7 @@ import Collapsible from 'react-native-collapsible';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Header } from 'react-native/Libraries/NewAppScreen';
+import { createPostMethodWithToken } from '@app/api/Apis';
 import NavigatorView from './RootNavigation';
 import AuthScreen from '../auth/AuthViewContainer';
 import ForgotPassword from '../auth/ForgotPassword';
@@ -22,8 +23,6 @@ import { setCurrentScreen } from '../../redux/actions/screen.actions';
 import { store } from '../../redux/store';
 import { drawerData, endPoint } from '../../api/config';
 import { fonts, colors } from '../../styles';
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
-import { createPostMethodWithToken } from '@app/api/Apis';
 
 const keyboardVerticalOffset = -60;
 const Drawer = createDrawerNavigator();

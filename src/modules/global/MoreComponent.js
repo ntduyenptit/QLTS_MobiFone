@@ -1,51 +1,57 @@
-import React, { useRef, useState } from 'react';
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
+/* eslint-disable import/no-extraneous-dependencies */
+import React from 'react';
+import { View, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import store from '../../redux/store';
+import PropTypes from 'prop-types';
 
+export default function MoreMenu(props) {
+  let _menu = null;
 
-function MoreMenu(tab) {
-  const menu = useRef();
-  const screen = store.getState().currentScreenReducer.screenName || store.getState().currentTabReducer.tabName;
+  function hideMenu(action) {
+    if(_menu) {
+      _menu.hide();
+      action();
+    }
+  };
 
-  const hideMenu = () => menu.current.hide();
+  const showMenu = () => _menu.show();
 
-  const showMenu = () => menu.current.show();
-
-  if (store.getState().currentTabReducer.tabName != null) {
-    console.log("Screen more menu: " + store.getState().currentTabReducer.tabName);
-  } else {
-    console.log("Screen more menu: " + store.getState().currentScreenReducer.screenName);
-  }
+  const renderSubMenu = ({item}) => (
+    <>
+      <MenuItem onPress={() => hideMenu(item.action)}>{item.title}</MenuItem>
+      <MenuDivider />
+    </>
+    )
 
   return (
-    <View style={styles.container}>
-      <Menu ref={menu} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} onPress={showMenu} />}>
-        <MenuItem onPress={hideMenu}>Cập nhật</MenuItem>
-        <MenuDivider />
-        <MenuItem onPress={hideMenu}>Khai báo sử dụng</MenuItem>
-        <MenuDivider />
-        <MenuItem onPress={hideMenu}>Cấp phát</MenuItem>
-        <MenuDivider />
-        <MenuItem onPress={hideMenu} disabled>
-          Điều chuyển
-        </MenuItem>
-        <MenuDivider />
-        <MenuItem onPress={hideMenu}>Thu hồi</MenuItem>
-      </Menu>
-    </View>
+    <TouchableOpacity
+      onPress={() => showMenu()}
+    >
+      <View style={styles.containerMenu}>
+        <Menu ref={ref => {_menu = ref}} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} onPress={showMenu} />}>
+          <FlatList
+            data={props.listMenu}
+            renderItem={renderSubMenu}
+            keyExtractor={item => `${item}`}
+          />
+        </Menu>
+      </View>
+    </TouchableOpacity>
   );
 }
 
+MoreMenu.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  listMenu: PropTypes.array,
+};
+
 const styles = StyleSheet.create({
-  container: {
+  containerMenu: {
     flex: 1,
     alignItems: 'center',
     margin: 10,
     marginRight: 15,
     justifyContent: 'center',
-  },
+  }
 });
-
-export default MoreMenu;

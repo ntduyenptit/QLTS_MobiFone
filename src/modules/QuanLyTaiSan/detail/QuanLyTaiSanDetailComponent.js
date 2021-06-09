@@ -1,4 +1,4 @@
-/* eslint-disable import/no-cycle */
+/* eslint-disable import/no-unresolved */
 import React from 'react';
 import {
   StyleSheet,
@@ -13,11 +13,11 @@ import {
 import { SliderBox } from "react-native-image-slider-box";
 import DatePicker from 'react-native-datepicker';
 import { connect } from 'react-redux';
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import BulletView from '@app/modules/global/BulletView';
 import MultiSelect from '@app/libs/react-native-multiple-select/lib/react-native-multi-select';
-import { addYearToDate, buildTree, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
+import MoreMenu from '@app/modules/global/MoreComponent';
+import { buildTree, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
 import { createGetMethod, createPostMethodWithToken, deleteMethod } from '../../../api/Apis';
 import { deviceWidth, deviceHeight } from '../../global/LoaderComponent';
 import { endPoint, imageBaseUrl, screens, tabs } from '../../../api/config';
@@ -28,7 +28,6 @@ let tab = '';
 let paramTS = '';
 
 class QuanLyTaiSanDetailComponent extends React.PureComponent {
-  _menu = null;
 
   constructor(props) {
     super(props);
@@ -48,23 +47,13 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     Promise.all([
       this.props.navigation.setOptions({
         headerRight: () => (
-          <TouchableOpacity
-            onPress={() => this.showMenu()}
-          >
-            <View style={styles.containerMenu}>
-              {this.menuforTab()}
-            </View>
-          </TouchableOpacity>
+          <MoreMenu listMenu={this.menuforTab()} />
         )
       }),
       this.getAssetMoreInfo(),
       this.danhsachdonvi(this.props.DvqlData)
     ]);
   }
-
-  setMenuRef = ref => {
-    this._menu = ref;
-  };
 
   getAssetMoreInfo() {
     let url = `${endPoint.GetTaiSan}?`;
@@ -80,14 +69,6 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     });
   }
 
-  hideMenu = () => {
-    this._menu.hide();
-  };
-
-  showMenu = () => {
-    this._menu.show();
-  };
-
   onSelectedDVQLChange = donvi => {
     this.setState({ donvi });
   }
@@ -96,19 +77,90 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     this.getAssetMoreInfo();
   }
 
-  showModalView(title) {
-    const { modalVisible } = this.state;
-    this._menu.hide();
-    setTimeout(() => {
+  menuforTab = () => {
+    let subMenus = null;
+    switch (tab) {
+      case tabs.toan_bo_tai_san:
+        subMenus = [{
+          title: 'Cập nhật',
+          action: () => this.capnhat(),
+        }];
+        break;
+      case tabs.tai_san_mat:
+      case tabs.tai_san_huy:
+      case tabs.tai_san_hong:
+      case tabs.tai_san_thanh_ly:
+        subMenus = [{
+          title: 'Hoàn tác',
+          action: () => this.hoantac(tab),
+        }];
+        break;
+      case tabs.tai_san_chua_su_dung:
+        subMenus = [
+          {
+          title: 'Cập nhật',
+          action: () => this.capnhat(tab),
+        },
+        {
+          title: 'Khai báo sử dụng',
+          action: () => this.showModalView("Khai báo sử dụng"),
+        },
+        {
+          title: 'Cấp phát',
+          action: () => this.showModalView("Cấp phát"),
+        },
+      ];
+      break;
+      case tabs.tai_san_dang_su_dung:
+        subMenus = [
+          {
+          title: 'Cập nhật',
+          action: () => this.capnhat(tab),
+        },
+        {
+          title: 'Điều chuyển',
+          action: () => this.showModalView("Điều chuyển"),
+        },
+        {
+          title: 'Thu hồi',
+          action: () => this.showModalView("Thu hồi"),
+        },
+      ];
+      break;
+      case tabs.tai_san_sua_chua_bao_duong:
+        subMenus = [
+          {
+          title: 'Thành công',
+          action: () => this.editTsSuachua(2),
+        },
+        {
+          title: 'Không thành công',
+          action: () => this.editTsSuachua(3),
+        },
+      ];
+      break;
+      case tabs.bao_hong_mat_tai_san:
+        return subMenus;
+      default:
+        return subMenus;
+    }
+     return subMenus;
+  }
+
+  danhsachdonvi(data) {
+    if (data) {
+      const dvqlTreeData = buildTree(data);
       this.setState({
-        modalVisible: !modalVisible,
-        menuTitle: title,
-      })
-    }, 300)
+        donviList: dvqlTreeData,
+      });
+    }
+  };
+
+  capnhat() {
+    this.props.navigation.navigate(screens.cap_nhat_tai_san, { paramKey: this.state.taisan, idTs: idTaisan, onGoBack: () => this.refresh() });
   }
 
   hoantac(Tab) {
-    this._menu.hide();
     let url = ''
     switch (Tab) {
       case tabs.tai_san_mat:
@@ -145,78 +197,13 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     })
   }
 
-  capnhat() {
-    this._menu.hide();
-    this.props.navigation.navigate(screens.cap_nhat_tai_san, { paramKey: this.state.taisan, idTs: idTaisan, onGoBack: () => this.refresh() });
-  }
-
-  danhsachdonvi(data) {
-    if (data) {
-      const dvqlTreeData = buildTree(data);
+  showModalView(title) {
+    setTimeout(() => {
       this.setState({
-        donviList: dvqlTreeData,
-      });
-    }
-  };
-
-  menuforTab() {
-    switch (tab) {
-      case tabs.toan_bo_tai_san:
-        return (
-          <Menu ref={this.setMenuRef} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={() => { this.capnhat() }}>Cập nhật</MenuItem>
-            <MenuDivider />
-          </Menu>
-)
-      case tabs.tai_san_mat:
-      case tabs.tai_san_huy:
-      case tabs.tai_san_hong:
-      case tabs.tai_san_thanh_ly:
-        return (
-          <Menu ref={this.setMenuRef} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={() => { this.hoantac(tab) }}>Hoàn tác</MenuItem>
-            <MenuDivider />
-          </Menu>
-        )
-
-      case tabs.tai_san_chua_su_dung:
-        return (
-          <Menu ref={this.setMenuRef} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={() => { this.capnhat() }}>Cập nhật</MenuItem>
-            <MenuDivider />
-            <MenuItem onPress={() => { this.showModalView("Khai báo sử dụng") }}>Khai báo sử dụng</MenuItem>
-            <MenuDivider />
-            <MenuItem onPress={() => { this.showModalView("Cấp phát") }}>Cấp phát</MenuItem>
-          </Menu>
-        )
-      case tabs.tai_san_dang_su_dung:
-        return (
-          <Menu ref={this.setMenuRef} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={() => { this.capnhat() }}>Cập nhật</MenuItem>
-            <MenuDivider />
-            <MenuItem onPress={() => { 
-              this.showModalView("Điều chuyển");
-               }}
-            >Điều chuyển
-            </MenuItem>
-            <MenuDivider />
-            <MenuItem onPress={() => { this.showModalView("Thu hồi") }}>Thu hồi</MenuItem>
-          </Menu>
-        )
-      case tabs.tai_san_sua_chua_bao_duong:
-        return (
-          <Menu ref={this.setMenuRef} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
-            <MenuItem onPress={() => { this.editTsSuachua(2) }}>Thành công</MenuItem>
-            <MenuDivider />
-            <MenuItem onPress={() => { this.editTsSuachua(3) }}>Không thành công</MenuItem>
-            <MenuDivider />
-          </Menu>
-        )
-      case tabs.bao_hong_mat_tai_san:
-        return null;
-      default:
-        return null;
-    }
+        modalVisible: true,
+        menuTitle: title,
+      })
+    }, 300)
   }
 
   editTsSuachua(trangthaiID) {
@@ -354,11 +341,11 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     }
   }
 
-  renderButton = () => (
+  renderButton = (title) => (
     <View style={{flexDirection: 'row'}}>
       <Pressable
         style={[styles.button, styles.buttonClose]}
-        onPress={() => this.commitMenuItem(tittle)}
+        onPress={() => this.commitMenuItem(title)}
       >
         <Text style={styles.textStyle}>Xong </Text>
       </Pressable>
@@ -371,13 +358,13 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     </View>
   );
 
-  viewforMenu(tittle) {
-    switch (tittle) {
+  viewforMenu(title) {
+    switch (title) {
       case "Khai báo sử dụng":
       case "Thu hồi":
         return (
           <ScrollView style={{ padding: 5, height: deviceHeight - 300, marginBottom: 5 }}>
-            <Text style={styles.boldText}>Thời gian {convertTextToLowerCase(tittle)}</Text>
+            <Text style={styles.boldText}>Thời gian {convertTextToLowerCase(title)}</Text>
             <DatePicker
               style={{ width: '100%', marginTop: 0 }}
               date={this.state.datetime} // Initial date from state
@@ -399,7 +386,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
                 },
               }}
             />
-            <Text style={styles.boldText}>Nội dung {convertTextToLowerCase(tittle)}: </Text>
+            <Text style={styles.boldText}>Nội dung {convertTextToLowerCase(title)}: </Text>
             <TextInput
               placeholderTextColor="black"
               style={styles.bordered}
@@ -409,14 +396,14 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
                 });
               }}
             />
-            {this.renderButton()}
+            {this.renderButton(title)}
           </ScrollView>
         )
       case "Điều chuyển":
       case "Cấp phát":
         return (
           <ScrollView style={{ padding: 5, height: deviceHeight - 150, marginBottom: 5 }}>
-            <Text style={styles.boldText}>Đơn vị được {convertTextToLowerCase(tittle)} tài sản*: </Text>
+            <Text style={styles.boldText}>Đơn vị được {convertTextToLowerCase(title)} tài sản*: </Text>
             <MultiSelect
               ref={(component) => { this.multiSelect = component }}
               getCollapsedNodeHeight={{ height: 200 }}
@@ -433,7 +420,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
               selectedItems={this.state.donvi}
               submitButtonColor="#2196F3"
             />
-            <Text style={styles.boldText}>Thời gian {convertTextToLowerCase(tittle)}*</Text>
+            <Text style={styles.boldText}>Thời gian {convertTextToLowerCase(title)}*</Text>
             <DatePicker
               style={{ width: '100%', marginTop: 0 }}
               date={this.state.datetime} // Initial date from state
@@ -455,7 +442,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
                 },
               }}
             />
-            <Text style={styles.boldText}>Nội dung {tittle}: </Text>
+            <Text style={styles.boldText}>Nội dung {title}: </Text>
             <TextInput
               placeholderTextColor="black"
               style={styles.bordered}
@@ -465,7 +452,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
                 });
               }}
             />
-            {this.renderButton()}
+            {this.renderButton(title)}
           </ScrollView>
         )
 
@@ -480,9 +467,6 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       images,
       menuTitle,
       modalVisible,
-      datetime,
-      donviList,
-      donvi,
     } = this.state;
     const { paramKey, tabKey } = this.props.route.params;
     idTaisan = paramKey.id;
@@ -577,13 +561,6 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  containerMenu: {
-    flex: 1,
-    alignItems: 'center',
-    margin: 10,
-    marginRight: 15,
-    justifyContent: 'center',
   },
   productImg: {
     justifyContent: 'center',
