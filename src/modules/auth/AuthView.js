@@ -26,6 +26,7 @@ export default class AuthViewContainer extends React.Component {
           // Global.onSignIn(res.user);
           // this.props.navigation.goBack();
         } else {
+          console.log ("Login fail: "+ res.console.error());
           Alert.alert('SignIn failed!');
         }
       })

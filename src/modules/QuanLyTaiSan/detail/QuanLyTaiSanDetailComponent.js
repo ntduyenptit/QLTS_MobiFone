@@ -123,8 +123,8 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       case tabs.tai_san_thanh_ly:
         url = `${endPoint.tsThanhlyHoantac}`;
         break;
-        default:
-          break;
+      default:
+        break;
     }
     const params = {
       phieuTaiSanChiTietList: [{ "id": idTaisan }],
@@ -167,7 +167,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
             <MenuItem onPress={() => { this.capnhat() }}>Cập nhật</MenuItem>
             <MenuDivider />
           </Menu>
-)
+        )
       case tabs.tai_san_mat:
       case tabs.tai_san_huy:
       case tabs.tai_san_hong:
@@ -194,9 +194,9 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
           <Menu ref={this.setMenuRef} marginRight='10' button={<Icon name="ellipsis-v" color="white" size={20} />}>
             <MenuItem onPress={() => { this.capnhat() }}>Cập nhật</MenuItem>
             <MenuDivider />
-            <MenuItem onPress={() => { 
+            <MenuItem onPress={() => {
               this.showModalView("Điều chuyển");
-               }}
+            }}
             >Điều chuyển
             </MenuItem>
             <MenuDivider />
@@ -252,7 +252,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       if (res.success) {
         Alert.alert(
           '',
-           ' Thành công',
+          ' Thành công',
           [
             { text: 'OK', onPress: this.goBack() },
           ],
@@ -303,7 +303,17 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       datetime,
       noidung,
     } = this.state;
+    if (noidung == '' || datetime == '' || donvi == '') {
+      Alert.alert(
+        '',
+        `Hãy nhập đủ nội dung`,
+        [
+          { text: 'OK', styles :'cancel' },
+        ],
 
+      );
+      return;
+    }
     let url = '';
     let params = '';
 
@@ -323,7 +333,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       if (res.success) {
         Alert.alert(
           '',
-          `${tittle  } thành công`,
+          `${tittle} thành công`,
           [
             { text: 'OK', onPress: this.goBack() },
           ],
@@ -354,20 +364,20 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     }
   }
 
-  renderButton = () => (
-    <View style={{flexDirection: 'row'}}>
+  renderButton = (tittle) => (
+    <View style={{ flexDirection: 'row' }}>
       <Pressable
         style={[styles.button, styles.buttonClose]}
         onPress={() => this.commitMenuItem(tittle)}
       >
         <Text style={styles.textStyle}>Xong </Text>
       </Pressable>
-      <TouchableOpacity
-        style={[styles.button, styles.buttonClose, {marginLeft: 5, backgroundColor: 'transparent', borderWidth: 0.5}]}
+      <Pressable
+        style={[styles.button, styles.buttonClose, { marginLeft: 5, backgroundColor: '#A19E9E' }]}
         onPress={() => this.setState({ modalVisible: false })}
       >
-        <Text style={[styles.textStyle, {color: 'black'}]}>Hủy </Text>
-      </TouchableOpacity>
+        <Text style={[styles.textStyle, { color: 'black' }]}>Hủy </Text>
+      </Pressable>
     </View>
   );
 
@@ -409,7 +419,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
                 });
               }}
             />
-            {this.renderButton()}
+            {this.renderButton(tittle)}
           </ScrollView>
         )
       case "Điều chuyển":
@@ -465,7 +475,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
                 });
               }}
             />
-            {this.renderButton()}
+            {this.renderButton(tittle)}
           </ScrollView>
         )
 
@@ -627,8 +637,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     height: 50,
     paddingLeft: 15
-},
-inputBordered: {
+  },
+  inputBordered: {
     borderWidth: 0.5,
     borderBottomWidth: 0.5,
     borderColor: 'black',
@@ -637,7 +647,7 @@ inputBordered: {
     height: 40,
     marginLeft: 5,
     marginRight: 5
-},
+  },
   star: {
     width: 40,
     height: 40,
