@@ -33,7 +33,7 @@ export default function BottomTabs() {
                 />
               </View>
             ),
-            tabBarLabel: ({ focused }) => <Text style={{ fontSize: 12, color: focused ? colors.primary : colors.gray }}>{item.name}</Text>,
+            tabBarLabel: ({ focused }) => <Text style={{ fontSize: 14, color: focused ? "#5A1681" : colors.gray }}>{item.name}</Text>,
           }}
         />
       ))}
@@ -55,6 +55,6 @@ const styles = StyleSheet.create({
     height: 23,
   },
   tabBarIconFocused: {
-    tintColor: colors.primary,
+    tintColor: "#5A1681",
   },
 });

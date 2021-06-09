@@ -154,7 +154,7 @@ function CustomDrawerContent(props) {
               </View>
             </Modal>
           </View>
-          <Image source={require('../../../assets/images/drawer/user.png')} resizeMode="contain" style={{ marginTop: 40, width: 80, height: 80, borderRadius: 20, alignSelf: 'center' }} />
+          <Image source={require('../../../assets/images/default-avatar.png')} resizeMode="contain" style={{ marginTop: 40, width: 80, height: 80, borderRadius: 20, alignSelf: 'center' }} />
           <View style={{ alignSelf: 'center', marginTop: 15 }}>
             <Text style={{ fontWeight: '200', fontSize: 25, color: 'white', textAlign: 'center' }}>{user}</Text>
             <Text style={{ fontWeight: '200', color: 'white', maxWidth: 200, textAlign: 'center' }}>{user}@mobifone.vn</Text>

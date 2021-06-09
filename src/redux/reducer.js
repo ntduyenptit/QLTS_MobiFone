@@ -2,9 +2,7 @@ import { combineReducers } from 'redux';
 import { USER_LOGOUT } from './actions/user.actions';
 
 // ## Generator Reducer Imports
-import gallery from '../modules/gallery/GalleryState';
 import app from '../modules/AppState';
-import calendar from '../modules/calendar/CalendarState';
 import userReducer from '../modules/auth/AuthState';
 import { 
   toanbotaisanReducer,
@@ -46,9 +44,7 @@ import {
 
  const appReducer = combineReducers({
   // ## Generator Reducers
-  gallery,
   app,
-  calendar,
   userReducer,
 // filter get
   filterReducer,

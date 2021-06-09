@@ -1,12 +1,6 @@
 import { tabs } from '../../api/config';
 import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
 
-const chartIcon = require('../../../assets/images/pages/chart.png');
-const calendarIcon = require('../../../assets/images/pages/calendar.png');
-const chatIcon = require('../../../assets/images/pages/chat.png');
-const galleryIcon = require('../../../assets/images/pages/gallery.png');
-const profileIcon = require('../../../assets/images/pages/profile.png');
-
 const tsdangsd = require('../../../assets/images/pages/chuasd.png');
 const tschuasd = require('../../../assets/images/pages/dangsd.png');
 
