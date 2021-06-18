@@ -100,7 +100,6 @@ class GiamSatTaiSanScreen extends React.Component {
       scrollYValue,
       toanboTaiSanData,
       total,
-      skipCount
     } = this.state;
     const clampedScroll = Animated.diffClamp(
       Animated.add(
@@ -144,7 +143,7 @@ class GiamSatTaiSanScreen extends React.Component {
                   if (this.isCloseToBottom(event.nativeEvent)) {
                     setTimeout(() => {
                       this.setState({
-                        skipCount: skipCount + 1,
+                        skipCount: toanboTaiSanData.length,
                       }, () => {
                         if (toanboTaiSanData.length < total) {
                           this.getToanTaisan({

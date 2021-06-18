@@ -164,7 +164,7 @@ class TaomoiTaisanScreen extends React.Component {
         if (check) {
             Alert.alert(
                 '',
-                'Hãy nhập ' + s,
+                `Hãy nhập ${  s}`,
                 [
                     { text: 'OK', style: "cancel" },
                 ],

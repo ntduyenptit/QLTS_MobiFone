@@ -12,12 +12,12 @@ import {
     Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 import { endPoint } from '../../../api/config';
 import { createPostMethodWithToken } from '../../../api/Apis';
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
-import { connect } from 'react-redux';
 
 class TaomoiLoaiTSScreen extends React.Component {
     constructor(props) {
@@ -34,31 +34,32 @@ class TaomoiLoaiTSScreen extends React.Component {
     componentDidMount() {
         this.props.navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity
-                    onPress={() => this.saveNewLoaiTS()}
-                    style={{
+              <TouchableOpacity
+                onPress={() => this.saveNewLoaiTS()}
+                style={{
                         paddingHorizontal: 16,
                         paddingVertical: 12,
                     }
                     }
-                >
-                    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-                        {/* <Icon name="save" color="white" size={20} /> */}
-                        <Text style={{
+              >
+                <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                  {/* <Icon name="save" color="white" size={20} /> */}
+                  <Text style={{
                             fontFamily: fonts.primaryRegular,
                             color: colors.white,
                             fontSize: 18,
                             alignSelf: 'center'
                         }}
-                        > Lưu
-              </Text>
+                  > Lưu
+                  </Text>
 
-                    </View>
-                </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
             )
         })
         this.danhsachLoaiTS(this.props.LoaiTSData);
     }
+
     danhsachLoaiTS(data) {
         if (data) {
             const list = data.map(e => ({
@@ -69,7 +70,8 @@ class TaomoiLoaiTSScreen extends React.Component {
                 loaiTSList: list,
             });
         }
-    };
+    }
+;
     saveNewLoaiTS() {
         const {
             maLoaiTS,
@@ -95,7 +97,7 @@ class TaomoiLoaiTSScreen extends React.Component {
         if (check) {
             Alert.alert(
                 '',
-                'Hãy nhập ' + s,
+                `Hãy nhập ${  s}`,
                 [
                     { text: 'OK', style: "cancel" },
                 ],
@@ -105,7 +107,7 @@ class TaomoiLoaiTSScreen extends React.Component {
         }
         const url = `${endPoint.CreatLoaiTaisan}`;
         const params = {
-            ghiChu: ghiChu,
+            ghiChu,
             ma: maLoaiTS,
             taiSanChaId: thuocLoaiTS[0],
             ten: tenLoaiTS,
@@ -132,67 +134,66 @@ class TaomoiLoaiTSScreen extends React.Component {
             loaiTSList
         } = this.state;
         return (
-            <Animated.View>
-                <StatusBar barStyle="dark-content" />
-                <SafeAreaView>
-                    <Animated.ScrollView
-                    >
-                        <View style={styles.container}>
-                            <Text style={styles.boldText}>Mã loại tài sản*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                placeholder="Nhập tên"
-                                style={styles.bordered}
-                                onChangeText={(maLoaiTS) => {
+          <Animated.View>
+            <StatusBar barStyle="dark-content" />
+            <SafeAreaView>
+              <Animated.ScrollView>
+                <View style={styles.container}>
+                  <Text style={styles.boldText}>Mã loại tài sản*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    placeholder="Nhập tên"
+                    style={styles.bordered}
+                    onChangeText={(maLoaiTS) => {
                                     this.setState({
                                         maLoaiTS,
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Tên loại tài sản*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(tenLoaiTS) => {
+                  />
+                  <Text style={styles.boldText}>Tên loại tài sản*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(tenLoaiTS) => {
                                     this.setState({
                                         tenLoaiTS
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Thuộc loại tài sản</Text>
-                            <MultiSelect
-                                ref={(component) => { this.multiSelect = component }}
-                                getCollapsedNodeHeight={{ height: 200 }}
-                                items={loaiTSList}
-                                single={true}
-                                IconRenderer={Icon}
-                                searchInputPlaceholderText="Tìm kiếm..."
-                                styleListContainer={loaiTSList && loaiTSList.length > 9 ? { height: 200 } : null}
-                                uniqueKey="id"
-                                selectText="Chọn loại tài sản..."
-                                onSelectedItemsChange={(thuocLoaiTS) => this.setState({
+                  />
+                  <Text style={styles.boldText}>Thuộc loại tài sản</Text>
+                  <MultiSelect
+                    ref={(component) => { this.multiSelect = component }}
+                    getCollapsedNodeHeight={{ height: 200 }}
+                    items={loaiTSList}
+                    single
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleListContainer={loaiTSList && loaiTSList.length > 9 ? { height: 200 } : null}
+                    uniqueKey="id"
+                    selectText="Chọn loại tài sản..."
+                    onSelectedItemsChange={(thuocLoaiTS) => this.setState({
                                     thuocLoaiTS
                                 })}
-                                selectedItems={thuocLoaiTS}
-                                submitButtonColor="#2196F3"
-                            />
+                    selectedItems={thuocLoaiTS}
+                    submitButtonColor="#2196F3"
+                  />
 
-                            <Text style={styles.boldText}>Ghi chú</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(ghiChu) => {
+                  <Text style={styles.boldText}>Ghi chú</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(ghiChu) => {
                                     this.setState({
                                         ghiChu
                                     });
                                 }}
-                            />
-                        </View>
+                  />
+                </View>
 
-                    </Animated.ScrollView>
-                </SafeAreaView>
+              </Animated.ScrollView>
+            </SafeAreaView>
 
-            </Animated.View>
+          </Animated.View>
         );
     }
 
