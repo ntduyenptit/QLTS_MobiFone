@@ -162,7 +162,7 @@ class TaomoiTaisanScreen extends React.Component {
         if (check) {
             Alert.alert(
                 '',
-                'Hãy nhập ' + s,
+                `Hãy nhập ${  s}`,
                 [
                     { text: 'OK', style: "cancel" },
                 ],
@@ -195,9 +195,9 @@ class TaomoiTaisanScreen extends React.Component {
                             ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                             hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
                             ngayMua: ngayMua && convertDateToIOSString(ngayMua),
-                            nguonKinhPhiId: nguonKinhphi[0],
+                            nguonKinhPhiId: nguonKinhphi ? nguonKinhphi[0] : null,
                             nguyenGia,
-                            nhaCC: nhaCungcap[0],
+                            nhaCC: nhaCungcap ? nhaCungcap[0] : null,
                             noiDungChotGia: "",
                             productNumber: PN,
                             serialNumber: SN,
@@ -230,9 +230,9 @@ class TaomoiTaisanScreen extends React.Component {
                     ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                     hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
                     ngayMua: ngayMua && convertDateToIOSString(ngayMua),
-                    nguonKinhPhiId: nguonKinhphi[0],
+                    nguonKinhPhiId: nguonKinhphi ? nguonKinhphi[0] : null,
                     nguyenGia,
-                    nhaCC: nhaCungcap[0],
+                    nhaCC: nhaCungcap ? nhaCungcap[0] : null,
                     noiDungChotGia: "",
                     productNumber: PN,
                     serialNumber: SN,
