@@ -123,6 +123,30 @@ export const convertTrangThai = (int) => {
   }
 }
 
+export const convertNguonKinhphi = (int) => {
+  switch (int) {
+    case 1:
+      return "Quỹ phát triển khoa học công nghệ";
+    case 2:
+      return "Sản xuất kinh doanh";
+    case 3:
+      return "Đầu tư";
+    default:
+      return null;
+  }
+}
+
+export const convertNhaCC = (int, listNhacc) => {
+  for (let i= 0; i< listNhacc.length; i++)
+    if (listNhacc[i].id == int) return listNhacc[i].displayName;
+
+}
+
+export const convertLoaiTs = (int, listTs) => {
+  for (let i= 0; i< listTs.length; i++)
+    if (listTs[i].value == int) return listTs[i].text;
+    
+}
 export const convertTrangthaiTaisan = (int) => {
   switch (int) {
     case 0:
@@ -178,6 +202,10 @@ export const convertHinhthucTaisan = (int) => {
     default:
       return null;
   }
+}
+
+export const getNhaCC = (id) => {
+
 }
 
 export const getDateString = (timestamp) => {

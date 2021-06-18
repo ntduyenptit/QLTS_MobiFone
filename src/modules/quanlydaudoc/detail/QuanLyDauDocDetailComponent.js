@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+/* eslint-disable import/no-unresolved */
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,49 +7,81 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Alert,
+  Alert
 } from 'react-native';
-import BulletView from '@app/modules/global/BulletView';
-import { deviceWidth } from '../../global/LoaderComponent';
-import { convertTimeFormatToLocaleDate } from '../../global/Helper';
-import { deleteMethod } from '@app/api/Apis';
-import { endPoint, moreMenu } from '@app/api/config';
-import MoreMenu from '@app/modules/global/MoreComponent';
+import BulletView from '../../global/BulletView';
+import { convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
+import { createGetMethod, deleteMethod } from '../../../api/Apis';
+import { endPoint, moreMenu, screens } from '../../../api/config';
+import MoreMenu from '../../global/MoreComponent';
 
-function QuanLyDauDocDetailComponent({ navigation, route }) {
-  const { paramKey } = route.params;
-  const subMenu = [{
-    title: moreMenu.cap_nhat,
-    action: () => {}
-  }];
+let idTaisan = null;
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <MoreMenu listMenu={subMenu} />
-      )
-    })
-  },[]);
-  
-  function deleteThisAsset() {
+class QuanLyDauDocDetailComponent extends React.PureComponent {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      taisan: '',
+    };
+  }
+
+  componentDidMount() {
+    Promise.all([
+      this.props.navigation.setOptions({
+        headerRight: () => (
+          <MoreMenu listMenu={this.showMenu()} />
+        )
+      }),
+      this.getAssetMoreInfo(),
+    ]);
+  }
+  showMenu = () => {
+    return (
+      subMenus = [{
+        title: moreMenu.cap_nhat,
+        action: () => this.capnhat(),
+      }]
+    )
+  }
+  getAssetMoreInfo() {
+    let url = `${endPoint.getDaudocEdit}?`;
+    url += `input=${idTaisan}&isView=true`;
+    createGetMethod(url).then(res => {
+      if (res.success) {
+        this.setState({
+          taisan: res.result,
+        });
+      }
+    });
+  }
+
+  refresh = () => {
+    this.getAssetMoreInfo();
+  }
+
+  capnhat() {
+    this.props.navigation.navigate(screens.cap_nhat_dau_doc, { paramKey: this.state.taisan, idTs: idTaisan, onGoBack: () => this.refresh() });
+  }
+  deleteThisAsset(id) {
     Alert.alert('Bạn có chắc chắn muốn xóa không?',
       '',
       [
         {
           text: 'OK', onPress: () => {
             let url = `${endPoint.deleteReaderdidong}?`;
-            url += `input=${paramKey.id}`;
+            url += `input=${id}`;
 
             deleteMethod(url).then(res => {
-              if (res.success) {
-                Alert.alert('Xóa đầu đọc thành công',
-                  '',
-                  [
-                    { text: 'OK', onPress: navigation.goBack() },
-                  ],
-                  { cancelable: false }
+              if (result.success) {
+                Alert.alert('Xoas thành công',
+                    '',
+                    [
+                        { text: 'OK', onPress: this.goBack() },
+                    ],
+                    { cancelable: false }
                 );
-              }
+            }
             });
           }
         },
@@ -58,42 +91,58 @@ function QuanLyDauDocDetailComponent({ navigation, route }) {
     );
   }
 
-  return (
-    <View style={styles.container}>
-      <View style={{flex: 1}}>
-        <View style={{ alignItems: 'flex-start', marginHorizontal: 10 }}>
-          <Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} />
-          <Text style={styles.title}>Thông tin đầu đọc:</Text>
-          {/* Mã tài sản */}
-          <BulletView title='Mã tài sản' text={paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode} flexTitle={1.5} />
-          {/* Tên tài sản */}
-          <BulletView title='Tên tài sản' text={paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan} flexTitle={1.5} />
-          {/* Loại tài sản */}
-          <BulletView title='Loại tài sản' text={paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan} flexTitle={1.5} />
-          {/* Phòng ban quản lý */}
-          <BulletView title='Phòng ban quản lý' text={paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy} flexTitle={1.5} />
-          {/* Vị trí tài sản */}
-          <BulletView title='Vị trí tài sản' text={paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan} flexTitle={1.5} />
-          {/* Trạng thái */}
-          <BulletView title='Trạng thái' text={paramKey.trangThai} flexTitle={1.5} />
-          {/* Ngày mua */}
-          <BulletView title='Ngày mua' text={paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua)} flexTitle={1.5} />
+  goBack() {
+    const { navigation, route } = this.props;
+    route.params.onGoBack();
+    navigation.goBack();
+  }
+
+
+  render() {
+    const {
+      taisan,
+    } = this.state;
+    const { paramKey, tabKey } = this.props.route.params;
+    idTaisan = paramKey.id;
+    tab = tabKey;
+    paramTS = paramKey;
+    return (
+      <View style={styles.container}>
+        <ScrollView style={{ flex: 1 }}>
+          <View style={{ alignItems: 'flex-start', marginHorizontal: 10 }}>
+            <Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} />
+            <Text style={styles.title}>Thông tin đầu đọc di động:</Text>
+            <BulletView title="Mã tài sản" text={paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode} flexTitle={1.5} />
+            <BulletView title='Tên tài sản' text={taisan.tenTS ? taisan.tenTS : taisan.tenTaiSan} flexTitle={1.5} />
+            <BulletView title='S/N (Serial Number)' text={taisan.serialNumber} flexTitle={1.5} />
+            <BulletView title='P/N (Product Number)' text={taisan.productNumber} flexTitle={1.5} />
+            <BulletView title='Nhà cung cấp' text={taisan.nhaCC} flexTitle={1.5} />
+            <BulletView title='Hãng sản xuất' text={taisan.hangSanXuat} flexTitle={1.5} />
+            <BulletView title='Loại tài sản' text={paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan} flexTitle={1.5} />
+            <BulletView title='Phòng ban quản lý' text={paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy} flexTitle={1.5} />
+            <BulletView title='Vị trí tài sản' text={paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan} flexTitle={1.5} />
+            <BulletView title='Trạng thái' text={paramKey.trangThai} flexTitle={1.5} />
+            <BulletView title='Ngày mua' text={taisan.ngayMua && convertTimeFormatToLocaleDate(taisan.ngayMua)} flexTitle={1.5} />
+            <BulletView title='Nguyên giá' text={taisan.nguyenGia} flexTitle={1.5} />
+            <BulletView title='Ngày hết hạn bảo hành' text={taisan.ngayBaoHanh && convertTimeFormatToLocaleDate(taisan.ngayBaoHanh)} flexTitle={1.5} />
+            <BulletView title='Ngày hết hạn sử dụng' text={taisan.hanSD && convertTimeFormatToLocaleDate(taisan.hanSD)} flexTitle={1.5} />
+          </View>
+
+        </ScrollView>
+        <View style={styles.separator} />
+        <View style={styles.addToCarContainer}>
+          <TouchableOpacity
+            onPress={() => this.deleteThisAsset(idTaisan)}
+            style={styles.shareButton}
+          >
+            <Text style={styles.shareButtonText}>Xóa</Text>
+          </TouchableOpacity>
         </View>
-
       </View>
-      <View style={styles.separator} />
-      <View style={styles.addToCarContainer}>
-        <TouchableOpacity
-          onPress={() => deleteThisAsset()}
-          style={styles.shareButton}
-        >
-          <Text style={styles.shareButtonText}>Xóa</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-
+    );
+  }
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

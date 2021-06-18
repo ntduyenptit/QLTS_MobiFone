@@ -5,28 +5,28 @@ const localStorage = {
    async saveToken(token) {
         try {
             await AsyncStorage.setItem('@token', token);
-            console.log('luu Token thanh cong');
+            console.warn('luu Token thanh cong');
         } catch (error) {
-            console.log('Loi khi luu Token');
-            console.log(error);
+            console.warn('Loi khi luu Token');
+            console.warn(error);
         }
     },
     async saveUserNameOrEmail(userNameOrEmail) {
         try {
             await AsyncStorage.setItem('@userNameOrEmail', userNameOrEmail);
-            console.log('luu userNameOrEmail thanh cong');
+            console.warn('luu userNameOrEmail thanh cong');
         } catch (error) {
-            console.log('Loi khi luu userNameOrEmail');
-            console.log(error);
+            console.warn('Loi khi luu userNameOrEmail');
+            console.warn(error);
         }
     },
     async saveUserId(userID) {
         try {
-            await AsyncStorage.setItem('@userId', userId);
-            console.log('luu userId thanh cong');
+            await AsyncStorage.setItem('@userId', userID);
+            console.warn('luu userId thanh cong');
         } catch (error) {
-            console.log('Loi khi luu userId');
-            console.log(error);
+            console.warn('Loi khi luu userId');
+            console.warn(error);
         }
     },
     saveLogin(token, userNameOrEmail,userId) { localStorage.saveToken(token); localStorage.saveUserNameOrEmail(userNameOrEmail); localStorage.saveUserId(userId) }

@@ -14,10 +14,10 @@ import { SliderBox } from "react-native-image-slider-box";
 import DatePicker from 'react-native-datepicker';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import BulletView from '@app/modules/global/BulletView';
-import MultiSelect from '@app/libs/react-native-multiple-select/lib/react-native-multi-select';
-import MoreMenu from '@app/modules/global/MoreComponent';
-import { buildTree, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
+import BulletView from '../../global/BulletView';
+import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
+import MoreMenu from '../../global/MoreComponent';
+import { buildTree, convertLoaiTs, convertNguonKinhphi, convertNhaCC, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
 import { createGetMethod, createPostMethodWithToken, deleteMethod } from '../../../api/Apis';
 import { deviceWidth, deviceHeight } from '../../global/LoaderComponent';
 import { endPoint, imageBaseUrl, screens, tabs, moreMenu } from '../../../api/config';
@@ -154,7 +154,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     }
   };
 
-  capnhat() {
+  capnhat()  {
     this.props.navigation.navigate(screens.cap_nhat_tai_san, { paramKey: this.state.taisan, idTs: idTaisan, onGoBack: () => this.refresh() });
   }
 
@@ -470,6 +470,9 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     idTaisan = paramKey.id;
     tab = tabKey;
     paramTS = paramKey;
+    let textLoaiTs= convertLoaiTs(taisan.loaiTS  ? taisan.loaiTS : taisan.loaiTaiSan, this.props.LoaiTSData) ;
+
+
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -500,9 +503,9 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
               <BulletView title='Tên tài sản' text={taisan.tenTS ? taisan.tenTS : taisan.tenTaiSan} />
               <BulletView title='S/N (Serial Number)' text={taisan.serialNumber} />
               <BulletView title='P/N (Product Number)' text={taisan.productNumber} />
-              <BulletView title='Nhà cung cấp' text={taisan.nhaCC} />
+              <BulletView title='Nhà cung cấp' text={taisan.nhaCC && convertNhaCC(taisan.nhaCC,this.props.NhaCCData)} />
               <BulletView title='Hãng sản xuất' text={taisan.hangSanXuat} />
-              <BulletView title='Loại tài sản' text={paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan} />
+              <BulletView title='Loại tài sản' text={textLoaiTs} />
               <BulletView title='Phòng ban quản lý' text={paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy} />
               <BulletView title='Vị trí tài sản' text={paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan} />
               <BulletView title='Trạng thái' text={paramKey.trangThai} />
@@ -512,7 +515,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
               <BulletView title='Ngày hết hạn sử dụng' text={taisan.hanSD && convertTimeFormatToLocaleDate(taisan.hanSD)} />
               <BulletView title='Thời gian trích khấu hao' text={taisan.thoiGianChietKhauHao} />
               {/* <BulletView title='Thời gian hết khấu hao' text={taisan.ngayMua && taisan.thoiGianChietKhauHao && addYearToDate(taisan.ngayMua, taisan.thoiGianChietKhauHao)} /> */}
-              <BulletView title='Nguồn kinh phí' text={taisan.nguonKinhPhiId} />
+              <BulletView title='Nguồn kinh phí' text={taisan.nguonKinhPhiId && convertNguonKinhphi(taisan.nguonKinhPhiId)} />
               <BulletView title='Mã sử dụng' text={taisan.dropdownMultiple} />
 
             </View>
@@ -730,7 +733,11 @@ inputBordered: {
     textAlign: "center"
   }
 });
+
 const mapStateToProps = state => ({
   DvqlData: state.filterDVQLDataReducer.dvqlDataFilter,
+  LoaiTSData: state.filterLTSDataReducer.ltsDataFilter,
+  NhaCCData: state.filterNCCDataReducer.nccDataFilter,
+  MaSuDungData: state.filterMSDDataReducer.msdDataFilter
 });
 export default connect(mapStateToProps)(QuanLyTaiSanDetailComponent);

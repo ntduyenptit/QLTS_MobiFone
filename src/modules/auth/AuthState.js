@@ -9,7 +9,9 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case USER_LOGIN: {
-      const token = action.payload.token.userToken
+      
+      const token = action.payload.token.userToken;
+      console.warn("token: "+token);
       return {
         isLoggedIn: true,
         token,

@@ -6,6 +6,9 @@ import { userLogin } from '../../redux/actions/user.actions'
 
 export default compose(
   connect(
+    state => ({
+      items: state,
+    }),
     dispatch => ({
       userLogin: (token) => dispatch(userLogin(token)),
     }),

@@ -23,6 +23,7 @@ export default function BottomTabs() {
               store.dispatch(setCurrentTab(tabName));
             },
           }}
+          tittle = {item.tittle}
           options={{
             tabBarIcon: ({ focused }) => (
               <View style={styles.tabBarItemContainer}>
@@ -34,6 +35,7 @@ export default function BottomTabs() {
               </View>
             ),
             tabBarLabel: ({ focused }) => <Text style={{ fontSize: 14, color: focused ? "#5A1681" : colors.gray }}>{item.name}</Text>,
+            
           }}
         />
       ))}

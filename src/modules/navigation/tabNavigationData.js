@@ -14,12 +14,14 @@ const tabNavigationData = [
     name: tabs.toan_bo_tai_san,
     component: QuanLyTaiSanScreen,
     icon: tbts,
+    tittle: "Toàn bộ tài sản",
   },
  
   {
     name: tabs.tai_san_mat,
     component: QuanLyTaiSanScreen,
     icon: tsmat,
+    tittle: "Tài sản mất",
   },
   {
     name: tabs.tai_san_hong,

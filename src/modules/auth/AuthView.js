@@ -4,9 +4,6 @@ import { endPoint, screens } from '@app/api/config';
 import { createPostMethodWithoutToken } from '@app/api/Apis'
 import save from '../../localStorage/saveLogin';
 
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
-
 export default class AuthViewContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -22,11 +19,9 @@ export default class AuthViewContainer extends React.Component {
       .then(res => {
         if (res) {
           save.saveLogin(res.result.accessToken, userNameOrEmailAddress, res.result.userId);
+          
           this.props.userLogin(res.result.accessToken);
-          // Global.onSignIn(res.user);
-          // this.props.navigation.goBack();
         } else {
-          console.log ("Login fail: "+ res.console.error());
           Alert.alert('SignIn failed!');
         }
       })

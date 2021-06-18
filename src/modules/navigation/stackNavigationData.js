@@ -10,7 +10,7 @@ import CapnhatTaisanScreen from '../quanlytaisan/detail/UpdateTaisan';
 import QuanLyDauDocCodinhScreen from '../quanlydaudoc/quanlydaudocCodinh/QuanlydaudocCodinh';
 import QuanLyDauDocDiDongScreen from '../quanlydaudoc/quanlydaudocDidong/QuanlydaudocDiDong';
 import QuanLyDauDocDetailComponentScreen from "../quanlydaudoc/detail/QuanLyDauDocDetailComponent";
-
+import UpdateDaudocScreen from '../quanlydaudoc/detail/CapnhatDaudoc';
 import GiamsatTaiSanScreen from '../giamsattaisan/theodoitaisan/GiamsatTs';
 import TheodoiThietbiScreen from '../giamsattaisan/theodoiketnoi/TheodoiKetnoi';
 
@@ -56,6 +56,8 @@ import { colors, fonts } from '../../styles';
 import { store } from '../../redux/store';
 import { showFilter } from '../../redux/actions/filter.actions';
 import { screens, tabs } from '../../api/config';
+
+import SpeechControlScreen from '../SpeechToText/speechtotext';
 
 const headerLeftComponent = (props) => (
   <TouchableOpacity
@@ -166,6 +168,19 @@ const StackNavigationData = [
     component: QuanLyDauDocCodinhScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.cap_nhat_dau_doc,
+    component: UpdateDaudocScreen,
+    headerLeft: null,
+    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,
@@ -703,6 +718,19 @@ const StackNavigationData = [
   {
     name: screens.them_moi_vai_tro,
     component: ThemmoiVaitro,
+    headerLeft: headerLeftComponent,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.speechControl,
+    component: SpeechControlScreen,
     headerLeft: headerLeftComponent,
     headerRight: null,
     headerBackground: { source: headerBackground },

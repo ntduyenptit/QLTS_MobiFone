@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import { createPostMethodWithToken } from '@app/api/Apis';
 import NavigatorView from './RootNavigation';
-import AuthScreen from '../auth/AuthViewContainer';
+import AuthScreen from '@app/modules/auth/AuthViewContainer';
 import ForgotPassword from '../auth/ForgotPassword';
 import { userLogin, userLogout } from '../../redux/actions/user.actions';
 import { setCurrentScreen } from '../../redux/actions/screen.actions';
@@ -254,7 +254,7 @@ const AuthStack = () => (
     headerMode='none'
   >
 
-    <Stack.Screen name="Auth" component={AuthScreen} />
+    <Stack.Screen name="AuthScreen" component={AuthScreen} />
   </Stack.Navigator>
 );
 const headerLeftComponent = (props) => (
@@ -316,7 +316,7 @@ function App(stateToProps) {
   return (
     <Stack.Navigator headerMode="none">
       {!stateToProps.isUserLoggedIn ?
-        <Stack.Screen name='Auth' component={AuthStack} />
+        <Stack.Screen name='AuthScreen' component={AuthStack} />
         :
         <Stack.Screen name='App' component={DrawerStack} />
 

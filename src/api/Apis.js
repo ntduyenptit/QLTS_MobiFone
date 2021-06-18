@@ -9,7 +9,7 @@ export function createPostMethodWithoutToken(endPoint, params) {
         body: params
     })
     .then(res => res.json())
-    .catch(err => console.log(err))
+    .catch(err => console.warn(err))
 };
 
 export function createPostMethodWithToken(endPoint, params) {

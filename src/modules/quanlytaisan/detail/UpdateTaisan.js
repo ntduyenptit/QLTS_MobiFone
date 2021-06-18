@@ -22,32 +22,33 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { endPoint } from '../../../api/config';
-import { convertDateToIOSString, addYearToDate, getLinkFile } from '../../global/Helper';
+import { convertDateToIOSString, addYearToDate, getLinkFile, convertTimeFormatToLocaleDate, convertNguonKinhphi, convertNhaCC, convertLoaiTs } from '../../global/Helper';
 import { createGetMethod, createPostMethodWithToken, createPostMultiFiles } from '../../../api/Apis';
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
 
 let idTaisan = null;
 let Taisan = '';
-const list = '';
-class UpdateTaisanScreen extends React.Component {
+
+class TaomoiTaisanScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            scrollYValue: new Animated.Value(0),
+            tenTS: '',
+            loaiTaisan: '',
+            SN: '',
+            PN: '',
+            hangSx: '',
+            nguyenGia: '',
             nguonKinhphiList: [],
-            tenTS: this.props.route.params.paramKey.tenTS,
-            loaiTaisan: this.convertLoaiTs(this.props.route.params.paramKey.loaiTS),
-            SN: this.props.route.params.paramKey.serialNumber,
-            PN: this.props.route.params.paramKey.productNumber,
-            hangSx: this.props.route.params.paramKey.hangSanXuat,
-            nguyenGia: this.props.route.params.paramKey.nguyenGia,
-            ngayMua: this.props.route.params.paramKey.ngaymua,
-            ngayHetBh: this.props.route.params.paramKey.ngayBaoHanh,
-            ngayHetSd: this.props.route.params.paramKey.hanSD,
-            maSudung: this.props.route.params.paramKey.dropdownMultiple,
-            nhaCungcap: this.props.route.params.paramKey.nhaCC,
-            trichKhauhao: this.props.route.params.paramKey.thoiGianChietKhauHao,
-            imageList: this.props.route.params.paramKey.listHinhAnh,
+            ngayMua: '',
+            ngayHetBh: '',
+            ngayHetSd: '',
+            maSudung: '',
+            nhaCungcap: '',
+            trichKhauhao: '',
+            imageList: [],
         };
         this.chosenPicker = this.chosenPicker.bind(this)
     }
@@ -56,68 +57,31 @@ class UpdateTaisanScreen extends React.Component {
         Promise.all([
             this.props.navigation.setOptions({
                 headerRight: () => (
-                  <TouchableOpacity
-                    onPress={() => this.saveNewTaiSan()}
-                    style={{
+                    <TouchableOpacity
+                        onPress={() => this.saveNewTaiSan()}
+                        style={{
                             paddingHorizontal: 16,
                             paddingVertical: 12,
                         }
                         }
-                  >
-                    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-                      <Text style={{
+                    >
+                        <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                            <Text style={{
                                 fontFamily: fonts.primaryRegular,
                                 color: colors.white,
                                 fontSize: 18,
                                 alignSelf: 'center'
                             }}
-                      > Lưu
-                      </Text>
+                            > Lưu
+                            </Text>
 
-                    </View>
-                  </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
                 )
             }),
-            this.getNguonKinhPhi(),
-            // this.setData(Taisan),
+            this.getNguonKinhPhi()
         ]);
-        this.setState({
-            loaiTaisan: this.props.route.params.paramKey.loaiTS
-        })
     }
-
-    setData(paramKey) {
-        console.log(`paramKey.tenTS: ${  paramKey.tenTS}`);
-        this.setState({
-            tenTS: paramKey.tenTS,
-            loaiTaisan: paramKey.loaiTS,
-            SN: paramKey.serialNumber,
-            PN: paramKey.productNumber,
-            hangSx: paramKey.hangSanXuat,
-            nguyenGia: paramKey.nguyenGia,
-            ngayMua: paramKey.ngaymua,
-            ngayHetBh: paramKey.ngayBaoHanh,
-            ngayHetSd: paramKey.hanSD,
-            maSudung: paramKey.dropdownMultiple,
-            nhaCungcap: paramKey.nhaCC,
-            trichKhauhao: paramKey.thoiGianChietKhauHao,
-            imageList: paramKey.listHinhAnh,
-
-        })
-    }
-
-    getNguonKinhPhi() {
-        const url = `${endPoint.getAllNguonKinhPhi}`;
-        createGetMethod(url)
-            .then(res => {
-                if (res) {
-                    this.setState({
-                        nguonKinhphiList: res.result,
-                    });
-                }
-            })
-    }
-
     getAssetMoreInfo() {
         let url = `${endPoint.GetTaiSan}?`;
         url += `input=${idTaisan}&isView=true`;
@@ -131,6 +95,17 @@ class UpdateTaisanScreen extends React.Component {
                 });
             }
         });
+    }
+    getNguonKinhPhi() {
+        const url = `${endPoint.getAllNguonKinhPhi}`;
+        createGetMethod(url)
+            .then(res => {
+                if (res) {
+                    this.setState({
+                        nguonKinhphiList: res.result,
+                    });
+                }
+            })
     }
 
     chosenPicker = () => {
@@ -184,6 +159,7 @@ class UpdateTaisanScreen extends React.Component {
         } = this.state;
         const url = `${endPoint.TsAllCreateOrEdit}`;
         const urlUpload = `${endPoint.ToanBoTSUpload}`;
+
         let s = '';
         let check = false;
         switch ("") {
@@ -200,12 +176,11 @@ class UpdateTaisanScreen extends React.Component {
             }
             default:
                 break;
-
         }
         if (check) {
             Alert.alert(
                 '',
-                `Hãy nhập ${  s}`,
+                'Hãy nhập ' + s,
                 [
                     { text: 'OK', style: "cancel" },
                 ],
@@ -230,22 +205,21 @@ class UpdateTaisanScreen extends React.Component {
                     const params = {
                         dropdownMultiple: maSudung[0],
                         ghiChu: "",
-                        giaCuoiTS: '',
-                        id: idTaisan,
+                        giaCuoiTS: "",
                         hangSanXuat: hangSx,
                         listFile: [],
                         listHA: images,
-                        loaiTS: loaiTaisan[0],
+                        loaiTS: loaiTaisan && loaiTaisan[0],
                         ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                         hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
                         ngayMua: ngayMua && convertDateToIOSString(ngayMua),
                         nguonKinhPhiId: nguonKinhphi && nguonKinhphi[0],
-                        nguyenGia,
+                        nguyenGia: nguyenGia,
                         nhaCC: nhaCungcap && nhaCungcap[0],
                         noiDungChotGia: "",
                         productNumber: PN,
                         serialNumber: SN,
-                        tenTS,
+                        tenTS: tenTS,
                         thoiGianChietKhauHao: trichKhauhao
                     }
 
@@ -270,23 +244,22 @@ class UpdateTaisanScreen extends React.Component {
                 hangSanXuat: hangSx,
                 listFile: [],
                 listHA: [],
-                loaiTS: loaiTaisan[0],
-                id: idTaisan,
+                loaiTS: loaiTaisan && loaiTaisan[0],
                 ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
                 hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
                 ngayMua: ngayMua && convertDateToIOSString(ngayMua),
                 nguonKinhPhiId: nguonKinhphi && nguonKinhphi[0],
-                nguyenGia,
+                nguyenGia: nguyenGia,
                 nhaCC: nhaCungcap && nhaCungcap[0],
                 noiDungChotGia: "",
                 productNumber: PN,
                 serialNumber: SN,
-                tenTS,
+                tenTS: tenTS,
                 thoiGianChietKhauHao: trichKhauhao
             }
             createPostMethodWithToken(url, JSON.stringify(params)).then((result) => {
                 if (result.success) {
-                    Alert.alert('Cập nhật tài sản thành công',
+                    Alert.alert('Thêm mới tài sản thành công',
                         '',
                         [
                             { text: 'OK', onPress: this.goBack() },
@@ -306,22 +279,12 @@ class UpdateTaisanScreen extends React.Component {
         navigation.goBack();
     }
 
-    convertLoaiTs(loaiTs) {
-        const list = '';
-        list[0] = loaiTs;
-        return list;
-    }
-
     render() {
         const {
-            tenTS,
+            scrollYValue,
             imageList,
             trichKhauhao,
             loaiTaisan,
-            nguyenGia,
-            SN,
-            PN,
-            hangSx,
             nguonKinhphi,
             ngayMua,
             ngayHetBh,
@@ -330,114 +293,133 @@ class UpdateTaisanScreen extends React.Component {
             nhaCungcap,
             nguonKinhphiList,
         } = this.state;
+
         const { paramKey, idTs } = this.props.route.params;
-        console.log(`loaiTaisan ${  loaiTaisan}`);
 
         Taisan = paramKey;
         idTaisan = idTs;
+
         return (
-          <Animated.View>
-            <StatusBar barStyle="dark-content" />
-            <SafeAreaView>
-              <Animated.ScrollView>
-                <View style={styles.container}>
-                  <Text style={styles.boldText}>Tên tài sản*</Text>
-                  <TextInput
-                    placeholderTextColor="black"
-                    style={styles.bordered}
-                    defaultValue={tenTS}
-                    onChangeText={(tenTS) => {
+            <Animated.View>
+                <StatusBar barStyle="dark-content" />
+                <SafeAreaView>
+                    <Animated.ScrollView
+                        showsVerticalScrollIndicator={false}
+                        style={{
+                            margin: 10,
+                            paddingBottom: 15,
+                        }}
+                        contentContainerStyle={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            flexWrap: 'wrap',
+                            justifyContent: 'space-around',
+                            paddingBottom: 55,
+                        }}
+                        onScroll={Animated.event(
+                            [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
+                            { useNativeDriver: true },
+                            () => { },          // Optional async listener
+                        )}
+                        contentInsetAdjustmentBehavior="automatic"
+                    >
+                        <View style={styles.container}>
+                            <Text style={styles.boldText}>Tên tài sản*</Text>
+                            <TextInput
+                                placeholderTextColor="black"
+                                defaultValue={paramKey.tenTS ? paramKey.tenTS : paramKey.tenTaiSan}
+                                style={styles.bordered}
+                                onChangeText={(tenTS) => {
                                     this.setState({
                                         tenTS,
                                     });
                                 }}
-                  />
-                  <Text style={styles.boldText}>Loại tài sản*</Text>
-                  <MultiSelect
-                    single
-                    items={this.props.LoaiTSData}
-                    IconRenderer={Icon}
-                    searchInputPlaceholderText="Tìm kiếm..."
-                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
-                    uniqueKey="value"
-                    displayKey="text"
-                    selectText=""
-                    onSelectedItemsChange={(item) => this.setState({
+                            />
+                            <Text style={styles.boldText}>Loại tài sản*</Text>
+                            <MultiSelect
+                                single
+                                items={this.props.LoaiTSData}
+                                IconRenderer={Icon}
+                                searchInputPlaceholderText="Tìm kiếm..."
+                                styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                                uniqueKey="value"
+                                displayKey="text"
+                                selectText={convertLoaiTs(paramKey.loaiTS  ? paramKey.loaiTS : paramKey.loaiTaiSan, this.props.LoaiTSData)}
+                                onSelectedItemsChange={(item) => this.setState({
                                     loaiTaisan: item,
                                 })}
-                    selectedItems={loaiTaisan}
-                  />
+                                selectedItems={loaiTaisan}
+                            />
 
-                  <Text style={styles.boldText}>S/N (Serial Number)</Text>
-                  <TextInput
-                    placeholderTextColor="black"
-                    style={styles.bordered}
-                    defaultValue={SN}
-                    onChangeText={(SN) => {
+                            <Text style={styles.boldText}>S/N (Serial Number)</Text>
+                            <TextInput
+                                placeholderTextColor="black"
+                                style={styles.bordered}
+                                onChangeText={(SN) => {
                                     this.setState({
                                         SN,
                                     });
                                 }}
-                  />
-                  <Text style={styles.boldText}>P/N (Product Number)</Text>
-                  <TextInput
-                    placeholderTextColor="black"
-                    defaultValue={PN}
-                    style={styles.bordered}
-                    onChangeText={(PN) => {
+                            />
+                            <Text style={styles.boldText}>P/N (Product Number)</Text>
+                            <TextInput
+                                placeholderTextColor="black"
+                                defaultValue = {paramKey.productNumber}
+                                style={styles.bordered}
+                                onChangeText={(PN) => {
                                     this.setState({
                                         PN,
                                     });
                                 }}
-                  />
-                  <Text style={styles.boldText}>Nhà cung cấp</Text>
-                  <MultiSelect
-                    single
-                    items={this.props.NhaCCData}
-                    IconRenderer={Icon}
-                    searchInputPlaceholderText="Tìm kiếm..."
-                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
-                    uniqueKey="id"
-                    displayKey="displayName"
-                    selectText={paramKey.nhaCungCap}
-                    onSelectedItemsChange={(item) => this.setState({
+                            />
+                            <Text style={styles.boldText}>Nhà cung cấp</Text>
+                            <MultiSelect
+                                single
+                                items={this.props.NhaCCData}
+                                IconRenderer={Icon}
+                                searchInputPlaceholderText="Tìm kiếm..."
+                                styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                                uniqueKey="id"
+                                displayKey="displayName"
+                                selectText={paramKey.nhaCC && convertNhaCC(paramKey.nhaCC,this.props.NhaCCData)}
+                                onSelectedItemsChange={(item) => this.setState({
                                     nhaCungcap: item,
                                 })}
-                    selectedItems={nhaCungcap}
-                  />
-                  <Text style={styles.boldText}>Hãng sản xuất</Text>
-                  <TextInput
-                    placeholderTextColor="black"
-                    defaultValue={hangSx}
-                    style={styles.bordered}
-                    onChangeText={(hangsx) => {
+                                selectedItems={nhaCungcap}
+                            />
+                            <Text style={styles.boldText}>Hãng sản xuất</Text>
+                            <TextInput
+                                placeholderTextColor="black"
+                                style={styles.bordered}
+                                defaultValue = {paramKey.hangSanXuat}
+                                onChangeText={(hangsx) => {
                                     this.setState({
                                         hangSx: hangsx,
                                     });
                                 }}
-                  />
-                  <Text style={styles.boldText}>Nguyên giá (VND)</Text>
-                  <TextInput
-                    placeholderTextColor="black"
-                    defaultValue={nguyenGia}
-                    style={styles.bordered}
-                    onChangeText={(price) => {
+                            />
+                            <Text style={styles.boldText}>Nguyên giá (VND)</Text>
+                            <TextInput
+                                placeholderTextColor="black"
+                                style={styles.bordered}
+                                defaultValue = {paramKey.nguyenGia}
+                                onChangeText={(price) => {
                                     this.setState({
                                         nguyenGia: price,
                                     });
                                 }}
-                  />
-                  <Text style={styles.boldText}>Ngày mua</Text>
-                  <DatePicker
-                    style={styles.datePickerStyle}
-                    date={ngayMua} // Initial date from state
-                    mode="date" // The enum of date, datetime and time
-                    borderRadius='15'
-                    placeholder="Chọn ngày"
-                    format="DD-MM-YYYY"
-                    confirmBtnText="Chọn"
-                    cancelBtnText="Thoát"
-                    customStyles={{
+                            />
+                            <Text style={styles.boldText}>Ngày mua</Text>
+                            <DatePicker
+                                style={styles.datePickerStyle}
+                                date={ngayMua} // Initial date from state
+                                mode="date" // The enum of date, datetime and time
+                                borderRadius='15'
+                                placeholder={paramKey.ngayMua && convertTimeFormatToLocaleDate(paramKey.ngayMua)}
+                                format="DD-MM-YYYY"
+                                confirmBtnText="Chọn"
+                                cancelBtnText="Thoát"
+                                customStyles={{
                                     dateIcon: {
                                         // display: 'none',
                                         position: 'absolute',
@@ -449,23 +431,23 @@ class UpdateTaisanScreen extends React.Component {
                                         marginLeft: 5,
                                     },
                                 }}
-                    onDateChange={(date) => {
+                                onDateChange={(date) => {
                                     this.setState({
                                         ngayMua: date,
                                     });
                                 }}
-                  />
-                  <Text style={styles.boldText}>Ngày hết hạn bảo hành</Text>
-                  <DatePicker
-                    style={styles.datePickerStyle}
-                    date={ngayHetBh} // Initial date from state
-                    mode="date" // The enum of date, datetime and time
-                    borderRadius='15'
-                    placeholder="Chọn ngày"
-                    format="DD-MM-YYYY"
-                    confirmBtnText="Chọn"
-                    cancelBtnText="Thoát"
-                    customStyles={{
+                            />
+                            <Text style={styles.boldText}>Ngày hết hạn bảo hành</Text>
+                            <DatePicker
+                                style={styles.datePickerStyle}
+                                date={ngayHetBh} // Initial date from state
+                                mode="date" // The enum of date, datetime and time
+                                borderRadius='15'
+                                placeholder={paramKey.ngayBaoHanh && convertTimeFormatToLocaleDate(paramKey.ngayBaoHanh)}
+                                format="DD-MM-YYYY"
+                                confirmBtnText="Chọn"
+                                cancelBtnText="Thoát"
+                                customStyles={{
                                     dateIcon: {
                                         // display: 'none',
                                         position: 'absolute',
@@ -477,23 +459,23 @@ class UpdateTaisanScreen extends React.Component {
                                         marginLeft: 5,
                                     },
                                 }}
-                    onDateChange={(date) => {
+                                onDateChange={(date) => {
                                     this.setState({
                                         ngayHetBh: date,
                                     });
                                 }}
-                  />
-                  <Text style={styles.boldText}>Ngày hết hạn sử dụng</Text>
-                  <DatePicker
-                    style={styles.datePickerStyle}
-                    date={ngayHetSd} // Initial date from state
-                    mode="date" // The enum of date, datetime and time
-                    borderRadius='15'
-                    placeholder="Chọn ngày"
-                    format="DD-MM-YYYY"
-                    confirmBtnText="Chọn"
-                    cancelBtnText="Thoát"
-                    customStyles={{
+                            />
+                            <Text style={styles.boldText}>Ngày hết hạn sử dụng</Text>
+                            <DatePicker
+                                style={styles.datePickerStyle}
+                                date={ngayHetSd} // Initial date from state
+                                mode="date" // The enum of date, datetime and time
+                                borderRadius='15'
+                                placeholder={paramKey.hanSD && convertTimeFormatToLocaleDate(paramKey.hanSD)}
+                                format="DD-MM-YYYY"
+                                confirmBtnText="Chọn"
+                                cancelBtnText="Thoát"
+                                customStyles={{
                                     dateIcon: {
                                         // display: 'none',
                                         position: 'absolute',
@@ -505,34 +487,34 @@ class UpdateTaisanScreen extends React.Component {
                                         marginLeft: 5,
                                     },
                                 }}
-                    onDateChange={(date) => {
+                                onDateChange={(date) => {
                                     this.setState({
                                         ngayHetSd: date,
                                     });
                                 }}
-                  />
-                  <Text style={styles.boldText}>Thời gian trích khấu hao (năm)</Text>
-                  <TextInput
-                    placeholderTextColor="black"
-                    defaultValue={trichKhauhao}
-                    style={styles.bordered}
-                    onChangeText={(time) => {
+                            />
+                            <Text style={styles.boldText}>Thời gian trích khấu hao (năm)</Text>
+                            <TextInput
+                                placeholderTextColor="black"
+                                style={styles.bordered}
+                                defaultValue = {paramKey.thoiGianChietKhauHao}
+                                onChangeText={(time) => {
                                     this.setState({
                                         trichKhauhao: time,
                                     });
                                 }}
-                  />
-                  <Text style={styles.boldText}>Thời gian hết khấu hao</Text>
-                  <DatePicker
-                    style={styles.datePickerStyle}
-                    date={addYearToDate(ngayMua, trichKhauhao)} // Initial date from state
-                    mode="date" // The enum of date, datetime and time
-                    borderRadius='15'
-                    disabled
-                    format="DD-MM-YYYY"
-                    confirmBtnText="Chọn"
-                    cancelBtnText="Thoát"
-                    customStyles={{
+                            />
+                            <Text style={styles.boldText}>Thời gian hết khấu hao</Text>
+                            <DatePicker
+                                style={styles.datePickerStyle}
+                                date={addYearToDate(paramKey.ngayMua, paramKey.trichKhauhao)} // Initial date from state
+                                mode="date" // The enum of date, datetime and time
+                                borderRadius='15'
+                                disabled
+                                format="DD-MM-YYYY"
+                                confirmBtnText="Chọn"
+                                cancelBtnText="Thoát"
+                                customStyles={{
                                     dateIcon: {
                                         // display: 'none',
                                         position: 'absolute',
@@ -544,82 +526,82 @@ class UpdateTaisanScreen extends React.Component {
                                         marginLeft: 5,
                                     },
                                 }}
-                  />
-                  <Text style={styles.boldText}>Nguồn kinh phí</Text>
-                  <MultiSelect
-                    single
-                    items={nguonKinhphiList}
-                    IconRenderer={Icon}
-                    searchInputPlaceholderText="Tìm kiếm..."
-                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
-                    uniqueKey="id"
-                    displayKey="displayName"
-                    selectText=""
-                    onSelectedItemsChange={(item) => this.setState({
+                            />
+                            <Text style={styles.boldText}>Nguồn kinh phí</Text>
+                            <MultiSelect
+                                single
+                                items={nguonKinhphiList}
+                                IconRenderer={Icon}
+                                searchInputPlaceholderText="Tìm kiếm..."
+                                styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                                uniqueKey="id"
+                                displayKey="displayName"
+                                selectText={paramKey.nguonKinhPhiId && convertNguonKinhphi(paramKey.nguonKinhPhiId)}
+                                onSelectedItemsChange={(item) => this.setState({
                                     nguonKinhphi: item,
                                 })}
-                    selectedItems={nguonKinhphi}
-                  />
-                  <Text style={styles.boldText}>Mã sử dụng</Text>
-                  <MultiSelect
-                    single
-                    items={this.props.MaSuDungData}
-                    IconRenderer={Icon}
-                    searchInputPlaceholderText="Tìm kiếm..."
-                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
-                    uniqueKey="id"
-                    displayKey="displayName"
-                    selectText={paramKey.maSudung}
-                    onSelectedItemsChange={(item) => this.setState({
+                                selectedItems={nguonKinhphi}
+                            />
+                            <Text style={styles.boldText}>Mã sử dụng</Text>
+                            <MultiSelect
+                                single
+                                items={this.props.MaSuDungData}
+                                IconRenderer={Icon}
+                                searchInputPlaceholderText="Tìm kiếm..."
+                                styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                                uniqueKey="id"
+                                displayKey="displayName"
+                                selectText={paramKey.dropdownMultiple}
+                                onSelectedItemsChange={(item) => this.setState({
                                     maSudung: item,
                                 })}
-                    selectedItems={maSudung}
-                  />
-                  <View style={styles.selectContainer}>
-                    <Text style={styles.boldText}>Hình ảnh</Text>
-                    <TouchableOpacity onPress={this.chosenPicker} style={styles.button}>
-                      <Text style={styles.buttonText}> Bấm để chọn ảnh  </Text>
-                    </TouchableOpacity>
-                  </View>
+                                selectedItems={maSudung}
+                            />
+                            <View style={styles.selectContainer}>
+                                <Text style={styles.boldText}>Hình ảnh</Text>
+                                <TouchableOpacity onPress={this.chosenPicker} style={styles.button}>
+                                    <Text style={styles.buttonText}> Bấm để chọn ảnh  </Text>
+                                </TouchableOpacity>
+                            </View>
 
-                  <View style={{ flexDirection: 'row', flex: 1, paddingLeft: 20, paddingRight: 20 }}>
-                    <FlatList
-                      data={imageList}
-                      keyExtractor={(item) => item.filename}
-                      numColumns={3}
-                      renderItem={({ item, index }) =>
+                            <View style={{ flexDirection: 'row', flex: 1, paddingLeft: 20, paddingRight: 20 }}>
+                                <FlatList
+                                    data={imageList}
+                                    keyExtractor={(item) => item.filename}
+                                    numColumns={3}
+                                    renderItem={({ item, index }) =>
                                     (
-                                      <View style={{ padding: 5, flexDirection: 'row' }}>
-                                        <Image
-                                          key={item.tenFile}
-                                          source={{ uri: item.linkFile }}
-                                          style={{ width: 100, height: 100, borderRadius: 5 }}
-                                        />
-                                        <TouchableHighlight
-                                          style={{
+                                        <View style={{ padding: 5, flexDirection: 'row' }}>
+                                            <Image
+                                                key={item.tenFile}
+                                                source={{ uri: item.linkFile }}
+                                                style={{ width: 100, height: 100, borderRadius: 5 }}
+                                            />
+                                            <TouchableHighlight
+                                                style={{
                                                     alignItems: 'flex-end', top: 0, right: -8, position: 'absolute', backgroundColor: 'transparent'
                                                 }}
-                                          onPress={() => {
+                                                onPress={() => {
                                                     const newImages = [...imageList];
                                                     newImages.splice(index, 1);
                                                     this.setState({
                                                         imageList: newImages,
                                                     });
                                                 }}
-                                        >
-                                          <Icon name="times" color='#DC143C' size={28} />
-                                        </TouchableHighlight>
-                                      </View>
+                                            >
+                                                <Icon name="times" color='#DC143C' size={28} />
+                                            </TouchableHighlight>
+                                        </View>
                                     )}
-                    />
+                                />
 
-                  </View>
-                </View>
+                            </View>
+                        </View>
 
-              </Animated.ScrollView>
-            </SafeAreaView>
+                    </Animated.ScrollView>
+                </SafeAreaView>
 
-          </Animated.View>
+            </Animated.View>
         );
     }
 
@@ -722,4 +704,4 @@ const mapStateToProps = state => ({
     MaSuDungData: state.filterMSDDataReducer.msdDataFilter
 });
 
-export default connect(mapStateToProps)(UpdateTaisanScreen);
+export default connect(mapStateToProps)(TaomoiTaisanScreen);

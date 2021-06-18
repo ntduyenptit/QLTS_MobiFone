@@ -222,12 +222,12 @@ const loadInfo = (screen, item, props, action) => {
             <Text numberOfLines={1}>Ngày khai báo: {convertTimeFormatToLocaleDate(item.ngayKhaiBao)}</Text>
             <Text numberOfLines={1}>Khai báo: {convertTrangthaiTaisan(item.khaiBao)}</Text>
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{ height: 40, width: 20, alignItems: "flex-end" }}
             onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab , onGoBack: () => action()})}
           >
             <Icon name="chevron-right" color='#0080FF' size={15} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </>
       );
     default:
