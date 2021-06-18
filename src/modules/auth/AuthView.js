@@ -4,9 +4,6 @@ import { endPoint, screens } from '@app/api/config';
 import { createPostMethodWithoutToken } from '@app/api/Apis'
 import save from '../../localStorage/saveLogin';
 
-const deviceWidth = Dimensions.get("window").width;
-const deviceHeight = Dimensions.get("window").height;
-
 export default class AuthViewContainer extends React.Component {
   constructor(props) {
     super(props);
