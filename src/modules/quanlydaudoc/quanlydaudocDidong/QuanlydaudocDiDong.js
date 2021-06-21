@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Text, View } from 'react-native';
 import { connect } from 'react-redux';
@@ -5,7 +6,6 @@ import find from 'lodash/find';
 import ActionButton from 'react-native-action-button';
 import SearchComponent from '@app/modules/global/SearchComponent';
 import FilterComponent from '@app/modules/global/FilterComponent';
-import QuanLyDauDocFilter from '../filter/QuanLyDauDocFilter';
 import { createGetMethod } from '@app/api/Apis';
 import { endPoint, screens } from '@app/api/config';
 import LoaderComponent from '@app/modules/global/LoaderComponent';
@@ -13,6 +13,7 @@ import { getTTSDDataFilter } from '@app/modules/global/FilterApis';
 import {
   getTTSDDataAction
 } from '@app/redux/actions/filter.actions';
+import QuanLyDauDocFilter from '../filter/QuanLyDauDocFilter';
 
 class QuanLyDauDocDiDongScreen extends React.Component {
   constructor(props) {
@@ -44,8 +45,7 @@ class QuanLyDauDocDiDongScreen extends React.Component {
     if (datas && datas.length > 0) {
       let url;
       url = `${endPoint.getDaudocDidong}?`;
-
-      const textState = this.props.searchText;
+      const textState = this.props?.searchText;
       const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_di_dong)
         && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_di_dong).data;
       if (textFilter) {

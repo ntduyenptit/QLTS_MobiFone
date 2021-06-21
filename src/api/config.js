@@ -342,6 +342,11 @@ export const trangThaiData = [
   {id: 5, displayName: "Chưa sử dụng"},
   {id: 6, displayName: "Đang sử dụng"}
 ];
+// Khai báo filter
+export const KhaiBaoData = [
+  {id: 7, displayName: "Mất"},
+  {id: 8, displayName: "Hỏng"}
+];
 // Trạng thái giám sát tài sản
 export const trangThaiRavao = [
   {id: 5, displayName: "Ra"},

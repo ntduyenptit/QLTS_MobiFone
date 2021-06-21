@@ -3,15 +3,15 @@ import { YAxis, XAxis, Grid, BarChart } from 'react-native-svg-charts'
 import { Text } from 'react-native-svg'
 import { Animated, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import * as scale from 'd3-scale'
 import FilterComponent from '../../global/FilterComponent';
 import BaocaoCanhbaoFilter from './BaocaoCanhbaoFilter';
 import DetailBaocaoCanhbao from './DetailBaocaoCanhbao';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint } from '../../../api/config';
 import { fonts } from '../../../styles';
-import * as scale from 'd3-scale'
 
-class BaocaoCanhbaoScreen extends React.PureComponent {
+export default class BaocaoCanhbaoScreen extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -45,7 +45,7 @@ class BaocaoCanhbaoScreen extends React.PureComponent {
                         this.setState({
                             toanboData: res.result,
                         });
-                        let arr = res.result;
+                        const arr = res.result;
                         for (let i = 0; i < arr.length; i++) {
                             if (arr[i].isCheck) {
                                 this.setState({
@@ -101,56 +101,55 @@ class BaocaoCanhbaoScreen extends React.PureComponent {
         const CUT_OFF = 20
         const Labels = ({ x, y, bandwidth, data }) => (
             data.map((value, index) => (
-                <Text
-                    key={index}
-                    x={x(index) + (bandwidth / 2)}
-                    y={value < CUT_OFF ? y(value) - 10 : y(value) + 15}
-                    fontSize={14}
-                    fill={value >= CUT_OFF ? 'white' : 'black'}
-                    alignmentBaseline={'middle'}
-                    textAnchor={'middle'}
-                >
-                    {value}
-                </Text>
+              <Text
+                key={index}
+                x={x(index) + (bandwidth / 2)}
+                y={value < CUT_OFF ? y(value) - 10 : y(value) + 15}
+                fontSize={14}
+                fill={value >= CUT_OFF ? 'white' : 'black'}
+                alignmentBaseline="middle"
+                textAnchor="middle"
+              >
+                {value}
+              </Text>
             ))
         )
         return (
-            <Animated.View>
-                <View style={{ height: 300, padding: 10, flexDirection: 'row' }}>
-                    <YAxis
-                        data={dataY}
-                        style={{ marginBottom: xAxisHeight }}
-                        contentInset={verticalContentInset}
-                        svg={axesSvg}
-                    />
-                    <View style={{ flex: 1, marginLeft: 5 }}>
+          <Animated.View>
+            <View style={{ height: 300, padding: 10, flexDirection: 'row' }}>
+              <YAxis
+                data={dataY}
+                style={{ marginBottom: xAxisHeight }}
+                contentInset={verticalContentInset}
+                svg={axesSvg}
+              />
+              <View style={{ flex: 1, marginLeft: 5 }}>
 
-                        <BarChart
-                            style={{ flex: 1 }}
-                            data={dataY}
-                            svg={{ fill: 'rgb(134, 65, 244)' }}
-                            contentInset={{ top: 20, bottom: 20 }}
-                        >
-                            <Grid />
-                            <Labels />
-                        </BarChart>
-                        <XAxis
-                            style={{ marginHorizontal: -10, height: xAxisHeight }}
-                            data={data}
-                            scale={scale.scaleBand}
-                            formatLabel={(_, index) => data[index].label}
-                            labelStyle={{ color: 'black' }}
-                        />
-                    </View>
-                </View>
-               
-                <Animated.ScrollView
+                <BarChart
+                  style={{ flex: 1 }}
+                  data={dataY}
+                  svg={{ fill: 'rgb(134, 65, 244)' }}
+                  contentInset={{ top: 20, bottom: 20 }}
                 >
-                    {DetailBaocaoCanhbao(toanboData)}
-                </Animated.ScrollView>
+                  <Grid />
+                  <Labels />
+                </BarChart>
+                <XAxis
+                  style={{ marginHorizontal: -10, height: xAxisHeight }}
+                  data={data}
+                  scale={scale.scaleBand}
+                  formatLabel={(_, index) => data[index].label}
+                  labelStyle={{ color: 'black' }}
+                />
+              </View>
+            </View>
+               
+            <Animated.ScrollView>
+              {DetailBaocaoCanhbao(toanboData)}
+            </Animated.ScrollView>
 
-                <FilterComponent filter={<BaocaoCanhbaoFilter />} />
-            </Animated.View>
+            <FilterComponent filter={<BaocaoCanhbaoFilter />} />
+          </Animated.View>
         )
     }
 
@@ -179,9 +178,3 @@ const styles = StyleSheet.create({
         fontFamily: fonts.primaryRegular,
     }
 });
-const mapStateToProps = state => ({
-    DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-    tab: 'Quan ly canh bao'
-});
-
-export default connect(mapStateToProps)(BaocaoCanhbaoScreen);

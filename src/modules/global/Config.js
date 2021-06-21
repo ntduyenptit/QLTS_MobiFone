@@ -4,6 +4,8 @@ export const filterType = ({
     nha_cung_cap: 'nha_cung_cap',
     ma_su_sung: 'ma_su_dung',
     hinh_thuc: 'hinh_thuc',
+    khai_bao: 'khai_bao',
+    trang_thai: 'trang_thai',
     nguoi_dung: "nguoi_dung",
     trang_thai_kiem_ke: 'kiem_ke',
     chieu_di_chuyen: 'chieu_di_chuyen',

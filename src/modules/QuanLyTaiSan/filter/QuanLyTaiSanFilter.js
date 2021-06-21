@@ -28,7 +28,6 @@ import {
  } from '../../../redux/actions/filter.actions';
 
 const QuanLyTaiSanFilterComponent = (items) => {
-
   const donViQuanLyRef = useRef();
   const loaiTaiSanRef = useRef();
   const nhaCungCapRef = useRef();
