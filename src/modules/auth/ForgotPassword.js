@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, Modal, Dimensions } from 'react-native';
-import { endPoint } from '@app/api/config';
+import { endPoint, screens } from '@app/api/config';
 import { createPostMethodWithoutToken } from '../../api/Apis'
-import { black } from 'react-native-paper/lib/typescript/src/styles/colors';
-
+const fileAudio = require('../../../assets/001.m4a');
 export default class ForgotPasswordScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -13,40 +12,48 @@ export default class ForgotPasswordScreen extends React.Component {
     }
     componentDidMount() {
         this.getNguoidung(this.props.DvqlDataFilter);
-      }
-    
-      getNguoidung(datas) {
-        if (datas && datas.length > 0) {
-          let url;
-          url = `${endPoint.getAllNguoidung}?`;
-    
-          datas.forEach(e => {
-            url += `ToChucIdList=${encodeURIComponent(`${e.id}`)}&`;
-          });
-    
-          url += `IsSearch=${encodeURIComponent(`${true}`)}&`;
-          url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
-          url += `MaxResultCount=${encodeURIComponent(`${30}`)}`;
-          createGetMethod(url)
-            .then(res => {
-              if (res) {
-                this.setState({
-                  toanboNguoidungData: res.result.items,
-                  total: res.result.totalCount
-                });
-              } else {
-                // Alert.alert('Lỗi khi load toàn bộ tài sản!');
-              }
-            })
-            .catch(err => console.log(err));
-        }
-      }
-    
-    sendEmail() {
-        // get idUser
-        // get password Admin
-        // send email
+    }
 
+    getNguoidung(datas) {
+        if (datas && datas.length > 0) {
+            let url;
+            url = `${endPoint.getAllNguoidung}?`;
+
+            datas.forEach(e => {
+                url += `ToChucIdList=${encodeURIComponent(`${e.id}`)}&`;
+            });
+
+            url += `IsSearch=${encodeURIComponent(`${true}`)}&`;
+            url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
+            url += `MaxResultCount=${encodeURIComponent(`${30}`)}`;
+            createGetMethod(url)
+                .then(res => {
+                    if (res) {
+                        this.setState({
+                            toanboNguoidungData: res.result.items,
+                            total: res.result.totalCount
+                        });
+                    } else {
+                        // Alert.alert('Lỗi khi load toàn bộ tài sản!');
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+    }
+
+    sendEmail() {
+        // createPostMethodWithoutToken(endPoint.login, JSON.stringify( 'admin', '123qwe' ))
+        //     .then(res => {
+        //         if (res) this.props.navigation.navigate(screens.dash_board);
+        //     })
+
+         fetch(`https://api.fpt.ai/hmi/asr/general`, {
+            method: 'POST',
+            headers: "api_key: TK6pWFl64dNMJT3k5sJ8zpJCMIKfCN1y",
+            body: fileAudio,
+        })
+            .then(res => res.json())
+            .catch(err => console.log(err))
     }
     render() {
         return (

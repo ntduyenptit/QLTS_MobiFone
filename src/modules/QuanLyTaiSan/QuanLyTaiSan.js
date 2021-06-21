@@ -4,7 +4,7 @@ import { Animated, SafeAreaView, StatusBar, Text, View, StyleSheet } from 'react
 import { connect } from 'react-redux';
 import find from 'lodash/find';
 import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import LoaderComponent from '../global/LoaderComponent';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
@@ -409,18 +409,59 @@ const QuanLyTaiSan = (state) => {
         return null;
     }
   }
+  const Speech =()  =>{
+    props.navigation.navigate(screens.speechControl, { onGoBack: () => refresh() });
+  }
   const displayCreateForTab = () => {
     switch (state.tab) {
       case tabs.toan_bo_tai_san:
-      case tabs.tai_san_mat:
-      case tabs.tai_san_hong:
-      case tabs.tai_san_huy:
-      case tabs.tai_san_thanh_ly:
-      case tabs.tai_san_sua_chua_bao_duong:
         return (
           <ActionButton buttonColor="rgba(231,76,60,1)" position='right'>
             <ActionButton.Item buttonColor='#9b59b6' title="Thêm mới" onPress={() => LoadScreenThemmoi()}>
-              <Icon name="md-create" style={styles.actionButtonIcon} />
+              <Icon name="plus" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item buttonColor='#0000FF' title="Điều khiển giọng nói" onPress={() => Speech()}>
+              <Icon name="microphone" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+          </ActionButton>
+        )
+      case tabs.tai_san_mat:
+        return (
+          <ActionButton buttonColor="rgba(231,76,60,1)" position='right'>
+            <ActionButton.Item buttonColor='#9b59b6' title="Khai báo mất" onPress={() => LoadScreenThemmoi()}>
+              <Icon name="plus" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+          </ActionButton>
+        )
+      case tabs.tai_san_hong:
+        return (
+          <ActionButton buttonColor="rgba(231,76,60,1)" position='right'>
+            <ActionButton.Item buttonColor='#9b59b6' title="Khai báo hỏng" onPress={() => LoadScreenThemmoi()}>
+              <Icon name="plus" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+          </ActionButton>
+        )
+      case tabs.tai_san_huy:
+        return (
+          <ActionButton buttonColor="rgba(231,76,60,1)" position='right'>
+            <ActionButton.Item buttonColor='#9b59b6' title="Khai báo hủy" onPress={() => LoadScreenThemmoi()}>
+              <Icon name="plus" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+          </ActionButton>
+        )
+      case tabs.tai_san_thanh_ly:
+        return (
+          <ActionButton buttonColor="rgba(231,76,60,1)" position='right'>
+            <ActionButton.Item buttonColor='#9b59b6' title="Khai báo thanh lý" onPress={() => LoadScreenThemmoi()}>
+              <Icon name="plus" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+          </ActionButton>
+        )
+      case tabs.tai_san_sua_chua_bao_duong:
+        return (
+          <ActionButton buttonColor="rgba(231,76,60,1)" position='right'>
+            <ActionButton.Item buttonColor='#9b59b6' title="Khai báo sửa chữa/bảo dưỡng" onPress={() => LoadScreenThemmoi()}>
+              <Icon name="plus" style={styles.actionButtonIcon} />
             </ActionButton.Item>
           </ActionButton>
 );

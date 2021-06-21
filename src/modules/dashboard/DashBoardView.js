@@ -1,14 +1,15 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { tabs, screens } from '@app/api/config';
+import { tabs, screens } from '../../api/config';
 import PieChartView from './PieChartView';
 import LineChartView from './LineChartView';
-import { getDVQLDataFilter } from '@app/modules/global/FilterApis'
-import { getDVQLDataAction } from '@app/redux/actions/filter.actions';
-import { store } from '@app/redux/store';
-import { currentDate, getDateFromLastMonth, getPercent, getDates, convertFormatDate } from '@app/modules/global/Helper';
-import { getGSTSDashboard, GetToanBoTaiSanData } from '@app/modules/global/GlobalApis';
+import { getDVQLDataFilter } from '../global/FilterApis'
+import { getDVQLDataAction } from '../../redux/actions/filter.actions';
+import { store } from '../../redux/store';
+import { currentDate, getDateFromLastMonth, getPercent, getDates, convertFormatDate } from '../global/Helper';
+import { getGSTSDashboard, GetToanBoTaiSanData } from '../global/GlobalApis';
+import ActionButton from 'react-native-action-button';
 
 class DashBoard extends React.Component {
   constructor(props) {
@@ -31,7 +32,7 @@ class DashBoard extends React.Component {
     this.props.navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-           onPress={() => this.props.navigation.navigate(screens.qrScanAssetScreen)}
+          onPress={() => this.props.navigation.navigate(screens.qrScanAssetScreen)}
           style={{
             paddingHorizontal: 16,
             paddingVertical: 12,
@@ -127,7 +128,9 @@ class DashBoard extends React.Component {
       key: index
     });
   }
-
+  Speech = () => {
+    this.props.navigation.navigate(screens.speechControl);
+  }
   render() {
     const {
       key,
@@ -183,98 +186,102 @@ class DashBoard extends React.Component {
 
 
     return (
-      <ScrollView style={styles.container}>
-        <View style={{ flexDirection: 'row' }}>
-          <Text style={[styles.chart_title, { flex: 1 }]}>Thông tin tài sản</Text>
-          <Text style={{ alignItems: 'flex-end', paddingRight: 10 }}>Toàn bộ tài sản: {toanbotaisanTotal}</Text>
-        </View>
-        <View style={styles.pieChart}>
-          <PieChartView data={data} clickChartPart={this.clickChartPart} />
-          <View style={styles.infor}>
-            {key === 1 ? (
-              <View style={styles.item}>
-                <Text style={[styles.infoText, styles.selectedText, { color: '#600080' }]}>TS chưa sử dụng: {taisanchuasudungTotal}</Text>
-              </View>
-            ) : (
-              <View style={styles.item}>
-                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#600080' size={15} />
-                <Text style={styles.infoText}>TS chưa sử dụng</Text>
-              </View>
-            )}
-
-            {key === 2 ? (
-              <View style={styles.item}>
-                <Text style={[styles.infoText, styles.selectedText, { color: '#9900cc' }]}>TS mất: {taisanmatTotal}</Text>
-              </View>
-            ) : (
-              <View style={styles.item}>
-                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#9900cc' size={15} />
-                <Text style={styles.infoText}>TS mất</Text>
-              </View>
-            )}
-            {key === 3 ? (
-              <View style={styles.item}>
-                <Text style={[styles.infoText, styles.selectedText, { color: '#0000FF' }]}>TS hủy: {taisanhuyTotal}</Text>
-              </View>
-            ) : (
-              <View style={styles.item}>
-                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#0000FF' size={15} />
-                <Text style={styles.infoText}>TS hủy</Text>
-              </View>
-            )}
-            {key === 4 ? (
-              <View style={styles.item}>
-                <Text style={[styles.infoText, styles.selectedText, { color: '#FF0000' }]}>TS sửa chữa/bảo dưỡng: {taisansuachuabaoduongTotal}</Text>
-              </View>
-            ) : (
-              <View style={styles.item}>
-                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#FF0000' size={15} />
-                <Text style={styles.infoText}>TS sửa chữa/bảo dưỡng</Text>
-              </View>
-            )}
-            {key === 5 ? (
-              <View style={styles.item}>
-                <Text style={[styles.infoText, styles.selectedText, { color: '#29088A' }]}>TS đang sử dụng: {taisandangsudungTotal}</Text>
-              </View>
-            ) : (
-              <View style={styles.item}>
-                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#29088A' size={15} />
-                <Text style={styles.infoText}>TS đang sử dụng</Text>
-              </View>
-            )}
-            {key === 6 ? (
-              <View style={styles.item}>
-                <Text style={[styles.infoText, styles.selectedText, { color: '#8A2908' }]}>TS thanh lý: {taisanthanhlyTotal}</Text>
-              </View>
-            ) : (
-              <View style={styles.item}>
-                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#8A2908' size={15} />
-                <Text style={styles.infoText}>TS thanh lý</Text>
-              </View>
-            )}
-            {key === 7 ? (
-              <View style={styles.item}>
-                <Text style={[styles.infoText, styles.selectedText, { color: '#FFBF00' }]}>TS hỏng: {taisanhongTotal}</Text>
-              </View>
-            ) : (
-              <View style={styles.item}>
-                <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#FFBF00' size={15} />
-                <Text style={styles.infoText}>TS hỏng</Text>
-              </View>
-            )}
+      <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
+        <ScrollView style={styles.container}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={[styles.chart_title, { flex: 1 }]}>Thông tin tài sản</Text>
+            <Text style={{ alignItems: 'flex-end', paddingRight: 10 }}>Toàn bộ tài sản: {toanbotaisanTotal}</Text>
           </View>
-        </View>
-        <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate(screens.quan_ly_tai_san)}>
-          <Text style={styles.showDetailBtn}>Xem chi tiết</Text>
-        </TouchableOpacity>
-        <View>
-          <Text style={styles.chart_title}>Lịch sử ra vào của tài sản trong 30 ngày gần nhất</Text>
-          <LineChartView data={lineChartDatas} />
-          <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate(screens.giam_sat_tai_san)}>
+          <View style={styles.pieChart}>
+            <PieChartView data={data} clickChartPart={this.clickChartPart} />
+            <View style={styles.infor}>
+              {key === 1 ? (
+                <View style={styles.item}>
+                  <Text style={[styles.infoText, styles.selectedText, { color: '#600080' }]}>TS chưa sử dụng: {taisanchuasudungTotal}</Text>
+                </View>
+              ) : (
+                <View style={styles.item}>
+                  <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#600080' size={15} />
+                  <Text style={styles.infoText}>TS chưa sử dụng</Text>
+                </View>
+              )}
+
+              {key === 2 ? (
+                <View style={styles.item}>
+                  <Text style={[styles.infoText, styles.selectedText, { color: '#9900cc' }]}>TS mất: {taisanmatTotal}</Text>
+                </View>
+              ) : (
+                <View style={styles.item}>
+                  <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#9900cc' size={15} />
+                  <Text style={styles.infoText}>TS mất</Text>
+                </View>
+              )}
+              {key === 3 ? (
+                <View style={styles.item}>
+                  <Text style={[styles.infoText, styles.selectedText, { color: '#0000FF' }]}>TS hủy: {taisanhuyTotal}</Text>
+                </View>
+              ) : (
+                <View style={styles.item}>
+                  <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#0000FF' size={15} />
+                  <Text style={styles.infoText}>TS hủy</Text>
+                </View>
+              )}
+              {key === 4 ? (
+                <View style={styles.item}>
+                  <Text style={[styles.infoText, styles.selectedText, { color: '#FF0000' }]}>TS sửa chữa/bảo dưỡng: {taisansuachuabaoduongTotal}</Text>
+                </View>
+              ) : (
+                <View style={styles.item}>
+                  <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#FF0000' size={15} />
+                  <Text style={styles.infoText}>TS sửa chữa/bảo dưỡng</Text>
+                </View>
+              )}
+              {key === 5 ? (
+                <View style={styles.item}>
+                  <Text style={[styles.infoText, styles.selectedText, { color: '#29088A' }]}>TS đang sử dụng: {taisandangsudungTotal}</Text>
+                </View>
+              ) : (
+                <View style={styles.item}>
+                  <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#29088A' size={15} />
+                  <Text style={styles.infoText}>TS đang sử dụng</Text>
+                </View>
+              )}
+              {key === 6 ? (
+                <View style={styles.item}>
+                  <Text style={[styles.infoText, styles.selectedText, { color: '#8A2908' }]}>TS thanh lý: {taisanthanhlyTotal}</Text>
+                </View>
+              ) : (
+                <View style={styles.item}>
+                  <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#8A2908' size={15} />
+                  <Text style={styles.infoText}>TS thanh lý</Text>
+                </View>
+              )}
+              {key === 7 ? (
+                <View style={styles.item}>
+                  <Text style={[styles.infoText, styles.selectedText, { color: '#FFBF00' }]}>TS hỏng: {taisanhongTotal}</Text>
+                </View>
+              ) : (
+                <View style={styles.item}>
+                  <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color='#FFBF00' size={15} />
+                  <Text style={styles.infoText}>TS hỏng</Text>
+                </View>
+              )}
+            </View>
+          </View>
+          <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate(screens.quan_ly_tai_san)}>
             <Text style={styles.showDetailBtn}>Xem chi tiết</Text>
           </TouchableOpacity>
-        </View>
-      </ScrollView>
+          <View>
+            <Text style={styles.chart_title}>Lịch sử ra vào của tài sản trong 30 ngày gần nhất</Text>
+            <LineChartView data={lineChartDatas} />
+            <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate(screens.giam_sat_tai_san)}>
+              <Text style={styles.showDetailBtn}>Xem chi tiết</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+       
+      </View>
+
     );
   }
 }
@@ -325,5 +332,10 @@ const styles = {
     alignItems: 'flex-end',
     padding: 10,
     top: -20
-  }
+  },
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
 }

@@ -35,6 +35,9 @@ const isLoadData = () => {
     case tabs.tai_san_sua_chua_bao_duong: {
       return store.getState().taisansuachuabaoduongReducer.taisansuachuabaoduongData.length > 0;
     }
+    case tabs.bao_hong_mat_tai_san: {
+      return store.getState().khaibaohongmatReducer.khaibaohongmatData.length > 0;
+    }
     default:
       return false;
   }

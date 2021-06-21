@@ -140,6 +140,8 @@ class KhaiBaoMatTaiSan extends React.Component {
                 break;
             case "tài sản hủy":
                 url = `${endPoint.CreateTaiSanHuy}`;
+                message = "Khai báo tài sản hủy thành công";
+                phanLoaiId = 10;
                 break;
             case "tài sản sửa chữa/bảo dưỡng":
                 url = `${endPoint.CreateTaiSanSuaChuaBaoDuong}`;
@@ -163,7 +165,7 @@ class KhaiBaoMatTaiSan extends React.Component {
                     ngayKhaiBao: currentDate(),
                     noiDung: contentKhaibao,
                     noiDungKhaiBaoSuaChuaBaoDuong: contentKhaibao,
-                    phanLoaiId,
+                    phanLoaiId : phanLoaiId,
                     phieuTaiSanChiTietList: assetList,
                     thoiGianBatDau: currentDate(),
                 }
@@ -176,7 +178,7 @@ class KhaiBaoMatTaiSan extends React.Component {
                     nguoiKhaiBao: userKhaibao,
                     noiDung: contentKhaibao,
                     noiDungKhaiBao: contentKhaibao,
-                    phanLoaiId,
+                    phanLoaiId: phanLoaiId,
                     phieuTaiSanChiTietList: assetList,
                     thoiGianKhaiBao: currentDate(),
                 }
@@ -184,7 +186,7 @@ class KhaiBaoMatTaiSan extends React.Component {
 
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
             if (res.success) {
-                Alert.alert(message,
+                Alert.alert(message, "",
                 [
                     {text: 'OK', onPress: this.goBack()},
                 ],

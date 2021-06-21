@@ -6,7 +6,8 @@ const localStorage = {
         try {
             await AsyncStorage.setItem('@token', token);
         } catch (error) {
-            console.log(error);
+            console.warn('Loi khi luu Token');
+            console.warn(error);
         }
     },
     async saveUserNameOrEmail(userNameOrEmail) {

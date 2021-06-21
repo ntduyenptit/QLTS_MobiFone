@@ -137,6 +137,8 @@ export const endPoint = ({
   tsMatHoantac: 'services/app/TaiSanMat/HoanTacTaiSanMat',
   tsThanhlyHoantac: 'services/app/TaiSanThanhLy/HoanTacTaiSanThanhLy',
   tsHongHoantac: 'services/app/TaiSanHong/HoanTacTaiSanHong',
+
+  getDaudocEdit :'services/app/DauDocTheRFID/GetForEdit',
   // xóa tài sản
   DeleteTaiSan: 'services/app/ToanBoTaiSan/Deleted',
   deleteReaderdidong: 'services/app/DauDocTheRFID/Deleted',
@@ -152,6 +154,7 @@ export const screens = ({
   forgot_password: 'Quên mật khẩu',
   // quản lý đầu đọc
   quan_ly_dau_doc: 'Quản lý đầu đọc',
+  cap_nhat_dau_doc: 'Cập nhật đầu đọc',
   quan_ly_dau_doc_di_dong: 'Quản lý đầu đọc di động',
   quan_ly_dau_doc_co_dinh: 'Quản lý đầu đọc cố định',
   giam_sat_tai_san: 'Giám sát tài sản',
@@ -204,6 +207,8 @@ export const screens = ({
 
   qrScanAssetInfor: "Tài sản",
   qrScanAssetScreen: "Quét tài sản",
+
+  speechControl: "Điều khiển bằng giọng nói",
 });
 
 // Quản lý tabs
