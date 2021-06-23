@@ -344,8 +344,8 @@ export const hinhThucData = [
 
 // TrangThai filter
 export const trangThaiData = [
-  {id: 5, displayName: "Chưa sử dụng"},
-  {id: 6, displayName: "Đang sử dụng"}
+  {id: 1, displayName: "Đang thực hiện"},
+  {id: 3, displayName: "Không thành công"}
 ];
 // Khai báo filter
 export const KhaiBaoData = [

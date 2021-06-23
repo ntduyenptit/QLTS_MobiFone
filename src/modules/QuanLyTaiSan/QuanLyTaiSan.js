@@ -9,6 +9,7 @@ import LoaderComponent from '../global/LoaderComponent';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
 import { createGetMethod } from '../../api/Apis';
+import getParameter from './filter/FilterParameters';
 import { endPoint, screens, tabs } from '../../api/config';
 import { store } from '../../redux/store';
 import {
@@ -36,17 +37,15 @@ import {
 } from '../../redux/actions/quanlytaisan.actions';
 import QuanLyTaiSanFilter from './filter/QuanLyTaiSanFilter';
 
-export function GetToanBoTaiSanData(parameters) {
-  const { datas, tab, skipCount, maxResultCount, loaitaisan, nhacungcap, masudung, isFilter } = parameters;
-  const phongbanquanly = datas !== undefined ? datas : store.getState().filterDVQLDataReducer.dvqlDataFilter;
-  const maxCount = maxResultCount !== undefined ? maxResultCount : 10;
-  const skipTotal = skipCount !== undefined ? skipCount : 0;
-  const tabChosen = tab || store.getState().currentTabReducer.tabName;
-
+export function GetToanBoTaiSanData(skipCount) {
+  const { datas, loaitaisan, nhacungcap, masudung, trangthai, hinhthuc, khaibao } = getParameter();
+  const maxCount = 10;
+  const state = store.getState();
+  const tab = state.currentTabReducer.tabName;
   store.dispatch(toanbotaisanLoading());
-  if (phongbanquanly && phongbanquanly.length > 0) {
+  if (datas && datas.length > 0) {
     let url;
-    switch (tabChosen) {
+    switch (tab) {
       case tabs.toan_bo_tai_san:
         url = `${endPoint.getToanBoTaiSan}?`;
         break;
@@ -79,11 +78,11 @@ export function GetToanBoTaiSanData(parameters) {
         break;
     }
 
-    const textState = store.getState().SearchReducer.searchData;
-    const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === store.getState().currentTabReducer.tabName)
-      && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === store.getState().currentTabReducer.tabName).data;
+    const textState = state.SearchReducer.searchData;
+    const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === tab)
+      && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_tai_san && itemSelected.tab === tab).data;
     if (textFilter) {
-      switch (tabChosen) {
+      switch (tab) {
         case tabs.tai_san_dang_su_dung:
         case tabs.tai_san_chua_su_dung: {
           url += `KeyWord=${textFilter}&`;
@@ -107,8 +106,8 @@ export function GetToanBoTaiSanData(parameters) {
       }
     }
 
-    if (tabChosen === tabs.tai_san_dang_su_dung || tabChosen === tabs.tai_san_chua_su_dung) {
-      phongbanquanly.forEach(e => {
+    if (tab === tabs.tai_san_dang_su_dung || tab === tabs.tai_san_chua_su_dung) {
+      datas.forEach(e => {
         if (e.id) {
           url += `PhongBanQuanLyId=${encodeURIComponent(`${e.id}`)}&`;
         } else {
@@ -116,7 +115,7 @@ export function GetToanBoTaiSanData(parameters) {
         }
       });
     } else {
-      phongbanquanly.forEach(e => {
+      datas.forEach(e => {
         if (e.id) {
           url += `PhongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
         } else {
@@ -127,62 +126,42 @@ export function GetToanBoTaiSanData(parameters) {
 
     if (loaitaisan) {
       url += `LoaiTS=${encodeURIComponent(`${loaitaisan}`)}&`;
-      if (tabChosen === tabs.tai_san_dang_su_dung || tabChosen === tabs.tai_san_chua_su_dung) {
+      if (tab === tabs.tai_san_dang_su_dung || tab === tabs.tai_san_chua_su_dung) {
         url += `LoaiTaiSanId=${encodeURIComponent(`${loaitaisan}`)}&`;
+      }
+      if (tab === tabs.tai_san_mat) {
+        url += `LoaiTaiSan=${encodeURIComponent(`${loaitaisan}`)}&`;
       }
     }
     if (nhacungcap) {
       url += `NhaCungCap=${encodeURIComponent(`${nhacungcap}`)}&`;
-      if (tabChosen === tabs.tai_san_dang_su_dung || tabChosen === tabs.tai_san_chua_su_dung) {
+      if (tab === tabs.tai_san_dang_su_dung || tab === tabs.tai_san_chua_su_dung) {
         url += `NhaCungCapId=${encodeURIComponent(`${nhacungcap}`)}&`;
       }
     }
     if (masudung) {
       url += `MaSD=${encodeURIComponent(`${masudung}`)}&`;
     }
+    if (trangthai) {
+      url += `TrangThai=${encodeURIComponent(`${trangthai}`)}&`
+    }
+    if (hinhthuc) {
+      url += `HinhThuc=${encodeURIComponent(`${hinhthuc}`)}&`
+    }
+    if (hinhthuc) {
+      url += `KhaiBao=${encodeURIComponent(`${khaibao}`)}&`
+    }
 
     url += `IsSearch=${encodeURIComponent(`${textFilter !== undefined}`)}&`;
-    url += `SkipCount=${encodeURIComponent(`${skipTotal}`)}&`;
+    url += `SkipCount=${encodeURIComponent(`${skipCount}`)}&`;
     url += `MaxResultCount=${encodeURIComponent(`${maxCount}`)}`;
 
-    if (textFilter || isFilter) {
-      switch (tabChosen) {
-        case tabs.toan_bo_tai_san:
-          store.dispatch(removeToanbotaisanData());
-          break;
-        case tabs.tai_san_thanh_ly:
-          store.dispatch(removeTaisanthanhlyData());
-          break;
-        case tabs.tai_san_mat:
-          store.dispatch(removeTaisanmatData());
-          break;
-        case tabs.tai_san_hong:
-          store.dispatch(removeTaisanhongData());
-          break;
-        case tabs.tai_san_huy:
-          store.dispatch(removeTaisanhuyData());
-          break;
-        case tabs.tai_san_dang_su_dung:
-          store.dispatch(removeTaisandangsudungData());
-          break;
-        case tabs.tai_san_chua_su_dung:
-          store.dispatch(removeTaisanchuasudungData());
-          break;
-        case tabs.tai_san_sua_chua_bao_duong:
-          store.dispatch(removeTaisanbaoduongsuachuaData());
-          break;
-        case tabs.bao_hong_mat_tai_san:
-          store.dispatch(removeKhaibaohongmatData());
-          break;
-        default:
-          break;
-      }
-    }
+    console.log('url123: ', url);
 
     createGetMethod(url)
       .then(res => {
         if (res) {
-            switch (tabChosen) {
+            switch (tab) {
               case tabs.toan_bo_tai_san:
                 store.dispatch(toanbotaisanGetData(res));
                 break;
@@ -240,15 +219,50 @@ const QuanLyTaiSan = (state) => {
 
   useEffect(() => {
     if (!state.isLoading && skipCount > 0) {
-      GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab, skipCount });
+      GetToanBoTaiSanData(skipCount);
     }
   }, [skipCount]);
 
   useEffect(() => {
     if (state.searchText && state.searchText.length > 0) {
-      GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab, isFilter: true });
+      resetData();
+      GetToanBoTaiSanData(0);
     }
   }, [state.searchText]);
+
+  const resetData = () => {
+    switch (state.tab) {
+      case tabs.toan_bo_tai_san:
+        store.dispatch(removeToanbotaisanData());
+        break;
+      case tabs.tai_san_thanh_ly:
+        store.dispatch(removeTaisanthanhlyData());
+        break;
+      case tabs.tai_san_mat:
+        store.dispatch(removeTaisanmatData());
+        break;
+      case tabs.tai_san_hong:
+        store.dispatch(removeTaisanhongData());
+        break;
+      case tabs.tai_san_huy:
+        store.dispatch(removeTaisanhuyData());
+        break;
+      case tabs.tai_san_dang_su_dung:
+        store.dispatch(removeTaisandangsudungData());
+        break;
+      case tabs.tai_san_chua_su_dung:
+        store.dispatch(removeTaisanchuasudungData());
+        break;
+      case tabs.tai_san_sua_chua_bao_duong:
+        store.dispatch(removeTaisanbaoduongsuachuaData());
+        break;
+      case tabs.bao_hong_mat_tai_san:
+        store.dispatch(removeKhaibaohongmatData());
+        break;
+      default:
+        break;
+    }
+  }
 
   const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
     const paddingToBottom = 10;
@@ -257,7 +271,8 @@ const QuanLyTaiSan = (state) => {
   };
 
   const refresh = () => {
-    GetToanBoTaiSanData({ datas: state.DvqlDataFilter, tab: state.tab, isFilter: true });
+    resetData();
+    GetToanBoTaiSanData(0);
   }
 
   function LoaderComponentByTab() {
@@ -505,9 +520,7 @@ const QuanLyTaiSan = (state) => {
         </View>
 
         <FilterComponent
-          screen={screens.quan_ly_tai_san}
-          filter={<QuanLyTaiSanFilter tab={state.tab} />}
-          action={GetToanBoTaiSanData}
+          action={refresh}
         />
       </Animated.View>
       {displayCreateForTab()}

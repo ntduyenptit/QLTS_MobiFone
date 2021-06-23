@@ -154,7 +154,7 @@ class BaocaonguoidungScreen extends React.PureComponent {
                         </View>
                     </View>
                 </SafeAreaView>
-                <FilterComponent filter={<BaocaoNguoidungFilter />} />
+                <FilterComponent />
             </Animated.View>
         )
     }

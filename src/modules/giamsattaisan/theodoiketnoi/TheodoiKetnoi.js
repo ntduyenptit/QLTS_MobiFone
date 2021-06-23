@@ -148,10 +148,6 @@ class TheoDoiKetNoiScreen extends React.Component {
         >Hiển thị: {toanboTaiSanData.length}/{total}
         </Text>
         <FilterComponent
-          screen={screens.theo_doi_ket_noi_thiet_bi}
-          filter={(
-            <TheoDoiKetNoiFilter />
-          )}
           action={this.getToanTaisan}
         />
       </Animated.View>

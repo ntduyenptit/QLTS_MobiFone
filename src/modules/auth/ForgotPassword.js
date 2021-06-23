@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, Modal, Dimensions } from 'react-native';
 import { endPoint, screens } from '@app/api/config';
 import { createPostMethodWithoutToken } from '../../api/Apis'
-const fileAudio = require('../../../assets/001.m4a');
+
 export default class ForgotPasswordScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -10,6 +10,7 @@ export default class ForgotPasswordScreen extends React.Component {
             email: '',
         };
     }
+
     componentDidMount() {
         this.getNguoidung(this.props.DvqlDataFilter);
     }
@@ -42,37 +43,26 @@ export default class ForgotPasswordScreen extends React.Component {
     }
 
     sendEmail() {
-        // createPostMethodWithoutToken(endPoint.login, JSON.stringify( 'admin', '123qwe' ))
-        //     .then(res => {
-        //         if (res) this.props.navigation.navigate(screens.dash_board);
-        //     })
-
-         fetch(`https://api.fpt.ai/hmi/asr/general`, {
-            method: 'POST',
-            headers: "api_key: TK6pWFl64dNMJT3k5sJ8zpJCMIKfCN1y",
-            body: fileAudio,
-        })
-            .then(res => res.json())
-            .catch(err => console.log(err))
     }
+
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.title}>Nhập email để nhận mật khẩu mới</Text>
-                <View style={styles.inputView}>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Email..."
-                        placeholderTextColor="#003f5c"
-                        onChangeText={text => this.setState({ email: text })}
-                    />
-                </View>
-
-                <TouchableOpacity style={styles.Btn} onPress={() => this.sendEmail()}>
-                    <Text style={styles.Text}>Tiếp tục </Text>
-                </TouchableOpacity>
-
+          <View style={styles.container}>
+            <Text style={styles.title}>Nhập email để nhận mật khẩu mới</Text>
+            <View style={styles.inputView}>
+              <TextInput
+                style={styles.inputText}
+                placeholder="Email..."
+                placeholderTextColor="#003f5c"
+                onChangeText={text => this.setState({ email: text })}
+              />
             </View>
+
+            <TouchableOpacity style={styles.Btn} onPress={() => this.sendEmail()}>
+              <Text style={styles.Text}>Tiếp tục </Text>
+            </TouchableOpacity>
+
+          </View>
         );
     }
 

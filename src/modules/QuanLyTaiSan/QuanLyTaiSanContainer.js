@@ -50,7 +50,7 @@ export default compose(
         this.props.navigation.dangerouslyGetParent().setOptions({headerRight: () => headerRightComponent()}); };
       this.props.navigation.addListener('focus', setHeaderOptions); 
       if (!isLoadData()) {
-        GetToanBoTaiSanData({});
+        GetToanBoTaiSanData(0);
       }
       if (store.getState().filterLTSDataReducer.ltsDataFilter.length === 0) {
         Promise.all([

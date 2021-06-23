@@ -5,10 +5,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import find from 'lodash/find';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
-import { filterType } from '../../global/Config';
 import { buildTree } from '../../global/Helper';
 import { deviceWidth } from '../../global/LoaderComponent';
-import { screens, tabs, hinhThucData } from '../../../api/config';
+import { screens, tabs, hinhThucData, trangThaiData, KhaiBaoData } from '../../../api/config';
 import { 
   addSelectedDVQLAction,
   addSelectedLTSAction,
@@ -17,6 +16,7 @@ import {
   addSelectedTTAction,
   addSelectedTTSDAction,
   addSelectedHTAction,
+  addSelectedKBAction,
 
   removeSelectedDVQLAction,
   removeSelectedLTSAction,
@@ -25,6 +25,7 @@ import {
   removeSelectedTTAction,
   removeSelectedTTSDAction,
   removeSelectedHTAction,
+  removeSelectedKBAction,
  } from '../../../redux/actions/filter.actions';
 
 const QuanLyTaiSanFilterComponent = (items) => {
@@ -33,84 +34,33 @@ const QuanLyTaiSanFilterComponent = (items) => {
   const nhaCungCapRef = useRef();
   const maSuDungRef = useRef();
   const hinhThucRef = useRef();
+  const trangThaiRef = useRef();
+  const khaibaoRef = useRef();
 
   const dvqlTreeData = buildTree(items.DvqlDataFilter);
 
-  const closeMultiSelectIfOpened = (type) => {
-    switch (type) {
-      case filterType.don_vi_quan_ly:
-        if (loaiTaiSanRef.current && loaiTaiSanRef.current.state.selector) {
-          loaiTaiSanRef.current._toggleSelector();
-        }
-        if (nhaCungCapRef.current && nhaCungCapRef.current.state.selector) {
-          nhaCungCapRef.current._toggleSelector();
-        };
-        if (maSuDungRef.current && maSuDungRef.current.state.selector) {
-          maSuDungRef.current._toggleSelector();
-        };
-        if (hinhThucRef.current && hinhThucRef.current.state.selector) {
-          hinhThucRef.current._toggleSelector();
-        };
-        break;
-      case filterType.loai_tai_san:
-        if (donViQuanLyRef.current && donViQuanLyRef.current.state.selector) {
-          donViQuanLyRef.current._toggleSelector();
-        };
-        if (nhaCungCapRef.current && nhaCungCapRef.current.state.selector) {
-          nhaCungCapRef.current._toggleSelector();
-        };
-        if (maSuDungRef.current && maSuDungRef.current.state.selector) {
-          maSuDungRef.current._toggleSelector();
-        };
-        if (hinhThucRef.current && hinhThucRef.current.state.selector) {
-          hinhThucRef.current._toggleSelector();
-        };
-        break;
-      case filterType.nha_cung_cap:
-        if (donViQuanLyRef.current && donViQuanLyRef.current.state.selector) {
-          donViQuanLyRef.current._toggleSelector();
-        };
-        if (loaiTaiSanRef.current && loaiTaiSanRef.current.state.selector) {
-          loaiTaiSanRef.current._toggleSelector();
-        }
-        if (maSuDungRef.current && maSuDungRef.current.state.selector) {
-          maSuDungRef.current._toggleSelector();
-        };
-        if (hinhThucRef.current && hinhThucRef.current.state.selector) {
-          hinhThucRef.current._toggleSelector();
-        };
-        break;
-      case filterType.ma_su_sung:
-        if (donViQuanLyRef.current && donViQuanLyRef.current.state.selector) {
-          donViQuanLyRef.current._toggleSelector();
-        };
-        if (loaiTaiSanRef.current && loaiTaiSanRef.current.state.selector) {
-          loaiTaiSanRef.current._toggleSelector();
-        }
-        if (nhaCungCapRef.current && nhaCungCapRef.current.state.selector) {
-          nhaCungCapRef.current._toggleSelector();
-        };
-        if (hinhThucRef.current && hinhThucRef.current.state.selector) {
-          hinhThucRef.current._toggleSelector();
-        };
-        break;
-      case filterType.hinh_thuc:
-        if (donViQuanLyRef.current && donViQuanLyRef.current.state.selector) {
-          donViQuanLyRef.current._toggleSelector();
-        };
-        if (loaiTaiSanRef.current && loaiTaiSanRef.current.state.selector) {
-          loaiTaiSanRef.current._toggleSelector();
-        }
-        if (nhaCungCapRef.current && nhaCungCapRef.current.state.selector) {
-          nhaCungCapRef.current._toggleSelector();
-        };
-        if (maSuDungRef.current && maSuDungRef.current.state.selector) {
-          maSuDungRef.current._toggleSelector();
-        };
-        break;
-      default:
-        break;
+  const closeMultiSelectIfOpened = () => {
+    if (donViQuanLyRef.current && donViQuanLyRef.current.state.selector) {
+      donViQuanLyRef.current._clearSelector();
+    };
+    if (loaiTaiSanRef.current && loaiTaiSanRef.current.state.selector) {
+      loaiTaiSanRef.current._clearSelector();
     }
+    if (nhaCungCapRef.current && nhaCungCapRef.current.state.selector) {
+      nhaCungCapRef.current._clearSelector();
+    };
+    if (maSuDungRef.current && maSuDungRef.current.state.selector) {
+      maSuDungRef.current._clearSelector();
+    };
+    if (hinhThucRef.current && hinhThucRef.current.state.selector) {
+      hinhThucRef.current._clearSelector();
+    };
+    if (trangThaiRef.current && trangThaiRef.current.state.selector) {
+      trangThaiRef.current._clearSelector();
+    };
+    if (khaibaoRef.current && khaibaoRef.current.state.selector) {
+      khaibaoRef.current._clearSelector();
+    };
   }
 
   // selectedChange
@@ -134,6 +84,15 @@ const QuanLyTaiSanFilterComponent = (items) => {
     items.removeSelectedHT({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
     items.addSelectedHT({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
   }
+  const onSelectedTTChange = (newSelectItems) => {
+    items.removeSelectedTT({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+    items.addSelectedTT({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+  }
+
+  const onSelectedKBChange = (newSelectItems) => {
+    items.removeSelectedKB({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+    items.addSelectedKB({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+  }
 
   const DvqlFilterSelected = find(items.DvqlFilterSelected, itemSelected => itemSelected.tab === items.tab) 
   && find(items.DvqlFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
@@ -145,6 +104,8 @@ const QuanLyTaiSanFilterComponent = (items) => {
   && find(items.MsdFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
   const HtFilterSelected = find(items.HtFilterSelected, itemSelected => itemSelected.tab === items.tab) 
   && find(items.HtFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
+  const TtFilterSelected = find(items.TtFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+  && find(items.TtFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
 
   // end SelectedChange
   return (
@@ -167,7 +128,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
               ref={donViQuanLyRef}
               isTree
               getCollapsedNodeHeight={{ height: 200 }}
-              onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
+              onToggleList={() => closeMultiSelectIfOpened()}
               items={dvqlTreeData}
               IconRenderer={Icon}
               searchInputPlaceholderText="Tìm kiếm..."
@@ -196,7 +157,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
             <MultiSelect
               ref={loaiTaiSanRef}
               isTree
-              onToggleList={() => closeMultiSelectIfOpened(filterType.loai_tai_san)}
+              onToggleList={() => closeMultiSelectIfOpened()}
               items={items.LtsDataFilter}
               IconRenderer={Icon}
               styleListContainer={items.LtsDataFilter && items.LtsDataFilter.length > 9 ? { height: 200 } : null}
@@ -225,7 +186,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
             <Text style={styles.titleText}>Nhà cung cấp</Text>
             <MultiSelect
               ref={nhaCungCapRef}
-              onToggleList={() => closeMultiSelectIfOpened(filterType.nha_cung_cap)}
+              onToggleList={() => closeMultiSelectIfOpened()}
               items={items.NccDataFilter}
               IconRenderer={Icon}
               single
@@ -249,7 +210,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
             <Text style={styles.titleText}>Mã sử dụng</Text>
             <MultiSelect
               ref={maSuDungRef}
-              onToggleList={() => closeMultiSelectIfOpened(filterType.ma_su_sung)}
+              onToggleList={() => closeMultiSelectIfOpened()}
               items={items.MsdDataFilter}
               IconRenderer={Icon}
               single
@@ -264,13 +225,13 @@ const QuanLyTaiSanFilterComponent = (items) => {
           </View>
         </>
           )}
-        {items.screen === screens.quan_ly_tai_san && items.tab === tabs.tai_san_sua_chua_bao_duong && (
+        {items.tab === tabs.tai_san_sua_chua_bao_duong && (
           <>
             <View>
               <Text style={styles.titleText}>Hình thức</Text>
               <MultiSelect
                 ref={hinhThucRef}
-                onToggleList={() => closeMultiSelectIfOpened(filterType.hinh_thuc)}
+                onToggleList={() => closeMultiSelectIfOpened()}
                 items={hinhThucData}
                 IconRenderer={Icon}
                 single
@@ -279,6 +240,42 @@ const QuanLyTaiSanFilterComponent = (items) => {
                 displayKey="displayName"
                 selectText="Chọn hình thức..."
                 onSelectedItemsChange={(item) => onSelectedHTChange(item)}
+                selectedItems={HtFilterSelected}
+              />
+            </View>
+            <View>
+              <Text style={styles.titleText}>Trạng thái</Text>
+              <MultiSelect
+                ref={trangThaiRef}
+                onToggleList={() => closeMultiSelectIfOpened()}
+                items={trangThaiData}
+                IconRenderer={Icon}
+                single
+                searchInputPlaceholderText="Tìm kiếm..."
+                uniqueKey="id"
+                displayKey="displayName"
+                selectText="Chọn trạng thái..."
+                onSelectedItemsChange={(item) => onSelectedTTChange(item)}
+                selectedItems={TtFilterSelected}
+              />
+            </View>
+          </>
+        )}
+        {items.tab === tabs.bao_hong_mat_tai_san && (
+          <>
+            <View>
+              <Text style={styles.titleText}>Khai báo</Text>
+              <MultiSelect
+                ref={khaibaoRef}
+                onToggleList={() => closeMultiSelectIfOpened()}
+                items={KhaiBaoData}
+                IconRenderer={Icon}
+                single
+                searchInputPlaceholderText="Tìm kiếm..."
+                uniqueKey="id"
+                displayKey="displayName"
+                selectText="Chọn khai báo..."
+                onSelectedItemsChange={(item) => onSelectedKBChange(item)}
                 selectedItems={HtFilterSelected}
               />
             </View>
@@ -322,6 +319,7 @@ const mapStateToProps = state => ({
   NccFilterSelected: state.filterNCCSelectedReducer.nccFilterSelected,
   TtsdFilterSelected: state.filterTTSDSelectedReducer.ttsdFilterSelected,
   HtFilterSelected: state.filterHTSelectedReducer.htFilterSelected,
+  KbFilterSelected: state.filterKBSelectedReducer.kbFilterSelected,
 });
 
 function mapDispatchToProps(dispatch) {
@@ -333,6 +331,7 @@ function mapDispatchToProps(dispatch) {
     addSelectedTT: (item) => dispatch(addSelectedTTAction(item)),
     addSelectedTTSD: (item) => dispatch(addSelectedTTSDAction(item)),
     addSelectedHT: (item) => dispatch(addSelectedHTAction(item)),
+    addSelectedKB: (item) => dispatch(addSelectedKBAction(item)),
 
     removeSelectedDVQL: (item) => dispatch(removeSelectedDVQLAction(item)),
     removeSelectedLTS: (item) => dispatch(removeSelectedLTSAction(item)),
@@ -341,6 +340,7 @@ function mapDispatchToProps(dispatch) {
     removeSelectedTT: (item) => dispatch(removeSelectedTTAction(item)),
     removeSelectedTTSD: (item) => dispatch(removeSelectedTTSDAction(item)),
     removeSelectedHT: (item) => dispatch(removeSelectedHTAction(item)),
+    removeSelectedKB: (item) => dispatch(removeSelectedKBAction(item)),
   }
 };
 

@@ -173,10 +173,6 @@ class GiamSatTaiSanScreen extends React.Component {
         >Hiển thị: {toanboTaiSanData.length}/{total}
         </Text>
         <FilterComponent
-          screen={screens.giam_sat_tai_san}
-          filter={(
-            <QuanLyGiamSatFilter />
-          )}
           action={this.getToanTaisan}
         />
       </Animated.View>

@@ -9,7 +9,6 @@ import { getDVQLDataAction } from '../../redux/actions/filter.actions';
 import { store } from '../../redux/store';
 import { currentDate, getDateFromLastMonth, getPercent, getDates, convertFormatDate } from '../global/Helper';
 import { getGSTSDashboard, GetToanBoTaiSanData } from '../global/GlobalApis';
-import ActionButton from 'react-native-action-button';
 
 class DashBoard extends React.Component {
   constructor(props) {
@@ -128,9 +127,11 @@ class DashBoard extends React.Component {
       key: index
     });
   }
+
   Speech = () => {
     this.props.navigation.navigate(screens.speechControl);
   }
+
   render() {
     const {
       key,

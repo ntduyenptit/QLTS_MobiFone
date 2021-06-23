@@ -5,7 +5,6 @@ import find from 'lodash/find';
 import ActionButton from 'react-native-action-button';
 import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
-import QuanLyDauDocFilter from '../filter/QuanLyDauDocFilter';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
@@ -154,8 +153,6 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
           >Hiển thị: {daudoccodinhData.length}/{total}
           </Text>
           <FilterComponent
-            filter={<QuanLyDauDocFilter screen={screens.quan_ly_dau_doc_co_dinh} />}
-            screen={screens.quan_ly_dau_doc_co_dinh}
             action={this.getToanBoDauDocCoDinhData}
           />
         </Animated.View>

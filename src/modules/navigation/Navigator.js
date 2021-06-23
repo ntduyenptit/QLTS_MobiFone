@@ -39,7 +39,10 @@ function handler(props, children) {
           <Text style={styles.menuTitle}>{item.name}</Text>
         </View>
       )}
-      onPress={() => props.navigation.navigate(item.name)}
+      onPress={() => {
+        store.dispatch(setCurrentScreen(item.name));
+        props.navigation.navigate(item.name);
+      }}
     />
   )
   ))

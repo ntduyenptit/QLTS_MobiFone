@@ -19,6 +19,7 @@ import {
   MSD_SELECTED_ADD,
   TTSD_SELECTED_ADD,
   HT_SELECTED_ADD,
+  KB_SELECTED_ADD,
   STARTDATE_SELECTED_ADD,
   ENDDATE_SELECTED_ADD,
   CHIEU_DI_CHUYEN_SELECTED_ADD,
@@ -32,6 +33,7 @@ import {
   MSD_SELECTED_REMOVE,
   TTSD_SELECTED_REMOVE,
   HT_SELECTED_REMOVE,
+  KB_SELECTED_REMOVE,
   STARTDATE_SELECTED_REMOVE,
   ENDDATE_SELECTED_REMOVE,
   CHIEU_DI_CHUYEN_SELECTED_REMOVE,
@@ -57,6 +59,7 @@ const initialState = {
     dvqlFilterSelected: [],
     ltsFilterSelected: [],
     nccFilterSelected: [],
+    kbFilterSelected: [],
     msdFilterSelected: [],
     ttFilterSelected: [],
     ttsdFilterSelected: [],
@@ -244,19 +247,19 @@ export const filterTTSelectedReducer = (state = initialState, action) => {
     case TT_SELECTED_ADD: {
       return {
         ...state,
-        ttFilerSelected: [...state.ttFilerSelected, action.payload],
+        ttFilterSelected: [...state.ttFilterSelected, action.payload],
       }
     }
     case TT_SELECTED_REMOVE: {
       if (action.payload.screen === screens.quan_ly_tai_san) {
         return {
           ...state,
-          ttFilerSelected: state.ttFilerSelected.filter((item) => item.tab !== action.payload.tab)
+          ttFilterSelected: state.ttFilterSelected.filter((item) => item.tab !== action.payload.tab)
         }
       } 
         return {
           ...state,
-          ttFilerSelected: state.ttFilerSelected.filter((item) => item.screen !== action.payload.screen)
+          ttFilterSelected: state.ttFilterSelected.filter((item) => item.screen !== action.payload.screen)
         }
     }
     default: {
@@ -404,6 +407,32 @@ export const filterHTSelectedReducer = (state = initialState, action) => {
         return {
           ...state,
           htFilterSelected: state.htFilterSelected.filter((item) => item.screen !== action.payload.screen)
+        }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const filterKBSelectedReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case KB_SELECTED_ADD: {
+      return {
+        ...state,
+        kbFilterSelected: [...state.kbFilterSelected, action.payload]
+      }
+    }
+    case KB_SELECTED_REMOVE: {
+      if (action.payload.screen === screens.quan_ly_tai_san) {
+        return {
+          ...state,
+          kbFilterSelected: state.kbFilterSelected.filter((item) => item.tab !== action.payload.tab)
+        }
+      } 
+        return {
+          ...state,
+          kbFilterSelected: state.kbFilterSelected.filter((item) => item.screen !== action.payload.screen)
         }
     }
     default: {

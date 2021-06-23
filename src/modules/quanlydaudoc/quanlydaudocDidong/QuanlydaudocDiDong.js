@@ -13,7 +13,6 @@ import { getTTSDDataFilter } from '@app/modules/global/FilterApis';
 import {
   getTTSDDataAction
 } from '@app/redux/actions/filter.actions';
-import QuanLyDauDocFilter from '../filter/QuanLyDauDocFilter';
 
 class QuanLyDauDocDiDongScreen extends React.Component {
   constructor(props) {
@@ -150,8 +149,6 @@ class QuanLyDauDocDiDongScreen extends React.Component {
           >Hiển thị: {daudocdidongData.length}/{total}
           </Text>
           <FilterComponent
-            filter={<QuanLyDauDocFilter screen={screens.quan_ly_dau_doc_di_dong} />}
-            screen={screens.quan_ly_dau_doc_di_dong}
             action={this.getToanBoDauDocDiDongData}
           />
         </Animated.View>

@@ -128,7 +128,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
                         }}
                     >Hiển thị: {vitridialyData.length}/{total}
                     </Text>
-                    <FilterComponent filter={<QuanLyVitriFilter />} />
+                    <FilterComponent />
                 </Animated.View>
                 <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_vi_tri_dia_ly, { screen: "Thêm mới vị trí địa lý" })}></ActionButton>
             </View>

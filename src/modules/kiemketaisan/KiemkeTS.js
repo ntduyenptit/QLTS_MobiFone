@@ -156,8 +156,6 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
           >Hiển thị: {toanboTaiSanData.length}/{total}
           </Text>
           <FilterComponent
-            screen={screens.quan_ly_kiem_ke_tai_san}
-            filter={<QuanLyKiemkeFilterComponent />}
             action={this.getToanTaisan}
           />
         </Animated.View>

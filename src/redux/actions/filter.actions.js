@@ -29,6 +29,9 @@ export const MSD_SELECTED_REMOVE = `${FILTER} Remove MA_SU_DUNG selected`;
 export const TT_SELECTED_ADD = `${FILTER} Add TRANG_THAI selected`;
 export const TT_SELECTED_REMOVE = `${FILTER} Remove TRANG_THAI selected`;
 
+export const KB_SELECTED_ADD = `${FILTER} Add KHAI_BAO selected`;
+export const KB_SELECTED_REMOVE = `${FILTER} Remove KHAI_BAO selected`;
+
 export const TTSD_SELECTED_ADD = `${FILTER} Add TRANG_THAI_SU_DUNG selected`;
 export const TTSD_SELECTED_REMOVE = `${FILTER} Remove TRANG_THAI_SU_DUNG selected`;
 
@@ -174,6 +177,17 @@ export const addSelectedHTAction = (data) => ({
 
 export const removeSelectedHTAction = (data) => ({
     type: HT_SELECTED_REMOVE,
+    payload: data
+});
+
+// khai báo
+export const addSelectedKBAction = (data) => ({
+    type: KB_SELECTED_ADD,
+    payload: data
+});
+
+export const removeSelectedKBAction = (data) => ({
+    type: KB_SELECTED_REMOVE,
     payload: data
 });
 

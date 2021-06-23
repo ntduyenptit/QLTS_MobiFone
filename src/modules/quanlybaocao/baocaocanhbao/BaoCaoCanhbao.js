@@ -8,7 +8,7 @@ import FilterComponent from '../../global/FilterComponent';
 import BaocaoCanhbaoFilter from './BaocaoCanhbaoFilter';
 import DetailBaocaoCanhbao from './DetailBaocaoCanhbao';
 import { createGetMethod } from '../../../api/Apis';
-import { endPoint } from '../../../api/config';
+import { endPoint, screens } from '../../../api/config';
 import { fonts } from '../../../styles';
 
 export default class BaocaoCanhbaoScreen extends React.PureComponent {
@@ -24,10 +24,11 @@ export default class BaocaoCanhbaoScreen extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.getdsBaocao(this.props.DvqlDataFilter);
+        this.getdsBaocao();
     }
 
-    getdsBaocao(datas) {
+    getdsBaocao(skipCount) {
+        const datas = this.props.DvqlDataFilter
         if (datas && datas.length > 0) {
             let url;
             url = `${endPoint.getAllBaocaoCanhBao}?`;
@@ -148,7 +149,7 @@ export default class BaocaoCanhbaoScreen extends React.PureComponent {
               {DetailBaocaoCanhbao(toanboData)}
             </Animated.ScrollView>
 
-            <FilterComponent filter={<BaocaoCanhbaoFilter />} />
+            <FilterComponent action={this.getdsBaocao} />
           </Animated.View>
         )
     }

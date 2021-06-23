@@ -121,7 +121,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
                         }}
                     >Hiển thị: {nhacungcapData.length}/{total}
                     </Text>
-                    <FilterComponent filter={<QuanLyNCCFilter />} />
+                    <FilterComponent />
                 </Animated.View>
                 <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_nha_cung_cap, { screen: "Thêm mới nhà cung cấp" , onGoBack: () => this.refresh()})}></ActionButton>
             </View>
