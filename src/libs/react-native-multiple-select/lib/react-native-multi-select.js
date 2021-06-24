@@ -37,6 +37,7 @@ const defaultSearchIcon = (
 export default class MultiSelect extends Component {
   static propTypes = {
     isTree: PropTypes.bool,
+    hideSearch: PropTypes.bool,
     subChildContainerStyle: ViewPropTypes.style,
     single: PropTypes.bool,
     selectedItems: PropTypes.array,
@@ -93,6 +94,7 @@ export default class MultiSelect extends Component {
   static defaultProps = {
     single: false,
     isTree: false,
+    hideSearch: false,
     selectedItems: [],
     uniqueKey: '_id',
     tagBorderColor: colorPack.primary,
@@ -619,27 +621,27 @@ export default class MultiSelect extends Component {
   }
 
   _find = (array, searchTerm, listResult, isCallBack = false) => {
-    let aaa = [];
+    let list = [];
     if (isCallBack) {
-      aaa = listResult;
+      list = listResult;
     }
-    if (this._filterItemsPartialTest(array, searchTerm) != []) {
+    if (this._filterItemsPartialTest(array, searchTerm) !== []) {
       if (this._filterItemsPartialTest(array, searchTerm).length > 0) {
-        aaa.push(this._filterItemsPartialTest(array, searchTerm));
+        list.push(this._filterItemsPartialTest(array, searchTerm));
       }
     }
 
-    if (array.length == 1) {
+    if (array.length === 1) {
       array = array[0];
     }
-    if (array.children != []) {
+    if (array.children !== []) {
       let i;
       if (array.children.length > 0) {
         for (i = 0; i < array.children.length; i++) {
-          this._find(array.children[i], searchTerm, aaa, true);
+          this._find(array.children[i], searchTerm, list, true);
         }
       }
-      return aaa;
+      return list;
     }
   };
 
@@ -717,6 +719,7 @@ export default class MultiSelect extends Component {
       searchInputPlaceholderText,
       searchInputStyle,
       styleDropdownMenu,
+      hideSearch,
       styleDropdownMenuSubsection,
       hideSubmitButton,
       hideDropdown,
@@ -770,6 +773,7 @@ export default class MultiSelect extends Component {
               styleSelectorContainer && styleSelectorContainer
             ]}
           >
+            {!hideSearch && (
             <View
               style={[styles.inputGroup, styleInputGroup && styleInputGroup]}
             >
@@ -811,6 +815,7 @@ export default class MultiSelect extends Component {
 
               )}
             </View>
+          )}
             <View
               style={{
                 flexDirection: 'column',

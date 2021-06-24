@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 import React, {useState} from 'react';
-import { Animated, SafeAreaView, StatusBar, Dimensions, Text, StyleSheet, View, TextInput, CheckBox } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Dimensions, Text, StyleSheet, View, TextInput } from 'react-native';
+import CheckBox from 'react-native-check-box'
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 
@@ -43,144 +44,144 @@ class QuanlyMailServerScreen extends React.Component {
         } = this.state;
         
         return (
-            <Animated.View>
-                <StatusBar barStyle="dark-content" />
-                <SafeAreaView>
-                    <Animated.ScrollView
-                        showsVerticalScrollIndicator={false}
-                        style={{
+          <Animated.View>
+            <StatusBar barStyle="dark-content" />
+            <SafeAreaView>
+              <Animated.ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{
                             margin: 10,
                             paddingBottom: 15,
                         }}
-                        contentContainerStyle={{
+                contentContainerStyle={{
                             display: 'flex',
                             flexDirection: 'row',
                             flexWrap: 'wrap',
                             justifyContent: 'space-around',
                             paddingBottom: 55,
                         }}
-                        onScroll={Animated.event(
+                onScroll={Animated.event(
                             [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
                             { useNativeDriver: true },
                             () => { },          // Optional async listener
                         )}
-                        contentInsetAdjustmentBehavior="automatic"
-                    >
-                        <View style={styles.container}>
-                            <Text style={styles.title}>Thông tin cấu hình Mail Server</Text>
-                            <Text style={styles.boldText}>Host*</Text>
-                            <TextInput
-                                placeholderTextColor={'black'}
-                                placeholder={toanboData.host}
-                                style={styles.bordered}
-                            />
-                            <Text style={styles.boldText}>Port*</Text>
-                            <TextInput
-                                placeholderTextColor={'black'}
-                                placeholder={toanboData.port}
-                                style={styles.bordered}
-                            />
-                            <Text style={styles.boldText}>Email*</Text>
-                            <TextInput
-                                placeholderTextColor={'black'}
-                                placeholder={toanboData.email}
-                                style={styles.bordered}
-                            />
-                            <Text style={styles.boldText}>Password*</Text>
-                            <TextInput
-                                placeholderTextColor={'black'}
-                                placeholder={toanboData.password}
-                                style={styles.bordered}
-                            />
-                            <Text style={styles.boldText}>Chọn các trường hợp gửi email</Text>
-                            <View style={styles.checkboxContainer}>
-                                <CheckBox
-                                    value={toanboData.capPhat}
-                                    //onValueChange={}
-                                    style={styles.checkbox}
-                                />
-                                <Text style={styles.label}>Cấp phát</Text>
-                                <CheckBox
-                                    value={toanboData.thuHoi}
-                                    //onValueChange={}
-                                    style={styles.checkbox}
-                                />
-                                <Text style={styles.label}>Thu hồi</Text>
-                                <CheckBox
-                                    value={toanboData.dieuChuyen}
-                                    //onValueChange={}
-                                    style={styles.checkbox}
-                                />
-                                <Text style={styles.label}>Điều chuyển</Text>
-                            </View>
-                            <View style={styles.checkboxContainer}>
-                                <CheckBox
-                                    value={toanboData.baoMat}
-                                    //onValueChange={}
-                                    style={styles.checkbox}
-                                />
-                                <Text style={styles.label}>Báo mất</Text>
-                                <CheckBox
-                                    value={toanboData.baoHong}
-                                    //onValueChange={}
-                                    style={styles.checkbox}
-                                />
-                                <Text style={styles.label}>Báo hỏng</Text>
-                                <CheckBox
-                                    value={toanboData.thanhLy}
-                                    //onValueChange={}
-                                    style={styles.checkbox}
-                                />
-                                <Text style={styles.label}>Thanh lý</Text>
-                            </View>
-                            <View style={styles.checkboxContainer}>
-                                <CheckBox
-                                    value={toanboData.suaChuaBaoDuong}
-                                    //onValueChange={}
-                                    style={styles.checkbox}
-                                />
-                                <Text style={styles.label}>Sửa chữa/Bảo dưỡng</Text>
-                                <CheckBox
-                                    value={toanboData.batDauKiemKe}
-                                    //onValueChange={}
-                                    style={styles.checkbox}
-                                />
-                                <Text style={styles.label}>Bắt đầu kiểm kê</Text>
+                contentInsetAdjustmentBehavior="automatic"
+              >
+                <View style={styles.container}>
+                  <Text style={styles.title}>Thông tin cấu hình Mail Server</Text>
+                  <Text style={styles.boldText}>Host*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    placeholder={toanboData.host}
+                    style={styles.bordered}
+                  />
+                  <Text style={styles.boldText}>Port*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    placeholder={toanboData.port}
+                    style={styles.bordered}
+                  />
+                  <Text style={styles.boldText}>Email*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    placeholder={toanboData.email}
+                    style={styles.bordered}
+                  />
+                  <Text style={styles.boldText}>Password*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    placeholder={toanboData.password}
+                    style={styles.bordered}
+                  />
+                  <Text style={styles.boldText}>Chọn các trường hợp gửi email</Text>
+                  <View style={styles.checkboxContainer}>
+                    <CheckBox
+                      value={toanboData.capPhat}
+                      onClick={() => {}}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label}>Cấp phát</Text>
+                    <CheckBox
+                      value={toanboData.thuHoi}
+                      onClick={() => {}}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label}>Thu hồi</Text>
+                    <CheckBox
+                      value={toanboData.dieuChuyen}
+                      onClick={() => {}}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label}>Điều chuyển</Text>
+                  </View>
+                  <View style={styles.checkboxContainer}>
+                    <CheckBox
+                      value={toanboData.baoMat}
+                      onClick={() => {}}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label}>Báo mất</Text>
+                    <CheckBox
+                      value={toanboData.baoHong}
+                      onClick={() => {}}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label}>Báo hỏng</Text>
+                    <CheckBox
+                      value={toanboData.thanhLy}
+                      onClick={() => {}}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label}>Thanh lý</Text>
+                  </View>
+                  <View style={styles.checkboxContainer}>
+                    <CheckBox
+                      value={toanboData.suaChuaBaoDuong}
+                      onClick={() => {}}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label}>Sửa chữa/Bảo dưỡng</Text>
+                    <CheckBox
+                      value={toanboData.batDauKiemKe}
+                      onClick={() => {}}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label}>Bắt đầu kiểm kê</Text>
                               
-                            </View>
-                            <View style={styles.checkboxContainer}>
-                                <CheckBox
-                                    value={toanboData.ketThucKiemKe}
-                                    //onValueChange={}
-                                    style={styles.checkbox}
-                                />
-                                <Text style={styles.label}>Kết thúc kiểm kê</Text>
+                  </View>
+                  <View style={styles.checkboxContainer}>
+                    <CheckBox
+                      value={toanboData.ketThucKiemKe}
+                      onClick={() => {}}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label}>Kết thúc kiểm kê</Text>
                                 
-                            </View>
-                            <View style={styles.checkboxContainer}>
-                                <CheckBox
-                                    value={toanboData.hoanThanhPhieuDuTruMuaSam}
-                                    //onValueChange={}
-                                    style={styles.checkbox}
-                                />
-                                <Text style={styles.label}>Hoàn thành phiếu dự trù mua sắm</Text>
+                  </View>
+                  <View style={styles.checkboxContainer}>
+                    <CheckBox
+                      value={toanboData.hoanThanhPhieuDuTruMuaSam}
+                      onClick={() => {}}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label}>Hoàn thành phiếu dự trù mua sắm</Text>
                                 
-                            </View>
-                            <View style={styles.checkboxContainer}>
-                                <CheckBox
-                                    value={toanboData.huyBoPhieuDuTruMuaSam}
-                                    //onValueChange={}
-                                    style={styles.checkbox}
-                                />
-                                <Text style={styles.label}>Huỷ bỏ phiếu dự trù mua sắm</Text>
+                  </View>
+                  <View style={styles.checkboxContainer}>
+                    <CheckBox
+                      value={toanboData.huyBoPhieuDuTruMuaSam}
+                      onClick={() => {}}
+                      style={styles.checkbox}
+                    />
+                    <Text style={styles.label}>Huỷ bỏ phiếu dự trù mua sắm</Text>
                                 
-                            </View>
-                        </View>
+                  </View>
+                </View>
 
-                    </Animated.ScrollView>
-                </SafeAreaView>
+              </Animated.ScrollView>
+            </SafeAreaView>
 
-            </Animated.View>
+          </Animated.View>
         );
     }
 

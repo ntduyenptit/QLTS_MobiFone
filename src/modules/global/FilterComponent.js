@@ -20,6 +20,10 @@ import QuanLyDauDocFilter from '@app/modules/quanlydaudoc/filter/QuanLyDauDocFil
 import QuanLyKiemkeFilter from '@app/modules/kiemketaisan/filter/QuanlyKiemkeFilter';
 import QuanlyMuaSamFilter from '@app/modules/quanlydutrumuasam/QuanlyMuaSamFilter';
 import QuanLyCanhbaoFilter from '@app/modules/quanlycanhbao/QuanlyCanhbaoFilter';
+import BaocaoCanhbaoFilter from '@app/modules/quanlybaocao/baocaocanhbao/BaocaoCanhbaoFilter';
+import QuanlyVitriDialyFilter from '@app/modules/quanlydanhmuc/quanlyvitridialy/QuanlyVitriDialyFilter';
+import QuanlyNhaCungCapFilter from '@app/modules/quanlydanhmuc/quanlynhacungcap/QuanlyNhaCungCapFilter';
+import QuanLyNguoidungFilter from '@app/modules/quanlyhethong/quanlynguoidung/QuanlyNguoidungFilter'; 
 import { store } from "../../redux/store";
 import { hideFilter } from "../../redux/actions/filter.actions";
 import { deviceWidth, deviceHeight } from './LoaderComponent';
@@ -27,7 +31,6 @@ import { deviceWidth, deviceHeight } from './LoaderComponent';
 const keyboardVerticalOffset = Platform.OS === 'ios' ? -50 : 0
 
 const getFilterForScreen = (screen) => {
-  console.log('screen: ', screen);
   switch (screen) {
     case screens.quan_ly_tai_san: {
       return <QuanLyTaiSanFilterComponent />
@@ -51,6 +54,18 @@ const getFilterForScreen = (screen) => {
     case screens.quan_ly_canh_bao: {
       return <QuanLyCanhbaoFilter />
     }
+    case screens.quan_ly_nha_cung_cap: {
+      return <QuanlyNhaCungCapFilter />
+    }
+    case screens.bao_cao_canh_bao: {
+      return <BaocaoCanhbaoFilter />
+    }
+    case screens.quan_ly_vi_tri_dia_ly: {
+      return <QuanlyVitriDialyFilter />
+    }
+    case screens.quan_ly_nguoi_dung: {
+      return <QuanLyNguoidungFilter />
+    }
     default: {
       return null;
     }
@@ -63,8 +78,8 @@ const FilterComponent = (props) => (
     transparent
     visible={props.isShowFilter}
     onRequestClose={() => {
-        Alert.alert("Modal has been closed.");
-      }}
+          Alert.alert("Modal has been closed.");
+        }}
   >
     <KeyboardAvoidingView
       behavior='position'
@@ -81,16 +96,16 @@ const FilterComponent = (props) => (
         <Pressable
           style={[styles.button, styles.buttonClose]}
           onPress={() => {
-              store.dispatch(hideFilter());
-              props.action(0);
-            }}
+                store.dispatch(hideFilter());
+                props.action();
+              }}
         >
           <Text style={styles.textStyle}>Xong</Text>
         </Pressable>
       </View>
     </KeyboardAvoidingView>
   </Modal>
-    )
+      )
 
 
 const styles = StyleSheet.create({

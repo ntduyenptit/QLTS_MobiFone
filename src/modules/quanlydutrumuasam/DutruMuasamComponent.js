@@ -109,7 +109,7 @@ class QuanlyDutruMuaSamScreen extends React.Component {
               {LoaderComponent(toanboTaiSanData, this.props, screens.chi_tiet_du_tru_mua_sam, this.refresh())}
             </Animated.ScrollView>
           </SafeAreaView>
-          <FilterComponent filter={<QuanLyKiemkeFilter />} />
+          <FilterComponent action={this.getToanTaisan} />
         </Animated.View>
         <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_du_tru_mua_sam, { screen: "Thêm mới Phiếu dự trù mua sắm" }, this.refresh())} />
       </View>

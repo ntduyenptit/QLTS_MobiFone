@@ -99,7 +99,7 @@ class QuanlyCanhbaoScreen extends React.Component {
             {LoaderComponent(toanboData, this.props, screens.quan_ly_canh_bao)}
           </Animated.ScrollView>
         </SafeAreaView>
-        <FilterComponent />
+        <FilterComponent action={this.getdsCanhbao} />
       </Animated.View>
     );
   }

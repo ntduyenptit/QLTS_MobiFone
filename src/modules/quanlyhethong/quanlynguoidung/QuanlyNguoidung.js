@@ -2,13 +2,13 @@
 import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Dimensions, Text, View } from 'react-native';
 import { connect } from 'react-redux';
+import ActionButton from 'react-native-action-button';
 import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
 import QuanLyNguoidungFilter from './QuanlyNguoidungFilter';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
-import ActionButton from 'react-native-action-button';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
@@ -24,10 +24,11 @@ class QuanlyNguoidungScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.getNguoidung(this.props.DvqlDataFilter);
+    this.getNguoidung();
   }
 
-  getNguoidung(datas) {
+  getNguoidung() {
+    const datas = this.props.DvqlDataFilter
     if (datas && datas.length > 0) {
       let url;
       url = `${endPoint.getAllNguoidung}?`;
@@ -112,9 +113,9 @@ class QuanlyNguoidungScreen extends React.Component {
             }}
           >Hiển thị: {toanboNguoidungData.length}/{total}
           </Text>
-          <FilterComponent filter={<QuanLyNguoidungFilter />} />
+          <FilterComponent action={this.getNguoidung} />
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_nguoi_dung, { screen: "Thêm mới người dùng" })}></ActionButton>
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_nguoi_dung, { screen: "Thêm mới người dùng" })} />
       </View>
     );
   }

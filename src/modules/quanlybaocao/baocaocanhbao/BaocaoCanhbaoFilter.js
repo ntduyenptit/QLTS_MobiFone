@@ -2,34 +2,71 @@ import {
     StyleSheet,
     Text,
     View,
-    Dimensions,
     ScrollView,
 } from "react-native";
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { connect } from "react-redux";
-
-
+import find from 'lodash/find';
+import {Calendar} from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {
+    addSelectedDVQLAction,
+    addSelectedStartDateAction,
+    addSelectedEndDateAction,
+
+    removeSelectedDVQLAction,
+    removeSelectedStartDateAction,
+    removeSelectedEndDateAction
+} from '../../../redux/actions/filter.actions';
+import { screens } from '../../../api/config';
+
+
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { filterType } from '../../global/Config';
-import { buildTree } from '../../global/Helper';
-
-export const deviceWidth = Dimensions.get('window').width;
-export const deviceHeight = Dimensions.get('window').height;
+import { buildTree, getPeriod } from '../../global/Helper';
+import { deviceWidth } from '../../global/LoaderComponent';
 
 
 const QuanLyMuaSamFilterComponent = (items) => {
-    const [selectedDVQLItems, setDVQLItems] = useState([]);
-
     const donViQuanLyRef = useRef();
+    const thoiGianRef = useRef();
+
+    const [start, setStart] = useState({});
+    const [end, setEnd] = useState({});
+    const [period, setPeriod]= useState({});
 
     const dvqlTreeData = buildTree(items.DvqlDataFilter);
+
+    useEffect(() => {
+        if (Object.keys(start).length !== 0) {
+            items.removeStartDateSelected({data: start, screen: screens.bao_cao_canh_bao});
+            items.addStartDateSelected({data: start, screen: screens.bao_cao_canh_bao});
+        }
+      }, [start]);
+
+      useEffect(() => {
+        if (Object.keys(end).length !== 0) {
+            items.removeEndDateSelected({ data: end, screen: screens.bao_cao_canh_bao });
+            items.addEndDateSelected({ data: end, screen: screens.bao_cao_canh_bao });
+        }
+      }, [end]);
+
+      useEffect(() => {
+        const StartDateFilterSelected = find(items.StartDateFilterSelected, itemSelected => itemSelected.screen === screens.bao_cao_canh_bao)
+        && find(items.StartDateFilterSelected, itemSelected => itemSelected.screen === screens.bao_cao_canh_bao).data;
+        const EndDateFilterSelected = find(items.EndDateFilterSelected, itemSelected => itemSelected.screen === screens.bao_cao_canh_bao)
+        && find(items.EndDateFilterSelected, itemSelected => itemSelected.screen === screens.bao_cao_canh_bao).data;
+        if (StartDateFilterSelected && EndDateFilterSelected) {
+            const Period = getPeriod(StartDateFilterSelected.timestamp, EndDateFilterSelected.timestamp);
+            setPeriod(Period);
+        }
+    }, [items.isShowFilter]);
 
     const closeMultiSelectIfOpened = (type) => {
         switch (type) {
             case filterType.don_vi_quan_ly:
-                if (trangThaiRef.current && trangThaiRef.current.state.selector) {
-                    trangThaiRef.current._toggleSelector();
+                if (thoiGianRef.current && thoiGianRef.current.state.selector) {
+                    thoiGianRef.current._toggleSelector();
                 }
                 break;
 
@@ -45,101 +82,70 @@ const QuanLyMuaSamFilterComponent = (items) => {
         }
     }
 
-
-    const requestToanBoTaiSanDataByFilter = (params) => {
-
-    }
+    const DvqlFilterSelected = find(items.DvqlFilterSelected, itemSelected => itemSelected.screen === screens.bao_cao_canh_bao) 
+    && find(items.DvqlFilterSelected, itemSelected => itemSelected.screen === screens.bao_cao_canh_bao).data;
 
     // selectedChange
     const onSelectedDVQLChange = (newSelectItems) => {
-        setDVQLItems((newSelectItems), () => {
-            requestToanBoTaiSanDataByFilter({ 'DVQL_Filter': selectedDVQLItems });
-        });
+        items.removeSelectedDVQL({data: newSelectItems, screen: screens.bao_cao_canh_bao});
+        items.addSelectedDVQL({data: newSelectItems, screen: screens.bao_cao_canh_bao});
+    }
+
+    const onStartDateChange = (dayObj) => {
+        const {
+            day, month, year,
+          } = dayObj
+          const timestamp = new Date(year, month - 1, day).getTime()
+          const newDayObj = { ...dayObj, timestamp }
+        if (Object.keys(start).length === 0) {
+            setStart(newDayObj);
+        } else {
+            const { timestamp: savedTimestamp } = start
+            if (savedTimestamp > timestamp) {
+                const Period = getPeriod(timestamp, savedTimestamp);
+                setPeriod(Period);
+            } else {
+                const Period = getPeriod(savedTimestamp, timestamp);
+                setPeriod(Period);
+            }
+            setEnd(newDayObj);
+        }
     }
 
     // end SelectedChange
     return (
-        <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.container}>
-                <>
-                    <View>
-                        <Text style={styles.titleText}>Đơn vị Quản lý</Text>
-                        <MultiSelect
-                            ref={donViQuanLyRef}
-                            isTree
-                            getCollapsedNodeHeight={{ height: 200 }}
-                            onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
-                            items={dvqlTreeData}
-                            IconRenderer={Icon}
-                            searchInputPlaceholderText="Tìm kiếm..."
-                            styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
-                            uniqueKey="id"
-                            displayKey="displayName"
-                            selectText="Chọn đơn vị quản lý..."
-                            onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-                            selectedItems={selectedDVQLItems}
-                        />
-                    </View>
-                    <View>
-                        <Text style={styles.titleText}>Người gửi thông báo</Text>
-                        <MultiSelect
-                            ref={donViQuanLyRef}
-                            isTree
-                            getCollapsedNodeHeight={{ height: 200 }}
-                            onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
-                            items={dvqlTreeData}
-                            IconRenderer={Icon}
-                            searchInputPlaceholderText="Tìm kiếm..."
-                            styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
-                            uniqueKey="id"
-                            displayKey="displayName"
-                            selectText="Chọn ..."
-                            onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-                            selectedItems={selectedDVQLItems}
-                        />
-                    </View>
-                    <View>
-                        <Text style={styles.titleText}>Thời gian</Text>
-                        <MultiSelect
-                            ref={donViQuanLyRef}
-                            isTree
-                            getCollapsedNodeHeight={{ height: 200 }}
-                            onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
-                            items={dvqlTreeData}
-                            IconRenderer={Icon}
-                            searchInputPlaceholderText="Tìm kiếm..."
-                            styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
-                            uniqueKey="id"
-                            displayKey="displayName"
-                            selectText="Chọn ..."
-                            onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-                            selectedItems={selectedDVQLItems}
-                        />
-                    </View>
-                    <View>
-                        <Text style={styles.titleText}>Hoạt động</Text>
-                        <MultiSelect
-                            ref={donViQuanLyRef}
-                            isTree
-                            getCollapsedNodeHeight={{ height: 200 }}
-                            onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
-                            items={dvqlTreeData}
-                            IconRenderer={Icon}
-                            searchInputPlaceholderText="Tìm kiếm..."
-                            styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
-                            uniqueKey="id"
-                            displayKey="displayName"
-                            selectText="Chọn ..."
-                            onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-                            selectedItems={selectedDVQLItems}
-                        />
-                    </View>
-                </>
-                <>
-                </>
-
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <>
+            <View>
+              <Text style={styles.titleText}>Đơn vị Quản lý</Text>
+              <MultiSelect
+                ref={donViQuanLyRef}
+                isTree
+                getCollapsedNodeHeight={{ height: 200 }}
+                onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
+                items={dvqlTreeData}
+                IconRenderer={Icon}
+                searchInputPlaceholderText="Tìm kiếm..."
+                styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
+                uniqueKey="id"
+                displayKey="displayName"
+                selectText="Chọn đơn vị quản lý..."
+                onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
+                selectedItems={DvqlFilterSelected}
+              />
             </View>
-        </ScrollView>
+            <View>
+              <Text style={styles.titleText}>Thời gian</Text>
+              <Calendar
+                onDayPress={(day) => onStartDateChange(day)}
+                markingType='period'
+                markedDates={period}
+              />
+            </View>
+          </>
+        </View>
+      </ScrollView>
     );
 };
 
@@ -151,58 +157,6 @@ const styles = StyleSheet.create({
         padding: 10,
         width: deviceWidth - 100
     },
-    modalView: {
-        margin: 20,
-        paddingTop: 80,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-        height: deviceHeight - 200,
-    },
-    underLine: {
-        width: deviceWidth - 100,
-        borderBottomColor: 'black',
-        borderBottomWidth: 0.7,
-    },
-    titleStyle: {
-        textAlign: 'center',
-        fontSize: 20,
-        paddingBottom: 10,
-        color: '#2196F3'
-    },
-    textStyle: {
-        fontWeight: "bold",
-        textAlign: "center",
-        color: 'white'
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center"
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-        marginBottom: 10,
-    },
-    buttonClose: {
-        width: 100,
-        backgroundColor: "#2196F3",
-    },
-    safeAreaView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
 
     titleText: {
         fontSize: 20,
@@ -210,16 +164,27 @@ const styles = StyleSheet.create({
         marginLeft: -10,
         padding: 10,
     },
-    component: {
-
-    }
-
 });
 
 const mapStateToProps = state => ({
     DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-    isShowFilter: state.filterReducer.isShowFilter,
-    screen: state.currentScreenReducer.screenName,
+
+    DvqlFilterSelected: state.filterDVQLSelectedReducer.dvqlFilterSelected,
+    StartDateFilterSelected: state.filterStartDateSelectedReducer.startdateFilterSelected,
+    EndDateFilterSelected: state.filterEndDateSelectedReducer.enddateFilterSelected,
 });
 
-export default connect(mapStateToProps)(QuanLyMuaSamFilterComponent);
+function mapDispatchToProps(dispatch) {
+    return {
+        addSelectedDVQL: (item) => dispatch(addSelectedDVQLAction(item)),
+        removeSelectedDVQL: (item) => dispatch(removeSelectedDVQLAction(item)),
+
+        addStartDateSelected: (item) => dispatch(addSelectedStartDateAction(item)),
+        removeStartDateSelected: (item) => dispatch(removeSelectedStartDateAction(item)),
+
+        addEndDateSelected: (item) => dispatch(addSelectedEndDateAction(item)),
+        removeEndDateSelected: (item) => dispatch(removeSelectedEndDateAction(item)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuanLyMuaSamFilterComponent);

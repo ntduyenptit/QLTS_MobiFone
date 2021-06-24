@@ -6,10 +6,10 @@ import find from 'lodash/find';
 import ActionButton from 'react-native-action-button';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
-import QuanLyKiemkeFilterComponent from './filter/QuanlyKiemkeFilter';
 import { createGetMethod } from '../../api/Apis';
 import { endPoint, screens } from '../../api/config';
 import LoaderComponent from '../global/LoaderComponent';
+import getParameters from './filter/GetParameters';
 
 class QuanlyKiemkeTaiSanScreen extends React.Component {
   constructor(props) {
@@ -18,22 +18,24 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
       scrollYValue: new Animated.Value(0),
       toanboTaiSanData: [],
       total: 0,
+      isSearch: false
     }
     this.getToanTaisan = this.getToanTaisan.bind(this);
   }
 
   componentDidMount() {
-    this.getToanTaisan({ datas: this.props.DvqlDataFilter });
+    this.getToanTaisan();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.searchText !== this.props.searchText) {
-      this.getToanTaisan({ datas: this.props.DvqlDataFilter });
+      this.getToanTaisan();
     }
   }
 
-  getToanTaisan(parameters) {
-    const { datas, startdate, enddate, tinhtrangkiemke } = parameters;
+  getToanTaisan() {
+    const { isSearch } = this.state;
+    const { datas, startdate, enddate, tinhtrangkiemke } = getParameters();
     if (datas && datas.length > 0) {
       let url;
       url = `${endPoint.getdanhsachKiemke}?`;
@@ -45,16 +47,12 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
         url += `Keyword=${textFilter}&`
       }
 
-      const StartDate = find(startdate, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san)
-        && find(startdate, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san).data;
-      if (StartDate) {
-        url += `StartDate=${encodeURIComponent(`${StartDate.dateString}`)}&`;
+      if (startdate) {
+        url += `StartDate=${encodeURIComponent(`${startdate.dateString}`)}&`;
       }
 
-      const EndDate = find(enddate, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san)
-        && find(enddate, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san).data;
-      if (EndDate) {
-        url += `EndDate=${encodeURIComponent(`${EndDate.dateString}`)}&`;
+      if (enddate) {
+        url += `EndDate=${encodeURIComponent(`${enddate.dateString}`)}&`;
       }
       datas.forEach(e => {
         if (e.id) {
@@ -65,15 +63,11 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
       });
 
       if (tinhtrangkiemke) {
-        const tinhTrangKiemKe = find(tinhtrangkiemke, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san)
-          && find(tinhtrangkiemke, itemSelected => itemSelected.screen === screens.quan_ly_kiem_ke_tai_san).data;
-        if (tinhTrangKiemKe) {
-          url += `TrangThaiId=${encodeURIComponent(`${tinhTrangKiemKe}`)}&`;
-        }
+          url += `TrangThaiId=${encodeURIComponent(`${tinhtrangkiemke}`)}&`;
       }
 
 
-      url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
+      url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
 
@@ -92,9 +86,21 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
     }
   }
 
-  refresh() {
-    this.getToanTaisan({ datas: this.props.DvqlDataFilter });
+  refresh = () => {
+    this.setState({
+      isSearch: false,
+    }, () => {
+      this.getToanTaisan();
+    });
   }
+
+  handleFilter = () => {
+    this.setState({
+      isSearch: true,
+    }, () => {
+      this.getToanTaisan();
+    });
+  };
 
   render() {
     const {
@@ -144,7 +150,7 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
               )}
               contentInsetAdjustmentBehavior="automatic"
             >
-              {LoaderComponent(toanboTaiSanData, this.props, screens.chi_tiet_kiem_ke_tai_san, this.refresh())}
+              {LoaderComponent(toanboTaiSanData, this.props, screens.chi_tiet_kiem_ke_tai_san, this.refresh)}
             </Animated.ScrollView>
           </SafeAreaView>
           <Text
@@ -156,10 +162,10 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
           >Hiển thị: {toanboTaiSanData.length}/{total}
           </Text>
           <FilterComponent
-            action={this.getToanTaisan}
+            action={this.handleFilter}
           />
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_kiem_ke, { screen: "Thêm mới đợt kiểm kê" }, this.refresh())} />
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_kiem_ke, { screen: "Thêm mới đợt kiểm kê", onGoBack: () => this.refresh() })} />
       </View>
 
     );

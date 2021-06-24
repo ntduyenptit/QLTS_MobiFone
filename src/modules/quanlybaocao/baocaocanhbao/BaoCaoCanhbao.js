@@ -1,17 +1,16 @@
 import React from 'react'
 import { YAxis, XAxis, Grid, BarChart } from 'react-native-svg-charts'
 import { Text } from 'react-native-svg'
-import { Animated, View, StyleSheet } from 'react-native';
+import { Animated, View } from 'react-native';
 import { connect } from 'react-redux';
 import * as scale from 'd3-scale'
 import FilterComponent from '../../global/FilterComponent';
-import BaocaoCanhbaoFilter from './BaocaoCanhbaoFilter';
 import DetailBaocaoCanhbao from './DetailBaocaoCanhbao';
 import { createGetMethod } from '../../../api/Apis';
-import { endPoint, screens } from '../../../api/config';
-import { fonts } from '../../../styles';
+import { endPoint } from '../../../api/config';
+import getParameters from './filter/GetParameters';
 
-export default class BaocaoCanhbaoScreen extends React.PureComponent {
+class BaocaoCanhbaoScreen extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,6 +19,7 @@ export default class BaocaoCanhbaoScreen extends React.PureComponent {
             totalData2: '',
             totalData3: '',
             totalData4: '',
+            isSearch: false,
         }
     }
 
@@ -27,19 +27,22 @@ export default class BaocaoCanhbaoScreen extends React.PureComponent {
         this.getdsBaocao();
     }
 
-    getdsBaocao(skipCount) {
-        const datas = this.props.DvqlDataFilter
+    getdsBaocao() {
+        const { isSearch } = this.state;
+        const { datas, startdate, enddate } = getParameters();
         if (datas && datas.length > 0) {
             let url;
             url = `${endPoint.getAllBaocaoCanhBao}?`;
             datas.forEach(e => {
                 url += `phongBanqQL=${encodeURIComponent(`${e.id}`)}&`;
             });
-            url += `tuNgay=${encodeURIComponent(`${'2021-01-01'}`)}&`;
-            url += `denNgay=${encodeURIComponent(`${'2021-05-11'}`)}&`;
-            url += `isSearch=${encodeURIComponent(`${false}`)}`;
-
-            // console.log('url: ', url);
+            if (startdate) {
+                url += `tuNgay=${encodeURIComponent(`${startdate.dateString}`)}&`;
+            } 
+            if (enddate) {
+                url += `denNgay=${encodeURIComponent(`${enddate.dateString}`)}&`;
+            }
+            url += `isSearch=${encodeURIComponent(`${isSearch}`)}`;
             createGetMethod(url)
                 .then(res => {
                     if (res) {
@@ -57,12 +60,19 @@ export default class BaocaoCanhbaoScreen extends React.PureComponent {
                                 });
                             }
                         }
-                    } else {
                     }
                 })
-                .catch(err => console.log(err));
+                .catch();
         }
     }
+
+    handleFilter = () => {
+        this.setState({
+          isSearch: true,
+        }, () => {
+          this.getdsBaocao();
+        });
+      };
 
     render() {
         const { toanboData, totalData1, totalData2, totalData3, totalData4 } = this.state;
@@ -149,33 +159,15 @@ export default class BaocaoCanhbaoScreen extends React.PureComponent {
               {DetailBaocaoCanhbao(toanboData)}
             </Animated.ScrollView>
 
-            <FilterComponent action={this.getdsBaocao} />
+            <FilterComponent action={this.handleFilter} />
           </Animated.View>
         )
     }
 
 }
-const styles = StyleSheet.create({
-    container: {
-        padding: 5,
-        marginTop: 60,
-        flexDirection: 'row',
-        alignContent: 'center',
-        alignSelf: 'center',
-    },
-    listItem: {
-        width: '40%',
-        flexDirection: 'column',
-        alignContent: 'center',
-        alignSelf: 'center'
 
-    },
+const mapStateToProps = state => ({
+    DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
+  });
 
-    infoText: {
-        paddingBottom: 3,
-        marginTop: 10,
-        fontWeight: "bold",
-        fontSize: 14,
-        fontFamily: fonts.primaryRegular,
-    }
-});
+  export default connect(mapStateToProps)(BaocaoCanhbaoScreen);

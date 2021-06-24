@@ -28,6 +28,8 @@ export const endPoint = ({
   getAllTrangThaiSuDung: 'services/app/LookupTable/GetAllTrangThaiTaiSanTimKiem',
   getAllLoaiTaiSanTree: 'services/app/LookupTable/GetAllLoaiTaiSanTree',
   getAllNguonKinhPhi: 'services/app/LookupTable/GetAllNguonKinhPhi',
+  getCurrentLoginInformation: 'services/app/Session/GetCurrentLoginInformations',
+  getAllHoatDong: 'services/app/LookupTable/GetAllHoatDong',
   // Quản lý tài sản
   getToanBoTaiSan: 'services/app/ToanBoTaiSan/GetAll',
   getTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/GetAllTaiSanSuaChuaBaoDuong',
@@ -365,9 +367,9 @@ export const trangThaiPhanloai = [
 
 
 export const trangThaiKiemke = [
-  {id: 5, displayName: "Chưa bắt đầu"},
-  {id: 6, displayName: "Đang kiểm kê"},
-  {id: 7, displayName: "Đã kết thúc"},
+  {id: 0, displayName: "Chưa bắt đầu"},
+  {id: 1, displayName: "Đang kiểm kê"},
+  {id: 2, displayName: "Đã kết thúc"},
 ];
 
 export const maTaiSan = [

@@ -35,9 +35,11 @@ import {
   toanbotaisanLoading,
   khaibaohongmatGetData
 } from '../../redux/actions/quanlytaisan.actions';
-import QuanLyTaiSanFilter from './filter/QuanLyTaiSanFilter';
 
-export function GetToanBoTaiSanData(skipCount) {
+let skipNumber = 0;
+let isSearch = false;
+
+export function GetToanBoTaiSanData() {
   const { datas, loaitaisan, nhacungcap, masudung, trangthai, hinhthuc, khaibao } = getParameter();
   const maxCount = 10;
   const state = store.getState();
@@ -152,8 +154,8 @@ export function GetToanBoTaiSanData(skipCount) {
       url += `KhaiBao=${encodeURIComponent(`${khaibao}`)}&`
     }
 
-    url += `IsSearch=${encodeURIComponent(`${textFilter !== undefined}`)}&`;
-    url += `SkipCount=${encodeURIComponent(`${skipCount}`)}&`;
+    url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
+    url += `SkipCount=${encodeURIComponent(`${skipNumber}`)}&`;
     url += `MaxResultCount=${encodeURIComponent(`${maxCount}`)}`;
 
     console.log('url123: ', url);
@@ -219,14 +221,16 @@ const QuanLyTaiSan = (state) => {
 
   useEffect(() => {
     if (!state.isLoading && skipCount > 0) {
-      GetToanBoTaiSanData(skipCount);
+      skipNumber = skipCount;
+      GetToanBoTaiSanData();
     }
   }, [skipCount]);
 
   useEffect(() => {
     if (state.searchText && state.searchText.length > 0) {
       resetData();
-      GetToanBoTaiSanData(0);
+      skipNumber = 0;
+      GetToanBoTaiSanData();
     }
   }, [state.searchText]);
 
@@ -272,7 +276,12 @@ const QuanLyTaiSan = (state) => {
 
   const refresh = () => {
     resetData();
-    GetToanBoTaiSanData(0);
+    GetToanBoTaiSanData();
+  }
+
+  const handleFilter = () => {
+    isSearch = true;
+    refresh();
   }
 
   function LoaderComponentByTab() {
@@ -520,7 +529,7 @@ const QuanLyTaiSan = (state) => {
         </View>
 
         <FilterComponent
-          action={refresh}
+          action={handleFilter}
         />
       </Animated.View>
       {displayCreateForTab()}

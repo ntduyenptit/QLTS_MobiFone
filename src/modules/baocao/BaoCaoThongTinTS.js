@@ -2,6 +2,7 @@ import React from 'react'
 import { PieChart } from 'react-native-svg-charts'
 import { Text } from 'react-native-svg'
 import { View } from 'react-native';
+import { getPercent } from '@app/modules/global/Helper';
 import colorDetail from './detailColor';
 import { connect } from 'react-redux';
 
@@ -9,25 +10,25 @@ class BaoCaoThongTinTS extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      toanbotaisanTotal: '',
-      taisanthanhlyTotal: '',
-      taisanmatTotal: '',
-      taisanhongTotal: '',
-      taisanhuyTotal: '',
-      taisanchuasudungTotal: '',
-      taisandangsudungTotal: '',
-      taisansuachuabaoduongTotal: '',
+      toanbotaisanTotal: 0,
+      taisanthanhlyTotal: 0,
+      taisanmatTotal: 0,
+      taisanhongTotal: 0,
+      taisanhuyTotal: 0,
+      taisanchuasudungTotal: 0,
+      taisandangsudungTotal: 0,
+      taisansuachuabaoduongTotal: 0,
     }
   }
 
   setData() {
     let total = this.props.toanbotaisanTotal;
-    let tsdangsd = (Math.round(this.props.taisandangsudungTotal * 100) / total).toFixed(2);
-    let tschuasd = (Math.round(this.props.taisanchuasudungTotal * 100) / total).toFixed(2);
-    let tsmat = (Math.round(this.props.taisanmatTotal * 100) / total).toFixed(2);
-    let tshong = (Math.round(this.props.taisanhongTotal * 100) / total).toFixed(2);
-    let tssuachua = (Math.round(this.props.taisansuachuabaoduongTotal * 100) / total).toFixed(2);
-    let tsthanhly = (Math.round(this.props.taisanthanhlyTotal * 100) / total).toFixed(2);
+    let tsdangsd =  getPercent(total, this.props.taisandangsudungTotal);
+    let tschuasd = getPercent(total, this.props.taisanchuasudungTotal);
+    let tsmat = getPercent(total, this.props.taisanmatTotal);
+    let tshong = getPercent(total, this.props.taisanhongTotal);
+    let tssuachua = getPercent(total, this.props.taisansuachuabaoduongTotal);
+    let tsthanhly = getPercent(total, this.props.taisanthanhlyTotal);
     let tshuy = (Math.round(this.props.taisanhuyTotal * 100) / total).toFixed(2);
     this.setState({
       toanbotaisanTotal: this.props.toanbotaisanTotal,
@@ -50,13 +51,13 @@ class BaoCaoThongTinTS extends React.PureComponent {
     const data = [
       {
         key: 1,
-        value: taisanchuasudungTotal,
+        value: taisanchuasudungTotal || 0,
         svg: { fill: '#600080' },
 
       },
       {
         key: 2,
-        value: taisanmatTotal,
+        value: taisanmatTotal || 0,
         svg: { fill: '#9900cc' }
       },
       {
@@ -66,27 +67,27 @@ class BaoCaoThongTinTS extends React.PureComponent {
       },
       {
         key: 4,
-        value: taisandangsudungTotal,
+        value: taisandangsudungTotal || 0,
         svg: { fill: '#FF0000' }
       },
       {
         key: 5,
-        value: taisanhongTotal,
+        value: taisanhongTotal || 0,
         svg: { fill: '#29088A' }
       },
       {
         key: 6,
-        value: taisansuachuabaoduongTotal,
+        value: taisansuachuabaoduongTotal || 0,
         svg: { fill: '#8A2908' }
       },
       {
         key: 7,
-        value: taisanthanhlyTotal,
+        value: taisanthanhlyTotal || 0,
 
         svg: { fill: '#FFBF00' }
       }
 
-    ]
+    ];
     const Labels = ({ slices, height, width }) => slices.map((slice, index) => {
       const { labelCentroid, pieCentroid, data } = slice;
       if (data.value > 0)
