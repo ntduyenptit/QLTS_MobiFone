@@ -38,7 +38,7 @@ export default function getParameter() {
                 datas: donViQuanLy || DvqlDataFilter,
                 loaitaisan: loaiTaiSan,
                 nhacungcap: nhaCungCap,
-                masungdung: maSuDung,
+                masudung: maSuDung,
             };
         }
         case tabs.tai_san_mat:

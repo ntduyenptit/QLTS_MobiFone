@@ -23,9 +23,6 @@ import { deviceWidth, deviceHeight } from '../../global/LoaderComponent';
 import { endPoint, imageBaseUrl, screens, tabs, moreMenu } from '../../../api/config';
 
 const keyboardVerticalOffset = -60;
-let idTaisan = null;
-let tab = '';
-let paramTS = '';
 
 class QuanLyTaiSanDetailComponent extends React.PureComponent {
 
@@ -40,24 +37,33 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       datetime: '',
       noidung: '',
       menuTitle: '',
+      paramTS: null,
+      tab: null,
     };
   }
 
   componentDidMount() {
+    const { paramKey, tabKey } = this.props.route.params;
+    if (paramKey) {
+      this.setState({
+        paramTS: paramKey,
+        tab: tabKey
+      },() => this.getAssetMoreInfo());
+    }
     Promise.all([
       this.props.navigation.setOptions({
         headerRight: () => (
           <MoreMenu listMenu={this.menuforTab()} />
         )
       }),
-      this.getAssetMoreInfo(),
       this.danhsachdonvi(this.props.DvqlData)
     ]);
   }
 
   getAssetMoreInfo() {
+    const { paramTS } = this.state;
     let url = `${endPoint.GetTaiSan}?`;
-    url += `input=${idTaisan}&isView=true`;
+    url += `input=${paramTS?.id}&isView=true`;
     createGetMethod(url).then(res => {
       if (res.success) {
         const imageList = res.result.listHinhAnh.map(e => `${imageBaseUrl}${e.linkFile.replace(/\\/g, "/")}`);
@@ -78,6 +84,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
   }
 
   menuforTab = () => {
+    const { tab } = this.state;
     let subMenus = null;
     switch (tab) {
       case tabs.toan_bo_tai_san:
@@ -155,10 +162,12 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
   };
 
   capnhat()  {
-    this.props.navigation.navigate(screens.cap_nhat_tai_san, { paramKey: this.state.taisan, idTs: idTaisan, onGoBack: () => this.refresh() });
+    const { paramTS } = this.state;
+    this.props.navigation.navigate(screens.cap_nhat_tai_san, { paramKey: this.state.taisan, idTs: paramTS?.id, onGoBack: () => this.refresh() });
   }
 
   hoantac(Tab) {
+    const { paramTS } = this.state;
     let url = ''
     switch (Tab) {
       case tabs.tai_san_mat:
@@ -177,7 +186,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
           break;
     }
     const params = {
-      phieuTaiSanChiTietList: [{ "id": idTaisan }],
+      phieuTaiSanChiTietList: [{ "id": paramTS?.id }],
     }
 
     createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
@@ -205,6 +214,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
   }
 
   editTsSuachua(trangthaiID) {
+    const { paramTS } = this.state;
     const url = `${endPoint.editTsSuachua}`;
 
     let params = '';
@@ -287,6 +297,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       donvi,
       datetime,
       noidung,
+      paramTS
     } = this.state;
 
     let url = '';
@@ -299,7 +310,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       noiDung: noidung,
       noiDungKhaiBao: noidung,
       phanLoaiId: phanLoai,
-      phieuTaiSanChiTietList: [{ taiSanId: idTaisan }],
+      phieuTaiSanChiTietList: [{ taiSanId: paramTS?.id }],
       thoiGianKhaiBao: datetime,
       toChucDuocNhanId: donvi[0],
     }
@@ -465,12 +476,10 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
       images,
       menuTitle,
       modalVisible,
+      paramTS,
+      tab,
     } = this.state;
-    const { paramKey, tabKey } = this.props.route.params;
-    idTaisan = paramKey.id;
-    tab = tabKey;
-    paramTS = paramKey;
-    let textLoaiTs= convertLoaiTs(taisan.loaiTS  ? taisan.loaiTS : taisan.loaiTaiSan, this.props.LoaiTSData) ;
+    const textLoaiTs= convertLoaiTs(taisan.loaiTS  ? taisan.loaiTS : taisan.loaiTaiSan, this.props.LoaiTSData) ;
 
 
     return (
@@ -498,17 +507,17 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
               ) :
               (<Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} />)}
             <View style={{ marginHorizontal: 5 }}>
-              <Text style={styles.title}>Thông tin {convertTextToLowerCase(tabKey)}:</Text>
-              <BulletView title="Mã tài sản" text={paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode} />
-              <BulletView title='Tên tài sản' text={taisan.tenTS ? taisan.tenTS : taisan.tenTaiSan} />
+              <Text style={styles.title}>Thông tin {tab && convertTextToLowerCase(tab)}:</Text>
+              <BulletView title="Mã tài sản" text={paramTS?.maEPC || paramTS?.epcCode} />
+              <BulletView title='Tên tài sản' text={taisan.tenTS || taisan.tenTaiSan} />
               <BulletView title='S/N (Serial Number)' text={taisan.serialNumber} />
               <BulletView title='P/N (Product Number)' text={taisan.productNumber} />
               <BulletView title='Nhà cung cấp' text={taisan.nhaCC && convertNhaCC(taisan.nhaCC,this.props.NhaCCData)} />
               <BulletView title='Hãng sản xuất' text={taisan.hangSanXuat} />
               <BulletView title='Loại tài sản' text={textLoaiTs} />
-              <BulletView title='Phòng ban quản lý' text={paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy} />
-              <BulletView title='Vị trí tài sản' text={paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan} />
-              <BulletView title='Trạng thái' text={paramKey.trangThai} />
+              <BulletView title='Phòng ban quản lý' text={paramTS?.phongBanQL || paramTS?.phongBanQuanLy} />
+              <BulletView title='Vị trí tài sản' text={paramTS?.viTriTS || paramTS?.viTriTaiSan} />
+              <BulletView title='Trạng thái' text={paramTS?.trangThai} />
               <BulletView title='Ngày mua' text={taisan.ngayMua && convertTimeFormatToLocaleDate(taisan.ngayMua)} />
               <BulletView title='Nguyên giá' text={taisan.nguyenGia} />
               <BulletView title='Ngày hết hạn bảo hành' text={taisan.ngayBaoHanh && convertTimeFormatToLocaleDate(taisan.ngayBaoHanh)} />
@@ -525,7 +534,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
         <View style={styles.separator} />
         <View style={styles.addToCarContainer}>
           <TouchableOpacity
-            onPress={() => this.deleteThisAsset(paramKey.id)}
+            onPress={() => this.deleteThisAsset(paramTS?.id)}
             style={styles.shareButton}
           >
             <Text style={styles.shareButtonText}>Xóa</Text>

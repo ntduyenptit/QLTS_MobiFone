@@ -714,6 +714,7 @@ export default class MultiSelect extends Component {
       removeSelected,
       selectedItems,
       single,
+      displayKey,
       fontFamily,
       altFontFamily,
       searchInputPlaceholderText,
@@ -750,6 +751,16 @@ export default class MultiSelect extends Component {
       renderItems = listResult;
       // console.log('renderItems_isTree :', renderItems);
     }
+
+    if (renderItems[0][displayKey] !== "Tất cả") {
+      const all = {
+        id: 0,
+        [displayKey]: "Tất cả"
+      };
+  
+      renderItems.unshift(all);
+    }
+
     // Filtering already selected items
     if (removeSelected) {
       renderItems = renderItems.filter(

@@ -148,38 +148,38 @@ class DashBoard extends React.Component {
     const data = [
       {
         key: 1,
-        value: getPercent(taisanchuasudungTotal, toanbotaisanTotal),
+        value: getPercent(taisanchuasudungTotal, toanbotaisanTotal) || 0,
         fill: '#600080',
 
       },
       {
         key: 2,
-        value: getPercent(taisanmatTotal, toanbotaisanTotal),
+        value: getPercent(taisanmatTotal, toanbotaisanTotal) || 0,
         fill: '#9900cc'
       },
       {
         key: 3,
-        value: getPercent(taisanhuyTotal, toanbotaisanTotal),
+        value: getPercent(taisanhuyTotal, toanbotaisanTotal) || 0,
         fill: '#0000FF'
       },
       {
         key: 4,
-        value: getPercent(taisansuachuabaoduongTotal, toanbotaisanTotal),
+        value: getPercent(taisansuachuabaoduongTotal, toanbotaisanTotal) || 0,
         fill: '#FF0000'
       },
       {
         key: 5,
-        value: getPercent(taisandangsudungTotal, toanbotaisanTotal),
+        value: getPercent(taisandangsudungTotal, toanbotaisanTotal) || 0,
         fill: '#29088A'
       },
       {
         key: 6,
-        value: getPercent(taisanthanhlyTotal, toanbotaisanTotal),
+        value: getPercent(taisanthanhlyTotal, toanbotaisanTotal) || 0,
         fill: '#8A2908'
       },
       {
         key: 7,
-        value: getPercent(taisanhongTotal, toanbotaisanTotal),
+        value: getPercent(taisanhongTotal, toanbotaisanTotal) || 0,
         fill: '#FFBF00'
       },
 

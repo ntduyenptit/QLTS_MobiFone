@@ -2,15 +2,15 @@ import React from 'react'
 import { PieChart } from 'react-native-svg-charts'
 import { Text } from 'react-native-svg'
 import { View } from 'react-native';
+import PieChartView from '@app/modules/dashboard/PieChartView';
 import { getPercent } from '@app/modules/global/Helper';
-import colorDetail from './detailColor';
 import { connect } from 'react-redux';
+import colorDetail from './detailColor';
 
 class BaoCaoThongTinTS extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      toanbotaisanTotal: 0,
       taisanthanhlyTotal: 0,
       taisanmatTotal: 0,
       taisanhongTotal: 0,
@@ -22,14 +22,14 @@ class BaoCaoThongTinTS extends React.PureComponent {
   }
 
   setData() {
-    let total = this.props.toanbotaisanTotal;
-    let tsdangsd =  getPercent(total, this.props.taisandangsudungTotal);
-    let tschuasd = getPercent(total, this.props.taisanchuasudungTotal);
-    let tsmat = getPercent(total, this.props.taisanmatTotal);
-    let tshong = getPercent(total, this.props.taisanhongTotal);
-    let tssuachua = getPercent(total, this.props.taisansuachuabaoduongTotal);
-    let tsthanhly = getPercent(total, this.props.taisanthanhlyTotal);
-    let tshuy = (Math.round(this.props.taisanhuyTotal * 100) / total).toFixed(2);
+    const total = this.props.toanbotaisanTotal;
+    const tsdangsd =  getPercent(this.props.taisandangsudungTotal, total);
+    const tschuasd = getPercent(this.props.taisanchuasudungTotal, total);
+    const tsmat = getPercent(this.props.taisanmatTotal, total);
+    const tshong = getPercent(this.props.taisanhongTotal, total);
+    const tssuachua = getPercent(this.props.taisansuachuabaoduongTotal, total);
+    const tsthanhly = getPercent(this.props.taisanthanhlyTotal, total);
+    const tshuy = getPercent(this.props.taisanhuyTotal, total);
     this.setState({
       toanbotaisanTotal: this.props.toanbotaisanTotal,
       taisanthanhlyTotal: tsthanhly,
@@ -47,44 +47,44 @@ class BaoCaoThongTinTS extends React.PureComponent {
   }
 
   render() {
-    const { toanbotaisanTotal, taisanthanhlyTotal, taisanmatTotal, taisanhuyTotal, taisanhongTotal, taisanchuasudungTotal, taisandangsudungTotal, taisansuachuabaoduongTotal } = this.state;
+    const { taisanthanhlyTotal, taisanmatTotal, taisanhuyTotal, taisanhongTotal, taisanchuasudungTotal, taisandangsudungTotal, taisansuachuabaoduongTotal } = this.state;
     const data = [
       {
         key: 1,
         value: taisanchuasudungTotal || 0,
-        svg: { fill: '#600080' },
+        fill: '#600080',
 
       },
       {
         key: 2,
         value: taisanmatTotal || 0,
-        svg: { fill: '#9900cc' }
+        fill: '#9900cc'
       },
       {
         key: 3,
         value: taisanhuyTotal,
-        svg: { fill: '#0000FF' }
+        fill: '#0000FF'
       },
       {
         key: 4,
         value: taisandangsudungTotal || 0,
-        svg: { fill: '#FF0000' }
+        fill: '#FF0000'
       },
       {
         key: 5,
         value: taisanhongTotal || 0,
-        svg: { fill: '#29088A' }
+        fill: '#29088A'
       },
       {
         key: 6,
         value: taisansuachuabaoduongTotal || 0,
-        svg: { fill: '#8A2908' }
+        fill: '#8A2908'
       },
       {
         key: 7,
         value: taisanthanhlyTotal || 0,
 
-        svg: { fill: '#FFBF00' }
+        fill: '#FFBF00'
       }
 
     ];
@@ -111,15 +111,11 @@ class BaoCaoThongTinTS extends React.PureComponent {
 
     return (
       <View style={{ backgroundColor: '#DADDE7', flex: 1 }}>
-        <PieChart
-          style={{ height: 300 }}
-          outerRadius="80%"
-          innerRadius={15}
+        <PieChartView
+          chartStyle={{left: 40}}
           data={data}
-        >
-          <Labels />
-
-        </PieChart>
+          clickChartPart={() => {}}
+        />
         <View style={{ marginTop: 5 }}>
           {colorDetail(this.props.toanbotaisanTotal,this.props.taisanchuasudungTotal,this.props.taisanmatTotal,this.props.taisanhuyTotal,this.props.taisansuachuabaoduongTotal,this.props.taisanthanhlyTotal,this.props.taisandangsudungTotal,this.props.taisanhongTotal)}
         </View>

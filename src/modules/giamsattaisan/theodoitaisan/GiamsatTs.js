@@ -9,9 +9,12 @@ import QuanLyGiamSatFilter from '../filter/QuanlyGiamsatTSFilter';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
+import getParameters from '../filter/GetGiamSatParameters';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
+
+let isSearch = false;
 class GiamSatTaiSanScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -31,37 +34,36 @@ class GiamSatTaiSanScreen extends React.Component {
 
   componentDidUpdate(prevProps){
     if ( prevProps.searchText !== this.props.searchText ) {
-      this.getToanTaisan({datas: this.props.DvqlDataFilter});
+      this.getToanTaisan();
     }
   }
 
-  getToanTaisan(parameters) {
-    const { datas, startdate, enddate, chieuDiChuyen, phanloaitaisan } = parameters;
+  getToanTaisan() {
+    const { datas, startdate, enddate, chieudichuyen, phanloaitaisan } = getParameters();
     if (datas && datas.length > 0) {
       let url;
       url = `${endPoint.getLichsuRavaoAngten}?`;
-      const StartDate = find(startdate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
-      && find(startdate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
-      if (StartDate) {
-          url += `StartDate=${encodeURIComponent(`${StartDate.dateString}`)}&`;
+      const textState = this.props.searchText;
+      const textFilter = find(textState, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
+        && find(textState, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
+      if (textFilter) {
+        url += `Keyword=${textFilter}&`
+      }
+
+      if (startdate) {
+          url += `StartDate=${encodeURIComponent(`${startdate.dateString}`)}&`;
       }
   
-      const EndDate = find(enddate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
-      && find(enddate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
-      if (EndDate) {
-          url += `EndDate=${encodeURIComponent(`${EndDate.dateString}`)}&`;
+      if (enddate) {
+          url += `EndDate=${encodeURIComponent(`${enddate.dateString}`)}&`;
       }
   
-      const ChieuDiChuyen = find(chieuDiChuyen, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
-      && find(chieuDiChuyen, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
-      if (ChieuDiChuyen) {
-        url += `ChieuDiChuyen=${encodeURIComponent(`${ChieuDiChuyen}`)}&`;
+      if (chieudichuyen) {
+        url += `ChieuDiChuyen=${encodeURIComponent(`${chieudichuyen}`)}&`;
       }
   
-      const PhanLoaiTaiSan = find(phanloaitaisan, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
-      && find(phanloaitaisan, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
-      if (PhanLoaiTaiSan) {
-        url += `PhanLoaiId=${encodeURIComponent(`${PhanLoaiTaiSan}`)}&`;
+      if (phanloaitaisan) {
+        url += `PhanLoaiId=${encodeURIComponent(`${phanloaitaisan}`)}&`;
       }
   
       datas.forEach(e => {
@@ -72,9 +74,11 @@ class GiamSatTaiSanScreen extends React.Component {
         }
       });
   
-      url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
+      url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${this.state.skipCount}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
+
+      console.log(url);
       createGetMethod(url)
         .then(res => {
           if (res) {
@@ -85,7 +89,7 @@ class GiamSatTaiSanScreen extends React.Component {
           } 
           
         })
-        .catch(err => console.log(err));
+        .catch();
     }
   }
 
@@ -93,6 +97,16 @@ class GiamSatTaiSanScreen extends React.Component {
     const paddingToBottom = 10;
     return layoutMeasurement.height + contentOffset.y >=
       contentSize.height - paddingToBottom;
+  };
+
+  refresh = () => {
+    isSearch = false;
+    this.getToanTaisan();
+  }
+
+  handleFilter = () => {
+    isSearch = true;
+    this.getToanTaisan();
   };
 
   render() {
@@ -146,11 +160,7 @@ class GiamSatTaiSanScreen extends React.Component {
                         skipCount: toanboTaiSanData.length,
                       }, () => {
                         if (toanboTaiSanData.length < total) {
-                          this.getToanTaisan({
-                            data: this.props.DvqlDataFilter,
-                            startdate: this.props.StartDateFilterSelected,
-                            enddate: this.props.EndDateFilterSelected,
-                          });
+                          this.refresh();
                         }
                       })
                     }, 2000)
@@ -173,7 +183,7 @@ class GiamSatTaiSanScreen extends React.Component {
         >Hiển thị: {toanboTaiSanData.length}/{total}
         </Text>
         <FilterComponent
-          action={this.getToanTaisan}
+          action={this.handleFilter}
         />
       </Animated.View>
     );
@@ -182,9 +192,6 @@ class GiamSatTaiSanScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-  StartDateFilterSelected: state.filterStartDateSelectedReducer.startdateFilterSelected,
-  EndDateFilterSelected: state.filterEndDateSelectedReducer.enddateFilterSelected,
   searchText: state.SearchReducer.searchData
 });
 

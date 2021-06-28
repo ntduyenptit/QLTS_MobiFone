@@ -6,8 +6,7 @@ const localStorage = {
         try {
             await AsyncStorage.setItem('@token', token);
         } catch (error) {
-            console.warn('Loi khi luu Token');
-            console.warn(error);
+            console.log(error);
         }
     },
     async saveUserNameOrEmail(userNameOrEmail) {
@@ -24,7 +23,15 @@ const localStorage = {
             console.log(error);
         }
     },
-    saveLogin(token, userNameOrEmail) { localStorage.saveToken(token); localStorage.saveUserNameOrEmail(userNameOrEmail) }
+    async removeToken() {
+        try {
+            await AsyncStorage.removeItem('@token');
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    saveLogin(token, userNameOrEmail) { localStorage.saveToken(token); localStorage.saveUserNameOrEmail(userNameOrEmail) },
+    expriedLogin() { localStorage.removeToken() }
 };
 
 

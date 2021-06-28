@@ -127,18 +127,20 @@ export function GetToanBoTaiSanData() {
     }
 
     if (loaitaisan) {
-      url += `LoaiTS=${encodeURIComponent(`${loaitaisan}`)}&`;
       if (tab === tabs.tai_san_dang_su_dung || tab === tabs.tai_san_chua_su_dung) {
         url += `LoaiTaiSanId=${encodeURIComponent(`${loaitaisan}`)}&`;
       }
       if (tab === tabs.tai_san_mat) {
         url += `LoaiTaiSan=${encodeURIComponent(`${loaitaisan}`)}&`;
+      } else {
+        url += `LoaiTS=${encodeURIComponent(`${loaitaisan}`)}&`;
       }
     }
     if (nhacungcap) {
-      url += `NhaCungCap=${encodeURIComponent(`${nhacungcap}`)}&`;
       if (tab === tabs.tai_san_dang_su_dung || tab === tabs.tai_san_chua_su_dung) {
         url += `NhaCungCapId=${encodeURIComponent(`${nhacungcap}`)}&`;
+      } else {
+        url += `NhaCungCap=${encodeURIComponent(`${nhacungcap}`)}&`;
       }
     }
     if (masudung) {
@@ -150,7 +152,7 @@ export function GetToanBoTaiSanData() {
     if (hinhthuc) {
       url += `HinhThuc=${encodeURIComponent(`${hinhthuc}`)}&`
     }
-    if (hinhthuc) {
+    if (khaibao) {
       url += `KhaiBao=${encodeURIComponent(`${khaibao}`)}&`
     }
 
@@ -158,7 +160,7 @@ export function GetToanBoTaiSanData() {
     url += `SkipCount=${encodeURIComponent(`${skipNumber}`)}&`;
     url += `MaxResultCount=${encodeURIComponent(`${maxCount}`)}`;
 
-    console.log('url123: ', url);
+    console.log('123_url: ', url);
 
     createGetMethod(url)
       .then(res => {

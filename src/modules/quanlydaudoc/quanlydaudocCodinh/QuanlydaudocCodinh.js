@@ -8,14 +8,17 @@ import FilterComponent from '../../global/FilterComponent';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
+import getParameters from '../filter/GetParameters';
 import { getTTSDDataFilter } from '../../global/FilterApis';
 import {
   getTTSDDataAction
 } from '../../../redux/actions/filter.actions';
 
+
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
+let isSearch = false;
 class QuanLyDauDocCoDinhScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -28,22 +31,22 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.getToanBoDauDocCoDinhData({ datas: this.props.DvqlDataFilter });
     if (this.props.TtsdDataFilter.length === 0) {
       getTTSDDataFilter().then(res => {
         this.props.getTTSDData(res.result);
       });
     }
+    this.getToanBoDauDocCoDinhData();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.searchText !== this.props.searchText) {
-      this.getToanBoDauDocCoDinhData({ datas: this.props.DvqlDataFilter });
+      this.getToanBoDauDocCoDinhData();
     }
   }
 
-  getToanBoDauDocCoDinhData(parameters) {
-    const { datas, tinhtrangsudung } = parameters;
+  getToanBoDauDocCoDinhData() {
+    const { datas, tinhtrangsudung } = getParameters(screens.quan_ly_dau_doc_co_dinh);
     if (datas && datas.length > 0) {
       let url;
       url = `${endPoint.getDaudocCodinh}?`;
@@ -64,16 +67,13 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
       });
 
       if (tinhtrangsudung) {
-        const tinhTrangSuDung = find(tinhtrangsudung, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_co_dinh)
-          && find(tinhtrangsudung, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_co_dinh).data;
-        if (tinhTrangSuDung) {
-          url += `TinhTrangSuDung=${encodeURIComponent(`${tinhTrangSuDung}`)}&`;
-        }
+          url += `TinhTrangSuDung=${encodeURIComponent(`${tinhtrangsudung}`)}&`;
       }
 
-      url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
+      url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
+
       createGetMethod(url)
         .then(res => {
           if (res) {
@@ -81,17 +81,21 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
               daudoccodinhData: res.result.items,
               total: res.result.totalCount
             });
-          } else {
-            // Alert.alert('Lỗi khi load toàn bộ tài sản!');
           }
         })
         .catch();
     }
   }
 
-  refresh() {
-    this.getToanBoDauDocCoDinhData({ datas: this.props.DvqlDataFilter });
+  refresh = () => {
+    isSearch = false;
+    this.getToanBoDauDocCoDinhData();
   }
+
+  handleFilter = () => {
+    isSearch = true;
+    this.getToanBoDauDocCoDinhData();
+  };
 
   render() {
     const {
@@ -141,7 +145,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
               )}
               contentInsetAdjustmentBehavior="automatic"
             >
-              {LoaderComponent(daudoccodinhData, this.props, screens.chi_tiet_dau_doc, this.refresh())}
+              {LoaderComponent(daudoccodinhData, this.props, screens.chi_tiet_dau_doc, this.refresh)}
             </Animated.ScrollView>
           </SafeAreaView>
           <Text
@@ -153,10 +157,10 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
           >Hiển thị: {daudoccodinhData.length}/{total}
           </Text>
           <FilterComponent
-            action={this.getToanBoDauDocCoDinhData}
+            action={this.handleFilter}
           />
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_dau_doc, { screen: "Thêm mới đầu đọc cố định" }, this.refresh())} />
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_dau_doc, { screen: "Thêm mới đầu đọc cố định", onGoBack: () => this.refresh() })} />
       </View>
     );
   }
@@ -164,7 +168,6 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
   TtsdDataFilter: state.filterTTSDDataReducer.ttsdDataFilter,
   searchText: state.SearchReducer.searchData
 });
@@ -174,5 +177,6 @@ function mapDispatchToProps(dispatch) {
     getTTSDData: (item) => dispatch(getTTSDDataAction(item)),
   }
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuanLyDauDocCoDinhScreen);

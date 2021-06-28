@@ -9,7 +9,8 @@ export default function getParameters() {
     const DvqlFilterSelected = state.filterDVQLSelectedReducer.dvqlFilterSelected;
     const startdate = state.filterStartDateSelectedReducer.startdateFilterSelected;
     const enddate = state.filterEndDateSelectedReducer.enddateFilterSelected;
-    const tinhtrangkiemke = state.filterTTKKSelectedReducer.ttkkFilterSelected;
+    const phanloaitaisan = state.filterPhanLoaiTaiSanSelectedReducer.pltsFilterSelected;
+    const chieudichuyen = state.filterChieuDiChuyenSelectedReducer.chieuDiChuyenFilterSelected
 
     const donViQuanLy = find(DvqlFilterSelected, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
     && find(DvqlFilterSelected, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
@@ -18,13 +19,16 @@ export default function getParameters() {
     const EndDate = find(enddate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
     && find(enddate, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
 
-    const tinhTrangKiemKe = find(tinhtrangkiemke, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
-    && find(tinhtrangkiemke, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
+    const phanLoaiTaiSan = find(phanloaitaisan, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
+    && find(phanloaitaisan, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
+    const chieuDiChuyen = find(chieudichuyen, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
+    && find(chieudichuyen, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
 
     return {
         datas: donViQuanLy || DvqlDataFilter,
-        StartDate,
-        EndDate,
-        tinhtrangkiemke: tinhTrangKiemKe
+        startdate: StartDate,
+        enddate: EndDate,
+        chieudichuyen: chieuDiChuyen,
+        phanloaitaisan: phanLoaiTaiSan
     };
 };

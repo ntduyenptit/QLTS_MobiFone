@@ -10,7 +10,6 @@ import CapnhatTaisanScreen from '../quanlytaisan/detail/UpdateTaisan';
 import QuanLyDauDocCodinhScreen from '../quanlydaudoc/quanlydaudocCodinh/QuanlydaudocCodinh';
 import QuanLyDauDocDiDongScreen from '../quanlydaudoc/quanlydaudocDidong/QuanlydaudocDiDong';
 import QuanLyDauDocDetailComponentScreen from "../quanlydaudoc/detail/QuanLyDauDocDetailComponent";
-import UpdateDaudocScreen from '../quanlydaudoc/detail/CapnhatDaudoc';
 import GiamsatTaiSanScreen from '../giamsattaisan/theodoitaisan/GiamsatTs';
 import TheodoiThietbiScreen from '../giamsattaisan/theodoiketnoi/TheodoiKetnoi';
 
@@ -168,19 +167,6 @@ const StackNavigationData = [
     component: QuanLyDauDocCodinhScreen,
     headerLeft: null,
     headerRight: headerRightComponent,
-    headerBackground: { source: headerBackground },
-    headerTitleStyle: {
-      fontFamily: fonts.primaryRegular,
-      color: colors.white,
-      fontSize: 18,
-      alignSelf: 'center'
-    },
-  },
-  {
-    name: screens.cap_nhat_dau_doc,
-    component: UpdateDaudocScreen,
-    headerLeft: null,
-    headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
       fontFamily: fonts.primaryRegular,

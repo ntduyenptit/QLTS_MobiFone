@@ -11,6 +11,7 @@ import { endPoint, screens } from '../../api/config';
 import LoaderComponent from '../global/LoaderComponent';
 import getParameters from './filter/GetParameters';
 
+let isSearch = false;
 class QuanlyKiemkeTaiSanScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -18,7 +19,6 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
       scrollYValue: new Animated.Value(0),
       toanboTaiSanData: [],
       total: 0,
-      isSearch: false
     }
     this.getToanTaisan = this.getToanTaisan.bind(this);
   }
@@ -34,7 +34,6 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
   }
 
   getToanTaisan() {
-    const { isSearch } = this.state;
     const { datas, startdate, enddate, tinhtrangkiemke } = getParameters();
     if (datas && datas.length > 0) {
       let url;
@@ -66,7 +65,6 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
           url += `TrangThaiId=${encodeURIComponent(`${tinhtrangkiemke}`)}&`;
       }
 
-
       url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
@@ -78,28 +76,20 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
               toanboTaiSanData: res.result.items,
               total: res.result.totalCount
             });
-          } else {
-            // Alert.alert('Lỗi khi load toàn bộ tài sản!');
           }
         })
-        .catch(err => console.log(err));
+        .catch();
     }
   }
 
   refresh = () => {
-    this.setState({
-      isSearch: false,
-    }, () => {
-      this.getToanTaisan();
-    });
+    isSearch = false;
+    this.getToanTaisan();
   }
 
   handleFilter = () => {
-    this.setState({
-      isSearch: true,
-    }, () => {
-      this.getToanTaisan();
-    });
+    isSearch = true;
+    this.getToanTaisan();
   };
 
   render() {

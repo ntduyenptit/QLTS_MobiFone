@@ -28,6 +28,11 @@ const keyboardVerticalOffset = -60;
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
+export const signOut = () => {
+  AsyncStorage.clear();
+  store.dispatch(userLogout());
+}
+
 function handler(props, children) {
   return (children.map((item, idx) => (
     <DrawerItem
@@ -56,10 +61,7 @@ function CustomDrawerContent(props) {
   const [mkConfirm, setMkConfirm] = useState('');
   const [modalVisible, setmodalVisible] = useState('');
 
-  const signOut = () => {
-    AsyncStorage.clear();
-    store.dispatch(userLogout());
-  }
+  
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {

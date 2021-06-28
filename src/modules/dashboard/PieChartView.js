@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 export default class PieChartView extends React.PureComponent {
     static propTypes = {
         data: PropTypes.arrayOf(PropTypes.object),
+        chartStyle: PropTypes.arrayOf(PropTypes.object),
     }
 
     constructor(props) {
@@ -56,7 +57,7 @@ export default class PieChartView extends React.PureComponent {
 
           return(
             <PieChart
-              style={{ height: 300, width: 300 }}
+              style={[{ height: 300, width: 300 }, this.props.chartStyle]}
               outerRadius="70%"
               valueAccessor={({ item }) => item.value}
               innerRadius={10}

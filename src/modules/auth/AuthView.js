@@ -25,7 +25,7 @@ export default class AuthViewContainer extends React.Component {
           Alert.alert('SignIn failed!');
         }
       })
-      .catch(err => console.log(err));
+      .catch();
   }
   forgotPassword() {
 

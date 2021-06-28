@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
     DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
     TtsdDataFilter: state.filterTTSDDataReducer.ttsdDataFilter,
+    screen: state.currentScreenReducer.screenName, 
 
     DvqlFilterSelected: state.filterDVQLSelectedReducer.dvqlFilterSelected,
     TtsdFilterSelected: state.filterTTSDSelectedReducer.ttsdFilterSelected,

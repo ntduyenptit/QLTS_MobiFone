@@ -151,13 +151,18 @@ class ThemmoiDaudocScreen extends React.Component {
                     '',
                     'Thêm mới thành công',
                     [
-                        { text: 'OK', onPress: this.props.navigation.goBack() },
+                        { text: 'OK', onPress: this.goBack() },
                     ],
-
                 );
 
             }
         })
+    }
+
+    goBack() {
+        const { navigation, route } = this.props;
+        route.params.onGoBack();
+        navigation.goBack();
     }
 
     renderLoaiTS() {

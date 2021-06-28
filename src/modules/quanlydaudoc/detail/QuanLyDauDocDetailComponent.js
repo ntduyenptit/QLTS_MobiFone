@@ -15,36 +15,35 @@ import { createGetMethod, deleteMethod } from '../../../api/Apis';
 import { endPoint, moreMenu, screens } from '../../../api/config';
 import MoreMenu from '../../global/MoreComponent';
 
-let idTaisan = null;
-
 class QuanLyDauDocDetailComponent extends React.PureComponent {
 
   constructor(props) {
     super(props);
     this.state = {
-      taisan: '',
+      taisan: null,
+      idTaisan: 0,
+      tab: null,
     };
   }
 
   componentDidMount() {
-    Promise.all([
-      this.props.navigation.setOptions({
-        headerRight: () => (
-          <MoreMenu listMenu={this.showMenu()} />
-        )
-      }),
-      this.getAssetMoreInfo(),
-    ]);
+    const { paramKey, tabKey } = this.props.route.params;
+    if (paramKey) {
+      this.setState({
+        taisan: paramKey,
+        tab: tabKey,
+        idTaisan: paramKey?.id
+      },() => this.getAssetMoreInfo());
+    }
+    this.props.navigation.setOptions({
+      headerRight: () => (
+        <MoreMenu listMenu={this.showMenu()} />
+      )
+    });
   }
-  showMenu = () => {
-    return (
-      subMenus = [{
-        title: moreMenu.cap_nhat,
-        action: () => this.capnhat(),
-      }]
-    )
-  }
+
   getAssetMoreInfo() {
+    const { idTaisan } = this.state;
     let url = `${endPoint.getDaudocEdit}?`;
     url += `input=${idTaisan}&isView=true`;
     createGetMethod(url).then(res => {
@@ -56,13 +55,22 @@ class QuanLyDauDocDetailComponent extends React.PureComponent {
     });
   }
 
+  showMenu = () => (
+    [{
+      title: moreMenu.cap_nhat,
+      action: () => this.capnhat(),
+    }]
+  )
+
   refresh = () => {
     this.getAssetMoreInfo();
   }
 
   capnhat() {
+    const { idTaisan } = this.state;
     this.props.navigation.navigate(screens.cap_nhat_dau_doc, { paramKey: this.state.taisan, idTs: idTaisan, onGoBack: () => this.refresh() });
   }
+
   deleteThisAsset(id) {
     Alert.alert('Bạn có chắc chắn muốn xóa không?',
       '',
@@ -73,13 +81,12 @@ class QuanLyDauDocDetailComponent extends React.PureComponent {
             url += `input=${id}`;
 
             deleteMethod(url).then(res => {
-              if (result.success) {
-                Alert.alert('Xoas thành công',
+              if (res.success) {
+                Alert.alert('Xóa thành công',
                     '',
                     [
                         { text: 'OK', onPress: this.goBack() },
                     ],
-                    { cancelable: false }
                 );
             }
             });
@@ -101,31 +108,29 @@ class QuanLyDauDocDetailComponent extends React.PureComponent {
   render() {
     const {
       taisan,
+      idTaisan,
+      tab
     } = this.state;
-    const { paramKey, tabKey } = this.props.route.params;
-    idTaisan = paramKey.id;
-    tab = tabKey;
-    paramTS = paramKey;
     return (
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
           <View style={{ alignItems: 'flex-start', marginHorizontal: 10 }}>
             <Image style={styles.productImg} source={require('../../../../assets/images/icon.png')} />
-            <Text style={styles.title}>Thông tin đầu đọc di động:</Text>
-            <BulletView title="Mã tài sản" text={paramKey.maEPC ? paramKey.maEPC : paramKey.epcCode} flexTitle={1.5} />
-            <BulletView title='Tên tài sản' text={taisan.tenTS ? taisan.tenTS : taisan.tenTaiSan} flexTitle={1.5} />
-            <BulletView title='S/N (Serial Number)' text={taisan.serialNumber} flexTitle={1.5} />
-            <BulletView title='P/N (Product Number)' text={taisan.productNumber} flexTitle={1.5} />
-            <BulletView title='Nhà cung cấp' text={taisan.nhaCC} flexTitle={1.5} />
-            <BulletView title='Hãng sản xuất' text={taisan.hangSanXuat} flexTitle={1.5} />
-            <BulletView title='Loại tài sản' text={paramKey.loaiTS ? paramKey.loaiTS : paramKey.loaiTaiSan} flexTitle={1.5} />
-            <BulletView title='Phòng ban quản lý' text={paramKey.phongBanQL ? paramKey.phongBanQL : paramKey.phongBanQuanLy} flexTitle={1.5} />
-            <BulletView title='Vị trí tài sản' text={paramKey.viTriTS ? paramKey.viTriTS : paramKey.viTriTaiSan} flexTitle={1.5} />
-            <BulletView title='Trạng thái' text={paramKey.trangThai} flexTitle={1.5} />
-            <BulletView title='Ngày mua' text={taisan.ngayMua && convertTimeFormatToLocaleDate(taisan.ngayMua)} flexTitle={1.5} />
-            <BulletView title='Nguyên giá' text={taisan.nguyenGia} flexTitle={1.5} />
-            <BulletView title='Ngày hết hạn bảo hành' text={taisan.ngayBaoHanh && convertTimeFormatToLocaleDate(taisan.ngayBaoHanh)} flexTitle={1.5} />
-            <BulletView title='Ngày hết hạn sử dụng' text={taisan.hanSD && convertTimeFormatToLocaleDate(taisan.hanSD)} flexTitle={1.5} />
+            <Text style={styles.title}>Thông tin {tab && convertTextToLowerCase(tab)}:</Text>
+            <BulletView title="Mã tài sản" text={taisan?.maEPC || taisan?.epcCode} flexTitle={1.5} />
+            <BulletView title='Tên tài sản' text={taisan?.tenTS || taisan?.tenTaiSan} flexTitle={1.5} />
+            <BulletView title='S/N (Serial Number)' text={taisan?.serialNumber} flexTitle={1.5} />
+            <BulletView title='P/N (Product Number)' text={taisan?.productNumber} flexTitle={1.5} />
+            <BulletView title='Nhà cung cấp' text={taisan?.nhaCC} flexTitle={1.5} />
+            <BulletView title='Hãng sản xuất' text={taisan?.hangSanXuat} flexTitle={1.5} />
+            <BulletView title='Loại tài sản' text={taisan?.loaiTS || taisan?.loaiTaiSan} flexTitle={1.5} />
+            <BulletView title='Phòng ban quản lý' text={taisan?.phongBanQL || taisan?.phongBanQuanLy} flexTitle={1.5} />
+            <BulletView title='Vị trí tài sản' text={taisan?.viTriTS || taisan?.viTriTaiSan} flexTitle={1.5} />
+            <BulletView title='Trạng thái' text={taisan?.trangThai} flexTitle={1.5} />
+            <BulletView title='Ngày mua' text={taisan?.ngayMua && convertTimeFormatToLocaleDate(taisan.ngayMua)} flexTitle={1.5} />
+            <BulletView title='Nguyên giá' text={taisan?.nguyenGia} flexTitle={1.5} />
+            <BulletView title='Ngày hết hạn bảo hành' text={taisan?.ngayBaoHanh && convertTimeFormatToLocaleDate(taisan.ngayBaoHanh)} flexTitle={1.5} />
+            <BulletView title='Ngày hết hạn sử dụng' text={taisan?.hanSD && convertTimeFormatToLocaleDate(taisan.hanSD)} flexTitle={1.5} />
           </View>
 
         </ScrollView>

@@ -46,11 +46,9 @@ class QuanlyDutruMuaSamScreen extends React.Component {
               toanboTaiSanData: res.result.items,
               total: `${res.result.items.length}/${res.result.totalCount}`
             });
-          } else {
-            // Alert.alert('Lỗi khi load toàn bộ tài sản!');
           }
         })
-        .catch(err => console.log(err));
+        .catch();
     }
   }
 

@@ -107,7 +107,7 @@ const QuanLyGiamSatFilter = (props) => {
     }
 
 
-    const onSelectedLoaiTaiSanChange = (newSelectItems) => {
+    const onSelectedPhanLoaiTaiSanChange = (newSelectItems) => {
       props.removeSelectedPLTS({data: newSelectItems, screen: screens.giam_sat_tai_san});
       props.addSelectedPLTS({data: newSelectItems, screen: screens.giam_sat_tai_san});
     }
@@ -205,7 +205,7 @@ const QuanLyGiamSatFilter = (props) => {
               uniqueKey="id"
               displayKey="displayName"
               selectText="Chọn loại..."
-              onSelectedItemsChange={(item) => onSelectedLoaiTaiSanChange(item)}
+              onSelectedItemsChange={(item) => onSelectedPhanLoaiTaiSanChange(item)}
               selectedItems={PltsFilterSelected}
             />
           </View>

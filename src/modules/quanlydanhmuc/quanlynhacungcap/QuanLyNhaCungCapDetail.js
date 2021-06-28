@@ -88,7 +88,7 @@ class NhaCungcapDetail extends React.Component {
         idNhacungcap = idNCC;
         return (
           <View style={styles.container}>
-            <View style={{ alignItems: 'flex-start', backgroundColor: 'white', width: deviceWidth, height: 'auto', padding: 10 }}>
+            <View style={{ alignItems: 'flex-start', width: deviceWidth, height: 'auto', padding: 10, flex: 1 }}>
               <Text style={styles.title}>Thông tin nhà cung cấp:</Text>
               <BulletView title='Mã nhà cung cấp' text={chitietData.maNhaCungCap} />
               <BulletView title='Tên nhà cung cấp' text={chitietData.tenNhaCungCap} />
@@ -117,6 +117,7 @@ class NhaCungcapDetail extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'white'
     },
     title: {
         paddingBottom: 10,
@@ -160,10 +161,7 @@ const styles = StyleSheet.create({
     },
     addToCarContainer: {
         marginHorizontal: 30,
-        paddingBottom: 30,
-        alignSelf: 'center',
-        position: 'absolute',
-        bottom: 5,
+        paddingBottom: 30
     }
 });
 

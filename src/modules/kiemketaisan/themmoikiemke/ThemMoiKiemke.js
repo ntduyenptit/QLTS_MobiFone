@@ -106,6 +106,8 @@ class ThemmoiDotKiemke extends React.Component {
                 check = true;
                 break;
             }
+            default:
+                break;
         }
         if (check) {
             Alert.alert(
@@ -128,7 +130,6 @@ class ThemmoiDotKiemke extends React.Component {
             thoiGianKetThucDuKien: dateKethuc && convertDateToIOSString(dateKethuc),
             trangThaiId: 0,
         }
-        console.log(`doiKiemKeIdList: ${  userKiemke}`);
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
             if (res.success) {
                 Alert.alert('Thêm mới đợt kiểm kê thành công',
@@ -197,7 +198,6 @@ class ThemmoiDotKiemke extends React.Component {
         } = this.state;
         const { screen } = this.props.route.params;
         tab = screen;
-        console.log(`{screen} ${  tab}`);
         const clampedScroll = Animated.diffClamp(
             Animated.add(
                 scrollYValue.interpolate({

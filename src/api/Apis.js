@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { baseUrl, headers, headerWithoutToken, headerContainFiles} from './config';
+import save from '../localStorage/saveLogin';
+import { signOut } from '@app/modules/navigation/Navigator';
 
 export function createPostMethodWithoutToken(endPoint, params) {
     // eslint-disable-next-line no-undef
@@ -47,7 +49,11 @@ export function createGetMethod(endPoint, params = null) {
         })
             .then(res => res.json())
             .then(data => data)
-            .catch(err => console.log(err))
+            .catch(err => {
+                if (err) {
+                    save.expriedLogin();
+                }
+            })
         );
 };
 
@@ -67,6 +73,9 @@ export function deleteMethod(endPoint, params = null) {
 
 async function _getStorageValue() {
     const value = await AsyncStorage.getItem('@token')
+    if (value === null) {
+        signOut();
+    }
     return value
   }
 
