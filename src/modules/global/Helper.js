@@ -1,4 +1,6 @@
 import moment from 'moment';
+import { store } from '@app/redux/store';
+import find from 'lodash/find';
 
 export function buildTree(arr) {
   const tree = [];
@@ -59,6 +61,23 @@ export const convertTimeFormatToLocaleDate = (time) => {
   dateString = dateString.replace(',', '');
   return dateString;
 };
+
+export const getTextNCC = (type) => {
+  const list = store.getState().filterNCCDataReducer.nccDataFilter;
+  return find(list, e => e.id === type)?.displayName;
+}
+
+export const getTextLinhVucKinhDoanh = (type, list) => (
+  find(list, e => e.id === type)?.displayName
+)
+
+export const getTextTinhThanh = (type, list) => {
+  if (typeof type === 'string' || type instanceof String) {
+    return type;
+  } 
+    return find(list, e => e.id === type)?.displayName;
+}
+
 
 export const convertTimeFormatToLocaleDateFullTime = (time) => {
   const reg = /(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d/;
@@ -136,12 +155,6 @@ export const convertNguonKinhphi = (int) => {
   }
 }
 
-export const convertNhaCC = (int, listNhacc) => {
-  for (let i= 0; i< listNhacc.length; i++)
-    if (listNhacc[i].id == int) return listNhacc[i].displayName;
-
-}
-
 export const convertLoaiTs = (int, listTs) => {
   for (let i= 0; i< listTs.length; i++)
     if (listTs[i].value == int) return listTs[i].text;
@@ -204,10 +217,6 @@ export const convertHinhthucTaisan = (int) => {
   }
 }
 
-export const getNhaCC = (id) => {
-
-}
-
 export const getDateString = (timestamp) => {
   const date = new Date(timestamp)
   const year = date.getFullYear()
@@ -237,6 +246,7 @@ export const getPeriod = (startTimestamp, endTimestamp) => {
     period[dateString] = {
       color: 'green',
       startingDay: currentTimestamp === startTimestamp,
+      selected: true,
     }
     currentTimestamp += 24 * 60 * 60 * 1000
   }
@@ -244,14 +254,19 @@ export const getPeriod = (startTimestamp, endTimestamp) => {
   period[dateString] = {
     color: 'green',
     endingDay: true,
+    selected: true,
   }
   return period
 }
 
 export const getPercent = (value, total) => {
-  let result = (value / total) * 100;
-  result = result.toFixed(2);
-  return result;
+  if (total !== 0) {
+    let result = (value / total) * 100;
+    result = result.toFixed(2);
+    return result;
+  } 
+    return 0;
+  
 }
 
 export const convertDateFormatTo = (date) => {

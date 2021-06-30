@@ -37,6 +37,7 @@ const defaultSearchIcon = (
 export default class MultiSelect extends Component {
   static propTypes = {
     isTree: PropTypes.bool,
+    disabled: PropTypes.bool,
     hideSearch: PropTypes.bool,
     subChildContainerStyle: ViewPropTypes.style,
     single: PropTypes.bool,
@@ -95,6 +96,7 @@ export default class MultiSelect extends Component {
     single: false,
     isTree: false,
     hideSearch: false,
+    disabled: false,
     selectedItems: [],
     uniqueKey: '_id',
     tagBorderColor: colorPack.primary,
@@ -710,10 +712,12 @@ export default class MultiSelect extends Component {
   render() {
     const {
       isTree,
+      disabled,
       getCollapsedNodeHeight,
       removeSelected,
       selectedItems,
       single,
+      uniqueKey,
       displayKey,
       fontFamily,
       altFontFamily,
@@ -751,8 +755,8 @@ export default class MultiSelect extends Component {
       renderItems = listResult;
       // console.log('renderItems_isTree :', renderItems);
     }
-
-    if (renderItems[0][displayKey] !== "Tất cả") {
+    
+    if (renderItems.length > 0 && renderItems[0][displayKey] !== "Tất cả") {
       const all = {
         id: 0,
         [displayKey]: "Tất cả"
@@ -871,7 +875,7 @@ export default class MultiSelect extends Component {
                   styleDropdownMenuSubsection && styleDropdownMenuSubsection
                 ]}
               >
-                <TouchableWithoutFeedback onPress={this._toggleSelector}>
+                <TouchableWithoutFeedback onPress={!disabled ? this._toggleSelector : () => {}}>
                   <View
                     style={{
                       flex: 1,

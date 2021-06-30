@@ -160,8 +160,6 @@ export function GetToanBoTaiSanData() {
     url += `SkipCount=${encodeURIComponent(`${skipNumber}`)}&`;
     url += `MaxResultCount=${encodeURIComponent(`${maxCount}`)}`;
 
-    console.log('123_url: ', url);
-
     createGetMethod(url)
       .then(res => {
         if (res) {

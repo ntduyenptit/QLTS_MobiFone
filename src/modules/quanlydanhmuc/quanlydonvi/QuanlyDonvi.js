@@ -2,11 +2,12 @@
 import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Dimensions, Text, View } from 'react-native';
 import { connect } from 'react-redux';
+import ActionButton from 'react-native-action-button';
 import SearchComponent from '../../global/SearchComponent';
 import { createGetMethod } from '../../../api/Apis';
-import { endPoint, screens } from '../../../api/config';
+import { endPoint, screens, moreMenu } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
-import ActionButton from 'react-native-action-button';
+import MoreMenu from '../../global/MoreComponent';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
@@ -34,7 +35,7 @@ class QuanLyLoaiTSScreen extends React.Component {
         createGetMethod(url)
             .then(res => {
                 if (res) {
-                    console.log("donviData: " + res.result[0].children);
+                    console.log(`donviData: ${  res.result[0].children}`);
                     this.setState({
                         donviData: res.result[0].children,
                         total: res.result[0].children.length
@@ -65,48 +66,48 @@ class QuanLyLoaiTSScreen extends React.Component {
             50,
         )
         return (
-            <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-                <Animated.View>
-                    <StatusBar barStyle="dark-content" />
-                    <SafeAreaView>
-                        <SearchComponent
-                            clampedScroll={clampedScroll}
-                        />
-                        <Animated.ScrollView
-                            showsVerticalScrollIndicator={false}
-                            style={{
+          <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
+            <Animated.View>
+              <StatusBar barStyle="dark-content" />
+              <SafeAreaView>
+                <SearchComponent
+                  clampedScroll={clampedScroll}
+                />
+                <Animated.ScrollView
+                  showsVerticalScrollIndicator={false}
+                  style={{
                                 margin: 10,
                                 paddingTop: 55,
                                 paddingBottom: 15,
                             }}
-                            contentContainerStyle={{
+                  contentContainerStyle={{
                                 display: 'flex',
                                 flexDirection: 'row',
                                 flexWrap: 'wrap',
                                 justifyContent: 'space-around',
                                 paddingBottom: 55,
                             }}
-                            onScroll={Animated.event(
+                  onScroll={Animated.event(
                                 [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
                                 { useNativeDriver: true },
                                 () => { },          // Optional async listener
                             )}
-                            contentInsetAdjustmentBehavior="automatic"
-                        >
-                            {LoaderComponent(donviData, this.props, screens.quan_ly_don_vi)}
-                        </Animated.ScrollView>
-                    </SafeAreaView>
-                    <Text
-                        style={{
+                  contentInsetAdjustmentBehavior="automatic"
+                >
+                  {LoaderComponent(donviData, this.props, screens.quan_ly_don_vi)}
+                </Animated.ScrollView>
+              </SafeAreaView>
+              <Text
+                style={{
                             bottom: 5,
                             right: 5,
                             position: 'absolute',
                         }}
-                    >Hiển thị: {donviData.length}/{total}
-                    </Text>
-                </Animated.View>
-                <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_don_vi, { screen: "Thêm mới đơn vị" })}></ActionButton>
-            </View>
+              >Hiển thị: {donviData.length}/{total}
+              </Text>
+            </Animated.View>
+            <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_don_vi, { screen: "Thêm mới đơn vị" })} />
+          </View>
 
         );
     }

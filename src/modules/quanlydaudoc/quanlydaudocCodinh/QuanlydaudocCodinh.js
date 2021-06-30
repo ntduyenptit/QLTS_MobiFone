@@ -145,7 +145,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
               )}
               contentInsetAdjustmentBehavior="automatic"
             >
-              {LoaderComponent(daudoccodinhData, this.props, screens.chi_tiet_dau_doc, this.refresh)}
+              {LoaderComponent(daudoccodinhData, this.props, screens.chi_tiet_dau_doc_co_dinh, this.refresh)}
             </Animated.ScrollView>
           </SafeAreaView>
           <Text

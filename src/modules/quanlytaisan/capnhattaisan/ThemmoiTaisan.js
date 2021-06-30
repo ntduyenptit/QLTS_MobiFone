@@ -405,6 +405,7 @@ class TaomoiTaisanScreen extends React.Component {
                                     dateInput: {
                                         marginLeft: 5,
                                     },
+                                    datePickerCon: { backgroundColor: 'black'}
                                 }}
                     onDateChange={(date) => {
                                     this.setState({

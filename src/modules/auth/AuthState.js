@@ -11,7 +11,6 @@ const userReducer = (state = initialState, action) => {
     case USER_LOGIN: {
       
       const token = action.payload.token.userToken;
-      console.warn("token: "+token);
       return {
         isLoggedIn: true,
         token,

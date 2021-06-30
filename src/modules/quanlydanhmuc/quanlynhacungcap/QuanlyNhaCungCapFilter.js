@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import find from 'lodash/find';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { filterType } from '../../global/Config';
-//import { GetNCCData } from '../QuanLyTaiSan';
+// import { GetNCCData } from '../QuanLyTaiSan';
 import { 
   addSelectedNCCAction,
 
@@ -35,49 +35,49 @@ const QuanLyNCCFilterComponent = (items) => {
   const onSelectedNCCChange = (newSelectItems) => {
     items.removeSelectedLTS({data: newSelectItems, screen: items.screen, tab: items.tab});
     items.addSelectedNCC({data: newSelectItems, screen: items.screen, tab: items.tab});
-    //GetNCCData({ nhacungcap: newSelectItems, isFilter: true });
+    // GetNCCData({ nhacungcap: newSelectItems, isFilter: true });
   }
   
   // end SelectedChange
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-          <View>
-            <Text style={styles.titleText}>Nhà cung cấp</Text>
-            <MultiSelect
-              ref={nhaCungCapRef}
-              onToggleList={() => closeMultiSelectIfOpened(filterType.nha_cung_cap)}
-              items={items.NccDataFilter}
-              IconRenderer={Icon}
-              single
-              styleListContainer={items.NccDataFilter && items.NccDataFilter.length > 9 ? { height: 200 } : null}
-              searchInputPlaceholderText="Tìm kiếm..."
-              uniqueKey="id"
-              displayKey="displayName"
-              selectText="Chọn nhà cung cấp..."
-              onSelectedItemsChange={(item) => onSelectedNCCChange(item)}
-              selectedItems={find(items.NccFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+        <View>
+          <Text style={styles.titleText}>Nhà cung cấp</Text>
+          <MultiSelect
+            ref={nhaCungCapRef}
+            onToggleList={() => closeMultiSelectIfOpened(filterType.nha_cung_cap)}
+            items={items.NccDataFilter}
+            IconRenderer={Icon}
+            single
+            styleListContainer={items.NccDataFilter && items.NccDataFilter.length > 9 ? { height: 200 } : null}
+            searchInputPlaceholderText="Tìm kiếm..."
+            uniqueKey="id"
+            displayKey="displayName"
+            selectText="Chọn nhà cung cấp..."
+            onSelectedItemsChange={(item) => onSelectedNCCChange(item)}
+            selectedItems={find(items.NccFilterSelected, itemSelected => itemSelected.tab === items.tab) 
               && find(items.NccFilterSelected, itemSelected => itemSelected.tab === items.tab).data}
-            />
-          </View>
-          <View>
-            <Text style={styles.titleText}>Lĩnh vực kinh doanh</Text>
-            <MultiSelect
-              ref={nhaCungCapRef}
-              onToggleList={() => closeMultiSelectIfOpened(filterType.nha_cung_cap)}
-              items={items.NccDataFilter}
-              IconRenderer={Icon}
-              single
-              styleListContainer={items.NccDataFilter && items.NccDataFilter.length > 9 ? { height: 200 } : null}
-              searchInputPlaceholderText="Tìm kiếm..."
-              uniqueKey="id"
-              displayKey="displayName"
-              selectText="Chọn nhà cung cấp..."
-              onSelectedItemsChange={(item) => onSelectedNCCChange(item)}
-              selectedItems={find(items.NccFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+          />
+        </View>
+        <View>
+          <Text style={styles.titleText}>Lĩnh vực kinh doanh</Text>
+          <MultiSelect
+            ref={nhaCungCapRef}
+            onToggleList={() => closeMultiSelectIfOpened(filterType.nha_cung_cap)}
+            items={items.NccDataFilter}
+            IconRenderer={Icon}
+            single
+            styleListContainer={items.NccDataFilter && items.NccDataFilter.length > 9 ? { height: 200 } : null}
+            searchInputPlaceholderText="Tìm kiếm..."
+            uniqueKey="id"
+            displayKey="displayName"
+            selectText="Chọn nhà cung cấp..."
+            onSelectedItemsChange={(item) => onSelectedNCCChange(item)}
+            selectedItems={find(items.NccFilterSelected, itemSelected => itemSelected.tab === items.tab) 
               && find(items.NccFilterSelected, itemSelected => itemSelected.tab === items.tab).data}
-            />
-          </View>
+          />
+        </View>
       </View>
     </ScrollView>
   );

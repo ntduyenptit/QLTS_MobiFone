@@ -4,12 +4,15 @@ import { TouchableOpacity, Image, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import TabNavigator from './MainTabNavigator';
 import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
+import UpdateDaudocDiDongScreen from '../quanlydaudoc/update/CapnhatDaudocDiDong';
+import UpdateDaudocCoDinhScreen from '../quanlydaudoc/update/CapnhatDaudocCoDinh';
 import QuanLyTaiSanDetailComponentScreen from '../quanlytaisan/detail/QuanLyTaiSanDetailComponent';
 import CapnhatTaisanScreen from '../quanlytaisan/detail/UpdateTaisan';
 
 import QuanLyDauDocCodinhScreen from '../quanlydaudoc/quanlydaudocCodinh/QuanlydaudocCodinh';
 import QuanLyDauDocDiDongScreen from '../quanlydaudoc/quanlydaudocDidong/QuanlydaudocDiDong';
-import QuanLyDauDocDetailComponentScreen from "../quanlydaudoc/detail/QuanLyDauDocDetailComponent";
+import QuanLyDauDocCoDinhDetailComponentScreen from "../quanlydaudoc/detail/DauDocCoDinhComponent";
+import QuanLyDauDocDiDongDetailComponentScreen from "../quanlydaudoc/detail/DauDocDiDongComponent";
 import GiamsatTaiSanScreen from '../giamsattaisan/theodoitaisan/GiamsatTs';
 import TheodoiThietbiScreen from '../giamsattaisan/theodoiketnoi/TheodoiKetnoi';
 
@@ -28,6 +31,9 @@ import DatLichXuatBaoCaoScreen from '../quanlybaocao/datlichxuatbaocao/LichXuatB
 import LichXuatBaoCaoChitietScreen from '../quanlybaocao/datlichxuatbaocao/LichXuatBaoCao_Chitiet';
 import QuanlyNhaCungcapScreen from '../quanlydanhmuc/quanlynhacungcap/QuanLyNhaCungCap';
 import NhaCungCapDetailScreen from '../quanlydanhmuc/quanlynhacungcap/QuanLyNhaCungCapDetail';
+import VitriDialyDetailScreen from '../quanlydanhmuc/quanlyvitridialy/detail/VitriDialyDetail';
+import CapNhatNhaCungCap from '../quanlydanhmuc/quanlynhacungcap/update/UpdateNhacungcap';
+import CapNhatViTriDiaLy from '../quanlydanhmuc/quanlyvitridialy/update/UpdateVitriDialy';
 import QuanlyVitriDialyScreen from '../quanlydanhmuc/quanlyvitridialy/QuanlyVitriDialy';
 import QuanlyLoaiTaiSanScreen from '../quanlydanhmuc/quanlyloaitaisan/QuanlyLoaiTaisan';
 import QuanlyDonviScreen from '../quanlydanhmuc/quanlydonvi/QuanlyDonvi';
@@ -189,6 +195,32 @@ const StackNavigationData = [
     },
   },
   {
+    name: screens.cap_nhat_dau_doc_di_dong,
+    component: UpdateDaudocDiDongScreen,
+    headerLeft: null,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.cap_nhat_dau_doc_co_dinh,
+    component: UpdateDaudocCoDinhScreen,
+    headerLeft: null,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
     name: screens.theo_doi_ket_noi_thiet_bi,
     component: TheodoiThietbiScreen,
     headerLeft: null,
@@ -283,7 +315,46 @@ const StackNavigationData = [
   {
     name: screens.chi_tiet_nha_cung_cap,
     component: NhaCungCapDetailScreen,
-    headerLeft: null,
+    headerLeft: headerLeftComponent,
+    headerRight: moreHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.chi_tiet_vi_tri_dia_ly,
+    component: VitriDialyDetailScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: moreHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.cap_nhat_nha_cung_cap,
+    component: CapNhatNhaCungCap,
+    headerLeft: headerLeftComponent,
+    headerRight: moreHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.cap_nhat_vi_tri_dia_ly,
+    component: CapNhatViTriDiaLy,
+    headerLeft: headerLeftComponent,
     headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -542,10 +613,10 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
-  // Màn hình chi tiết đầu đọc
+  // Màn hình chi tiết đầu đọc cố định
   {
-    name: screens.chi_tiet_dau_doc,
-    component: QuanLyDauDocDetailComponentScreen,
+    name: screens.chi_tiet_dau_doc_co_dinh,
+    component: QuanLyDauDocCoDinhDetailComponentScreen,
     headerLeft: headerLeftComponent,
     headerRight: null,
     headerBackground: { source: headerBackground },
@@ -556,6 +627,20 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
+    // Màn hình chi tiết đầu đọc di động
+    {
+      name: screens.chi_tiet_dau_doc_di_dong,
+      component: QuanLyDauDocDiDongDetailComponentScreen,
+      headerLeft: headerLeftComponent,
+      headerRight: null,
+      headerBackground: { source: headerBackground },
+      headerTitleStyle: {
+        fontFamily: fonts.primaryRegular,
+        color: colors.white,
+        fontSize: 18,
+        alignSelf: 'center'
+      },
+    },
   // thêm mới tài sản
   {
     name: screens.them_moi_tai_san,

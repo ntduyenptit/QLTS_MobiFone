@@ -59,9 +59,11 @@ class ThemmoiDotKiemke extends React.Component {
                 </View>
               </TouchableOpacity>
             )
-        })
-        this.renderUserList(this.props.DvqlDataFilter);
-        this.renderBophanKiemkeList(this.props.DvqlDataFilter);
+        });
+        Promise.all([
+            this.renderUserList(),
+            this.renderBophanKiemkeList(this.props.DvqlDataFilter),
+        ]);
     }
 
     convertList(array) {
@@ -157,10 +159,10 @@ class ThemmoiDotKiemke extends React.Component {
                     const list = res.result.map(e => ({
                         name: e.user.name,
                         id: e.user.id,
-                    }))
+                    }));
                     this.setState({
                         toanboUser: list,
-                    });
+                    }, () => console.log('1111133333: ',this.state.toanboUser));
                 } else {
                     // Alert.alert('Lỗi khi load toàn bộ tài sản!');
                 }
@@ -327,6 +329,7 @@ class ThemmoiDotKiemke extends React.Component {
                 onSelectedItemsChange={(item) => this.onSelectedItemsChange(item)}
                 selectedItems={userKiemke}
                 IconRenderer={Icon}
+                displayKey="name"
                 selectText="Bấm để chọn tên"
                 searchInputPlaceholderText="Tìm kiếm..."
                 searchInputStyle={{ color: '#CCC' }}

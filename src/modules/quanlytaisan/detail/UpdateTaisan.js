@@ -22,7 +22,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { endPoint } from '../../../api/config';
-import { convertDateToIOSString, addYearToDate, getLinkFile, convertTimeFormatToLocaleDate, convertNguonKinhphi, convertNhaCC, convertLoaiTs } from '../../global/Helper';
+import { convertDateToIOSString, addYearToDate, getLinkFile, convertTimeFormatToLocaleDate, convertNguonKinhphi, getTextNCC, convertLoaiTs } from '../../global/Helper';
 import { createGetMethod, createPostMethodWithToken, createPostMultiFiles } from '../../../api/Apis';
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
@@ -389,7 +389,7 @@ class TaomoiTaisanScreen extends React.Component {
                     styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
                     uniqueKey="id"
                     displayKey="displayName"
-                    selectText={taisan?.nhaCC && convertNhaCC(taisan.nhaCC,this.props.NhaCCData)}
+                    selectText={taisan?.nhaCC && getTextNCC(taisan.nhaCC,this.props.NhaCCData)}
                     onSelectedItemsChange={(item) => this.setState({
                                     nhaCungcap: item,
                                 })}
@@ -438,6 +438,7 @@ class TaomoiTaisanScreen extends React.Component {
                                     dateInput: {
                                         marginLeft: 5,
                                     },
+                                    datePickerCon: { backgroundColor: 'black'}
                                 }}
                     onDateChange={(date) => {
                                     this.setState({
@@ -466,6 +467,7 @@ class TaomoiTaisanScreen extends React.Component {
                                     dateInput: {
                                         marginLeft: 5,
                                     },
+                                    datePickerCon: { backgroundColor: 'black'}
                                 }}
                     onDateChange={(date) => {
                                     this.setState({
@@ -494,6 +496,7 @@ class TaomoiTaisanScreen extends React.Component {
                                     dateInput: {
                                         marginLeft: 5,
                                     },
+                                    datePickerCon: { backgroundColor: 'black'}
                                 }}
                     onDateChange={(date) => {
                                     this.setState({
@@ -533,6 +536,7 @@ class TaomoiTaisanScreen extends React.Component {
                                     dateInput: {
                                         marginLeft: 5,
                                     },
+                                    datePickerCon: { backgroundColor: 'black'}
                                 }}
                   />
                   <Text style={styles.boldText}>Nguồn kinh phí</Text>

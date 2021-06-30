@@ -1,46 +1,49 @@
-import AsyncStorage from '@react-native-community/async-storage';
+/* eslint-disable import/no-cycle */
 import React from 'react';
 import {
+    Text,
     StyleSheet,
     View,
-    Text,
-    Dimensions,
-    TouchableOpacity, FlatList, ScrollView, Alert,
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 import BulletView from '@app/modules/global/BulletView';
-import { createGetMethod, deleteMethod } from '../../../api/Apis';
-import { endPoint, moreMenu, screens } from '../../../api/config';
-import MoreMenu from '../../global/MoreComponent';
+import MoreMenu from '@app/modules/global/MoreComponent';
+import { endPoint, moreMenu, screens } from '@app/api/config';
+import { createGetMethod, deleteMethod } from '@app/api/Apis';
+import { deviceWidth } from '@app/modules/global/LoaderComponent';
+import { getTextTinhThanh } from '@app/modules/global/Helper';
 
-const deviceWidth = Dimensions.get("window").width;
-let idNhacungcap;
-
-class NhaCungcapDetail extends React.Component {
+class VitriDialyDetailScreen extends React.Component {
     constructor(props) {
         super(props);
 
-
         this.state = {
-            chitietData: [],
-        }
-        this.param = {
-            param: props.route.params,
+            chitietData: this.props.route.params?.paramKey || null,
+            id: this.props.route.params?.id,
+            tinhThanhList: [],
         }
     }
 
     componentDidMount() {
+        const { chitietData } = this.state;
         this.props.navigation.setOptions({
             headerRight: () => (
               <MoreMenu listMenu={this.showMenu()} />
             )
           });
-        this.getchitietNCC();
+          if (chitietData === null) {
+              Promise.all([
+                this.getchitietViTriDialy(),
+                this.getTinhThanhList(),
+              ]);
+          }
     }
 
-    getchitietNCC() {
-        let url;
-        url = `${endPoint.getViewNhacungcap}?`;
-        url += `Id=${encodeURIComponent(`${idNhacungcap}`)}&`;
+    getchitietViTriDialy() {
+        const { id } = this.state;
+        let url = `${endPoint.getViewVitriDiaLy}?`;
+        url += `input=${encodeURIComponent(`${id}`)}&`;
         url += `isView=${encodeURIComponent(`${true}`)}`;
         createGetMethod(url)
             .then(res => {
@@ -55,6 +58,20 @@ class NhaCungcapDetail extends React.Component {
             .catch();
     }
 
+    getTinhThanhList() {
+        const url = `${endPoint.getTinhThanhAll}?`;
+        createGetMethod(url)
+            .then(res => {
+                if (res.success) {
+                    console.log(res);
+                    this.setState({
+                        tinhThanhList: res.result,
+                    });
+                }
+            })
+            .catch();
+    }
+
     showMenu = () => (
         [{
           title: moreMenu.cap_nhat,
@@ -62,13 +79,9 @@ class NhaCungcapDetail extends React.Component {
         }]
     )
 
-    refresh = () => {
-        this.getchitietNCC();
-    }
-
     capnhat() {
-        const { chitietData } = this.state;
-        this.props.navigation.navigate(screens.cap_nhat_nha_cung_cap, { paramKey: chitietData, idTs: idNhacungcap, onGoBack: () => this.refresh() });
+        const { chitietData, id } = this.state;
+        this.props.navigation.navigate(screens.cap_nhat_vi_tri_dia_ly, { paramKey: chitietData, idTs: id, onGoBack: () => this.refresh() });
       }
 
     delete(id) {
@@ -107,27 +120,21 @@ class NhaCungcapDetail extends React.Component {
     }
     
     render() {
-        const { chitietData } = this.state;
-        const { paramKey, tabKey, idNCC } = this.props.route.params;
-        idNhacungcap = idNCC;
+        const { chitietData, id } = this.state;
         return (
           <View style={styles.container}>
             <View style={{ alignItems: 'flex-start', width: deviceWidth, height: 'auto', padding: 10, flex: 1 }}>
-              <Text style={styles.title}>Thông tin nhà cung cấp:</Text>
-              <BulletView title='Mã nhà cung cấp' text={chitietData?.maNhaCungCap} />
-              <BulletView title='Tên nhà cung cấp' text={chitietData?.tenNhaCungCap} />
-              <BulletView title='Lĩnh vực kinh doanh' text={paramKey?.tenLinhVuc} />
-              <BulletView title='Mã số thuế' text={chitietData?.maSoThue} />
+              <Text style={styles.title}>Thông tin vị trí địa lý:</Text>
+              <BulletView title='Tên vị trí' text={chitietData?.tenViTri} />
+              <BulletView title='Tỉnh/Thành phố' text={chitietData?.tinhThanh} />
+              <BulletView title='Quận/Huyện' text={chitietData?.quanHuyen} />
               <BulletView title='Địa chỉ' text={chitietData?.diaChi} />
-              <BulletView title='Số điện thoại' text={chitietData?.soDienThoai} />
-              <BulletView title='Email' text={chitietData?.email} />
               <BulletView title='Ghi chú' text={chitietData?.ghiChu} />
-              <BulletView title='Tài liệu đính kèm' text={chitietData?.listFile} />
             </View>
             <View style={styles.separator} />
             <View style={styles.addToCarContainer}>
               <TouchableOpacity
-                onPress={() => this.delete(idNhacungcap)}
+                onPress={() => this.delete(id)}
                 style={styles.shareButton}
               >
                 <Text style={styles.shareButtonText}>Xóa</Text>
@@ -138,6 +145,7 @@ class NhaCungcapDetail extends React.Component {
         )
     }
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -189,5 +197,4 @@ const styles = StyleSheet.create({
     }
 });
 
-
-export default NhaCungcapDetail;
+export default VitriDialyDetailScreen;

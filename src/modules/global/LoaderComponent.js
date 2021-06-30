@@ -28,7 +28,8 @@ const loadInfo = (screen, item, props, action) => {
 
   switch (screen) {
     case screens.chi_tiet_tai_san:
-    case screens.chi_tiet_dau_doc:
+    case screens.chi_tiet_dau_doc_di_dong:
+    case screens.chi_tiet_dau_doc_co_dinh:
       return (
         <>
           <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color={getColorByType(item.trangThai ? item.trangThai : props.tab)} size={15} />
@@ -147,16 +148,20 @@ const loadInfo = (screen, item, props, action) => {
           </TouchableOpacity>
         </>
       );
-    case screens.quan_ly_vi_tri_dia_ly:
+    case screens.chi_tiet_vi_tri_dia_ly:
       return (
         <>
           <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="map-marker" color="#0080FF" size={15} />
-          <View style={styles.infor}>
+          <TouchableOpacity onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab, id: item.id , onGoBack: () => action()})} style={styles.infor}>
             <Text numberOfLines={2} style={[{ fontWeight: "bold" }, styles.infoText]}>Tên vị trí: {item.tenViTri}</Text>
             <Text numberOfLines={1}>Địa chỉ: {item.diaChi}</Text>
             <Text numberOfLines={1} style={styles.infoText}>{(item.quanHuyen)}, {(item.tinhThanh)} </Text>
+          </TouchableOpacity>
+          <View
+            style={{ height: 40, width: 20, alignItems: "flex-end" }}
+          >
+            <Icon name="chevron-right" color='#0080FF' size={15} />
           </View>
-
         </>
       );
     case screens.quan_ly_loai_tai_san:

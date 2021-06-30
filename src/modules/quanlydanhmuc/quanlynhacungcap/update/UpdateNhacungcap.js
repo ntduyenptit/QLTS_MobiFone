@@ -13,26 +13,27 @@ import {
     Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { endPoint, screens } from '../../../api/config';
-import { createGetMethod, createPostMethodWithToken } from '../../../api/Apis';
-import { colors, fonts } from '../../../styles';
-import { deviceWidth } from '../../global/LoaderComponent';
-import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
+import MultiSelect from '@app/libs/react-native-multiple-select/lib/react-native-multi-select';
+import { endPoint, screens } from '@app/api/config';
+import { createGetMethod, createPostMethodWithToken } from '../../../../api/Apis';
+import { colors, fonts } from '../../../../styles';
+import { deviceWidth } from '../../../global/LoaderComponent';
 
-class TaomoiNhaCungCapScreen extends React.Component {
+class UpdateNhaCungCapScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             scrollYValue: new Animated.Value(0),
-            maNhaCC: '',
-            tenNhaCC: '',
-            linhVucKinhdoanh: '',
-            maSothue: '',
-            diachi: '',
-            sodienthoai: '',
-            email: '',
-            ghiChu: '',
+            maNhaCC: this.props.route.params.paramKey?.maNhaCungCap,
+            tenNhaCC: this.props.route.params.paramKey?.tenNhaCungCap,
+            linhVucKinhdoanh: [this.props.route.params.paramKey?.linhVucKinhDoanhId] || [],
+            maSothue: this.props.route.params.paramKey?.maSoThue,
+            diachi: this.props.route.params.paramKey?.diaChi,
+            sodienthoai: this.props.route.params.paramKey?.soDienThoai,
+            email: this.props.route.params.paramKey?.email,
+            ghiChu: this.props.route.params.paramKey?.ghiChu,
             linhvucKDList: [],
+            id: this.props.route.params?.idTs,
         };
     }
 
@@ -87,7 +88,7 @@ class TaomoiNhaCungCapScreen extends React.Component {
             sodienthoai,
             email,
             ghiChu,
-            linhvucKDList,
+            id,
         } = this.state;
 
         let s = '';
@@ -106,6 +107,7 @@ class TaomoiNhaCungCapScreen extends React.Component {
             }
             default:
                 break;
+
         }
         if (check) {
             Alert.alert(
@@ -122,6 +124,7 @@ class TaomoiNhaCungCapScreen extends React.Component {
         const params = {
             diaChi: diachi,
             email,
+            id,
             ghiChu,
             linhVucKinhDoanhId: linhVucKinhdoanh[0],
             listFile: [],
@@ -136,7 +139,7 @@ class TaomoiNhaCungCapScreen extends React.Component {
             if (res.success) {
                 Alert.alert(
                     '',
-                    'Thêm mới nhà cung cấp thành công',
+                    'Cập nhật nhà cung cấp thành công',
                     [
                         { text: 'OK', onPress: this.goBack() },
                     ],
@@ -157,6 +160,8 @@ class TaomoiNhaCungCapScreen extends React.Component {
         const {
             linhVucKinhdoanh,
             linhvucKDList,
+            maNhaCC,
+            tenNhaCC,
         } = this.state;
         return (
           <Animated.View>
@@ -169,9 +174,10 @@ class TaomoiNhaCungCapScreen extends React.Component {
                     placeholderTextColor="black"
                     placeholder="Nhập mã"
                     style={styles.bordered}
-                    onChangeText={(maNhaCC) => {
+                    defaultValue={maNhaCC}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        maNhaCC,
+                                        maNhaCC: text,
                                     });
                                 }}
                   />
@@ -180,9 +186,10 @@ class TaomoiNhaCungCapScreen extends React.Component {
                     placeholderTextColor="black"
                     placeholder="Nhập tên"
                     style={styles.bordered}
-                    onChangeText={(tenNhaCC) => {
+                    defaultValue={tenNhaCC}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        tenNhaCC,
+                                        tenNhaCC: text,
                                     });
                                 }}
                   />
@@ -204,7 +211,7 @@ class TaomoiNhaCungCapScreen extends React.Component {
                                         linhVucKinhdoanh: item,
                                     });
                                 }}
-                    selectedItems={[linhVucKinhdoanh]}
+                    selectedItems={linhVucKinhdoanh}
                     submitButtonColor="#2196F3"
                   />
                   <Text style={styles.boldText}>Mã số thuế</Text>
@@ -352,4 +359,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default TaomoiNhaCungCapScreen;
+export default UpdateNhaCungCapScreen;

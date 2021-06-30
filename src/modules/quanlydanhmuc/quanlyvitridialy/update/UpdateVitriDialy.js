@@ -13,26 +13,25 @@ import {
     Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { endPoint, screens } from '../../../api/config';
-import { createGetMethod, createPostMethodWithToken } from '../../../api/Apis';
-import { colors, fonts } from '../../../styles';
-import { deviceWidth } from '../../global/LoaderComponent';
-import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
+import { endPoint } from '@app/api/config';
+import { createGetMethod, createPostMethodWithToken } from '@app/api/Apis';
+import { colors, fonts } from '../../../../styles';
+import { deviceWidth } from '../../../global/LoaderComponent';
+import MultiSelect from '../../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 
-class TaomoiNhaCungCapScreen extends React.Component {
+class UpdateVitriDialyScreen extends React.Component {
     constructor(props) {
         super(props);
+        const data = this.props.route.params.paramKey;
         this.state = {
-            scrollYValue: new Animated.Value(0),
-            maNhaCC: '',
-            tenNhaCC: '',
-            linhVucKinhdoanh: '',
-            maSothue: '',
-            diachi: '',
-            sodienthoai: '',
-            email: '',
-            ghiChu: '',
-            linhvucKDList: [],
+            tenVitri: data?.tenViTri || '',
+            tinhId: '',
+            quanId: '',
+            diachi: data?.diaChi || '',
+            ghiChu: data?.ghiChu || '',
+            TinhthanhList: [],
+            QuanhuyenList: [],
+            id: this.props.route.params?.idTs
         };
     }
 
@@ -40,7 +39,7 @@ class TaomoiNhaCungCapScreen extends React.Component {
         this.props.navigation.setOptions({
             headerRight: () => (
               <TouchableOpacity
-                onPress={() => this.saveNewNhaCC()}
+                onPress={() => this.saveNewVitri()}
                 style={{
                         paddingHorizontal: 16,
                         paddingVertical: 12,
@@ -62,55 +61,88 @@ class TaomoiNhaCungCapScreen extends React.Component {
               </TouchableOpacity>
             )
         })
-        this.getAllLinhvucKinhDoanh();
+        this.getAllTinhthanh();
     }
 
-    getAllLinhvucKinhDoanh() {
-        const url = `${endPoint.getAllLinhvucKD}`;
+    getAllTinhthanh() {
+        const url = `${endPoint.getAllTinhthanh}`;
         createGetMethod(url)
             .then(res => {
                 if (res) {
+                    const list = res.result.map(e => ({
+                        name: e.displayName,
+                        id: e.id
+                    }));
                     this.setState({
-                        linhvucKDList: res.result,
+                        TinhthanhList: list,
                     });
                 }
             })
     }
 
-    saveNewNhaCC() {
-        const {
-            maNhaCC,
-            tenNhaCC,
-            linhVucKinhdoanh,
-            maSothue,
-            diachi,
-            sodienthoai,
-            email,
-            ghiChu,
-            linhvucKDList,
-        } = this.state;
+    getAllQuanHuyen(idTinh) {
+        const url = `services/app/ViTriDiaLy/GetAllDtoQuanHuyenFromTT?tinhthanhId=${  idTinh}`;
+        createGetMethod(url)
+            .then(res => {
+                if (res) {
+                    const list = res.result.map(e => ({
+                        name: e.displayName,
+                        id: e.id
+                    }));
+                    this.setState({
+                        QuanhuyenList: list,
+                    });
+                }
+            })
+    }
 
+    onSelectedTinhThanhChange = (item) => {
+        this.setState({
+            tinhId: item,
+        });
+        this.getAllQuanHuyen(item);
+    }
+
+    saveNewVitri() {
+        const {
+            id,
+            tenVitri,
+            tinhId,
+            quanId,
+            diachi,
+            ghiChu,
+        } = this.state;
         let s = '';
         let check = false;
-        switch ("") {
-            case tenNhaCC:
-                {
-                    s = "tên nhà cung cấp";
-                    check = true;
-                    break;
-                }
-            case maNhaCC: {
-                s = "mã nhà cung cấp";
+        switch("") {
+            case tenVitri: 
+            {
+                s = "tên vị trí";
                 check = true;
                 break;
             }
-            default:
+            case tinhId: {
+                s = "tỉnh/thành phố";
+                check = true;
                 break;
+            }
+            case quanId: {
+                s = "quận/huyện";
+                check = true;
+                break;
+            } 
+            case diachi: {
+                s = "địa chỉ";
+                check = true;
+                break;
+            }
+            default: 
+            break;
         }
         if (check) {
             Alert.alert(
                 '',
-                `Hãy nhập ${  s}`,
+                `Hãy nhập ${ s}`,
                 [
                     { text: 'OK', style: "cancel" },
                 ],
@@ -118,25 +150,21 @@ class TaomoiNhaCungCapScreen extends React.Component {
             );
             return;
         }
-        const url = `${endPoint.CreatNhaCungcap}`;
+        const url = `${endPoint.CreatVitriDialy}`;
         const params = {
+            id,
             diaChi: diachi,
-            email,
             ghiChu,
-            linhVucKinhDoanhId: linhVucKinhdoanh[0],
-            listFile: [],
-            maNhaCungCap: maNhaCC,
-            maSoThue: maSothue,
-            soDienThoai: sodienthoai,
-            tenNhaCungCap: tenNhaCC,
+            quanHuyen: quanId[0],
+            tenViTri: tenVitri,
+            tinhThanh: tinhId[0],
         }
-
 
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
             if (res.success) {
                 Alert.alert(
                     '',
-                    'Thêm mới nhà cung cấp thành công',
+                    'Cập nhật vị trí thành công',
                     [
                         { text: 'OK', onPress: this.goBack() },
                     ],
@@ -155,8 +183,13 @@ class TaomoiNhaCungCapScreen extends React.Component {
 
     render() {
         const {
-            linhVucKinhdoanh,
-            linhvucKDList,
+            tenVitri,
+            tinhId,
+            quanId,
+            diachi,
+            ghiChu,
+            TinhthanhList,
+            QuanhuyenList,
         } = this.state;
         return (
           <Animated.View>
@@ -164,86 +197,61 @@ class TaomoiNhaCungCapScreen extends React.Component {
             <SafeAreaView>
               <Animated.ScrollView>
                 <View style={styles.container}>
-                  <Text style={styles.boldText}>Mã nhà cung cấp*</Text>
-                  <TextInput
-                    placeholderTextColor="black"
-                    placeholder="Nhập mã"
-                    style={styles.bordered}
-                    onChangeText={(maNhaCC) => {
-                                    this.setState({
-                                        maNhaCC,
-                                    });
-                                }}
-                  />
-                  <Text style={styles.boldText}>Tên nhà cung cấp*</Text>
+                  <Text style={styles.boldText}>Tên vị trí*</Text>
                   <TextInput
                     placeholderTextColor="black"
                     placeholder="Nhập tên"
+                    defaultValue={tenVitri}
                     style={styles.bordered}
-                    onChangeText={(tenNhaCC) => {
+                    onChangeText={(text) => {
                                     this.setState({
-                                        tenNhaCC,
+                                        tenVitri: text,
                                     });
                                 }}
                   />
 
-                  <Text style={styles.boldText}>Lĩnh vực kinh doanh</Text>
+                  <Text style={styles.boldText}>Tỉnh/Thành phố*</Text>
                   <MultiSelect
                     ref={(component) => { this.multiSelect = component }}
                     getCollapsedNodeHeight={{ height: 200 }}
-                    items={linhvucKDList}
+                    items={TinhthanhList}
                     single
                     IconRenderer={Icon}
                     searchInputPlaceholderText="Tìm kiếm..."
-                    styleListContainer={linhvucKDList && linhvucKDList.length > 9 ? { height: 200 } : null}
+                    styleListContainer={TinhthanhList && TinhthanhList.length > 9 ? { height: 200 } : null}
                     uniqueKey="id"
-                    displayKey="displayName"
-                    selectText="Chọn lĩnh vực kinh doanh..."
-                    onSelectedItemsChange={(item) => {
-                                    this.setState({
-                                        linhVucKinhdoanh: item,
-                                    });
-                                }}
-                    selectedItems={[linhVucKinhdoanh]}
+                    selectText="Chọn tỉnh/thành phố..."
+                    onSelectedItemsChange={(item) => this.onSelectedTinhThanhChange(item)}
+                    selectedItems={tinhId}
                     submitButtonColor="#2196F3"
                   />
-                  <Text style={styles.boldText}>Mã số thuế</Text>
-                  <TextInput
-                    placeholderTextColor="black"
-                    style={styles.bordered}
-                    onChangeText={(maSothue) => {
+                  <Text style={styles.boldText}>Quận/huyện*</Text>
+                  <MultiSelect
+                    ref={(component) => { this.multiSelect = component }}
+                    getCollapsedNodeHeight={{ height: 200 }}
+                    items={QuanhuyenList}
+                    single
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleListContainer={QuanhuyenList && QuanhuyenList.length > 9 ? { height: 200 } : null}
+                    uniqueKey="id"
+                    selectText="Chọn quận/huyện..."
+                    onSelectedItemsChange={(quanId) => {
                                     this.setState({
-                                        maSothue
+                                        quanId,
                                     });
                                 }}
+                    selectedItems={quanId}
+                    submitButtonColor="#2196F3"
                   />
-                  <Text style={styles.boldText}>Địa chỉ</Text>
+                  <Text style={styles.boldText}>Địa chỉ*</Text>
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(diachi) => {
+                    defaultValue={diachi}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        diachi
-                                    });
-                                }}
-                  />
-                  <Text style={styles.boldText}>Số điện thoại</Text>
-                  <TextInput
-                    placeholderTextColor="black"
-                    style={styles.bordered}
-                    onChangeText={(sodienthoai) => {
-                                    this.setState({
-                                        sodienthoai
-                                    });
-                                }}
-                  />
-                  <Text style={styles.boldText}>Email</Text>
-                  <TextInput
-                    placeholderTextColor="black"
-                    style={styles.bordered}
-                    onChangeText={(email) => {
-                                    this.setState({
-                                        email
+                                        diachi: text
                                     });
                                 }}
                   />
@@ -251,9 +259,10 @@ class TaomoiNhaCungCapScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(ghiChu) => {
+                    defaultValue={ghiChu}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        ghiChu
+                                        ghiChu: text
                                     });
                                 }}
                   />
@@ -302,7 +311,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderRadius: 5,
         paddingHorizontal: 20,
-        height: 40,
+        height: 50,
         marginLeft: 5,
     },
     boldText: {
@@ -352,4 +361,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default TaomoiNhaCungCapScreen;
+export default UpdateVitriDialyScreen;

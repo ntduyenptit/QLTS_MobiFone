@@ -10,12 +10,12 @@ import {
   Alert
 } from 'react-native';
 import BulletView from '../../global/BulletView';
-import { convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
+import { convertTextToLowerCase, convertTimeFormatToLocaleDate, getTextNCC } from '../../global/Helper';
 import { createGetMethod, deleteMethod } from '../../../api/Apis';
 import { endPoint, moreMenu, screens } from '../../../api/config';
 import MoreMenu from '../../global/MoreComponent';
 
-class QuanLyDauDocDetailComponent extends React.PureComponent {
+class QuanLyDauDocCoDinhDetailComponent extends React.PureComponent {
 
   constructor(props) {
     super(props);
@@ -44,7 +44,7 @@ class QuanLyDauDocDetailComponent extends React.PureComponent {
 
   getAssetMoreInfo() {
     const { idTaisan } = this.state;
-    let url = `${endPoint.getDaudocEdit}?`;
+    let url = `${endPoint.getDauDocDiDongEdit}?`;
     url += `input=${idTaisan}&isView=true`;
     createGetMethod(url).then(res => {
       if (res.success) {
@@ -67,8 +67,8 @@ class QuanLyDauDocDetailComponent extends React.PureComponent {
   }
 
   capnhat() {
-    const { idTaisan } = this.state;
-    this.props.navigation.navigate(screens.cap_nhat_dau_doc, { paramKey: this.state.taisan, idTs: idTaisan, onGoBack: () => this.refresh() });
+    const { idTaisan, taisan } = this.state;
+    this.props.navigation.navigate(screens.cap_nhat_dau_doc_di_dong, { paramKey: taisan, idTs: idTaisan, onGoBack: () => this.refresh() });
   }
 
   deleteThisAsset(id) {
@@ -121,9 +121,9 @@ class QuanLyDauDocDetailComponent extends React.PureComponent {
             <BulletView title='Tên tài sản' text={taisan?.tenTS || taisan?.tenTaiSan} flexTitle={1.5} />
             <BulletView title='S/N (Serial Number)' text={taisan?.serialNumber} flexTitle={1.5} />
             <BulletView title='P/N (Product Number)' text={taisan?.productNumber} flexTitle={1.5} />
-            <BulletView title='Nhà cung cấp' text={taisan?.nhaCC} flexTitle={1.5} />
+            <BulletView title='Nhà cung cấp' text={taisan?.nhaCC && getTextNCC(taisan?.nhaCC)} flexTitle={1.5} />
             <BulletView title='Hãng sản xuất' text={taisan?.hangSanXuat} flexTitle={1.5} />
-            <BulletView title='Loại tài sản' text={taisan?.loaiTS || taisan?.loaiTaiSan} flexTitle={1.5} />
+            <BulletView title='Loại tài sản' text="Đầu đọc di động" flexTitle={1.5} />
             <BulletView title='Phòng ban quản lý' text={taisan?.phongBanQL || taisan?.phongBanQuanLy} flexTitle={1.5} />
             <BulletView title='Vị trí tài sản' text={taisan?.viTriTS || taisan?.viTriTaiSan} flexTitle={1.5} />
             <BulletView title='Trạng thái' text={taisan?.trangThai} flexTitle={1.5} />
@@ -235,4 +235,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default QuanLyDauDocDetailComponent;
+export default QuanLyDauDocCoDinhDetailComponent;

@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import BulletView from '../../global/BulletView';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import MoreMenu from '../../global/MoreComponent';
-import { buildTree, convertLoaiTs, convertNguonKinhphi, convertNhaCC, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
+import { buildTree, convertLoaiTs, convertNguonKinhphi, getTextNCC, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
 import { createGetMethod, createPostMethodWithToken, deleteMethod } from '../../../api/Apis';
 import { deviceWidth, deviceHeight } from '../../global/LoaderComponent';
 import { endPoint, imageBaseUrl, screens, tabs, moreMenu } from '../../../api/config';
@@ -512,7 +512,7 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
               <BulletView title='Tên tài sản' text={taisan.tenTS || taisan.tenTaiSan} />
               <BulletView title='S/N (Serial Number)' text={taisan.serialNumber} />
               <BulletView title='P/N (Product Number)' text={taisan.productNumber} />
-              <BulletView title='Nhà cung cấp' text={taisan.nhaCC && convertNhaCC(taisan.nhaCC,this.props.NhaCCData)} />
+              <BulletView title='Nhà cung cấp' text={taisan.nhaCC && getTextNCC(taisan.nhaCC,this.props.NhaCCData)} />
               <BulletView title='Hãng sản xuất' text={taisan.hangSanXuat} />
               <BulletView title='Loại tài sản' text={textLoaiTs} />
               <BulletView title='Phòng ban quản lý' text={paramTS?.phongBanQL || paramTS?.phongBanQuanLy} />

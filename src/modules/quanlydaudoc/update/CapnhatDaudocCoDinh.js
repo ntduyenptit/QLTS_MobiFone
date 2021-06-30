@@ -1,103 +1,123 @@
 /* eslint-disable import/no-unresolved */
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar, Text, StyleSheet, View, TextInput, TouchableOpacity, Alert } from 'react-native';
+import {
+    Animated,
+    SafeAreaView,
+    StatusBar,
+    Text,
+    StyleSheet,
+    View,
+    TextInput,
+    TouchableOpacity,
+    Alert} from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { store } from '@app/redux/store';
 import { connect } from 'react-redux';
-import MultiSelect from '@app/libs/react-native-multiple-select/lib/react-native-multi-select';
-import { endPoint, } from '@app/api/config';
-import { createPostMethodWithToken } from '@app/api/Apis';
-import { convertDateToIOSString } from '@app/modules/global/Helper';
+import { getLTSDataFilter, getMSDDataFilter, getNCCDataFilter } from '@app/modules/global/FilterApis';
+import { getLTSDataAction, getMSDDataAction, getNCCDataAction } from '@app/redux/actions/filter.actions';
+import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
+import { endPoint } from '../../../api/config';
+import { convertDateToIOSString } from '../../global/Helper';
+import { createPostMethodWithToken } from '../../../api/Apis';
 import { colors, fonts } from '../../../styles';
+import { deviceWidth } from '../../global/LoaderComponent';
 
-let tab = '';
-
-class ThemmoiDaudocScreen extends React.Component {
+class UpdateDaudocCoDinhScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tenTS: '',
-            loaiTaisan: '',
-            loaiTaisanId: '',
-            SN: '',
-            PN: '',
-            nhaCungcap: '',
-            hangSx: '',
-            nguyenGia: '',
-            ngayMua: '',
-            ngayHetBh: '',
-            ngayHetSd: '',
-            ghiChu: '',
-            ReaderMACId: '',
-        }
+            idTaisan: this.props.route.params?.idTs,
+            tenTS: this.props.route.params.paramKey?.tenTS,
+            SN: this.props.route.params.paramKey?.serialNumber,
+            PN: this.props.route.params.paramKey?.productNumber,
+            readerMacId: this.props.route.params.paramKey?.readerMacId,
+            hangSx: this.props.route.params.paramKey?.hangSanXuat,
+            nguyenGia: this.props.route.params.paramKey?.nguyenGia,
+            ngayMua: this.props.route.params.paramKey?.ngaymua,
+            ngayHetBh: this.props.route.params.paramKey?.ngayBaoHanh,
+            ngayHetSd: this.props.route.params.paramKey?.hanSD,
+            nhaCungcap: [this.props.route.params.paramKey?.nhaCC],
+            ghiChu: this.props.route.params.paramKey?.ghichu,
+        };
     }
 
     componentDidMount() {
-        this.props.navigation.setOptions({
-            title: tab,
-            headerRight: () => (
-              <TouchableOpacity
-                onPress={() => this.saveNewReader()}
-                style={{
-                        paddingHorizontal: 16,
-                        paddingVertical: 12,
-                    }
-                    }
-              >
-                <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-                  <Text style={{
-                            fontFamily: fonts.primaryRegular,
-                            color: colors.white,
-                            fontSize: 18,
-                            alignSelf: 'center'
-                        }}
-                  > Lưu
-                  </Text>
+        Promise.all([
+            this.props.navigation.setOptions({
+                headerRight: () => (
+                  <TouchableOpacity
+                    onPress={() => this.saveNewTaiSan()}
+                    style={{
+                            paddingHorizontal: 16,
+                            paddingVertical: 12,
+                        }
+                        }
+                  >
+                    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                      <Text style={{
+                                fontFamily: fonts.primaryRegular,
+                                color: colors.white,
+                                fontSize: 18,
+                                alignSelf: 'center'
+                            }}
+                      > Lưu
+                      </Text>
 
-                </View>
-              </TouchableOpacity>
-            )
-        })
-        this.renderLoaiTS();
+                    </View>
+                  </TouchableOpacity>
+                )
+            }),
+        ]);
+        if (this.props.LoaiTSData.length === 0) {
+            Promise.all([
+                getLTSDataFilter(),
+                getMSDDataFilter(),
+                getNCCDataFilter(),
+              ]).then(res => {
+                if (res) {
+                  store.dispatch(getLTSDataAction(res[0].result));
+                  store.dispatch(getMSDDataAction(res[1].result));
+                  store.dispatch(getNCCDataAction(res[2].result));
+                } else {
+                  Alert.alert('Filter failed!');
+                }
+              })
+        }
     }
 
-    saveNewReader() {
+    saveNewTaiSan() {
         const {
-            tenTS,
-            loaiTaisanId,
-            SN,
-            PN,
-            nhaCungcap,
+            idTaisan,
             hangSx,
-            nguyenGia,
-            ngayMua,
             ngayHetBh,
-            ngayHetSd,
             ghiChu,
-            ReaderMACId,
+            nguyenGia,
+            nhaCungcap,
+            PN,
+            SN,
+            readerMacId,
+            tenTS,
+            ngayHetSd,
+            ngayMua
         } = this.state;
+        const url = `${endPoint.creatReadercodinh}`;
         let s = '';
         let check = false;
         switch ("") {
             case tenTS:
                 {
-                    s = "tên đầu đọc";
+                    s = "tên tài sản";
                     check = true;
                     break;
                 }
-            case ReaderMACId :
-                {
-                    if (tab === 'Thêm mới đầu đọc di động') {
-                        check = false;
-                        break;
-
-                    }
-                    s = "ReaderMAC id";
-                    check = true;
-                    break;
-                }
-                default:
-                    break;
+            case readerMacId: {
+                s = "ReaderMacId";
+                check = true;
+                break;
+            }
+            default:
+                break;
 
         }
         if (check) {
@@ -111,108 +131,58 @@ class ThemmoiDaudocScreen extends React.Component {
             );
             return;
         }
-        let url = '';
-        let params = '';
-        if (tab === 'Thêm mới đầu đọc di động') {
-            url = `${endPoint.creatReaderdidong}`;
-            params = {
-                ghiChu,
-                hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
-                hangSanXuat: hangSx,
-                loaiTS: loaiTaisanId,
-                ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
-                ngayMua: ngayMua && convertDateToIOSString(ngayMua),
-                nguyenGia,
-                nhaCC: nhaCungcap[0],
-                productNumber: PN,
-                serialNumber: SN,
-                tenTS,
-            }
-        } else {
-            url = `${endPoint.creatReadercodinh}`;
-            params = {
-                ghiChu,
-                hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
-                hangSanXuat: hangSx,
-                loaiTS: loaiTaisanId,
-                ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
-                ngayMua: ngayMua && convertDateToIOSString(ngayMua),
-                nguyenGia,
-                nhaCC: nhaCungcap[0],
-                productNumber: PN,
-                readerMACId: ReaderMACId,
-                serialNumber: SN,
-                tenTS,
-            }
+        // eslint-disable-next-line no-undef
+        const params = {
+            ghiChu,
+            id: idTaisan,
+            hangSanXuat: hangSx,
+            loaiTS: 2,
+            ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
+            hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
+            ngayMua: ngayMua && convertDateToIOSString(ngayMua),
+            nguyenGia,
+            nhaCC: nhaCungcap && nhaCungcap[0],
+            noiDungChotGia: "",
+            productNumber: PN,
+            readerMACId: readerMacId,
+            serialNumber: SN,
+            tenTS,
         }
-        createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
-            if (res.success) {
-                Alert.alert(
+        createPostMethodWithToken(url, JSON.stringify(params)).then((result) => {
+            if (result.success) {
+                Alert.alert('Cập nhật đầu đọc cố định thành công',
                     '',
-                    'Thêm mới thành công',
                     [
                         { text: 'OK', onPress: this.goBack() },
                     ],
+                    { cancelable: false }
                 );
-
             }
         })
+
     }
 
     goBack() {
         const { navigation, route } = this.props;
         route.params.onGoBack();
-        navigation.goBack();
-    }
-
-    renderLoaiTS() {
-        if (tab === 'Thêm mới đầu đọc di động') {
-            this.setState({
-                loaiTaisanId: 1,
-            })
-            this.setState({
-                loaiTaisan: 'Đầu đọc thẻ RFID',
-            });
-        } else {
-            this.setState({
-                loaiTaisanId: 2,
-            })
-            this.setState({
-                loaiTaisan: 'Đầu đọc cố định',
-            });
-        }
-    }
-
-    renderReaderMACView() {
-        if (tab === 'Thêm mới đầu đọc di động') {
-            return null;
-        }
-        return (
-          <View>
-            <Text style={styles.boldText}>ReaderMACId*</Text>
-            <TextInput
-              placeholderTextColor="black"
-              style={styles.bordered}
-              onChangeText={(text) => {
-                        this.setState({
-                            ReaderMACId: text,
-                        });
-                    }}
-            />
-          </View>
-        )
+        navigation.goBack()
     }
 
     render() {
         const {
-            loaiTaisan,
+            tenTS,
+            nguyenGia,
+            SN,
+            PN,
+            readerMacId,
+            hangSx,
             ngayMua,
             ngayHetBh,
             ngayHetSd,
-            nhaCungcap
+            nhaCungcap,
+            ghiChu,
         } = this.state;
-        const { screen } = this.props.route.params;
-        tab = screen;
+        
         return (
           <Animated.View>
             <StatusBar barStyle="dark-content" />
@@ -223,42 +193,60 @@ class ThemmoiDaudocScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(years) => {
+                    defaultValue={tenTS}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        tenTS: years,
+                                        tenTS: text,
                                     });
                                 }}
                   />
                   <Text style={styles.boldText}>Loại tài sản*</Text>
-                  <TextInput
-                    placeholderTextColor="black"
-                    style={styles.bordered}
-                    placeholder={loaiTaisan}
-                    editable={false}
-                    selectTextOnFocus={false}
+                  <MultiSelect
+                    single
+                    disabled
+                    items={this.props.LoaiTSData}
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                    uniqueKey="value"
+                    displayKey="text"
+                    selectText=""
+                    selectedItems={[2]}
                   />
 
                   <Text style={styles.boldText}>S/N (Serial Number)</Text>
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(years) => {
+                    defaultValue={SN}
+                    onChangeText={text => {
                                     this.setState({
-                                        SN: years,
+                                        SN: text,
                                     });
                                 }}
                   />
                   <Text style={styles.boldText}>P/N (Product Number)</Text>
                   <TextInput
                     placeholderTextColor="black"
+                    defaultValue={PN}
                     style={styles.bordered}
-                    onChangeText={(years) => {
+                    onChangeText={text => {
                                     this.setState({
-                                        PN: years,
+                                        PN: text,
                                     });
                                 }}
                   />
-                  {this.renderReaderMACView()}
+                  <Text style={styles.boldText}>ReaderMACId</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    defaultValue={readerMacId}
+                    style={styles.bordered}
+                    onChangeText={text => {
+                                    this.setState({
+                                        readerMacId: text,
+                                    });
+                                }}
+                  />
                   <Text style={styles.boldText}>Nhà cung cấp</Text>
                   <MultiSelect
                     single
@@ -268,29 +256,30 @@ class ThemmoiDaudocScreen extends React.Component {
                     styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
                     uniqueKey="id"
                     displayKey="displayName"
-                    selectText="Chọn nhà cung cấp..."
                     onSelectedItemsChange={(item) => this.setState({
-                        nhaCungcap: item,
-                                    })}
+                                    nhaCungcap: item,
+                                })}
                     selectedItems={nhaCungcap}
                   />
                   <Text style={styles.boldText}>Hãng sản xuất</Text>
                   <TextInput
                     placeholderTextColor="black"
+                    defaultValue={hangSx}
                     style={styles.bordered}
-                    onChangeText={(years) => {
+                    onChangeText={(hangsx) => {
                                     this.setState({
-                                        hangSx: years,
+                                        hangSx: hangsx,
                                     });
                                 }}
                   />
                   <Text style={styles.boldText}>Nguyên giá (VND)</Text>
                   <TextInput
                     placeholderTextColor="black"
+                    defaultValue={nguyenGia}
                     style={styles.bordered}
-                    onChangeText={(years) => {
+                    onChangeText={(price) => {
                                     this.setState({
-                                        nguyenGia: years,
+                                        nguyenGia: price,
                                     });
                                 }}
                   />
@@ -381,11 +370,11 @@ class ThemmoiDaudocScreen extends React.Component {
                                     });
                                 }}
                   />
-
                   <Text style={styles.boldText}>Ghi chú</Text>
                   <TextInput
                     placeholderTextColor="black"
-                    style={[styles.bordered, { height: 100 }]}
+                    defaultValue={ghiChu}
+                    style={styles.bordered}
                     onChangeText={(text) => {
                                     this.setState({
                                         ghiChu: text,
@@ -405,7 +394,6 @@ class ThemmoiDaudocScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 5,
     },
     containerModal: {
         height: 40,
@@ -419,6 +407,18 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginLeft: 10,
+    },
+    row: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        width: deviceWidth,
+        paddingBottom: 5,
+        paddingLeft: 10
+    },
+    searchText: {
+        backgroundColor: 'transparent',
+        height: 50,
+        paddingLeft: 15
     },
     title: {
         alignSelf: 'center',
@@ -434,11 +434,6 @@ const styles = StyleSheet.create({
         height: 40,
         marginLeft: 5,
         marginRight: 5
-    },
-    searchText: {
-        backgroundColor: 'transparent',
-        height: 50,
-        paddingLeft: 15
     },
     boldText: {
         fontWeight: 'bold',
@@ -488,7 +483,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
+    LoaiTSData: state.filterLTSDataReducer.ltsDataFilter,
     NhaCCData: state.filterNCCDataReducer.nccDataFilter,
 });
 
-export default connect(mapStateToProps)(ThemmoiDaudocScreen);
+
+
+export default connect(mapStateToProps)(UpdateDaudocCoDinhScreen);

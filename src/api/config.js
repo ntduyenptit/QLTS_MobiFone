@@ -78,6 +78,8 @@ export const endPoint = ({
   // Quản lý vị trí địa lý
   getAllVitriDialy: 'services/app/ViTriDiaLy/GetAll',
   getAllTinhthanh: 'services/app/ViTriDiaLy/GetAllDtoTinhThanh',
+  getViewVitriDiaLy: 'services/app/ViTriDiaLy/GetForEdit',
+  getTinhThanhAll: 'services/app/ViTriDiaLy/GetAllDtoTinhThanh',
 
   // Quản lý loại tài sản
   getAllLoaiTaiSan: 'services/app/LoaiTaiSan/GetAll',
@@ -140,7 +142,8 @@ export const endPoint = ({
   tsThanhlyHoantac: 'services/app/TaiSanThanhLy/HoanTacTaiSanThanhLy',
   tsHongHoantac: 'services/app/TaiSanHong/HoanTacTaiSanHong',
 
-  getDaudocEdit :'services/app/DauDocTheRFID/GetForEdit',
+  getDauDocDiDongEdit :'services/app/DauDocTheRFID/GetForEdit',
+  getDauDocCodinhEdit :'services/app/AngTenRFID/GetForEdit',
   // xóa tài sản
   DeleteTaiSan: 'services/app/ToanBoTaiSan/Deleted',
   deleteReaderdidong: 'services/app/DauDocTheRFID/Deleted',
@@ -156,7 +159,8 @@ export const screens = ({
   forgot_password: 'Quên mật khẩu',
   // quản lý đầu đọc
   quan_ly_dau_doc: 'Quản lý đầu đọc',
-  cap_nhat_dau_doc: 'Cập nhật đầu đọc',
+  cap_nhat_dau_doc_di_dong: 'Cập nhật đầu đọc di động',
+  cap_nhat_dau_doc_co_dinh: 'Cập nhật đầu đọc cố định',
   quan_ly_dau_doc_di_dong: 'Quản lý đầu đọc di động',
   quan_ly_dau_doc_co_dinh: 'Quản lý đầu đọc cố định',
   giam_sat_tai_san: 'Giám sát tài sản',
@@ -185,13 +189,18 @@ export const screens = ({
   quan_ly_mail_server: 'Quản lý Mail, Server',
   // Màn hình chi tiết
   chi_tiet_tai_san: 'Chi tiết tài sản',
-  chi_tiet_dau_doc: 'Chi tiết đầu đọc',
+  chi_tiet_dau_doc_co_dinh: 'Chi tiết đầu đọc cố định',
+  chi_tiet_dau_doc_di_dong: 'Chi tiết đầu đọc di động',
   chi_tiet_kiem_ke_tai_san: 'Chi tiết kiểm kê tài sản',
   chi_tiet_du_tru_mua_sam: 'Chi tiết phiếu mua sắm',
   chi_tiet_lich_xuat_bao_cao: 'Xem cài đặt Báo cáo người dùng',
   chi_tiet_nha_cung_cap: 'Xem chi tiết',
   chi_tiet_nguoi_dung: 'Xem chi tiết người dùng',
   chi_tiet_bao_hongmat_tai_san: 'Xem chi tiết khai báo',
+  chi_tiet_vi_tri_dia_ly: 'Xem chi tiết vị trí địa lý',
+  // sửa
+  cap_nhat_nha_cung_cap: 'Cập nhật nhà cung cấp',
+  cap_nhat_vi_tri_dia_ly: 'Cập nhật vị trí địa lý',
   // them moi tai san
   them_moi_tai_san: "Thêm mới tài sản",
   cap_nhat_tai_san: "Cập nhật tài sản",

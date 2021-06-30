@@ -36,27 +36,27 @@ class TaomoiVitriDialyScreen extends React.Component {
     componentDidMount() {
         this.props.navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity
-                    onPress={() => this.saveNewVitri()}
-                    style={{
+              <TouchableOpacity
+                onPress={() => this.saveNewVitri()}
+                style={{
                         paddingHorizontal: 16,
                         paddingVertical: 12,
                     }
                     }
-                >
-                    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-                        {/* <Icon name="save" color="white" size={20} /> */}
-                        <Text style={{
+              >
+                <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                  {/* <Icon name="save" color="white" size={20} /> */}
+                  <Text style={{
                             fontFamily: fonts.primaryRegular,
                             color: colors.white,
                             fontSize: 18,
                             alignSelf: 'center'
                         }}
-                        > Lưu
-              </Text>
+                  > Lưu
+                  </Text>
 
-                    </View>
-                </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
             )
         })
         this.getAllTinhthanh();
@@ -77,8 +77,9 @@ class TaomoiVitriDialyScreen extends React.Component {
                 }
             })
     }
+
     getAllQuanHuyen(idTinh) {
-        const url = `services/app/ViTriDiaLy/GetAllDtoQuanHuyenFromTT?tinhthanhId=` + idTinh;
+        const url = `services/app/ViTriDiaLy/GetAllDtoQuanHuyenFromTT?tinhthanhId=${  idTinh}`;
         createGetMethod(url)
             .then(res => {
                 if (res) {
@@ -92,12 +93,14 @@ class TaomoiVitriDialyScreen extends React.Component {
                 }
             })
     }
+
     onSelectedTinhThanhChange = (item) => {
         this.setState({
             tinhId: item,
         });
         this.getAllQuanHuyen(item);
     }
+
     saveNewVitri() {
         const {
             tenVitri,
@@ -130,11 +133,13 @@ class TaomoiVitriDialyScreen extends React.Component {
                 check = true;
                 break;
             }
+            default: 
+            break;
         }
         if (check) {
             Alert.alert(
                 '',
-                'Hãy nhập '+ s,
+                `Hãy nhập ${ s}`,
                 [
                     { text: 'OK', style: "cancel" },
                 ],
@@ -145,7 +150,7 @@ class TaomoiVitriDialyScreen extends React.Component {
         const url = `${endPoint.CreatVitriDialy}`;
         const params = {
             diaChi: diachi,
-            ghiChu: ghiChu,
+            ghiChu,
             quanHuyen: quanId[0],
             tenViTri: tenVitri,
             tinhThanh: tinhId[0],
@@ -157,13 +162,19 @@ class TaomoiVitriDialyScreen extends React.Component {
                     '',
                     'Thêm mới vị trí thành công',
                     [
-                        { text: 'OK', onPress: this.props.navigation.goBack() },
+                        { text: 'OK', onPress: this.goBack() },
                     ],
 
                 );
 
             }
         })
+    }
+
+    goBack() {
+        const { navigation, route } = this.props;
+        route.params.onGoBack();
+        navigation.goBack();
     }
 
     render() {
@@ -177,84 +188,83 @@ class TaomoiVitriDialyScreen extends React.Component {
             QuanhuyenList,
         } = this.state;
         return (
-            <Animated.View>
-                <StatusBar barStyle="dark-content" />
-                <SafeAreaView>
-                    <Animated.ScrollView
-                    >
-                        <View style={styles.container}>
-                            <Text style={styles.boldText}>Tên vị trí*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                placeholder="Nhập tên"
-                                style={styles.bordered}
-                                onChangeText={(tenVitri) => {
+          <Animated.View>
+            <StatusBar barStyle="dark-content" />
+            <SafeAreaView>
+              <Animated.ScrollView>
+                <View style={styles.container}>
+                  <Text style={styles.boldText}>Tên vị trí*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    placeholder="Nhập tên"
+                    style={styles.bordered}
+                    onChangeText={(tenVitri) => {
                                     this.setState({
                                         tenVitri,
                                     });
                                 }}
-                            />
+                  />
 
-                            <Text style={styles.boldText}>Tỉnh/Thành phố*</Text>
-                            <MultiSelect
-                                ref={(component) => { this.multiSelect = component }}
-                                getCollapsedNodeHeight={{ height: 200 }}
-                                items={TinhthanhList}
-                                single={true}
-                                IconRenderer={Icon}
-                                searchInputPlaceholderText="Tìm kiếm..."
-                                styleListContainer={TinhthanhList && TinhthanhList.length > 9 ? { height: 200 } : null}
-                                uniqueKey="id"
-                                selectText="Chọn tỉnh/thành phố..."
-                                onSelectedItemsChange={(item) => this.onSelectedTinhThanhChange(item)}
-                                selectedItems={tinhId}
-                                submitButtonColor="#2196F3"
-                            />
-                            <Text style={styles.boldText}>Quận/huyện*</Text>
-                            <MultiSelect
-                                ref={(component) => { this.multiSelect = component }}
-                                getCollapsedNodeHeight={{ height: 200 }}
-                                items={QuanhuyenList}
-                                single={true}
-                                IconRenderer={Icon}
-                                searchInputPlaceholderText="Tìm kiếm..."
-                                styleListContainer={QuanhuyenList && QuanhuyenList.length > 9 ? { height: 200 } : null}
-                                uniqueKey="id"
-                                selectText="Chọn quận/huyện..."
-                                onSelectedItemsChange={(quanId) => {
+                  <Text style={styles.boldText}>Tỉnh/Thành phố*</Text>
+                  <MultiSelect
+                    ref={(component) => { this.multiSelect = component }}
+                    getCollapsedNodeHeight={{ height: 200 }}
+                    items={TinhthanhList}
+                    single
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleListContainer={TinhthanhList && TinhthanhList.length > 9 ? { height: 200 } : null}
+                    uniqueKey="id"
+                    selectText="Chọn tỉnh/thành phố..."
+                    onSelectedItemsChange={(item) => this.onSelectedTinhThanhChange(item)}
+                    selectedItems={tinhId}
+                    submitButtonColor="#2196F3"
+                  />
+                  <Text style={styles.boldText}>Quận/huyện*</Text>
+                  <MultiSelect
+                    ref={(component) => { this.multiSelect = component }}
+                    getCollapsedNodeHeight={{ height: 200 }}
+                    items={QuanhuyenList}
+                    single
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleListContainer={QuanhuyenList && QuanhuyenList.length > 9 ? { height: 200 } : null}
+                    uniqueKey="id"
+                    selectText="Chọn quận/huyện..."
+                    onSelectedItemsChange={(quanId) => {
                                     this.setState({
                                         quanId,
                                     });
                                 }}
-                                selectedItems={quanId}
-                                submitButtonColor="#2196F3"
-                            />
-                            <Text style={styles.boldText}>Địa chỉ*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(diachi) => {
+                    selectedItems={quanId}
+                    submitButtonColor="#2196F3"
+                  />
+                  <Text style={styles.boldText}>Địa chỉ*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(diachi) => {
                                     this.setState({
                                         diachi
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Ghi chú</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(ghiChu) => {
+                  />
+                  <Text style={styles.boldText}>Ghi chú</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(ghiChu) => {
                                     this.setState({
                                         ghiChu
                                     });
                                 }}
-                            />
-                        </View>
+                  />
+                </View>
 
-                    </Animated.ScrollView>
-                </SafeAreaView>
+              </Animated.ScrollView>
+            </SafeAreaView>
 
-            </Animated.View>
+          </Animated.View>
         );
     }
 

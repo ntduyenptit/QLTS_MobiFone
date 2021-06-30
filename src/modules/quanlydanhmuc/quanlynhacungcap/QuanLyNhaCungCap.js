@@ -3,17 +3,14 @@ import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Dimensions, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
-import AsyncStorage from '@react-native-community/async-storage';
 import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
-import QuanLyNCCFilter from './QuanlyNhaCungCapFilter';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
-let isNeedRefresh = false;
 
 class QuanLyNhaCungCapScreen extends React.Component {
     constructor(props) {
@@ -22,7 +19,6 @@ class QuanLyNhaCungCapScreen extends React.Component {
             scrollYValue: new Animated.Value(0),
             nhacungcapData: [],
             total: 0,
-            isRefresh: false,
         }
 
     }
@@ -38,11 +34,9 @@ class QuanLyNhaCungCapScreen extends React.Component {
         url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
         url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
         url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
-        console.log(`url ${  url}`);
         createGetMethod(url)
             .then(res => {
                 if (res) {
-                    console.log(`NCC,total: ${  res.result.items  } ${  res.result.totalCount}`);
                     this.setState({
                         nhacungcapData: res.result.items,
                         total: res.result.totalCount
@@ -51,7 +45,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
                     // Alert.alert('Lỗi khi load toàn bộ tài sản!');
                 }
             })
-            .catch(err => console.log(err));
+            .catch();
     }
 
     refresh = () => {
@@ -64,12 +58,6 @@ class QuanLyNhaCungCapScreen extends React.Component {
             nhacungcapData,
             total
         } = this.state;
-        if (this.props.route.params) {
-            const {onGoBack} = this.props.route.params;
-            isNeedRefresh = onGoBack;
-            console.log (`isNeedRefresh ${onGoBack}`);
-        }
-        // isNeedRefresh = onGoBack;
         const clampedScroll = Animated.diffClamp(
             Animated.add(
                 scrollYValue.interpolate({

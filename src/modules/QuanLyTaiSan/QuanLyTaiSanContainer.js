@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 import { compose, lifecycle } from 'recompose';
 
 import QuanLyTaiSanScreen, { GetToanBoTaiSanData } from './QuanLyTaiSan';
-import { getLTSDataFilter, getMSDDataFilter, getNCCDataFilter } from '../global/FilterApis'
+import { getLTSDataFilter, getMSDDataFilter, getNCCDataFilter } from '../global/FilterApis';
 import { store } from '../../redux/store';
 import { tabs } from '../../api/config';
 import { headerRightComponent } from '../navigation/stackNavigationData'

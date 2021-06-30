@@ -33,6 +33,7 @@ const QuanLyKiemkeFilterComponent = (items) => {
     const [start, setStart] = useState({});
     const [end, setEnd] = useState({});
     const [period, setPeriod]= useState({});
+    const [currentDay, setCurrent] = useState('');
 
     const donViQuanLyRef = useRef();
     const tinhTrangKiemKeRef = useRef();
@@ -61,7 +62,9 @@ const QuanLyKiemkeFilterComponent = (items) => {
         if (StartDateFilterSelected && EndDateFilterSelected) {
             const Period = getPeriod(StartDateFilterSelected.timestamp, EndDateFilterSelected.timestamp);
             setPeriod(Period);
+            console.log(Period);
         }
+        setCurrent(StartDateFilterSelected?.dateString);
     }, [items.isShowFilter]);
 
     const closeMultiSelectIfOpened = (type) => {
@@ -150,6 +153,7 @@ const QuanLyKiemkeFilterComponent = (items) => {
             <View>
               <Text style={styles.titleText}>Thời gian</Text>
               <Calendar
+                current={currentDay}
                 onDayPress={(day) => onStartDateChange(day)}
                 markingType='period'
                 markedDates={period}
