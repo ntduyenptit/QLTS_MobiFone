@@ -71,11 +71,15 @@ export const getTextLinhVucKinhDoanh = (type, list) => (
   find(list, e => e.id === type)?.displayName
 )
 
-export const getTextTinhThanh = (type, list) => {
-  if (typeof type === 'string' || type instanceof String) {
-    return type;
-  } 
+const isEmpty = value => typeof value === 'undefined' || value === null || value === false;
+const isNumeric = value => !isEmpty(value) && !Number.isNaN(Number(value));
+
+export const getTextTinhThanhQuanHuyen = (type, list) => {
+  console.log('33333123: ', type, list)
+  if (isNumeric(type)) {
     return find(list, e => e.id === type)?.displayName;
+  }
+  return type;
 }
 
 

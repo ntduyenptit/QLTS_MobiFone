@@ -17,6 +17,7 @@ import { endPoint } from '@app/api/config';
 import { createGetMethod, createPostMethodWithToken } from '@app/api/Apis';
 import { colors, fonts } from '../../../../styles';
 import { deviceWidth } from '../../../global/LoaderComponent';
+import find from 'lodash/find';
 import MultiSelect from '../../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 
 class UpdateVitriDialyScreen extends React.Component {
@@ -27,6 +28,9 @@ class UpdateVitriDialyScreen extends React.Component {
             tenVitri: data?.tenViTri || '',
             tinhId: '',
             quanId: '',
+            isFirst: true,
+            tinh: data?.tinhThanh || '',
+            quan: data?.quanHuyen || '',
             diachi: data?.diaChi || '',
             ghiChu: data?.ghiChu || '',
             TinhthanhList: [],
@@ -65,6 +69,7 @@ class UpdateVitriDialyScreen extends React.Component {
     }
 
     getAllTinhthanh() {
+        const { tinh, isFirst } = this.state;
         const url = `${endPoint.getAllTinhthanh}`;
         createGetMethod(url)
             .then(res => {
@@ -75,12 +80,20 @@ class UpdateVitriDialyScreen extends React.Component {
                     }));
                     this.setState({
                         TinhthanhList: list,
+                    }, () => {
+                        if (tinh !== '' && isFirst) {
+                            const tinhThanhId = find(list, e => e.name === tinh).id;
+                            this.setState({
+                                tinhId: [tinhThanhId]
+                            }, () => this.getAllQuanHuyen(tinhThanhId));
+                        }
                     });
                 }
             })
     }
 
     getAllQuanHuyen(idTinh) {
+        const { quan, isFirst } = this.state;
         const url = `services/app/ViTriDiaLy/GetAllDtoQuanHuyenFromTT?tinhthanhId=${  idTinh}`;
         createGetMethod(url)
             .then(res => {
@@ -91,6 +104,14 @@ class UpdateVitriDialyScreen extends React.Component {
                     }));
                     this.setState({
                         QuanhuyenList: list,
+                    }, () => {
+                        if (quan !== '' && isFirst) {
+                            const quanHuyenId = find(list, e => e.name === quan).id;
+                            this.setState({
+                                quanId: [quanHuyenId],
+                                isFirst: false,
+                            });
+                        }
                     });
                 }
             })
@@ -99,8 +120,7 @@ class UpdateVitriDialyScreen extends React.Component {
     onSelectedTinhThanhChange = (item) => {
         this.setState({
             tinhId: item,
-        });
-        this.getAllQuanHuyen(item);
+        }, () => this.getAllQuanHuyen(item));
     }
 
     saveNewVitri() {

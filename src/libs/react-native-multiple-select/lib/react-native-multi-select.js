@@ -323,7 +323,10 @@ export default class MultiSelect extends Component {
 
   _itemSelected = item => {
     const { uniqueKey, selectedItems } = this.props;
-    return selectedItems.indexOf(item[uniqueKey]) !== -1;
+    if (selectedItems && item[uniqueKey]) {
+      return selectedItems.indexOf(item[uniqueKey]) !== -1; 
+    }
+    return null;
   };
 
   _addItem = () => {
@@ -354,10 +357,15 @@ export default class MultiSelect extends Component {
     const {
       single,
       uniqueKey,
+      displayKey,
       selectedItems,
       onSelectedItemsChange,
       isTree
     } = this.props;
+    if (item[displayKey] === '...') {
+      onSelectedItemsChange(null);
+      return;
+    }
     if (single) {
       this._submitSelection();
       onSelectedItemsChange([item[uniqueKey]]);
@@ -756,10 +764,9 @@ export default class MultiSelect extends Component {
       // console.log('renderItems_isTree :', renderItems);
     }
     
-    if (renderItems.length > 0 && renderItems[0][displayKey] !== "Tất cả") {
+    if (renderItems.length > 0 && renderItems[0][displayKey]!== "...") {
       const all = {
-        id: 0,
-        [displayKey]: "Tất cả"
+        [displayKey]: "..."
       };
   
       renderItems.unshift(all);

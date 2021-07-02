@@ -23,7 +23,17 @@ class QuanLyNhaCungCapScreen extends React.Component {
 
     componentDidMount() {
         this.getAllVitriData();
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'focus',
+            () => {
+                this.getAllVitriData();
+            }
+          );
     }
+
+    componentWillUnmount() {
+        this.willFocusSubscription();
+      }
 
     getAllVitriData() {
         let url = `${endPoint.getAllVitriDialy}?`;

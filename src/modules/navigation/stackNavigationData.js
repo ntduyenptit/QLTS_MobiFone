@@ -34,8 +34,10 @@ import NhaCungCapDetailScreen from '../quanlydanhmuc/quanlynhacungcap/QuanLyNhaC
 import VitriDialyDetailScreen from '../quanlydanhmuc/quanlyvitridialy/detail/VitriDialyDetail';
 import CapNhatNhaCungCap from '../quanlydanhmuc/quanlynhacungcap/update/UpdateNhacungcap';
 import CapNhatViTriDiaLy from '../quanlydanhmuc/quanlyvitridialy/update/UpdateVitriDialy';
+import UpdateLoaiTSScreen from '../quanlydanhmuc/quanlyloaitaisan/update/UpdateLoaiTS';
 import QuanlyVitriDialyScreen from '../quanlydanhmuc/quanlyvitridialy/QuanlyVitriDialy';
 import QuanlyLoaiTaiSanScreen from '../quanlydanhmuc/quanlyloaitaisan/QuanlyLoaiTaisan';
+import LoaiTaiSanDetailScreen from '../quanlydanhmuc/quanlyloaitaisan/detail/QuanLyLoaiTaiSanDetail';
 import QuanlyDonviScreen from '../quanlydanhmuc/quanlydonvi/QuanlyDonvi';
 import QuanLyNguoidungScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoidung';
 import NguoidungDetailScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoidungDetail';
@@ -233,7 +235,6 @@ const StackNavigationData = [
       alignSelf: 'center'
     },
   },
-
   {
     name: screens.chi_tiet_kiem_ke_tai_san,
     component: KiemKeTaiSanDetailComponent,
@@ -365,6 +366,19 @@ const StackNavigationData = [
     },
   },
   {
+    name: screens.cap_nhat_loai_tai_san,
+    component: UpdateLoaiTSScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: moreHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
     name: screens.quan_ly_vi_tri_dia_ly,
     component: QuanlyVitriDialyScreen,
     headerLeft: null,
@@ -381,6 +395,19 @@ const StackNavigationData = [
     name: screens.quan_ly_loai_tai_san,
     component: QuanlyLoaiTaiSanScreen,
     headerLeft: null,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.chi_tiet_quan_ly_loai_tai_san,
+    component: LoaiTaiSanDetailScreen,
+    headerLeft: headerLeftComponent,
     headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {

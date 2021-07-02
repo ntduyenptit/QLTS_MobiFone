@@ -79,6 +79,7 @@ export const endPoint = ({
   getAllVitriDialy: 'services/app/ViTriDiaLy/GetAll',
   getAllTinhthanh: 'services/app/ViTriDiaLy/GetAllDtoTinhThanh',
   getViewVitriDiaLy: 'services/app/ViTriDiaLy/GetForEdit',
+  getChiTietLoaiTaiSan: 'services/app/LoaiTaiSan/GetForEdit',
   getTinhThanhAll: 'services/app/ViTriDiaLy/GetAllDtoTinhThanh',
 
   // Quản lý loại tài sản
@@ -150,6 +151,7 @@ export const endPoint = ({
   deleteKiemke: 'services/app/KiemKeTaiSan/Delete',
   deletePhieuMuasam: 'services/app/PhieuDuTruMuaSam/Deleted',
   deleteNhaCC: 'services/app/NhaCungCap/Delete',
+  deleteLoaiTs: 'services/app/LoaiTaiSan/Delete',
 });
 
 // Quản lý màn hình
@@ -198,9 +200,11 @@ export const screens = ({
   chi_tiet_nguoi_dung: 'Xem chi tiết người dùng',
   chi_tiet_bao_hongmat_tai_san: 'Xem chi tiết khai báo',
   chi_tiet_vi_tri_dia_ly: 'Xem chi tiết vị trí địa lý',
+  chi_tiet_quan_ly_loai_tai_san: 'Xem chi tiết quản lý loại tài sản',
   // sửa
   cap_nhat_nha_cung_cap: 'Cập nhật nhà cung cấp',
   cap_nhat_vi_tri_dia_ly: 'Cập nhật vị trí địa lý',
+  cap_nhat_loai_tai_san: 'Cập nhật loại tài sản',
   // them moi tai san
   them_moi_tai_san: "Thêm mới tài sản",
   cap_nhat_tai_san: "Cập nhật tài sản",

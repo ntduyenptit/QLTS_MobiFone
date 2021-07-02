@@ -14,25 +14,27 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { getLTSDataFilter } from '@app/modules/global/FilterApis';
-import { endPoint } from '../../../api/config';
-import { createPostMethodWithToken } from '../../../api/Apis';
-import { colors, fonts } from '../../../styles';
-import { deviceWidth } from '../../global/LoaderComponent';
-import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
+import { endPoint } from '../../../../api/config';
+import { createPostMethodWithToken } from '../../../../api/Apis';
+import { colors, fonts } from '../../../../styles';
+import { deviceWidth } from '../../../global/LoaderComponent';
+import MultiSelect from '../../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 
-class TaomoiLoaiTSScreen extends React.Component {
+class UpdateLoaiTSScreen extends React.Component {
     constructor(props) {
         super(props);
+        const data = this.props.route.params.paramKey;
         this.state = {
-            maLoaiTS: '',
-            tenLoaiTS: '',
+            maLoaiTS: data?.ma || '',
+            tenLoaiTS: data?.ten || '',
             thuocLoaiTS: '',
-            ghiChu: '',
+            ghiChu: data?.ghiChu,
             loaiTSList: [],
         };
     }
 
     componentDidMount() {
+        console.log(this.props.route.params.paramKey);
         this.props.navigation.setOptions({
             headerRight: () => (
               <TouchableOpacity
@@ -121,7 +123,7 @@ class TaomoiLoaiTSScreen extends React.Component {
             if (res.success) {
                 Alert.alert(
                     '',
-                    'Thêm mới loại tài sản thành công',
+                    'Cập nhật loại tài sản thành công',
                     [
                         { text: 'OK', onPress: this.goBack() },
                     ],
@@ -141,7 +143,10 @@ class TaomoiLoaiTSScreen extends React.Component {
     render() {
         const {
             thuocLoaiTS,
-            loaiTSList
+            loaiTSList,
+            tenLoaiTS,
+            maLoaiTS,
+            ghiChu
         } = this.state;
         return (
           <Animated.View>
@@ -153,10 +158,11 @@ class TaomoiLoaiTSScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     placeholder="Nhập tên"
+                    defaultValue={maLoaiTS}
                     style={styles.bordered}
-                    onChangeText={(maLoaiTS) => {
+                    onChangeText={(text) => {
                                     this.setState({
-                                        maLoaiTS,
+                                        maLoaiTS: text,
                                     });
                                 }}
                   />
@@ -164,9 +170,10 @@ class TaomoiLoaiTSScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(tenLoaiTS) => {
+                    defaultValue={tenLoaiTS}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        tenLoaiTS
+                                        tenLoaiTS: text
                                     });
                                 }}
                   />
@@ -193,9 +200,10 @@ class TaomoiLoaiTSScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(ghiChu) => {
+                    defaultValue={ghiChu}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        ghiChu
+                                        ghiChu: text
                                     });
                                 }}
                   />
@@ -296,4 +304,4 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
     LoaiTSData: state.filterLTSDataReducer.ltsDataFilter,
 });
-export default connect(mapStateToProps)(TaomoiLoaiTSScreen);
+export default connect(mapStateToProps)(UpdateLoaiTSScreen);

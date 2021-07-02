@@ -12,21 +12,22 @@ import MoreMenu from '@app/modules/global/MoreComponent';
 import { endPoint, moreMenu, screens } from '@app/api/config';
 import { createGetMethod, deleteMethod } from '@app/api/Apis';
 import { deviceWidth } from '@app/modules/global/LoaderComponent';
-import { getTextTinhThanhQuanHuyen } from '@app/modules/global/Helper';
+import { getTextTinhThanh } from '@app/modules/global/Helper';
 
-class VitriDialyDetailScreen extends React.Component {
+class LoaiTaiSanDetailScreen extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            chitietData: this.props.route.params?.paramKey || null,
-            id: this.props.route.params?.id,
+            chitietData: this.props.route.params?.paramKey?.data?.loaiTaiSan || null,
+            id: this.props.route.params?.paramKey?.data?.loaiTaiSan?.id,
             tinhThanhList: [],
         }
     }
 
     componentDidMount() {
         const { chitietData } = this.state;
+        console.log(chitietData);
         this.props.navigation.setOptions({
             headerRight: () => (
               <MoreMenu listMenu={this.showMenu()} />
@@ -34,15 +35,15 @@ class VitriDialyDetailScreen extends React.Component {
           });
           if (chitietData === null) {
               Promise.all([
-                this.getchitietViTriDialy(),
-                this.getTinhThanhList(),
+                this.getchitietLoaiTaiSan(),
+                // this.getAllLoaiTaiSan(),
               ]);
           }
     }
 
-    getchitietViTriDialy() {
+    getchitietLoaiTaiSan() {
         const { id } = this.state;
-        let url = `${endPoint.getViewVitriDiaLy}?`;
+        let url = `${endPoint.getChiTietLoaiTaiSan}?`;
         url += `input=${encodeURIComponent(`${id}`)}&`;
         url += `isView=${encodeURIComponent(`${true}`)}`;
         createGetMethod(url)
@@ -50,8 +51,6 @@ class VitriDialyDetailScreen extends React.Component {
                 if (res.success) {
                     this.setState({
                         chitietData: res.result,
-                    }, () => {
-                        this.getAllQuanHuyen(res.result.tinhThanh);
                     });
                 } else {
                     // Alert.alert('Lỗi khi load toàn bộ tài sản!');
@@ -60,11 +59,12 @@ class VitriDialyDetailScreen extends React.Component {
             .catch();
     }
 
-    getTinhThanhList() {
+    getAllLoaiTaiSan() {
         const url = `${endPoint.getTinhThanhAll}?`;
         createGetMethod(url)
             .then(res => {
                 if (res.success) {
+                    console.log(res);
                     this.setState({
                         tinhThanhList: res.result,
                     });
@@ -73,18 +73,9 @@ class VitriDialyDetailScreen extends React.Component {
             .catch();
     }
 
-    getAllQuanHuyen(idTinh) {
-        const url = `services/app/ViTriDiaLy/GetAllDtoQuanHuyenFromTT?tinhthanhId=${  idTinh}`;
-        console.log('ket qua de123: ', url);
-        createGetMethod(url)
-            .then(res => {
-                if (res.success) {
-                    this.setState({
-                        QuanhuyenList: res.result,
-                    });
-                }
-            })
-    }
+    refresh = () => {
+        this.getchitietLoaiTaiSan();
+   }
 
     showMenu = () => (
         [{
@@ -93,20 +84,9 @@ class VitriDialyDetailScreen extends React.Component {
         }]
     )
 
-    refresh = () => {
-        this.setState({
-            chitietData: null
-        }, () => {
-            Promise.all([
-                this.getTinhThanhList(),
-                this.getchitietViTriDialy(),
-            ])
-        });
-      }
-
     capnhat() {
         const { chitietData, id } = this.state;
-        this.props.navigation.navigate(screens.cap_nhat_vi_tri_dia_ly, { paramKey: chitietData, idTs: id, onGoBack: () => this.refresh() });
+        this.props.navigation.navigate(screens.cap_nhat_loai_tai_san, { paramKey: chitietData, idTs: id, onGoBack: () => this.refresh() });
       }
 
     delete(id) {
@@ -115,12 +95,12 @@ class VitriDialyDetailScreen extends React.Component {
             [
                 {
                     text: 'OK', onPress: () => {
-                        let url = `${endPoint.deleteNhaCC}?`;
+                        let url = `${endPoint.deleteLoaiTs}?`;
                         url += `Id=${id}`;
 
                         deleteMethod(url).then(res => {
                             if (res.success) {
-                                Alert.alert('Xóa nhà cung cấp thành công',
+                                Alert.alert('Xóa loại tài sản thành công',
                                     '',
                                     [
                                         { text: 'OK', onPress: this.goBack() },
@@ -145,17 +125,14 @@ class VitriDialyDetailScreen extends React.Component {
     }
     
     render() {
-        const { chitietData, id, tinhThanhList, QuanhuyenList } = this.state;
-        const tinhThanh = getTextTinhThanhQuanHuyen(chitietData?.tinhThanh, tinhThanhList)
-        const quanHuyen = getTextTinhThanhQuanHuyen(chitietData?.quanHuyen, QuanhuyenList);
+        const { chitietData, id } = this.state;
         return (
           <View style={styles.container}>
             <View style={{ alignItems: 'flex-start', width: deviceWidth, height: 'auto', padding: 10, flex: 1 }}>
-              <Text style={styles.title}>Thông tin vị trí địa lý:</Text>
-              <BulletView title='Tên vị trí' text={chitietData?.tenViTri} />
-              <BulletView title='Tỉnh/Thành phố' text={tinhThanh} />
-              <BulletView title='Quận/Huyện' text={quanHuyen} />
-              <BulletView title='Địa chỉ' text={chitietData?.diaChi} />
+              <Text style={styles.title}>Thông tin chi tiết loại tài sản:</Text>
+              <BulletView title='Tên loại tài sản' text={chitietData?.ten} />
+              <BulletView title='Mã loại tài sản' text={chitietData?.ma} />
+              <BulletView title='Thuộc loại tài sản' text={chitietData?.taiSanChaId} />
               <BulletView title='Ghi chú' text={chitietData?.ghiChu} />
             </View>
             <View style={styles.separator} />
@@ -168,7 +145,8 @@ class VitriDialyDetailScreen extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
-        );
+
+        )
     }
 }
 
@@ -223,4 +201,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default VitriDialyDetailScreen;
+export default LoaiTaiSanDetailScreen;

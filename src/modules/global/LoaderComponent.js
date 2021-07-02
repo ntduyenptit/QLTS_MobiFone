@@ -164,7 +164,7 @@ const loadInfo = (screen, item, props, action) => {
           </View>
         </>
       );
-    case screens.quan_ly_loai_tai_san:
+    case screens.chi_tiet_quan_ly_loai_tai_san:
       return (
         <>
           <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="cubes" color="#0080FF" size={15} />
@@ -173,7 +173,12 @@ const loadInfo = (screen, item, props, action) => {
             <Text numberOfLines={1}>Tên: {item.data.loaiTaiSan.ten}</Text>
             <Text numberOfLines={1} style={styles.infoText}>Mã Hexa: {item.data.maHexa} </Text>
           </View>
-
+          <TouchableOpacity
+            style={{ height: 40, width: 20, alignItems: "flex-end" }}
+            onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab, id: item.id , onGoBack: () => action()})}
+          >
+            <Icon name="chevron-right" color='#0080FF' size={15} />
+          </TouchableOpacity>
         </>
       );
     case screens.quan_ly_don_vi:

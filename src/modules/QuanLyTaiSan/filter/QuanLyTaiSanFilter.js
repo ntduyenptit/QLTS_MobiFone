@@ -65,8 +65,9 @@ const QuanLyTaiSanFilterComponent = (items) => {
 
   // selectedChange
   const onSelectedDVQLChange = (newSelectItems) => {
-    items.removeSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
-    items.addSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+    console.log(newSelectItems);
+    // items.removeSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+    // items.addSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
   }
   const onSelectedLTSChange = (newSelectItems) => {
     items.removeSelectedLTS({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
@@ -126,6 +127,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
             <Text style={styles.titleText}>{tabs.bao_hong_mat_tai_san ? `Đơn vị khai báo` : `Đơn vị quản lý`}</Text>
             <MultiSelect
               ref={donViQuanLyRef}
+              isHasSelectAll
               isTree
               getCollapsedNodeHeight={{ height: 200 }}
               onToggleList={() => closeMultiSelectIfOpened()}
@@ -156,6 +158,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
             <Text style={styles.titleText}>Loại tài sản</Text>
             <MultiSelect
               ref={loaiTaiSanRef}
+              isHasSelectAll
               isTree
               onToggleList={() => closeMultiSelectIfOpened()}
               items={items.LtsDataFilter}
@@ -186,6 +189,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
             <Text style={styles.titleText}>Nhà cung cấp</Text>
             <MultiSelect
               ref={nhaCungCapRef}
+              isHasSelectAll
               onToggleList={() => closeMultiSelectIfOpened()}
               items={items.NccDataFilter}
               IconRenderer={Icon}
@@ -210,6 +214,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
             <Text style={styles.titleText}>Mã sử dụng</Text>
             <MultiSelect
               ref={maSuDungRef}
+              isHasSelectAll
               onToggleList={() => closeMultiSelectIfOpened()}
               items={items.MsdDataFilter}
               IconRenderer={Icon}
@@ -231,6 +236,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
               <Text style={styles.titleText}>Hình thức</Text>
               <MultiSelect
                 ref={hinhThucRef}
+                isHasSelectAll
                 onToggleList={() => closeMultiSelectIfOpened()}
                 items={hinhThucData}
                 IconRenderer={Icon}
@@ -247,6 +253,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
               <Text style={styles.titleText}>Trạng thái</Text>
               <MultiSelect
                 ref={trangThaiRef}
+                isHasSelectAll
                 onToggleList={() => closeMultiSelectIfOpened()}
                 items={trangThaiData}
                 IconRenderer={Icon}
@@ -266,6 +273,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
             <View>
               <Text style={styles.titleText}>Khai báo</Text>
               <MultiSelect
+                isHasSelectAll
                 ref={khaibaoRef}
                 onToggleList={() => closeMultiSelectIfOpened()}
                 items={KhaiBaoData}

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
+import { signOut } from '@app/modules/navigation/Navigator';
 import { baseUrl, headers, headerWithoutToken, headerContainFiles} from './config';
 import save from '../localStorage/saveLogin';
-import { signOut } from '@app/modules/navigation/Navigator';
 
 export function createPostMethodWithoutToken(endPoint, params) {
     // eslint-disable-next-line no-undef
@@ -48,12 +48,16 @@ export function createGetMethod(endPoint, params = null) {
             body: params
         })
             .then(res => res.json())
-            .then(data => data)
-            .catch(err => {
-                if (err) {
-                    save.expriedLogin();
+            .then(data => {
+                if (data.error) {
+                    const {message} = data.error;
+                    if (message === '[Current user did not login to the application]') {
+                       return save.expriedLogin();
+                    }
                 }
+                return data;
             })
+            .catch(err => console.log(err))
         );
 };
 
