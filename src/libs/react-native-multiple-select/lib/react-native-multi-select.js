@@ -183,7 +183,7 @@ export default class MultiSelect extends Component {
     return find(items, singleItem => singleItem[uniqueKey] === itemKey) || {};
   };
 
-  _searchTree(element, matchingTitle) {
+  _searchTree = (element, matchingTitle) => {
     const {
       uniqueKey
     } = this.props;
@@ -221,7 +221,9 @@ export default class MultiSelect extends Component {
     }
     return actualSelectedItems.map(singleSelectedItem => {
       const item = isTree ? this._searchTree(datas, singleSelectedItem) : this._findItem(singleSelectedItem);
-      console.log('333333: ', item);
+      if (item === null) {
+        return null
+      }
       if (!item[displayKey]) return null;
       return (
         <View
@@ -324,8 +326,8 @@ export default class MultiSelect extends Component {
 
   _itemSelected = item => {
     const { uniqueKey, selectedItems } = this.props;
-    if (selectedItems) {
-      return selectedItems.indexOf(item[uniqueKey]) !== -1; 
+    if (selectedItems && item[uniqueKey]) {
+      return selectedItems.indexOf(item[uniqueKey]) !== -1;
     }
     return null;
   };
@@ -363,7 +365,6 @@ export default class MultiSelect extends Component {
       onSelectedItemsChange,
       isTree
     } = this.props;
-    console.log('co vao day k nao aaa', item);
     if (item[displayKey] === '...') {
       onSelectedItemsChange(null);
       return;
@@ -396,7 +397,6 @@ export default class MultiSelect extends Component {
         }
       }
       // broadcast new selected items state to parent component
-      console.log('co vao day k nao kkk', newItems);
       onSelectedItemsChange(newItems);
     }
   };
@@ -585,7 +585,7 @@ export default class MultiSelect extends Component {
     return filteredItems;
   };
 
-  _renderTree(children, level = 0) {
+  _renderTree = (children, level = 0) => {
     if (level > 0 && this.state.levelNum === 0) {
       this.setState({ levelNum: level });
     }
@@ -605,7 +605,7 @@ export default class MultiSelect extends Component {
     })
   }
 
-  _renderNode(nodeData, level) {
+  _renderNode = (nodeData, level) => {
     if (Object.keys(nodeData).length) {
       return this._getRow(nodeData, level);
     }
@@ -660,11 +660,6 @@ export default class MultiSelect extends Component {
     const {
       canAddItems,
       fontFamily,
-      items,
-      isTree,
-      uniqueKey,
-      selectedItems,
-      flatListProps,
       styleListContainer,
     } = this.props;
     let component = null;
@@ -931,7 +926,7 @@ export default class MultiSelect extends Component {
                 </TouchableWithoutFeedback>
               </View>
             </View>
-            {!single && !hideTags && selectedItems.length ? (
+            {!single && !hideTags && selectedItems && selectedItems.length ? (
               <ScrollView style={{ height: 200 }}>
                 <View
                   style={{

@@ -65,9 +65,8 @@ const QuanLyTaiSanFilterComponent = (items) => {
 
   // selectedChange
   const onSelectedDVQLChange = (newSelectItems) => {
-    console.log(newSelectItems);
-    // items.removeSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
-    // items.addSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+    items.removeSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
+    items.addSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
   }
   const onSelectedLTSChange = (newSelectItems) => {
     items.removeSelectedLTS({data: newSelectItems, screen: screens.quan_ly_tai_san, tab: items.tab});
