@@ -37,8 +37,6 @@ const defaultSearchIcon = (
 export default class MultiSelect extends Component {
   static propTypes = {
     isTree: PropTypes.bool,
-    disabled: PropTypes.bool,
-    hideSearch: PropTypes.bool,
     subChildContainerStyle: ViewPropTypes.style,
     single: PropTypes.bool,
     selectedItems: PropTypes.array,
@@ -95,8 +93,6 @@ export default class MultiSelect extends Component {
   static defaultProps = {
     single: false,
     isTree: false,
-    hideSearch: false,
-    disabled: false,
     selectedItems: [],
     uniqueKey: '_id',
     tagBorderColor: colorPack.primary,
@@ -221,9 +217,6 @@ export default class MultiSelect extends Component {
     }
     return actualSelectedItems.map(singleSelectedItem => {
       const item = isTree ? this._searchTree(datas, singleSelectedItem) : this._findItem(singleSelectedItem);
-      if (item === null) {
-        return null
-      }
       if (!item[displayKey]) return null;
       return (
         <View
@@ -326,10 +319,7 @@ export default class MultiSelect extends Component {
 
   _itemSelected = item => {
     const { uniqueKey, selectedItems } = this.props;
-    if (selectedItems && item[uniqueKey]) {
-      return selectedItems.indexOf(item[uniqueKey]) !== -1;
-    }
-    return null;
+    return selectedItems.indexOf(item[uniqueKey]) !== -1;
   };
 
   _addItem = () => {
@@ -360,15 +350,10 @@ export default class MultiSelect extends Component {
     const {
       single,
       uniqueKey,
-      displayKey,
       selectedItems,
       onSelectedItemsChange,
       isTree
     } = this.props;
-    if (item[displayKey] === '...') {
-      onSelectedItemsChange(null);
-      return;
-    }
     if (single) {
       this._submitSelection();
       onSelectedItemsChange([item[uniqueKey]]);
@@ -394,6 +379,8 @@ export default class MultiSelect extends Component {
           item.children.forEach(e => {
             newItems.push(e[uniqueKey]);
           });
+        } else {
+          newItems.push[item[uniqueKey]]
         }
       }
       // broadcast new selected items state to parent component
@@ -636,24 +623,23 @@ export default class MultiSelect extends Component {
     if (isCallBack) {
       list = listResult;
     }
-    if (this._filterItemsPartialTest(array, searchTerm) !== []) {
+    if (this._filterItemsPartialTest(array, searchTerm) != []) {
       if (this._filterItemsPartialTest(array, searchTerm).length > 0) {
         list.push(this._filterItemsPartialTest(array, searchTerm));
       }
     }
 
     if (array.length === 1) {
-      array = array[0];
+      return array[0];
     }
     if (array.children !== []) {
-      let i;
       if (array.children.length > 0) {
-        for (i = 0; i < array.children.length; i++) {
-          this._find(array.children[i], searchTerm, list, true);
-        }
+        array.children.forEach(e => {
+          this._find(e, searchTerm, list, true);
+        })
       }
-      return list;
     }
+    return list;
   };
 
   _renderItems(renderItems) {
@@ -666,7 +652,6 @@ export default class MultiSelect extends Component {
     // If searchTerm matches an item in the list, we should not add a new
     // element to the list.
     let itemList;
-    let addItemRow;
     if (Object.keys(renderItems).length) {
       itemList = (
         this._getRow(renderItems)
@@ -716,19 +701,15 @@ export default class MultiSelect extends Component {
   render() {
     const {
       isTree,
-      disabled,
       getCollapsedNodeHeight,
       removeSelected,
       selectedItems,
       single,
-      uniqueKey,
-      displayKey,
       fontFamily,
       altFontFamily,
       searchInputPlaceholderText,
       searchInputStyle,
       styleDropdownMenu,
-      hideSearch,
       styleDropdownMenuSubsection,
       hideSubmitButton,
       hideDropdown,
@@ -759,15 +740,6 @@ export default class MultiSelect extends Component {
       renderItems = listResult;
       // console.log('renderItems_isTree :', renderItems);
     }
-    
-    if (renderItems.length > 0 && renderItems[0][displayKey]!== "...") {
-      const all = {
-        [displayKey]: "..."
-      };
-  
-      renderItems.unshift(all);
-    }
-
     // Filtering already selected items
     if (removeSelected) {
       renderItems = renderItems.filter(
@@ -791,7 +763,6 @@ export default class MultiSelect extends Component {
               styleSelectorContainer && styleSelectorContainer
             ]}
           >
-            {!hideSearch && (
             <View
               style={[styles.inputGroup, styleInputGroup && styleInputGroup]}
             >
@@ -833,7 +804,6 @@ export default class MultiSelect extends Component {
 
               )}
             </View>
-          )}
             <View
               style={{
                 flexDirection: 'column',
@@ -878,7 +848,7 @@ export default class MultiSelect extends Component {
                   styleDropdownMenuSubsection && styleDropdownMenuSubsection
                 ]}
               >
-                <TouchableWithoutFeedback onPress={!disabled ? this._toggleSelector : () => {}}>
+                <TouchableWithoutFeedback onPress={this._toggleSelector}>
                   <View
                     style={{
                       flex: 1,
@@ -926,7 +896,7 @@ export default class MultiSelect extends Component {
                 </TouchableWithoutFeedback>
               </View>
             </View>
-            {!single && !hideTags && selectedItems && selectedItems.length ? (
+            {!single && !hideTags && selectedItems.length ? (
               <ScrollView style={{ height: 200 }}>
                 <View
                   style={{
