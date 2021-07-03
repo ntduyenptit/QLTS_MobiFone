@@ -26,7 +26,7 @@ class LoaiTaiSanDetailScreen extends React.Component {
     }
 
     componentDidMount() {
-        const { chitietData } = this.state;
+        const { chitietData, id } = this.state;
         console.log(chitietData);
         this.props.navigation.setOptions({
             headerRight: () => (
@@ -35,7 +35,7 @@ class LoaiTaiSanDetailScreen extends React.Component {
           });
           if (chitietData === null) {
               Promise.all([
-                this.getchitietLoaiTaiSan(),
+                this.getchitietLoaiTaiSan(id),
                 // this.getAllLoaiTaiSan(),
               ]);
           }
@@ -44,10 +44,11 @@ class LoaiTaiSanDetailScreen extends React.Component {
     getchitietLoaiTaiSan() {
         const { id } = this.state;
         let url = `${endPoint.getChiTietLoaiTaiSan}?`;
-        url += `input=${encodeURIComponent(`${id}`)}&`;
+        url += `Id=${encodeURIComponent(`${id}`)}&`;
         url += `isView=${encodeURIComponent(`${true}`)}`;
         createGetMethod(url)
             .then(res => {
+                console.log(res);
                 if (res.success) {
                     this.setState({
                         chitietData: res.result,

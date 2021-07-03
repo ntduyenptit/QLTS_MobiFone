@@ -50,6 +50,7 @@ export function createGetMethod(endPoint, params = null) {
             .then(res => res.json())
             .then(data => {
                 if (data.error) {
+                    console.log(data.error);
                     const {message} = data.error;
                     if (message === '[Current user did not login to the application]') {
                        return save.expriedLogin();

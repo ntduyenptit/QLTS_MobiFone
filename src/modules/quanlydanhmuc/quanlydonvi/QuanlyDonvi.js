@@ -94,7 +94,7 @@ class QuanLyLoaiTSScreen extends React.Component {
                             )}
                   contentInsetAdjustmentBehavior="automatic"
                 >
-                  {LoaderComponent(donviData, this.props, screens.quan_ly_don_vi)}
+                  {LoaderComponent(donviData, this.props, screens.chi_tiet_quan_ly_don_vi)}
                 </Animated.ScrollView>
               </SafeAreaView>
               <Text

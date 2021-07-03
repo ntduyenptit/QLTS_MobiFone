@@ -65,6 +65,7 @@ import { showFilter } from '../../redux/actions/filter.actions';
 import { screens, tabs } from '../../api/config';
 
 import SpeechControlScreen from '../SpeechToText/speechtotext';
+import QuanLyDonViDetailScreen from '../quanlydanhmuc/quanlydonvi/detail/QuanLyDonViDetail';
 
 const headerLeftComponent = (props) => (
   <TouchableOpacity
@@ -329,6 +330,19 @@ const StackNavigationData = [
   {
     name: screens.chi_tiet_vi_tri_dia_ly,
     component: VitriDialyDetailScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: moreHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.chi_tiet_quan_ly_don_vi,
+    component: QuanLyDonViDetailScreen,
     headerLeft: headerLeftComponent,
     headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },

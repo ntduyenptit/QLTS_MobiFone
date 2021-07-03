@@ -1,7 +1,7 @@
 
 // define the api
-export const baseUrl = 'http://10.6.71.64:9080/api/';
-export const imageBaseUrl = 'http://10.6.71.64:9080/Upload/ToanBoTS';
+export const baseUrl = 'http://103.199.79.25:9080/api/';
+export const imageBaseUrl = 'http://103.199.79.25:9080/Upload/ToanBoTS';
 export const headerWithoutToken = ({
   'Content-Type': 'application/json',
   Accept: 'application/json'
@@ -106,6 +106,8 @@ export const endPoint = ({
 
   // getAll vị trí địa lý
   getVitriDialy: 'services/app/LookupTable/GetAllViTriDiaLyLookupTable',
+  // getAll tổ chức
+  getAllToChuc: 'services/app/ToChuc/GetAllToChucCha',
   // ... bổ sung vào
   getRoleUser: 'services/app/User/GetRoles',
   // Thêm mới
@@ -200,6 +202,7 @@ export const screens = ({
   chi_tiet_nguoi_dung: 'Xem chi tiết người dùng',
   chi_tiet_bao_hongmat_tai_san: 'Xem chi tiết khai báo',
   chi_tiet_vi_tri_dia_ly: 'Xem chi tiết vị trí địa lý',
+  chi_tiet_quan_ly_don_vi: 'Xem chi tiết quản lý đơn vị',
   chi_tiet_quan_ly_loai_tai_san: 'Xem chi tiết quản lý loại tài sản',
   // sửa
   cap_nhat_nha_cung_cap: 'Cập nhật nhà cung cấp',

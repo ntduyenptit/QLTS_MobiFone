@@ -64,15 +64,6 @@ class TaomoiDonviScreen extends React.Component {
         this.getAllVitridialy();
     }
 
-    buildTreedvlist(data) {
-        const list = buildTree(data);
-        if (list) {
-            this.setState({
-                dvList: list,
-            });
-        }
-    };
-
     getAllVitridialy() {
         const url = `${endPoint.getVitriDialy}`;
         createGetMethod(url)
@@ -88,6 +79,15 @@ class TaomoiDonviScreen extends React.Component {
                 }
             })
     }
+
+    buildTreedvlist(data) {
+        const list = buildTree(data);
+        if (list) {
+            this.setState({
+                dvList: list,
+            });
+        }
+    };
 
     saveNewDonvi() {
         const {
@@ -124,6 +124,8 @@ class TaomoiDonviScreen extends React.Component {
                 check = true;
                 break;
             }
+            default:
+                break;
         }
         if (check) {
             Alert.alert(

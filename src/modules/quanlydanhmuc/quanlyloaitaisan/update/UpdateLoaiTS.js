@@ -25,6 +25,7 @@ class UpdateLoaiTSScreen extends React.Component {
         super(props);
         const data = this.props.route.params.paramKey;
         this.state = {
+            id: data?.id,
             maLoaiTS: data?.ma || '',
             tenLoaiTS: data?.ten || '',
             thuocLoaiTS: '',
@@ -38,7 +39,7 @@ class UpdateLoaiTSScreen extends React.Component {
         this.props.navigation.setOptions({
             headerRight: () => (
               <TouchableOpacity
-                onPress={() => this.saveNewLoaiTS()}
+                onPress={() => this.updateLoaiTS()}
                 style={{
                         paddingHorizontal: 16,
                         paddingVertical: 12,
@@ -76,8 +77,9 @@ class UpdateLoaiTSScreen extends React.Component {
         }
     }
 ;
-    saveNewLoaiTS() {
+    updateLoaiTS() {
         const {
+            id,
             maLoaiTS,
             tenLoaiTS,
             thuocLoaiTS,
@@ -113,6 +115,7 @@ class UpdateLoaiTSScreen extends React.Component {
         }
         const url = `${endPoint.CreatLoaiTaisan}`;
         const params = {
+            id,
             ghiChu,
             ma: maLoaiTS,
             taiSanChaId: thuocLoaiTS[0],

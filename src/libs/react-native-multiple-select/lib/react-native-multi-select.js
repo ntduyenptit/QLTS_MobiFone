@@ -221,6 +221,7 @@ export default class MultiSelect extends Component {
     }
     return actualSelectedItems.map(singleSelectedItem => {
       const item = isTree ? this._searchTree(datas, singleSelectedItem) : this._findItem(singleSelectedItem);
+      console.log('333333: ', item);
       if (!item[displayKey]) return null;
       return (
         <View
@@ -323,7 +324,7 @@ export default class MultiSelect extends Component {
 
   _itemSelected = item => {
     const { uniqueKey, selectedItems } = this.props;
-    if (selectedItems && item[uniqueKey]) {
+    if (selectedItems) {
       return selectedItems.indexOf(item[uniqueKey]) !== -1; 
     }
     return null;
@@ -362,6 +363,7 @@ export default class MultiSelect extends Component {
       onSelectedItemsChange,
       isTree
     } = this.props;
+    console.log('co vao day k nao aaa', item);
     if (item[displayKey] === '...') {
       onSelectedItemsChange(null);
       return;
@@ -391,11 +393,10 @@ export default class MultiSelect extends Component {
           item.children.forEach(e => {
             newItems.push(e[uniqueKey]);
           });
-        } else {
-          newItems.push[item[uniqueKey]]
         }
       }
       // broadcast new selected items state to parent component
+      console.log('co vao day k nao kkk', newItems);
       onSelectedItemsChange(newItems);
     }
   };
