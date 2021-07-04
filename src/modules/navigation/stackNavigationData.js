@@ -33,6 +33,7 @@ import QuanlyNhaCungcapScreen from '../quanlydanhmuc/quanlynhacungcap/QuanLyNhaC
 import NhaCungCapDetailScreen from '../quanlydanhmuc/quanlynhacungcap/QuanLyNhaCungCapDetail';
 import VitriDialyDetailScreen from '../quanlydanhmuc/quanlyvitridialy/detail/VitriDialyDetail';
 import CapNhatNhaCungCap from '../quanlydanhmuc/quanlynhacungcap/update/UpdateNhacungcap';
+import CapNhatDonVi from '../quanlydanhmuc/quanlydonvi/update/UpdateDonvi';
 import CapNhatViTriDiaLy from '../quanlydanhmuc/quanlyvitridialy/update/UpdateVitriDialy';
 import UpdateLoaiTSScreen from '../quanlydanhmuc/quanlyloaitaisan/update/UpdateLoaiTS';
 import QuanlyVitriDialyScreen from '../quanlydanhmuc/quanlyvitridialy/QuanlyVitriDialy';
@@ -356,6 +357,19 @@ const StackNavigationData = [
   {
     name: screens.cap_nhat_nha_cung_cap,
     component: CapNhatNhaCungCap,
+    headerLeft: headerLeftComponent,
+    headerRight: moreHeaderRightComponent,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.cap_nhat_don_vi,
+    component: CapNhatDonVi,
     headerLeft: headerLeftComponent,
     headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },

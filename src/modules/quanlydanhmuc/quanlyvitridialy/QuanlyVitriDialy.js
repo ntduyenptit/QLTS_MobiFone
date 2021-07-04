@@ -1,7 +1,9 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Dimensions, Text, View } from 'react-native';
+import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
+import find from 'lodash/find';
 import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
 import { createGetMethod } from '../../../api/Apis';
@@ -31,16 +33,30 @@ class QuanLyNhaCungCapScreen extends React.Component {
           );
     }
 
-    componentWillUnmount() {
+      componentDidUpdate(prevProps) {
+        if (prevProps.searchText !== this.props.searchText) {
+          this.getAllVitriData();
+        }
+      }
+
+      componentWillUnmount() {
         this.willFocusSubscription();
       }
 
     getAllVitriData() {
         let url = `${endPoint.getAllVitriDialy}?`;
-
-        url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
+        const textState = this.props?.searchText;
+        const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_vi_tri_dia_ly)
+        && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_vi_tri_dia_ly).data;
+      if (textFilter) {
+        url += `Fillter=${textFilter}&`
+        url += `IsSearch=${encodeURIComponent(`${true}`)}&`;
+      } else {
+          url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
+      }
         url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
         url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
+        console.log(url);
         createGetMethod(url)
             .then(res => {
                 if (res.success) {
@@ -82,6 +98,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
               <SafeAreaView>
                 <SearchComponent
                   clampedScroll={clampedScroll}
+                  screen={screens.quan_ly_vi_tri_dia_ly}
                 />
                 <Animated.ScrollView
                   showsVerticalScrollIndicator={false}
@@ -124,4 +141,8 @@ class QuanLyNhaCungCapScreen extends React.Component {
 
 }
 
-export default QuanLyNhaCungCapScreen;
+const mapStateToProps = state => ({
+  searchText: state.SearchReducer.searchData,
+});
+
+export default connect(mapStateToProps)(QuanLyNhaCungCapScreen);

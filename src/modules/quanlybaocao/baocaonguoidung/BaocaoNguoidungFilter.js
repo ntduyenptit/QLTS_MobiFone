@@ -63,87 +63,87 @@ const QuanLyMuaSamFilterComponent = (items) => {
 
     // end SelectedChange
     return (
-        <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.container}>
-                <>
-                    <View>
-                        <Text style={styles.titleText}>Đơn vị Quản lý</Text>
-                        <MultiSelect
-                            ref={donViQuanLyRef}
-                            isTree
-                            getCollapsedNodeHeight={{ height: 200 }}
-                            onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
-                            items={dvqlTreeData}
-                            IconRenderer={Icon}
-                            searchInputPlaceholderText="Tìm kiếm..."
-                            styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
-                            uniqueKey="id"
-                            displayKey="displayName"
-                            selectText="Chọn đơn vị quản lý..."
-                            onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-                            selectedItems={selectedDVQLItems}
-                        />
-                    </View>
-                    <View>
-                        <Text style={styles.titleText}>Người gửi thông báo</Text>
-                        <MultiSelect
-                            ref={donViQuanLyRef}
-                            isTree
-                            getCollapsedNodeHeight={{ height: 200 }}
-                            onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
-                            items={dvqlTreeData}
-                            IconRenderer={Icon}
-                            searchInputPlaceholderText="Tìm kiếm..."
-                            styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
-                            uniqueKey="id"
-                            displayKey="displayName"
-                            selectText="Chọn ..."
-                            onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-                            selectedItems={selectedDVQLItems}
-                        />
-                    </View>
-                    <View>
-                        <Text style={styles.titleText}>Thời gian</Text>
-                        <MultiSelect
-                            ref={donViQuanLyRef}
-                            isTree
-                            getCollapsedNodeHeight={{ height: 200 }}
-                            onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
-                            items={dvqlTreeData}
-                            IconRenderer={Icon}
-                            searchInputPlaceholderText="Tìm kiếm..."
-                            styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
-                            uniqueKey="id"
-                            displayKey="displayName"
-                            selectText="Chọn ..."
-                            onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-                            selectedItems={selectedDVQLItems}
-                        />
-                    </View>
-                    <View>
-                        <Text style={styles.titleText}>Hoạt động</Text>
-                        <MultiSelect
-                            ref={donViQuanLyRef}
-                            isTree
-                            getCollapsedNodeHeight={{ height: 200 }}
-                            onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
-                            items={dvqlTreeData}
-                            IconRenderer={Icon}
-                            searchInputPlaceholderText="Tìm kiếm..."
-                            styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
-                            uniqueKey="id"
-                            displayKey="displayName"
-                            selectText="Chọn ..."
-                            onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-                            selectedItems={selectedDVQLItems}
-                        />
-                    </View>
-                </>
-                <>
-                </>
-
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <>
+            <View>
+              <Text style={styles.titleText}>Đơn vị quản lý</Text>
+              <MultiSelect
+                ref={donViQuanLyRef}
+                isTree
+                getCollapsedNodeHeight={{ height: 200 }}
+                onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
+                items={dvqlTreeData}
+                IconRenderer={Icon}
+                searchInputPlaceholderText="Tìm kiếm..."
+                styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
+                uniqueKey="id"
+                displayKey="displayName"
+                selectText="Chọn đơn vị quản lý..."
+                onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
+                selectedItems={selectedDVQLItems}
+              />
             </View>
-        </ScrollView>
+            <View>
+              <Text style={styles.titleText}>Người gửi thông báo</Text>
+              <MultiSelect
+                ref={donViQuanLyRef}
+                isTree
+                getCollapsedNodeHeight={{ height: 200 }}
+                onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
+                items={dvqlTreeData}
+                IconRenderer={Icon}
+                searchInputPlaceholderText="Tìm kiếm..."
+                styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
+                uniqueKey="id"
+                displayKey="displayName"
+                selectText="Chọn ..."
+                onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
+                selectedItems={selectedDVQLItems}
+              />
+            </View>
+            <View>
+              <Text style={styles.titleText}>Thời gian</Text>
+              <MultiSelect
+                ref={donViQuanLyRef}
+                isTree
+                getCollapsedNodeHeight={{ height: 200 }}
+                onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
+                items={dvqlTreeData}
+                IconRenderer={Icon}
+                searchInputPlaceholderText="Tìm kiếm..."
+                styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
+                uniqueKey="id"
+                displayKey="displayName"
+                selectText="Chọn ..."
+                onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
+                selectedItems={selectedDVQLItems}
+              />
+            </View>
+            <View>
+              <Text style={styles.titleText}>Hoạt động</Text>
+              <MultiSelect
+                ref={donViQuanLyRef}
+                isTree
+                getCollapsedNodeHeight={{ height: 200 }}
+                onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
+                items={dvqlTreeData}
+                IconRenderer={Icon}
+                searchInputPlaceholderText="Tìm kiếm..."
+                styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
+                uniqueKey="id"
+                displayKey="displayName"
+                selectText="Chọn ..."
+                onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
+                selectedItems={selectedDVQLItems}
+              />
+            </View>
+          </>
+          <>
+          </>
+
+        </View>
+      </ScrollView>
     );
 };
 

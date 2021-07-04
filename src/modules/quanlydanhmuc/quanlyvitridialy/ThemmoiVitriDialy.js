@@ -67,12 +67,8 @@ class TaomoiVitriDialyScreen extends React.Component {
         createGetMethod(url)
             .then(res => {
                 if (res) {
-                    const list = res.result.map(e => ({
-                        name: e.displayName,
-                        id: e.id
-                    }));
                     this.setState({
-                        TinhthanhList: list,
+                        TinhthanhList: res.result,
                     });
                 }
             })
@@ -213,6 +209,7 @@ class TaomoiVitriDialyScreen extends React.Component {
                     single
                     IconRenderer={Icon}
                     searchInputPlaceholderText="Tìm kiếm..."
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
                     styleListContainer={TinhthanhList && TinhthanhList.length > 9 ? { height: 200 } : null}
                     uniqueKey="id"
                     selectText="Chọn tỉnh/thành phố..."
@@ -227,6 +224,7 @@ class TaomoiVitriDialyScreen extends React.Component {
                     items={QuanhuyenList}
                     single
                     IconRenderer={Icon}
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
                     searchInputPlaceholderText="Tìm kiếm..."
                     styleListContainer={QuanhuyenList && QuanhuyenList.length > 9 ? { height: 200 } : null}
                     uniqueKey="id"
@@ -299,13 +297,19 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontStyle: 'italic'
     },
+    searchText: {
+        backgroundColor: 'transparent',
+        height: 50,
+        paddingLeft: 15
+    },
     bordered: {
         borderWidth: 0.5,
         borderColor: 'black',
         borderRadius: 5,
         paddingHorizontal: 20,
         height: 50,
-        marginLeft: 5,
+        marginLeft: 10,
+        marginRight: 10,
     },
     boldText: {
         fontWeight: 'bold',
@@ -327,31 +331,6 @@ const styles = StyleSheet.create({
         marginTop: 0,
 
     },
-    button: {
-        width: 150,
-        height: 30,
-        marginLeft: 50,
-        backgroundColor: '#1273DE',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 15,
-        marginBottom: 12
-    },
-    button2: {
-        width: 150,
-        height: 60,
-        backgroundColor: '#1273DE',
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignSelf: 'center',
-        borderRadius: 15,
-        marginBottom: 12
-    },
-    buttonText: {
-        textAlign: 'center',
-        fontSize: 15,
-        color: '#fff'
-    }
 });
 
 export default TaomoiVitriDialyScreen;

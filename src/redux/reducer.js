@@ -23,6 +23,7 @@ import {
   filterMSDDataReducer,
   filterNCCDataReducer,
   filterTTSDDataReducer,
+  filterTinhThanhDataReducer,
 
   filterDVQLSelectedReducer,
   filterLTSSelectedReducer,
@@ -37,6 +38,7 @@ import {
   filterChieuDiChuyenSelectedReducer,
   filterPhanLoaiTaiSanSelectedReducer,
   filterTTKKSelectedReducer,
+  filterTinhThanhSelectedReducer,
 
   currentScreenReducer,
   currentTabReducer,
@@ -55,6 +57,7 @@ import {
   filterMSDDataReducer,
   filterNCCDataReducer,
   filterTTSDDataReducer,
+  filterTinhThanhDataReducer,
 
   // filter selected
   filterDVQLSelectedReducer,
@@ -70,6 +73,7 @@ import {
   filterChieuDiChuyenSelectedReducer,
   filterPhanLoaiTaiSanSelectedReducer,
   filterTTKKSelectedReducer,
+  filterTinhThanhSelectedReducer,
 
 
   currentScreenReducer,

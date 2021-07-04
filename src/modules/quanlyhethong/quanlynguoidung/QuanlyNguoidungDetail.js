@@ -4,25 +4,22 @@ import {
     View,
     Text,
     Dimensions,
-    TouchableOpacity, FlatList, ScrollView,
+    TouchableOpacity
 } from 'react-native';
 import BulletView from '@app/modules/global/BulletView';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { endPoint } from '../../../api/config';
 import { createGetMethod } from '../../../api/Apis';
 
 const deviceWidth = Dimensions.get("window").width;
-let idNguoidung;
 
 class NguoidungDetailScreen extends React.Component {
     constructor(props) {
         super(props);
-
-
         this.state = {
+            idNguoidung: this.props.route.params.paramKey?.id,
             chitietData: [],
-            phongBan:'',
+            phongBan: '',
         }
         this.param = {
             param: props.route.params,
@@ -34,9 +31,9 @@ class NguoidungDetailScreen extends React.Component {
     }
  
     getchitietNguoidung() {
-        let url;
+        const { idNguoidung } = this.state;
         const array = this.props.DvqlDataFilter;
-        url = `${endPoint.getDetailNguoidung}?`;
+        let url = `${endPoint.getDetailNguoidung}?`;
         url += `Id=${encodeURIComponent(`${idNguoidung}`)}&`;
         url += `isView=${encodeURIComponent(`${true}`)}`;
         createGetMethod(url)
@@ -45,44 +42,49 @@ class NguoidungDetailScreen extends React.Component {
                     this.setState({
                         chitietData: res.result,
                     });
-                    for (let i = 0; i < array.length; i++) {
-                        if (array[i].id == res.result.toChucId) {
-                            console.log(`phongBan: ${  array[i].displayName}`);
+                    array.forEach(e => {
+                        if (e.id === res.result.toChucId) {
                             this.setState({
-                                phongBan: array[i].displayName,
+                                phongBan: e.displayName,
                             });
                         }
-                    }
-
-                } else {
-                    // Alert.alert('Lỗi khi load toàn bộ tài sản!');
+                    });
                 }
             })
-            .catch(err => console.log(err));
+            .catch();
     }
 
-    convertActiveData(data) {
-        if (data == true) {
+    convertActiveData = (data) => {
+        if (data) {
             return "Đã kích hoạt";
         } return "Chưa kích hoạt";
     }
 
     render() {
-        const { chitietData, phongBan } = this.state;
-        const { paramKey, tabKey } = this.props.route.params;
-        idNguoidung = paramKey.id;
+        const { chitietData, phongBan, idNguoidung } = this.state;
         return (
-          <View style={{ alignItems: 'flex-start', backgroundColor: 'white', width: deviceWidth }}>
-            <Text style={styles.title}>Thông tin chi tiết</Text>
-            <BulletView title='Họ tên' text={chitietData.name} />
-            <BulletView title='Chức vụ' text={chitietData.chucVu} />
-            <BulletView title='Đơn vị' text={phongBan} />
-            <BulletView title='Tên đăng nhập' text={chitietData.userName} />
-            <BulletView title='Email' text={chitietData.emailAddress} />
-            <BulletView title='Số điện thoại' text={chitietData.phoneNumber} />
-            <BulletView title='Kích hoạt' text={this.convertActiveData(chitietData.isActive)} />
-            <BulletView title='Vai trò' text={chitietData.roleNames} />
-            <BulletView title='Ghi chú' text={chitietData.ghiChu} />
+          <View style={styles.container}>
+            <View style={{ alignItems: 'flex-start', width: deviceWidth, height: 'auto', padding: 10, flex: 1 }}>
+              <Text style={styles.title}>Thông tin chi tiết người dùng</Text>
+              <BulletView title='Họ tên' text={chitietData.name} />
+              <BulletView title='Chức vụ' text={chitietData.chucVu} />
+              <BulletView title='Đơn vị' text={phongBan} />
+              <BulletView title='Tên đăng nhập' text={chitietData.userName} />
+              <BulletView title='Email' text={chitietData.emailAddress} />
+              <BulletView title='Số điện thoại' text={chitietData.phoneNumber} />
+              <BulletView title='Kích hoạt' text={this.convertActiveData(chitietData.isActive)} />
+              <BulletView title='Vai trò' text={chitietData.roleNames} />
+              <BulletView title='Ghi chú' text={chitietData.ghiChu} />
+            </View>
+            <View style={styles.separator} />
+            <View style={styles.addToCarContainer}>
+              <TouchableOpacity
+                onPress={() => this.delete(idNguoidung)}
+                style={styles.shareButton}
+              >
+                <Text style={styles.shareButtonText}>Xóa</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )
     }
@@ -90,6 +92,7 @@ class NguoidungDetailScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'white'
     },
     title: {
         paddingBottom: 10,
@@ -130,6 +133,31 @@ const styles = StyleSheet.create({
         width: "85%",
         paddingBottom: 10,
     },
+    separator: {
+        height: 2,
+        backgroundColor: "#eeeeee",
+        marginTop: 20,
+        marginHorizontal: 30
+    },
+    shareButton: {
+        marginTop: 10,
+        width: '100%',
+        height: 45,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        alignItems: 'center',
+        borderRadius: 30,
+        backgroundColor: "red",
+    },
+    shareButtonText: {
+        color: "#FFFFFF",
+        fontSize: 20,
+    },
+    addToCarContainer: {
+        marginHorizontal: 30,
+        paddingBottom: 30
+    }
 });
 const mapStateToProps = state => ({
     DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,

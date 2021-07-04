@@ -35,7 +35,6 @@ class UpdateLoaiTSScreen extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props.route.params.paramKey);
         this.props.navigation.setOptions({
             headerRight: () => (
               <TouchableOpacity

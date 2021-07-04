@@ -163,7 +163,7 @@ export default class MultiSelect extends Component {
 
   _getSelectLabel = () => {
     const { selectText, single, selectedItems, displayKey } = this.props;
-    if (!selectedItems || selectedItems.length === 0) {
+    if (!selectedItems || selectedItems.length === 0 || !selectedItems[0]) {
       return selectText;
     }
     if (single) {
@@ -180,18 +180,29 @@ export default class MultiSelect extends Component {
   };
 
   _searchTree = (element, matchingTitle) => {
+    if (element.length === 1) {
+      return this._searchElement(element, matchingTitle);
+    } 
+    const list = [];
+     element.forEach(e => {
+       const result = this._searchElement(e, matchingTitle);
+       if (result) {
+        list.push(result);
+       }
+       console.log('co vao day k nao 888', result);
+     });
+     console.log('co vao day k nao 555', list[0]);
+     return list[0][0];
+  }
+
+  _searchElement = (element, matchingTitle) => {
     const {
       uniqueKey
     } = this.props;
     if (element[uniqueKey] === matchingTitle) {
       return element;
     } if (element.children != null) {
-      let i;
-      let result = null;
-      for (i = 0; result == null && i < element.children.length; i++) {
-        result = this._searchTree(element.children[i], matchingTitle);
-      }
-      return result;
+     return element.children.filter(e => e[uniqueKey] === matchingTitle);
     }
     return null;
   }
@@ -215,53 +226,68 @@ export default class MultiSelect extends Component {
     if (items.length === 1) {
       datas = items[0];
     }
+    if (actualSelectedItems.filter(e => e === '...')) {
+      return null;
+    }
     return actualSelectedItems.map(singleSelectedItem => {
       const item = isTree ? this._searchTree(datas, singleSelectedItem) : this._findItem(singleSelectedItem);
-      if (!item[displayKey]) return null;
-      return (
-        <View
-          style={[
-            styles.selectedItem,
-            {
-              width: item[displayKey].length * 8 + 60,
-              justifyContent: 'center',
-              height: 40,
-              borderColor: tagBorderColor
-            },
-            tagContainerStyle || {}
-          ]}
-          key={item[uniqueKey]}
-        >
-          <Text
-            style={[
-              {
-                flex: 1,
-                color: tagTextColor,
-                fontSize: 15,
-              },
-              styleTextTag && styleTextTag,
-              fontFamily ? { fontFamily } : {}
-            ]}
-            numberOfLines={1}
-          >
-            {item[displayKey]}
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              this._removeItem(item);
-            }}
-          >
-            <Icon
-              name="times-circle"
+      if (item) {
+        if (!item[displayKey]) return null;
+        return (
+          <ScrollView style={{ height: 200 }}>
+            <View
               style={{
-                color: tagRemoveIconColor,
-                fontSize: 22,
-                marginLeft: 10
+              flexDirection: 'row',
+              flexWrap: 'wrap'
+            }}
+            >
+              <View
+                style={[
+              styles.selectedItem,
+              {
+                width: item[displayKey].length * 8 + 60,
+                justifyContent: 'center',
+                height: 40,
+                borderColor: tagBorderColor
+              },
+              tagContainerStyle || {}
+            ]}
+                key={item[uniqueKey]}
+              >
+                <Text
+                  style={[
+                {
+                  flex: 1,
+                  color: tagTextColor,
+                  fontSize: 15,
+                },
+                styleTextTag && styleTextTag,
+                fontFamily ? { fontFamily } : {}
+              ]}
+                  numberOfLines={1}
+                >
+                  {item[displayKey]}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                this._removeItem(item);
               }}
-            />
-          </TouchableOpacity>
-        </View>
-      );
+                >
+                  <Icon
+                    name="times-circle"
+                    style={{
+                  color: tagRemoveIconColor,
+                  fontSize: 22,
+                  marginLeft: 10
+                }}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
+        );
+      }
+      return null;
     });
   };
 
@@ -352,8 +378,16 @@ export default class MultiSelect extends Component {
       uniqueKey,
       selectedItems,
       onSelectedItemsChange,
-      isTree
+      isTree,
+      displayKey
     } = this.props;
+    if (item[displayKey] === '...') {
+      console.log('vao day k nao rrr');
+      // selectedItems.slice(0);
+      this._submitSelection();
+      onSelectedItemsChange([]);
+      return;
+    }
     if (single) {
       this._submitSelection();
       onSelectedItemsChange([item[uniqueKey]]);
@@ -361,7 +395,7 @@ export default class MultiSelect extends Component {
       const status = this._itemSelected(item);
       let newItems = [];
       if (status) {
-        if ( isTree && item.children.length > 0) {
+        if ( isTree && item?.children && item?.children.length > 0) {
           item.children.forEach(e => {
             const index = selectedItems.indexOf(e[uniqueKey]);
             if (index !== -1) {
@@ -375,7 +409,7 @@ export default class MultiSelect extends Component {
         );
       } else {
         newItems = [...selectedItems, item[uniqueKey]];
-        if (isTree && item.children.length > 0 ) {
+        if (isTree && item?.children && item?.children.length > 0 ) {
           item.children.forEach(e => {
             newItems.push(e[uniqueKey]);
           });
@@ -727,7 +761,9 @@ export default class MultiSelect extends Component {
       styleTextDropdown,
       styleTextDropdownSelected,
       searchIcon,
-      items
+      items,
+      displayKey,
+      uniqueKey
     } = this.props;
     const { searchTerm, selector, levelNum, listExpanded } = this.state;
 
@@ -740,6 +776,16 @@ export default class MultiSelect extends Component {
       renderItems = listResult;
       // console.log('renderItems_isTree :', renderItems);
     }
+
+    if (renderItems.length > 0 && renderItems[0][displayKey]!== '...') {
+      const all = {
+        id: 0,
+        [displayKey]: '...'
+      };
+  
+      renderItems.unshift(all);
+    }
+
     // Filtering already selected items
     if (removeSelected) {
       renderItems = renderItems.filter(
@@ -896,18 +942,9 @@ export default class MultiSelect extends Component {
                 </TouchableWithoutFeedback>
               </View>
             </View>
-            {!single && !hideTags && selectedItems.length ? (
-              <ScrollView style={{ height: 200 }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap'
-                  }}
-                >
-                  {this._displaySelectedItems()}
-                </View>
-              </ScrollView>
-            ) : null}
+            {!single && !hideTags && selectedItems.length ? 
+                  this._displaySelectedItems()
+             : null}
           </View>
         )}
       </View>

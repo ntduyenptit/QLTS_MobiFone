@@ -155,7 +155,7 @@ const QuanLyMuaSamFilterComponent = (items) => {
         <View style={styles.container}>
           <>
             <View>
-              <Text style={styles.titleText}>Đơn vị Quản lý</Text>
+              <Text style={styles.titleText}>Đơn vị quản lý</Text>
               <MultiSelect
                 ref={donViQuanLyRef}
                 isTree

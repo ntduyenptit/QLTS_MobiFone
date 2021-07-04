@@ -13,22 +13,26 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import { getLTSDataFilter } from '@app/modules/global/FilterApis';
-import { endPoint } from '../../../api/config';
-import { createPostMethodWithToken } from '../../../api/Apis';
-import { colors, fonts } from '../../../styles';
-import { deviceWidth } from '../../global/LoaderComponent';
-import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
+import { endPoint } from '@app/api/config';
+import { createGetMethod, createPostMethodWithToken } from '@app/api/Apis';
+import { colors, fonts } from '../../../../styles';
+import { deviceWidth } from '../../../global/LoaderComponent';
+import MultiSelect from '../../../../libs/react-native-multiple-select/lib/react-native-multi-select';
+import { buildTree } from '../../../global/Helper';
 
-class TaomoiLoaiTSScreen extends React.Component {
+class CapNhatDonViScreen extends React.Component {
     constructor(props) {
         super(props);
+        const data = this.props.route.params.paramKey;
         this.state = {
-            maLoaiTS: '',
-            tenLoaiTS: '',
-            thuocLoaiTS: '',
+            id: data?.toChuc?.id || data?.id,
+            maDonvi: data?.toChuc?.maToChuc || data?.maToChuc,
+            tenDonvi: data?.toChuc?.tenToChuc || data?.tenToChuc,
+            donviChaId: data?.toChuc?.trucThuocToChucId ? [data?.toChuc?.trucThuocToChucId ] : [data?.trucThuocToChucId],
+            diachiId: data?.toChuc?.viTriDiaLyId ? [data?.toChuc?.viTriDiaLyId] : [data?.viTriDiaLyId],
             ghiChu: '',
-            loaiTSList: [],
+            dvList: [],
+            diachiList: [],
         };
     }
 
@@ -36,7 +40,7 @@ class TaomoiLoaiTSScreen extends React.Component {
         this.props.navigation.setOptions({
             headerRight: () => (
               <TouchableOpacity
-                onPress={() => this.saveNewLoaiTS()}
+                onPress={() => this.saveNewDonvi()}
                 style={{
                         paddingHorizontal: 16,
                         paddingVertical: 12,
@@ -58,40 +62,63 @@ class TaomoiLoaiTSScreen extends React.Component {
               </TouchableOpacity>
             )
         })
-        this.danhsachLoaiTS();
+        this.buildTreedvlist(this.props.DvqlData);
+        this.getAllVitridialy();
     }
 
-    danhsachLoaiTS() {
-        const data = this.props.LoaiTSData;
-        if (data && data.length > 0) {
-            this.setState({
-                loaiTSList: data,
-            });
-        } else {
-            getLTSDataFilter().then(res => this.setState({
-                loaiTSList: res.result,
-            }));
-        }
+    getAllVitridialy() {
+        const url = `${endPoint.getVitriDialy}`;
+        createGetMethod(url)
+            .then(res => {
+                if (res) {
+                    this.setState({
+                        diachiList: res.result,
+                    });
+                }
+            })
     }
-;
-    saveNewLoaiTS() {
+
+    buildTreedvlist(data) {
+        const list = buildTree(data);
+        if (list) {
+            this.setState({
+                dvList: list,
+            });
+        }
+    };
+
+    saveNewDonvi() {
         const {
-            maLoaiTS,
-            tenLoaiTS,
-            thuocLoaiTS,
+            maDonvi,
+            tenDonvi,
+            donviChaId,
+            diachiId,
             ghiChu,
+            id,
+            diachiList,
         } = this.state;
         let s = '';
         let check = false;
         switch ("") {
-            case maLoaiTS:
+            case maDonvi:
                 {
-                    s = "mã loại tài sản";
+                    s = "mã đơn vị";
                     check = true;
                     break;
                 }
-            case tenLoaiTS: {
-                s = "tên loại tài sản";
+            case tenDonvi: {
+                s = "tên đơn vị";
+                check = true;
+                break;
+            }
+            case donviChaId:
+                {
+                    s = "đơn vị quản lý";
+                    check = true;
+                    break;
+                }
+            case diachiId: {
+                s = "địa chỉ";
                 check = true;
                 break;
             }
@@ -109,25 +136,27 @@ class TaomoiLoaiTSScreen extends React.Component {
             );
             return;
         }
-        const url = `${endPoint.CreatLoaiTaisan}`;
+        const url = `${endPoint.CreatDonvi}`;
         const params = {
+            id,
             ghiChu,
-            ma: maLoaiTS,
-            taiSanChaId: thuocLoaiTS[0],
-            ten: tenLoaiTS,
+            maToChuc: maDonvi,
+            tenToChuc: tenDonvi,
+            trucThuocToChucId: donviChaId[0],
+            viTriDiaLyId: diachiId[0],
         }
+
+        console.log(params);
 
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
             if (res.success) {
                 Alert.alert(
                     '',
-                    'Thêm mới loại tài sản thành công',
+                    'Thêm mới đơn vị thành công',
                     [
                         { text: 'OK', onPress: this.goBack() },
                     ],
-
                 );
-
             }
         })
     }
@@ -140,8 +169,13 @@ class TaomoiLoaiTSScreen extends React.Component {
 
     render() {
         const {
-            thuocLoaiTS,
-            loaiTSList
+            maDonvi,
+            tenDonvi,
+            donviChaId,
+            diachiId,
+            ghiChu,
+            dvList,
+            diachiList,
         } = this.state;
         return (
           <Animated.View>
@@ -149,44 +183,66 @@ class TaomoiLoaiTSScreen extends React.Component {
             <SafeAreaView>
               <Animated.ScrollView>
                 <View style={styles.container}>
-                  <Text style={styles.boldText}>Mã loại tài sản*</Text>
+                  <Text style={styles.boldText}>Mã đơn vị*</Text>
                   <TextInput
                     placeholderTextColor="black"
                     placeholder="Nhập tên"
                     style={styles.bordered}
-                    onChangeText={(maLoaiTS) => {
+                    defaultValue={maDonvi}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        maLoaiTS,
+                                        maDonvi: text,
                                     });
                                 }}
                   />
-                  <Text style={styles.boldText}>Tên loại tài sản*</Text>
+                  <Text style={styles.boldText}>Tên đơn vị*</Text>
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(tenLoaiTS) => {
+                    defaultValue={tenDonvi}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        tenLoaiTS
+                                        tenDonvi: text,
                                     });
                                 }}
                   />
-                  <Text style={styles.boldText}>Thuộc loại tài sản</Text>
+                  <Text style={styles.boldText}>Đơn vị quản lý</Text>
                   <MultiSelect
                     ref={(component) => { this.multiSelect = component }}
                     getCollapsedNodeHeight={{ height: 200 }}
-                    items={loaiTSList}
+                    isTree
+                    items={dvList}
                     single
                     IconRenderer={Icon}
                     searchInputPlaceholderText="Tìm kiếm..."
                     styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
-                    styleListContainer={loaiTSList && loaiTSList.length > 9 ? { height: 200 } : null}
-                    uniqueKey="value"
-                    displayKey="text"
-                    selectText="Chọn loại tài sản..."
+                    styleListContainer={dvList && dvList.length > 9 ? { height: 200 } : null}
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText="Chọn đơn vị quản lý ..."
                     onSelectedItemsChange={(item) => this.setState({
-                                    thuocLoaiTS: item
+                                    donviChaId: item
                                 })}
-                    selectedItems={thuocLoaiTS}
+                    selectedItems={donviChaId}
+                    submitButtonColor="#2196F3"
+                  />
+                  <Text style={styles.boldText}>Địa chỉ</Text>
+                  <MultiSelect
+                    ref={(component) => { this.multiSelect = component }}
+                    getCollapsedNodeHeight={{ height: 200 }}
+                    items={diachiList}
+                    single
+                    IconRenderer={Icon}
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleListContainer={diachiList && diachiList.length > 9 ? { height: 200 } : null}
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText="Chọn địa chỉ ..."
+                    onSelectedItemsChange={(item) => this.setState({
+                                    diachiId: item,
+                                })}
+                    selectedItems={diachiId}
                     submitButtonColor="#2196F3"
                   />
 
@@ -194,9 +250,9 @@ class TaomoiLoaiTSScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(ghiChu) => {
+                    onChangeText={(text) => {
                                     this.setState({
-                                        ghiChu
+                                        ghiChu: text
                                     });
                                 }}
                   />
@@ -276,6 +332,6 @@ const styles = StyleSheet.create({
     },
 });
 const mapStateToProps = state => ({
-    LoaiTSData: state.filterLTSDataReducer.ltsDataFilter,
+    DvqlData: state.filterDVQLDataReducer.dvqlDataFilter,
 });
-export default connect(mapStateToProps)(TaomoiLoaiTSScreen);
+export default connect(mapStateToProps)(CapNhatDonViScreen);

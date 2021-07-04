@@ -11,6 +11,7 @@ import {
   MSD_FILTER, 
   TT_FILTER,
   TTSD_FILTER,
+  TINHTHANH_FILTER,
 
   DVQL_SELECTED_ADD,
   TT_SELECTED_ADD,
@@ -25,6 +26,7 @@ import {
   CHIEU_DI_CHUYEN_SELECTED_ADD,
   PLTS_SELECTED_ADD,
   TTKK_SELECTED_ADD,
+  TINHTHANH_SELECTED_ADD,
 
   DVQL_SELECTED_REMOVE,
   TT_SELECTED_REMOVE,
@@ -39,6 +41,7 @@ import {
   CHIEU_DI_CHUYEN_SELECTED_REMOVE,
   PLTS_SELECTED_REMOVE,
   TTKK_SELECTED_REMOVE,
+  TINHTHANH_SELECTED_REMOVE,
  } from '../../redux/actions/filter.actions'
 import { screens, tabs } from '../../api/config';
 import { CURRENT_SCREEN, CURRENT_TAB } from '../../redux/actions/screen.actions';
@@ -68,6 +71,7 @@ const initialState = {
     chieuDiChuyenFilterSelected: [],
     pltsFilterSelected: [],
     ttkkFilterSelected: [],
+    tinhthanhFilterSelected: [],
 
     searchData: [],
 }
@@ -215,10 +219,29 @@ export const filterTTSDDataReducer = (state = initialState, action) => {
   }
 }
 
+export const filterTinhThanhDataReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case TINHTHANH_FILTER: {
+      return {
+        tinhthanhDataFilter: action.payload
+      }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
 // selected
 export const filterDVQLSelectedReducer = (state = initialState, action) => {
   switch (action.type) {
     case DVQL_SELECTED_ADD: {
+      if (action.payload?.data && action.payload?.data.length === 0) {
+        return {
+          ...state,
+          dvqlFilterSelected: [],
+        }
+      }
       return {
         ...state,
         dvqlFilterSelected: [...state.dvqlFilterSelected, action.payload],
@@ -513,6 +536,26 @@ export const filterPhanLoaiTaiSanSelectedReducer = (state = initialState, action
         return {
           ...state,
           pltsFilterSelected: state.pltsFilterSelected.filter((item) => item.screen !== action.payload.screen)
+        }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const filterTinhThanhSelectedReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case TINHTHANH_SELECTED_ADD: {
+      return {
+        ...state,
+        tinhthanhFilterSelected: [...state.tinhthanhFilterSelected, action.payload],
+      }
+    }
+    case TINHTHANH_SELECTED_REMOVE: {
+        return {
+          ...state,
+          tinhthanhFilterSelected: state.tinhthanhFilterSelected.filter((item) => item.screen !== action.payload.screen)
         }
     }
     default: {

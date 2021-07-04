@@ -3,6 +3,7 @@ import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Dimensions, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
+import find from 'lodash/find';
 import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
 import { createGetMethod } from '../../../api/Apis';
@@ -27,11 +28,23 @@ class QuanLyNhaCungCapScreen extends React.Component {
         this.getAllNhacungcapData();
     }
 
-    getAllNhacungcapData() {
-        let url;
-        url = `${endPoint.getNhaCungcap}?`;
+    componentDidUpdate(prevProps) {
+        if (prevProps.searchText !== this.props.searchText) {
+          this.getAllNhacungcapData();
+        }
+      }
 
-        url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
+    getAllNhacungcapData() {
+        let url = `${endPoint.getNhaCungcap}?`;
+        const textState = this.props?.searchText;
+        const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_nha_cung_cap)
+          && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_nha_cung_cap).data;
+        if (textFilter) {
+          url += `Keyword=${textFilter}&`
+          url += `IsSearch=${encodeURIComponent(`${true}`)}&`;
+        } else {
+            url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
+        }
         url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
         url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
         createGetMethod(url)
@@ -77,6 +90,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
               <SafeAreaView>
                 <SearchComponent
                   clampedScroll={clampedScroll}
+                  screen={screens.quan_ly_nha_cung_cap}
                 />
                 <Animated.ScrollView
                   showsVerticalScrollIndicator={false}
@@ -120,8 +134,8 @@ class QuanLyNhaCungCapScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
+    searchText: state.SearchReducer.searchData,
     NCCDataFilter: state.filterNCCDataReducer.nccDataFilter,
-    tab: 'Quản lý nhà cung cấp'
 });
 
 export default connect(mapStateToProps)(QuanLyNhaCungCapScreen);

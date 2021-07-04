@@ -81,6 +81,7 @@ export const endPoint = ({
   getViewVitriDiaLy: 'services/app/ViTriDiaLy/GetForEdit',
   getChiTietLoaiTaiSan: 'services/app/LoaiTaiSan/GetForEdit',
   getTinhThanhAll: 'services/app/ViTriDiaLy/GetAllDtoTinhThanh',
+  getChiTietDonVi: 'services/app/ToChuc/GetForEdit',
 
   // Quản lý loại tài sản
   getAllLoaiTaiSan: 'services/app/LoaiTaiSan/GetAll',
@@ -208,6 +209,7 @@ export const screens = ({
   cap_nhat_nha_cung_cap: 'Cập nhật nhà cung cấp',
   cap_nhat_vi_tri_dia_ly: 'Cập nhật vị trí địa lý',
   cap_nhat_loai_tai_san: 'Cập nhật loại tài sản',
+  cap_nhat_don_vi: 'Cập nhật đơn vị',
   // them moi tai san
   them_moi_tai_san: "Thêm mới tài sản",
   cap_nhat_tai_san: "Cập nhật tài sản",

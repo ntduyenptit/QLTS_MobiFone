@@ -15,14 +15,15 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CheckBox from 'react-native-check-box'
+import { connect } from 'react-redux';
 import { endPoint } from '../../../api/config';
 import { createGetMethod, createPostMethodWithoutToken, createPostMethodWithToken } from '../../../api/Apis';
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
-import { connect } from 'react-redux';
 import { buildTree } from '../../global/Helper';
-var tempCheckValues = [];
+
+const tempCheckValues = [];
 class ThemmoiNguoidungScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -47,42 +48,44 @@ class ThemmoiNguoidungScreen extends React.Component {
     componentDidMount() {
         this.props.navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity
-                    onPress={() => this.saveNewNguoidung()}
-                    style={{
+              <TouchableOpacity
+                onPress={() => this.saveNewNguoidung()}
+                style={{
                         paddingHorizontal: 16,
                         paddingVertical: 12,
                     }
                     }
-                >
-                    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-                        {/* <Icon name="save" color="white" size={20} /> */}
-                        <Text style={{
+              >
+                <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                  {/* <Icon name="save" color="white" size={20} /> */}
+                  <Text style={{
                             fontFamily: fonts.primaryRegular,
                             color: colors.white,
                             fontSize: 18,
                             alignSelf: 'center'
                         }}
-                        > Lưu
-              </Text>
+                  > Lưu
+                  </Text>
 
-                    </View>
-                </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
             )
         })
         this.buildTreedvlist(this.props.DvqlData);
         this.getAllRoleUser();
     }
+
     buildTreedvlist(data) {
-        let list = buildTree(data);
+        const list = buildTree(data);
         if (list) {
             this.setState({
                 dvList: list,
             });
         }
-    };
+    }
+;
     getAllRoleUser() {
-        let url = `${endPoint.getRoleUser}`;
+        const url = `${endPoint.getRoleUser}`;
         createGetMethod(url)
             .then(res => {
                 if (res) {
@@ -99,6 +102,7 @@ class ThemmoiNguoidungScreen extends React.Component {
             })
             .catch(err => console.log(err));
     }
+
     saveNewNguoidung() {
         const {
             hoten,
@@ -153,7 +157,7 @@ class ThemmoiNguoidungScreen extends React.Component {
         if (check) {
             Alert.alert(
                 '',
-                'Hãy nhập ' + s,
+                `Hãy nhập ${  s}`,
                 [
                     { text: 'OK', style: "cancel" },
                 ],
@@ -163,9 +167,9 @@ class ThemmoiNguoidungScreen extends React.Component {
         }
         const url = `${endPoint.creatUser}`;
         const params = {
-            chucVu: chucVu,
+            chucVu,
             emailAddress: email,
-            ghiChu: ghiChu,
+            ghiChu,
             isActive: kichHoat,
             name: hoten,
             password: matkhau,
@@ -175,7 +179,7 @@ class ThemmoiNguoidungScreen extends React.Component {
             toChucId: donviID[0],
             userName: tendangnhap,
         }
-        const urlCheck = `${endPoint.checkExitUser}?` + 'userName=' + tendangnhap + '&emailAddress=' + email;
+        const urlCheck = `${`${endPoint.checkExitUser}?` + 'userName='}${  tendangnhap  }&emailAddress=${  email}`;
         createPostMethodWithToken(urlCheck, null).then((res) => {
             if (!res.success) {
                 Alert.alert(
@@ -186,7 +190,7 @@ class ThemmoiNguoidungScreen extends React.Component {
                     ],
 
                 );
-                return;
+                
             }
         })
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
@@ -213,153 +217,154 @@ class ThemmoiNguoidungScreen extends React.Component {
             roleListID,
         } = this.state;
         return (
-            <Animated.View>
-                <StatusBar barStyle="dark-content" />
-                <SafeAreaView>
-                    <Animated.ScrollView
-                    >
-                        <View style={styles.container}>
-                            <Text style={styles.boldText}>Họ và tên*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                placeholder="Nhập tên"
-                                style={styles.bordered}
-                                onChangeText={(hoten) => {
+          <Animated.View>
+            <StatusBar barStyle="dark-content" />
+            <SafeAreaView>
+              <Animated.ScrollView>
+                <View style={styles.container}>
+                  <Text style={styles.boldText}>Họ và tên*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    placeholder="Nhập tên"
+                    style={styles.bordered}
+                    onChangeText={(hoten) => {
                                     this.setState({
                                         hoten,
                                     });
                                 }}
-                            />
+                  />
 
-                            <Text style={styles.boldText}>Đơn vị quản lý</Text>
-                            <MultiSelect
-                                ref={(component) => { this.multiSelect = component }}
-                                getCollapsedNodeHeight={{ height: 200 }}
-                                isTree
-                                items={dvList}
-                                single={true}
-                                IconRenderer={Icon}
-                                searchInputPlaceholderText="Tìm kiếm..."
-                                styleListContainer={dvList && dvList.length > 9 ? { height: 200 } : null}
-                                uniqueKey="id"
-                                displayKey="displayName"
-                                selectText="Chọn ..."
-                                onSelectedItemsChange={(donviID) => this.setState({
+                  <Text style={styles.boldText}>Đơn vị quản lý</Text>
+                  <MultiSelect
+                    ref={(component) => { this.multiSelect = component }}
+                    getCollapsedNodeHeight={{ height: 200 }}
+                    isTree
+                    items={dvList}
+                    single
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleListContainer={dvList && dvList.length > 9 ? { height: 200 } : null}
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText="Chọn ..."
+                    onSelectedItemsChange={(donviID) => this.setState({
                                     donviID
                                 })}
-                                selectedItems={donviID}
-                                submitButtonColor="#2196F3"
-                            />
-                            <Text style={styles.boldText}>Chức vụ</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(chucVu) => {
+                    selectedItems={donviID}
+                    submitButtonColor="#2196F3"
+                  />
+                  <Text style={styles.boldText}>Chức vụ</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(chucVu) => {
                                     this.setState({
                                         chucVu
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Địa chỉ Email*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(email) => {
+                  />
+                  <Text style={styles.boldText}>Địa chỉ Email*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(email) => {
                                     this.setState({
                                         email
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Tên đăng nhập*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(tendangnhap) => {
+                  />
+                  <Text style={styles.boldText}>Tên đăng nhập*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(tendangnhap) => {
                                     this.setState({
                                         tendangnhap
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Số điện thoại</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(sdt) => {
+                  />
+                  <Text style={styles.boldText}>Số điện thoại</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(sdt) => {
                                     this.setState({
                                         sdt
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Mật khẩu*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(matkhau) => {
+                  />
+                  <Text style={styles.boldText}>Mật khẩu*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    secureTextEntry
+                    style={styles.bordered}
+                    onChangeText={(matkhau) => {
                                     this.setState({
                                         matkhau
                                     });
                                 }}
-                            />
-                            <Text style={styles.boldText}>Xác nhận mật khẩu*</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.bordered}
-                                onChangeText={(xacnhanMk) => {
+                  />
+                  <Text style={styles.boldText}>Xác nhận mật khẩu*</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    secureTextEntry
+                    style={styles.bordered}
+                    onChangeText={(xacnhanMk) => {
                                     this.setState({
                                         xacnhanMk
                                     });
                                 }}
-                            />
+                  />
 
-                            <View style={styles.containerButton}>
-                                <Text style={styles.boldText}>Kích hoạt: </Text>
-                                <Switch
-                                    trackColor={{ false: "#767577", true: "#81b0ff" }}
-                                    thumbColor={kichHoat ? "#f5dd4b" : "#f4f3f4"}
-                                    ios_backgroundColor="#3e3e3e"
-                                    marginLeft={30}
-                                    onValueChange={(kichHoat) => {
+                  <View style={styles.containerButton}>
+                    <Text style={styles.boldText}>Kích hoạt: </Text>
+                    <Switch
+                      trackColor={{ false: "#767577", true: "#81b0ff" }}
+                      thumbColor={kichHoat ? "#f5dd4b" : "#f4f3f4"}
+                      ios_backgroundColor="#3e3e3e"
+                      marginLeft={30}
+                      onValueChange={(kichHoat) => {
                                         this.setState({
                                             kichHoat
                                         });
                                     }}
-                                    value={kichHoat}
-                                />
-                            </View>
-                            <Text style={styles.boldText}>Vai trò</Text>
-                            <MultiSelect
-                                ref={(component) => { this.multiSelect = component }}
-                                getCollapsedNodeHeight={{ height: 200 }}
-                                items={roleList}
-                                single={false}
-                                IconRenderer={Icon}
-                                searchInputPlaceholderText="Tìm kiếm..."
-                                styleListContainer={roleList && roleList.length > 9 ? { height: 200 } : null}
-                                uniqueKey="displayName"
-                                displayKey="displayName"
-                                selectText="Chọn ..."
-                                onSelectedItemsChange={(roleListID) => this.setState({
+                      value={kichHoat}
+                    />
+                  </View>
+                  <Text style={styles.boldText}>Vai trò</Text>
+                  <MultiSelect
+                    ref={(component) => { this.multiSelect = component }}
+                    getCollapsedNodeHeight={{ height: 200 }}
+                    items={roleList}
+                    single={false}
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleListContainer={roleList && roleList.length > 9 ? { height: 200 } : null}
+                    uniqueKey="displayName"
+                    displayKey="displayName"
+                    selectText="Chọn ..."
+                    onSelectedItemsChange={(roleListID) => this.setState({
                                     roleListID
                                 })}
-                                selectedItems={roleListID}
-                                submitButtonColor="#2196F3"
-                            />
-                            <Text style={styles.boldText}>Ghi chú</Text>
-                            <TextInput
-                                placeholderTextColor="black"
-                                style={styles.borderedGhichu}
-                                onChangeText={(ghiChu) => {
+                    selectedItems={roleListID}
+                    submitButtonColor="#2196F3"
+                  />
+                  <Text style={styles.boldText}>Ghi chú</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.borderedGhichu}
+                    onChangeText={(ghiChu) => {
                                     this.setState({
                                         ghiChu
                                     });
                                 }}
-                            />
-                        </View>
+                  />
+                </View>
 
-                    </Animated.ScrollView>
-                </SafeAreaView>
+              </Animated.ScrollView>
+            </SafeAreaView>
 
-            </Animated.View>
+          </Animated.View>
         );
     }
 

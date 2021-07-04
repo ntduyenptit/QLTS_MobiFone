@@ -72,7 +72,7 @@ export const getTextLinhVucKinhDoanh = (type, list) => (
 )
 
 const isEmpty = value => typeof value === 'undefined' || value === null || value === false;
-const isNumeric = value => !isEmpty(value) && !Number.isNaN(Number(value));
+export const isNumeric = value => !isEmpty(value) && !Number.isNaN(Number(value));
 
 export const getTextFromList = (type, list) => {
   if (isNumeric(type)) {

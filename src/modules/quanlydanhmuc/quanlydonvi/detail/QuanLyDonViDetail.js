@@ -13,7 +13,7 @@ import { endPoint, moreMenu, screens } from '@app/api/config';
 import { createGetMethod, deleteMethod } from '@app/api/Apis';
 import { connect } from 'react-redux';
 import { deviceWidth } from '@app/modules/global/LoaderComponent';
-import { getTextFromList } from '@app/modules/global/Helper';
+import { getTextFromList, isNumeric } from '@app/modules/global/Helper';
 
 class QuanLyDonViDetailScreen extends React.Component {
     constructor(props) {
@@ -21,15 +21,14 @@ class QuanLyDonViDetailScreen extends React.Component {
 
         this.state = {
             chitietData: this.props.route.params?.paramKey?.data || null,
-            id: this.props.route.params?.paramKey?.data?.loaiTaiSan?.id,
+            id: this.props.route.params?.paramKey?.data?.toChuc?.id,
             donViList: props.DvqlDataFilter,
+            viTriList: [],
         }
     }
 
     componentDidMount() {
-        console.log('aaaa123: ', this.props.route.params?.paramKey?.data);
         const { chitietData, id, donViList } = this.state;
-        console.log(chitietData);
         this.props.navigation.setOptions({
             headerRight: () => (
               <MoreMenu listMenu={this.showMenu()} />
@@ -41,16 +40,16 @@ class QuanLyDonViDetailScreen extends React.Component {
           if (donViList.length === 0) {
             this.getAllToChuc();
           }
+          this.getAllVitridialy();
     }
 
     getchitietLoaiTaiSan() {
         const { id } = this.state;
-        let url = `${endPoint.getChiTietLoaiTaiSan}?`;
+        let url = `${endPoint.getChiTietDonVi}?`;
         url += `Id=${encodeURIComponent(`${id}`)}&`;
         url += `isView=${encodeURIComponent(`${true}`)}`;
         createGetMethod(url)
             .then(res => {
-                console.log(res);
                 if (res.success) {
                     this.setState({
                         chitietData: res.result,
@@ -67,13 +66,24 @@ class QuanLyDonViDetailScreen extends React.Component {
         createGetMethod(url)
             .then(res => {
                 if (res.success) {
-                    console.log(res);
                     this.setState({
                         donViList: res.result,
                     });
                 }
             })
             .catch();
+    }
+
+    getAllVitridialy() {
+        const url = `${endPoint.getVitriDialy}`;
+        createGetMethod(url)
+            .then(res => {
+                if (res) {
+                    this.setState({
+                        viTriList: res.result,
+                    });
+                }
+            })
     }
 
     refresh = () => {
@@ -89,38 +99,8 @@ class QuanLyDonViDetailScreen extends React.Component {
 
     capnhat() {
         const { chitietData, id } = this.state;
-        this.props.navigation.navigate(screens.cap_nhat_loai_tai_san, { paramKey: chitietData, idTs: id, onGoBack: () => this.refresh() });
+        this.props.navigation.navigate(screens.cap_nhat_don_vi, { paramKey: chitietData, idTs: id, onGoBack: () => this.refresh() });
       }
-
-    delete(id) {
-        Alert.alert('Bạn có chắc chắn muốn xóa không?',
-            '',
-            [
-                {
-                    text: 'OK', onPress: () => {
-                        let url = `${endPoint.deleteLoaiTs}?`;
-                        url += `Id=${id}`;
-
-                        deleteMethod(url).then(res => {
-                            if (res.success) {
-                                Alert.alert('Xóa đơn vị thành công',
-                                    '',
-                                    [
-                                        { text: 'OK', onPress: this.goBack() },
-                                    ],
-                                    { cancelable: false }
-                                );
-                            } else {
-                                Alert.alert(res.error.message);
-                            }
-                        });
-                    }
-                },
-                { text: 'Hủy' },
-            ],
-            { cancelable: true }
-        );
-    }
 
     goBack() {
         this.props.route.params.onGoBack();
@@ -128,28 +108,21 @@ class QuanLyDonViDetailScreen extends React.Component {
     }
     
     render() {
-        const { chitietData, id, donViList } = this.state;
-        const donViCha = getTextFromList(chitietData?.toChuc?.trucThuocToChucId, donViList);
+        const { chitietData, viTriList, donViList } = this.state;
+        const donViCha = getTextFromList(chitietData?.toChuc?.trucThuocToChucId || chitietData?.trucThuocToChucId, donViList);
+        const diaChi = chitietData?.viTriDiaLyId && getTextFromList(chitietData?.viTriDiaLyId, viTriList);
         return (
           <View style={styles.container}>
             <View style={{ alignItems: 'flex-start', width: deviceWidth, height: 'auto', padding: 10, flex: 1 }}>
               <Text style={styles.title}>Thông tin chi tiết đơn vị:</Text>
-              <BulletView title='Mã đơn vị' text={chitietData?.toChuc?.maToChuc} />
-              <BulletView title='Mã hexa' text={chitietData?.toChuc?.maHexa} />
-              <BulletView title='Tên đơn vị' text={chitietData?.toChuc?.tenToChuc} />
+              <BulletView title='Mã đơn vị' text={chitietData?.toChuc?.maToChuc || chitietData?.maToChuc} />
+              <BulletView title='Mã hexa' text={chitietData?.toChuc?.maHexa || chitietData?.maHexa} />
+              <BulletView title='Tên đơn vị' text={chitietData?.toChuc?.tenToChuc || chitietData?.tenToChuc} />
               <BulletView title='Đơn vị quản lý' text={donViCha} />
-              <BulletView title='Địa chỉ' text={chitietData?.diaChi} />
+              <BulletView title='Địa chỉ' text={chitietData?.diaChi || diaChi} />
               <BulletView title='Ghi chú' text={chitietData?.ghiChu} />
             </View>
             <View style={styles.separator} />
-            <View style={styles.addToCarContainer}>
-              <TouchableOpacity
-                onPress={() => this.delete(id)}
-                style={styles.shareButton}
-              >
-                <Text style={styles.shareButtonText}>Xóa</Text>
-              </TouchableOpacity>
-            </View>
           </View>
 
         )

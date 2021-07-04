@@ -1,14 +1,15 @@
 import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Dimensions, Text, StyleSheet, View, TextInput, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
-import { createGetMethod, createPostMethodWithToken } from '../../../api/Apis';
-import { endPoint, } from '../../../api/config';
 import RNPickerSelect from 'react-native-picker-select';
-import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { buildTree, convertDateFormatTo, convertDateToIOSString, convertFormatDate, convertTimeFormatToLocaleDateFullTime, convertTimeToIOSString } from '../../global/Helper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { connect } from 'react-redux';
+import { createGetMethod, createPostMethodWithToken } from '../../../api/Apis';
+import { endPoint, } from '../../../api/config';
+import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
+import { buildTree, convertDateFormatTo, convertDateToIOSString, convertFormatDate, convertTimeFormatToLocaleDateFullTime, convertTimeToIOSString } from '../../global/Helper';
 import { colors, fonts } from '../../../styles';
+
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
@@ -54,7 +55,7 @@ const TenBaocaoList = [
     },
 ]
 
-let listCheckphongBan = [];
+const listCheckphongBan = [];
 
 class ThemmoiCaidatScreen extends React.Component {
     constructor(props) {
@@ -75,27 +76,27 @@ class ThemmoiCaidatScreen extends React.Component {
     componentDidMount() {
         this.props.navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity
-                    onPress={() => this.saveNewLichXuatbaocao()}
-                    style={{
+              <TouchableOpacity
+                onPress={() => this.saveNewLichXuatbaocao()}
+                style={{
                         paddingHorizontal: 16,
                         paddingVertical: 12,
                     }
                     }
-                >
-                    <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
-                        {/* <Icon name="save" color="white" size={20} /> */}
-                        <Text style={{
+              >
+                <View style={{ marginLeft: 15, backgroundColor: 'transparent' }}>
+                  {/* <Icon name="save" color="white" size={20} /> */}
+                  <Text style={{
                             fontFamily: fonts.primaryRegular,
                             color: colors.white,
                             fontSize: 18,
                             alignSelf: 'center'
                         }}
-                        > Lưu
-                </Text>
+                  > Lưu
+                  </Text>
 
-                    </View>
-                </TouchableOpacity>
+                </View>
+              </TouchableOpacity>
             )
         })
         this.danhsachPhongban(this.props.DvqlData);
@@ -109,11 +110,12 @@ class ThemmoiCaidatScreen extends React.Component {
                 phongBanList: dvqlTreeData,
             });
         }
-    };
+    }
+;
     danhsachNguoidung(id) {
         if (id != null) {
             let url;
-            url = `services/app/LookupTable/GetAllNguoiDungTheoPBLookupTable?phongBan=` + id;
+            url = `services/app/LookupTable/GetAllNguoiDungTheoPBLookupTable?phongBan=${  id}`;
             createGetMethod(url)
                 .then(res => {
                     if (res) {
@@ -133,11 +135,12 @@ class ThemmoiCaidatScreen extends React.Component {
     }
 
     onSelectedItemsChange = nguoiNhanBaocao => {
-        console.log("nguoiNhan: " + nguoiNhanBaocao);
+        console.log(`nguoiNhan: ${  nguoiNhanBaocao}`);
         this.setState({ nguoiNhanBaocao });
     };
+
     onSelectedDVQLChange = phongBanNhan => {
-        console.log("phongBanNhan: " + phongBanNhan);
+        console.log(`phongBanNhan: ${  phongBanNhan}`);
         this.setState({ phongBanNhan });
         this.danhsachNguoidung(phongBanNhan);
     }
@@ -161,7 +164,7 @@ class ThemmoiCaidatScreen extends React.Component {
     //     });
     // };
     handleSelectDate = (event, selectedDate) => {
-        console.log("giobaocao: " + selectedDate);
+        console.log(`giobaocao: ${  selectedDate}`);
         const currentTime = selectedDate || new Date(1598051730000);
         this.setState({
             isDateTimePickerVisible: false
@@ -170,6 +173,7 @@ class ThemmoiCaidatScreen extends React.Component {
             gioGuiBaocao: currentTime
         });
     };
+
     convertListnguoiNhanbaocao(list) {
         let stringList = '';
         for (let i = 0; i < list.length; i++) {
@@ -178,13 +182,16 @@ class ThemmoiCaidatScreen extends React.Component {
         }
         return stringList;
     }
+
     convertTime(time) {
-        let str = "";
-        return str + convertDateFormatTo(time).toString() + ".881Z";
+        const str = "";
+        return `${str + convertDateFormatTo(time).toString()  }.881Z`;
     }
+
     convertphongBanNhan(pbNhan) {
         return pbNhan[0];
     }
+
     saveNewLichXuatbaocao() {
         const {
             tenBaocao,
@@ -228,7 +235,7 @@ class ThemmoiCaidatScreen extends React.Component {
         if (check) {
             Alert.alert(
                 '',
-                'Hãy nhập '+ s,
+                `Hãy nhập ${ s}`,
                 [
                     { text: 'OK', style: "cancel" },
                 ],
@@ -238,7 +245,7 @@ class ThemmoiCaidatScreen extends React.Component {
         }
         const params = {
             baoCaoId: tenBaocao,
-            ghiChu: ghiChu,
+            ghiChu,
             lapLaiId: lapLai,
             gioGuiBaoCao: this.convertTime(gioGuiBaocao),
             nguoiNhanBaoCaoId: this.convertListnguoiNhanbaocao(nguoiNhanBaocao),
@@ -277,136 +284,135 @@ class ThemmoiCaidatScreen extends React.Component {
         tab = screen;
 
         return (
-            <Animated.View>
-                <StatusBar barStyle="dark-content" />
-                <SafeAreaView>
-                    <Animated.ScrollView>
-                        <View style={styles.container}>
-                            <Text style={styles.boldText}>Tên báo cáo*:</Text>
-                            <RNPickerSelect
-                                placeholder={placeholder}
-                                items={TenBaocaoList}
-                                onValueChange={value => {
+          <Animated.View>
+            <StatusBar barStyle="dark-content" />
+            <SafeAreaView>
+              <Animated.ScrollView>
+                <View style={styles.container}>
+                  <Text style={styles.boldText}>Tên báo cáo*:</Text>
+                  <RNPickerSelect
+                    placeholder={placeholder}
+                    items={TenBaocaoList}
+                    onValueChange={value => {
                                     this.setState({
                                         tenBaocao: value,
                                     });
                                 }}
 
-                                style={{
+                    style={{
                                     ...pickerSelectStyles,
                                     iconContainer: {
                                         top: 10,
                                         right: 12,
                                     },
                                 }}
-                                value={this.state.tenBaocao}
-                                useNativeAndroidPickerStyle={false}
-                                textInputProps={{ underlineColor: 'yellow' }}
-                                Icon={() => {
-                                    return <Icon name="caret-down" size={25} color="black" />;
-                                }}
-                            />
-                            <Text style={styles.boldText}>Lặp lại*:</Text>
-                            <RNPickerSelect
-                                placeholder={placeholder}
-                                items={LaplaiList}
-                                onValueChange={value => {
+                    value={this.state.tenBaocao}
+                    useNativeAndroidPickerStyle={false}
+                    textInputProps={{ underlineColor: 'yellow' }}
+                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                  />
+                  <Text style={styles.boldText}>Lặp lại*:</Text>
+                  <RNPickerSelect
+                    placeholder={placeholder}
+                    items={LaplaiList}
+                    onValueChange={value => {
                                     this.setState({
                                         lapLai: value,
                                     });
                                 }}
 
-                                style={{
+                    style={{
                                     ...pickerSelectStyles,
                                     iconContainer: {
                                         top: 10,
                                         right: 12,
                                     },
                                 }}
-                                value={this.state.lapLai}
-                                useNativeAndroidPickerStyle={false}
-                                textInputProps={{ underlineColor: 'yellow' }}
-                                Icon={() => {
-                                    return <Icon name="caret-down" size={25} color="black" />;
-                                }}
-                            />
+                    value={this.state.lapLai}
+                    useNativeAndroidPickerStyle={false}
+                    textInputProps={{ underlineColor: 'yellow' }}
+                    Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                  />
 
-                            <View style={styles.containerButton}>
-                                <Text style={styles.boldText}>Giờ gửi báo cáo*</Text>
-                                <Icon style={{ alignContent: "flex-end", paddingLeft: 220 }} name="user-clock" color="black" size={27}
-                                    onPress={() => this.setState({
+                  <View style={styles.containerButton}>
+                    <Text style={styles.boldText}>Giờ gửi báo cáo*</Text>
+                    <Icon
+                      style={{ alignContent: "flex-end", paddingLeft: 220 }}
+                      name="user-clock"
+                      color="black"
+                      size={27}
+                      onPress={() => this.setState({
                                         isDateTimePickerVisible: true,
-                                    })} />
-                            </View>
-                            <TextInput
-                                placeholderTextColor={'black'}
-                                style={styles.bordered}
-                                placeholder={convertDateFormatTo(gioGuiBaocao)}
-                                inlineImageLeft='time_icon'
-                                editable={false}
-                                selectTextOnFocus={false}
-                            />
-                            {isDateTimePickerVisible && (
-                                <DateTimePicker
-                                    testID="dateTimePicker"
-                                    value={gioGuiBaocao}
-                                    mode={'time'}
-                                    is24Hour={true}
-                                    display="default"
-                                    onChange={this.handleSelectDate}
-                                />
+                                    })}
+                    />
+                  </View>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    placeholder={convertDateFormatTo(gioGuiBaocao)}
+                    inlineImageLeft='time_icon'
+                    editable={false}
+                    selectTextOnFocus={false}
+                  />
+                  {isDateTimePickerVisible && (
+                    <DateTimePicker
+                      testID="dateTimePicker"
+                      value={gioGuiBaocao}
+                      mode="time"
+                      is24Hour
+                      display="default"
+                      onChange={this.handleSelectDate}
+                    />
                             )}
-                            <Text style={styles.boldText}>Phòng ban nhận báo cáo*</Text>
-                            <MultiSelect
-                                ref={(component) => { this.multiSelect = component }}
-                                getCollapsedNodeHeight={{ height: 200 }}
-                                items={phongBanList}
-                                single={true}
-                                IconRenderer={Icon}
-                                searchInputPlaceholderText="Tìm kiếm..."
-                                styleListContainer={phongBanList && phongBanList.length > 9 ? { height: 200 } : null}
-                                uniqueKey="id"
-                                displayKey="displayName"
-                                selectText="Chọn đơn vị quản lý..."
-                                onSelectedItemsChange={(item) => this.onSelectedDVQLChange(item)}
-                                selectedItems={phongBanNhan}
-                                submitButtonColor="#2196F3"
-                            />
-                            <Text style={styles.boldText}>Người nhận báo cáo*: </Text>
-                            <ScrollView style={{ height: 200 }}>
-                                <MultiSelect
-                                    items={userList}
-                                    uniqueKey="id"
-                                    isTree={false}
-                                    single={false}
-                                    getCollapsedNodeHeight={{ height: 150 }}
-                                    ref={(component) => { this.multiSelect = component }}
-                                    onSelectedItemsChange={(item) => this.onSelectedItemsChange(item)}
-                                    selectedItems={nguoiNhanBaocao}
-                                    IconRenderer={Icon}
-                                    selectText="Bấm để chọn tên"
-                                    searchInputPlaceholderText="Tìm kiếm..."
-                                    searchInputStyle={{ color: '#CCC' }}
-                                    submitButtonColor="#2196F3"
+                  <Text style={styles.boldText}>Phòng ban nhận báo cáo*</Text>
+                  <MultiSelect
+                    ref={(component) => { this.multiSelect = component }}
+                    getCollapsedNodeHeight={{ height: 200 }}
+                    items={phongBanList}
+                    single
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleListContainer={phongBanList && phongBanList.length > 9 ? { height: 200 } : null}
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText="Chọn đơn vị quản lý..."
+                    onSelectedItemsChange={(item) => this.onSelectedDVQLChange(item)}
+                    selectedItems={phongBanNhan}
+                    submitButtonColor="#2196F3"
+                  />
+                  <Text style={styles.boldText}>Người nhận báo cáo*: </Text>
+                  <ScrollView style={{ height: 200 }}>
+                    <MultiSelect
+                      items={userList}
+                      uniqueKey="id"
+                      single
+                      getCollapsedNodeHeight={{ height: 150 }}
+                      ref={(component) => { this.multiSelect = component }}
+                      onSelectedItemsChange={(item) => this.onSelectedItemsChange(item)}
+                      selectedItems={nguoiNhanBaocao}
+                      IconRenderer={Icon}
+                      selectText="Bấm để chọn tên"
+                      searchInputPlaceholderText="Tìm kiếm..."
+                      searchInputStyle={{ color: '#CCC' }}
+                      submitButtonColor="#2196F3"
+                    />
+                  </ScrollView>
 
-                                />
-                            </ScrollView>
-
-                            <Text style={styles.boldText}>Ghi chú</Text>
-                            <TextInput
-                                placeholderTextColor={'black'}
-                                style={styles.bordered}
-                                onChangeText={(text) => {
+                  <Text style={styles.boldText}>Ghi chú</Text>
+                  <TextInput
+                    placeholderTextColor="black"
+                    style={styles.bordered}
+                    onChangeText={(text) => {
                                     this.setState({
                                         ghiChu: text,
                                     });
                                 }}
-                            />
-                        </View>
-                    </Animated.ScrollView>
-                </SafeAreaView>
+                  />
+                </View>
+              </Animated.ScrollView>
+            </SafeAreaView>
 
-            </Animated.View>
+          </Animated.View>
         );
     }
 

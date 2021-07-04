@@ -12,6 +12,7 @@ export const NCC_FILTER = `${FILTER} Get NHA_CUNG_CAP data`;
 export const MSD_FILTER = `${FILTER} Get MA_SU_DUNG data`;
 export const TT_FILTER = `${FILTER} Get TRANG_THAI data`;
 export const TTSD_FILTER = `${FILTER} Get TRANG_THAI_SU_DUNG data`;
+export const TINHTHANH_FILTER = `${FILTER} Get TINH_THANH data`;
 
 // selected
 export const DVQL_SELECTED_ADD = `${FILTER} Add DON_VI_QUAN_LY selected`;
@@ -40,6 +41,9 @@ export const TTKK_SELECTED_REMOVE = `${FILTER} Remove TINH_TRANG_KIEM_KE selecte
 
 export const HT_SELECTED_ADD = `${FILTER} Add HINH_THUC selected`;
 export const HT_SELECTED_REMOVE = `${FILTER} Remove HINH_THUC selected`;
+
+export const TINHTHANH_SELECTED_ADD = `${FILTER} Add TINH_THANH selected`;
+export const TINHTHANH_SELECTED_REMOVE = `${FILTER} Remove TINH_THANH selected`;
 
 export const STARTDATE_SELECTED_ADD = `${FILTER} Add START_DATE selected`;
 export const STARTDATE_SELECTED_REMOVE = `${FILTER} Remove START_DATE selected`;
@@ -84,6 +88,23 @@ export const getLTSDataAction = (data) => ({
     payload: data
 });
 
+// tỉnh thành
+export const getTinhThanhDataAction = (data) => ({
+    type: TINHTHANH_FILTER,
+    payload: data,
+});
+
+export const addSelectedTinhThanhAction = (data) => ({
+    type: TINHTHANH_SELECTED_ADD,
+    payload: data
+});
+
+export const removeSelectedTinhThanhAction = (data) => ({
+    type: TINHTHANH_SELECTED_REMOVE,
+    payload: data
+});
+
+// loại tài sản
 export const addSelectedLTSAction = (data) => ({
     type: LTS_SELECTED_ADD,
     payload: data

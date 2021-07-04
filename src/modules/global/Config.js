@@ -11,7 +11,8 @@ export const filterType = ({
     chieu_di_chuyen: 'chieu_di_chuyen',
     phan_loai_tai_san: 'phan_loai_tai_san',
     tinh_trang_su_dung: 'tinh_trang_su_dung',
-    tinh_trang_kiem_ke: 'tinh_trang_kiem_ke'
+    tinh_trang_kiem_ke: 'tinh_trang_kiem_ke',
+    tinh_thanh: 'tinh_thanh'
 });
 
 export const hinhThuc = ({

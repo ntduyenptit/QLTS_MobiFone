@@ -208,10 +208,11 @@ class TaomoiDonviScreen extends React.Component {
                     single
                     IconRenderer={Icon}
                     searchInputPlaceholderText="Tìm kiếm..."
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
                     styleListContainer={dvList && dvList.length > 9 ? { height: 200 } : null}
                     uniqueKey="id"
                     displayKey="displayName"
-                    selectText="Chọn ..."
+                    selectText="Chọn đơn vị quản lý ..."
                     onSelectedItemsChange={(donviChaId) => this.setState({
                                     donviChaId
                                 })}
@@ -225,12 +226,14 @@ class TaomoiDonviScreen extends React.Component {
                     items={diachiList}
                     single
                     IconRenderer={Icon}
+                    styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
                     searchInputPlaceholderText="Tìm kiếm..."
                     styleListContainer={diachiList && diachiList.length > 9 ? { height: 200 } : null}
                     uniqueKey="id"
-                    selectText="Chọn ..."
-                    onSelectedItemsChange={(diachiId) => this.setState({
-                                    diachiId
+                    selectText="Chọn địa chỉ ..."
+                    displayKey="displayName"
+                    onSelectedItemsChange={(item) => this.setState({
+                                    diachiId: item,
                                 })}
                     selectedItems={diachiId}
                     submitButtonColor="#2196F3"
@@ -286,13 +289,19 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontStyle: 'italic'
     },
+    searchText: {
+        backgroundColor: 'transparent',
+        height: 50,
+        paddingLeft: 15
+    },
     bordered: {
         borderWidth: 0.5,
         borderColor: 'black',
         borderRadius: 5,
         paddingHorizontal: 20,
         height: 50,
-        marginLeft: 5,
+        marginLeft: 10,
+        marginRight: 10,
     },
     boldText: {
         fontWeight: 'bold',
@@ -314,31 +323,6 @@ const styles = StyleSheet.create({
         marginTop: 0,
 
     },
-    button: {
-        width: 150,
-        height: 30,
-        marginLeft: 50,
-        backgroundColor: '#1273DE',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 15,
-        marginBottom: 12
-    },
-    button2: {
-        width: 150,
-        height: 60,
-        backgroundColor: '#1273DE',
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignSelf: 'center',
-        borderRadius: 15,
-        marginBottom: 12
-    },
-    buttonText: {
-        textAlign: 'center',
-        fontSize: 15,
-        color: '#fff'
-    }
 });
 const mapStateToProps = state => ({
     DvqlData: state.filterDVQLDataReducer.dvqlDataFilter,

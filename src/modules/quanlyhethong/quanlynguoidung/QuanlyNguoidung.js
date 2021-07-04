@@ -51,7 +51,7 @@ class QuanlyNguoidungScreen extends React.Component {
             // Alert.alert('Lỗi khi load toàn bộ tài sản!');
           }
         })
-        .catch(err => console.log(err));
+        .catch();
     }
   }
 
@@ -80,6 +80,7 @@ class QuanlyNguoidungScreen extends React.Component {
           <SafeAreaView>
             <SearchComponent
               clampedScroll={clampedScroll}
+              screen={screens.quan_ly_nguoi_dung}
             />
             <Animated.ScrollView
               showsVerticalScrollIndicator={false}
