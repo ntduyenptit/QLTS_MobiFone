@@ -123,7 +123,7 @@ class QuanLyLoaiTSScreen extends React.Component {
               >Hiển thị: {donviData.length}/{total}
               </Text>
             </Animated.View>
-            <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.cap_nhat_don_vi, { screen: "Thêm mới đơn vị" })} />
+            <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_don_vi, { screen: "Thêm mới đơn vị" })} />
           </View>
 
         );

@@ -41,6 +41,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.searchText !== this.props.searchText) {
+      isSearch = true;
       this.getToanBoDauDocCoDinhData();
     }
   }

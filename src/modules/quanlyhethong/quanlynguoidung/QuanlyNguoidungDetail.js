@@ -4,12 +4,14 @@ import {
     View,
     Text,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 import BulletView from '@app/modules/global/BulletView';
 import { connect } from 'react-redux';
-import { endPoint } from '../../../api/config';
-import { createGetMethod } from '../../../api/Apis';
+import { endPoint, moreMenu, screens } from '../../../api/config';
+import { createGetMethod, deleteMethod } from '../../../api/Apis';
+import MoreMenu from '../../global/MoreComponent';
 
 const deviceWidth = Dimensions.get("window").width;
 
@@ -28,6 +30,11 @@ class NguoidungDetailScreen extends React.Component {
 
     componentDidMount() {
         this.getchitietNguoidung();
+        this.props.navigation.setOptions({
+            headerRight: () => (
+              <MoreMenu listMenu={this.showMenu()} />
+            )
+          });
     }
  
     getchitietNguoidung() {
@@ -54,10 +61,60 @@ class NguoidungDetailScreen extends React.Component {
             .catch();
     }
 
+    showMenu = () => (
+        [{
+          title: moreMenu.cap_nhat,
+          action: () => this.capnhat(),
+        }]
+      )
+
     convertActiveData = (data) => {
         if (data) {
             return "Đã kích hoạt";
         } return "Chưa kích hoạt";
+    }
+
+
+  capnhat() {
+    const { idNguoidung, chitietData } = this.state;
+    this.props.navigation.navigate(screens.cap_nhat_nguoi_dung, { paramKey: chitietData, userId: idNguoidung, onGoBack: () => this.refresh() });
+  }
+
+  delete(id) {
+    Alert.alert('Bạn có chắc chắn muốn xóa không?',
+        '',
+        [
+            {
+                text: 'OK', onPress: () => {
+                    let url = `${endPoint.deleteUser}?`;
+                    url += `Id=${id}`;
+                    console.log(url);
+
+                    deleteMethod(url).then(res => {
+                        if (res.success) {
+                            Alert.alert('Xóa người dùng thành công',
+                                '',
+                                [
+                                    { text: 'OK', onPress: this.goBack() },
+                                ],
+                                { cancelable: false }
+                            );
+                        } else {
+                            Alert.alert(res.error.message);
+                        }
+                    });
+                }
+            },
+            { text: 'Hủy' },
+        ],
+        { cancelable: true }
+    );
+}
+
+    goBack() {
+        const { route, navigation } = this.props;
+        route.params.onGoBack();
+        navigation.goBack();
     }
 
     render() {

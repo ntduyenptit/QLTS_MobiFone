@@ -21,9 +21,9 @@ import QuanLyKiemkeFilter from '@app/modules/kiemketaisan/filter/QuanlyKiemkeFil
 import QuanlyMuaSamFilter from '@app/modules/quanlydutrumuasam/QuanlyMuaSamFilter';
 import QuanLyCanhbaoFilter from '@app/modules/quanlycanhbao/QuanlyCanhbaoFilter';
 import BaocaoCanhbaoFilter from '@app/modules/quanlybaocao/baocaocanhbao/BaocaoCanhbaoFilter';
-import QuanlyVitriDialyFilter from '@app/modules/quanlydanhmuc/quanlyvitridialy/QuanlyVitriDialyFilter';
+import QuanlyVitriDialyFilter from '@app/modules/quanlydanhmuc/quanlyvitridialy/filter/QuanlyVitriDialyFilter';
 import QuanlyNhaCungCapFilter from '@app/modules/quanlydanhmuc/quanlynhacungcap/QuanlyNhaCungCapFilter';
-import QuanLyNguoidungFilter from '@app/modules/quanlyhethong/quanlynguoidung/QuanlyNguoidungFilter'; 
+import QuanLyNguoidungFilter from '@app/modules/quanlyhethong/quanlynguoidung/filter/QuanlyNguoidungFilter'; 
 import { store } from "../../redux/store";
 import { hideFilter } from "../../redux/actions/filter.actions";
 import { deviceWidth, deviceHeight } from './LoaderComponent';

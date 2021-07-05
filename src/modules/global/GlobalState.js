@@ -27,6 +27,7 @@ import {
   PLTS_SELECTED_ADD,
   TTKK_SELECTED_ADD,
   TINHTHANH_SELECTED_ADD,
+  QUANHUYEN_SELECTED_ADD,
 
   DVQL_SELECTED_REMOVE,
   TT_SELECTED_REMOVE,
@@ -42,6 +43,7 @@ import {
   PLTS_SELECTED_REMOVE,
   TTKK_SELECTED_REMOVE,
   TINHTHANH_SELECTED_REMOVE,
+  QUANHUYEN_SELECTED_REMOVE,
  } from '../../redux/actions/filter.actions'
 import { screens, tabs } from '../../api/config';
 import { CURRENT_SCREEN, CURRENT_TAB } from '../../redux/actions/screen.actions';
@@ -72,6 +74,7 @@ const initialState = {
     pltsFilterSelected: [],
     ttkkFilterSelected: [],
     tinhthanhFilterSelected: [],
+    quanhuyenFilterSelected: [],
 
     searchData: [],
 }
@@ -556,6 +559,26 @@ export const filterTinhThanhSelectedReducer = (state = initialState, action) => 
         return {
           ...state,
           tinhthanhFilterSelected: state.tinhthanhFilterSelected.filter((item) => item.screen !== action.payload.screen)
+        }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const filterQuanHuyenSelectedReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case QUANHUYEN_SELECTED_ADD: {
+      return {
+        ...state,
+        quanhuyenFilterSelected: [...state.quanhuyenFilterSelected, action.payload],
+      }
+    }
+    case QUANHUYEN_SELECTED_REMOVE: {
+        return {
+          ...state,
+          quanhuyenFilterSelected: state.quanhuyenFilterSelected.filter((item) => item.screen !== action.payload.screen)
         }
     }
     default: {

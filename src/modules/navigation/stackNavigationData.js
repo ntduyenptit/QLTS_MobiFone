@@ -41,6 +41,7 @@ import QuanlyLoaiTaiSanScreen from '../quanlydanhmuc/quanlyloaitaisan/QuanlyLoai
 import LoaiTaiSanDetailScreen from '../quanlydanhmuc/quanlyloaitaisan/detail/QuanLyLoaiTaiSanDetail';
 import QuanlyDonviScreen from '../quanlydanhmuc/quanlydonvi/QuanlyDonvi';
 import QuanLyNguoidungScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoidung';
+import CapNhatNguoiDungScreen from '../quanlyhethong/quanlynguoidung/update/CapNhatNguoidung';
 import NguoidungDetailScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoidungDetail';
 import QuanLyPhanQuyenScreen from '../quanlyhethong/quanlyphanquyen/QuanLyPhanQuyen';
 import QuanlyCauhinhMailServer from '../quanlyhethong/quanlymailServer/QuanLyMailServer';
@@ -136,7 +137,7 @@ const StackNavigationData = [
   {
     name: screens.qrScanAssetScreen,
     component: QRScaner,
-    headerLeft: null,
+    headerLeft: headerLeftComponent,
     headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -215,6 +216,19 @@ const StackNavigationData = [
     name: screens.cap_nhat_dau_doc_co_dinh,
     component: UpdateDaudocCoDinhScreen,
     headerLeft: null,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.cap_nhat_nguoi_dung,
+    component: CapNhatNguoiDungScreen,
+    headerLeft: headerLeftComponent,
     headerRight: null,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {
@@ -540,7 +554,7 @@ const StackNavigationData = [
   {
     name: screens.chi_tiet_nguoi_dung,
     component: NguoidungDetailScreen,
-    headerLeft: null,
+    headerLeft: headerLeftComponent,
     headerRight: moreHeaderRightComponent,
     headerBackground: { source: headerBackground },
     headerTitleStyle: {

@@ -162,22 +162,36 @@ export default class MultiSelect extends Component {
   };
 
   _getSelectLabel = () => {
-    const { selectText, single, selectedItems, displayKey } = this.props;
+    const { selectText, single, selectedItems, displayKey, items } = this.props;
     if (!selectedItems || selectedItems.length === 0 || !selectedItems[0]) {
       return selectText;
     }
     if (single) {
       const item = selectedItems[0];
-      const foundItem = this._findItem(item);
+
+      const foundItem = this._findItem(items, item);
       return get(foundItem, displayKey) || selectText;
     }
     return `${selectText} (${selectedItems.length} selected)`;
   };
 
-  _findItem = itemKey => {
-    const { items, uniqueKey } = this.props;
-    return find(items, singleItem => singleItem[uniqueKey] === itemKey) || {};
+  _findItem = (items, itemKey) => {
+    const { uniqueKey } = this.props;
+    let data;
+    data = find(items, singleItem => singleItem[uniqueKey] === itemKey);
+    if (!data) {
+      items.forEach(e => {
+        if (e.children && e.children.length > 0) {
+          const value = this._findItem(e.children, itemKey);
+          if (value) {
+            data = value;
+          }
+        }
+      })
+    }
+    return data;
   };
+  
 
   _searchTree = (element, matchingTitle) => {
     if (element.length === 1) {
@@ -189,9 +203,7 @@ export default class MultiSelect extends Component {
        if (result) {
         list.push(result);
        }
-       console.log('co vao day k nao 888', result);
      });
-     console.log('co vao day k nao 555', list[0]);
      return list[0][0];
   }
 

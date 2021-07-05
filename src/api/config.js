@@ -155,6 +155,7 @@ export const endPoint = ({
   deletePhieuMuasam: 'services/app/PhieuDuTruMuaSam/Deleted',
   deleteNhaCC: 'services/app/NhaCungCap/Delete',
   deleteLoaiTs: 'services/app/LoaiTaiSan/Delete',
+  deleteUser: 'services/app/User/Delete',
 });
 
 // Quản lý màn hình
@@ -210,6 +211,7 @@ export const screens = ({
   cap_nhat_vi_tri_dia_ly: 'Cập nhật vị trí địa lý',
   cap_nhat_loai_tai_san: 'Cập nhật loại tài sản',
   cap_nhat_don_vi: 'Cập nhật đơn vị',
+  cap_nhat_nguoi_dung: 'Cập nhật người dùng',
   // them moi tai san
   them_moi_tai_san: "Thêm mới tài sản",
   cap_nhat_tai_san: "Cập nhật tài sản",

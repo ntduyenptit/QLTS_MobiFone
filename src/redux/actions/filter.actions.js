@@ -45,6 +45,9 @@ export const HT_SELECTED_REMOVE = `${FILTER} Remove HINH_THUC selected`;
 export const TINHTHANH_SELECTED_ADD = `${FILTER} Add TINH_THANH selected`;
 export const TINHTHANH_SELECTED_REMOVE = `${FILTER} Remove TINH_THANH selected`;
 
+export const QUANHUYEN_SELECTED_ADD = `${FILTER} Add QUAN_HUYEN selected`;
+export const QUANHUYEN_SELECTED_REMOVE = `${FILTER} Remove QUAN_HUYEN selected`;
+
 export const STARTDATE_SELECTED_ADD = `${FILTER} Add START_DATE selected`;
 export const STARTDATE_SELECTED_REMOVE = `${FILTER} Remove START_DATE selected`;
 export const ENDDATE_SELECTED_ADD = `${FILTER} Add END_DATE selected`;
@@ -101,6 +104,17 @@ export const addSelectedTinhThanhAction = (data) => ({
 
 export const removeSelectedTinhThanhAction = (data) => ({
     type: TINHTHANH_SELECTED_REMOVE,
+    payload: data
+});
+
+// quận huyện
+export const addSelectedQuanHuyenAction = (data) => ({
+    type: QUANHUYEN_SELECTED_ADD,
+    payload: data
+});
+
+export const removeSelectedQuanHuyenAction = (data) => ({
+    type: QUANHUYEN_SELECTED_REMOVE,
     payload: data
 });
 

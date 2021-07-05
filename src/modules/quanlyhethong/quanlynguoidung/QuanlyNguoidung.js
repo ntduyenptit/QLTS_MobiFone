@@ -3,16 +3,17 @@ import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Dimensions, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
+import find from 'lodash/find';
 import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
-import QuanLyNguoidungFilter from './QuanlyNguoidungFilter';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
+import getParameters from './filter/GetParameters';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
-
+let isSearch = false;
 class QuanlyNguoidungScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -27,33 +28,53 @@ class QuanlyNguoidungScreen extends React.Component {
     this.getNguoidung();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.searchText !== this.props.searchText) {
+      isSearch = true;
+      this.getNguoidung();
+    }
+  }
+
   getNguoidung() {
-    const datas = this.props.DvqlDataFilter
+    const { datas } = getParameters();
     if (datas && datas.length > 0) {
-      let url;
-      url = `${endPoint.getAllNguoidung}?`;
+      let url = `${endPoint.getAllNguoidung}?`;
+      const textState = this.props.searchText;
+      const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_nguoi_dung)
+        && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_nguoi_dung).data;
+      if (textFilter) {
+        url += `Keyword=${textFilter}&`
+      }
 
       datas.forEach(e => {
-        url += `ToChucIdList=${encodeURIComponent(`${e.id}`)}&`;
+        url += `ToChucIdList=${encodeURIComponent(`${e.id || e}`)}&`;
       });
 
-      url += `IsSearch=${encodeURIComponent(`${true}`)}&`;
+      url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${30}`)}`;
       createGetMethod(url)
         .then(res => {
-          if (res) {
+          if (res.success) {
             this.setState({
               toanboNguoidungData: res.result.items,
               total: res.result.totalCount
             });
-          } else {
-            // Alert.alert('Lỗi khi load toàn bộ tài sản!');
           }
         })
         .catch();
     }
   }
+
+  refresh = () => {
+    isSearch = false;
+    this.getNguoidung();
+  }
+
+  handleFilter = () => {
+    isSearch = true;
+    this.getNguoidung();
+  };
 
   render() {
     const {
@@ -114,18 +135,17 @@ class QuanlyNguoidungScreen extends React.Component {
             }}
           >Hiển thị: {toanboNguoidungData.length}/{total}
           </Text>
-          <FilterComponent action={this.getNguoidung} />
+          <FilterComponent action={this.handleFilter} />
         </Animated.View>
         <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_nguoi_dung, { screen: "Thêm mới người dùng" })} />
       </View>
     );
   }
-
 }
 
 const mapStateToProps = state => ({
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-  tab: 'kiem ke tai san'
+  searchText: state.SearchReducer.searchData
 });
 
 export default connect(mapStateToProps)(QuanlyNguoidungScreen);

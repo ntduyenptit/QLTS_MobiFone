@@ -16,28 +16,31 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CheckBox from 'react-native-check-box'
 import { connect } from 'react-redux';
-import { endPoint } from '../../../api/config';
-import { createGetMethod, createPostMethodWithoutToken, createPostMethodWithToken } from '../../../api/Apis';
-import { colors, fonts } from '../../../styles';
-import { deviceWidth } from '../../global/LoaderComponent';
-import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
-import { buildTree } from '../../global/Helper';
+import { endPoint } from '@app/api/config';
+import { createGetMethod, createPostMethodWithToken } from '@app/api/Apis';
+import { colors, fonts } from '../../../../styles';
+import { deviceWidth } from '../../../global/LoaderComponent';
+import MultiSelect from '../../../../libs/react-native-multiple-select/lib/react-native-multi-select';
+import { buildTree } from '../../../global/Helper';
 
 const tempCheckValues = [];
-class ThemmoiNguoidungScreen extends React.Component {
+class CapNhatNguoidungScreen extends React.Component {
     constructor(props) {
         super(props);
+        const data = this.props.route.params?.paramKey;
+        const id = this.props.route.params?.userId;
         this.state = {
-            hoten: '',
-            donviID: '',
-            chucVu: '',
-            email: '',
-            tendangnhap: '',
-            sdt: '',
+            id,
+            hoten: data?.name || '',
+            donviID: data?.toChucId ? [data?.toChucId] : [],
+            chucVu: data?.chucVu || '',
+            email: data?.emailAddress || '',
+            tendangnhap: data?.userName || '',
+            sdt: data?.phoneNumber || '',
             matkhau: '',
             xacnhanMk: '',
-            kichHoat: false,
-            ghiChu: '',
+            kichHoat: data?.isActive || false,
+            ghiChu: data?.ghiChu || '',
             roleListID: [],
             dvList: [],
             roleList: [],
@@ -46,6 +49,7 @@ class ThemmoiNguoidungScreen extends React.Component {
     }
 
     componentDidMount() {
+        console.log(this.props.route.params);
         this.props.navigation.setOptions({
             headerRight: () => (
               <TouchableOpacity
@@ -80,18 +84,12 @@ class ThemmoiNguoidungScreen extends React.Component {
         createGetMethod(url)
             .then(res => {
                 if (res) {
-                    // let list = res.result.items.map(e => ({
-                    //     label: e.displayName,
-                    //     value: e.id,
-                    // })),
                     this.setState({
                         roleList: res.result.items
                     });
-                } else {
-                    // Alert.alert('Lỗi khi load toàn bộ tài sản!');
                 }
             })
-            .catch(err => console.log(err));
+            .catch();
     }
 
     buildTreedvlist(data) {
@@ -99,12 +97,13 @@ class ThemmoiNguoidungScreen extends React.Component {
         if (list) {
             this.setState({
                 dvList: list,
-            });
+            }, () => console.log(list));
         }
     }
 
     saveNewNguoidung() {
         const {
+            id,
             hoten,
             donviID,
             chucVu,
@@ -169,6 +168,7 @@ class ThemmoiNguoidungScreen extends React.Component {
         }
         const url = `${endPoint.creatUser}`;
         const params = {
+            id,
             chucVu,
             emailAddress: email,
             ghiChu,
@@ -212,7 +212,12 @@ class ThemmoiNguoidungScreen extends React.Component {
 
     render() {
         const {
+            hoten,
+            chucVu,
+            email,
             kichHoat,
+            tendangnhap,
+            sdt,
             donviID,
             dvList,
             roleList,
@@ -229,9 +234,10 @@ class ThemmoiNguoidungScreen extends React.Component {
                     placeholderTextColor="black"
                     placeholder="Nhập tên"
                     style={styles.bordered}
-                    onChangeText={(hoten) => {
+                    defaultValue={hoten}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        hoten,
+                                        hoten: text,
                                     });
                                 }}
                   />
@@ -250,8 +256,8 @@ class ThemmoiNguoidungScreen extends React.Component {
                     uniqueKey="id"
                     displayKey="displayName"
                     selectText="Chọn ..."
-                    onSelectedItemsChange={(donviID) => this.setState({
-                                    donviID
+                    onSelectedItemsChange={(item) => this.setState({
+                                    donviID: item
                                 })}
                     selectedItems={donviID}
                     submitButtonColor="#2196F3"
@@ -260,9 +266,10 @@ class ThemmoiNguoidungScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(chucVu) => {
+                    defaultValue={chucVu}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        chucVu
+                                        chucVu: text,
                                     });
                                 }}
                   />
@@ -270,9 +277,10 @@ class ThemmoiNguoidungScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(email) => {
+                    defaultValue={email}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        email
+                                        email: text
                                     });
                                 }}
                   />
@@ -280,9 +288,11 @@ class ThemmoiNguoidungScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(tendangnhap) => {
+                    editable={false}
+                    defaultValue={tendangnhap}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        tendangnhap
+                                        tendangnhap: text
                                     });
                                 }}
                   />
@@ -290,35 +300,13 @@ class ThemmoiNguoidungScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(sdt) => {
+                    defaultValue={sdt}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        sdt
+                                        sdt: text
                                     });
                                 }}
                   />
-                  <Text style={styles.boldText}>Mật khẩu*</Text>
-                  <TextInput
-                    placeholderTextColor="black"
-                    secureTextEntry
-                    style={styles.bordered}
-                    onChangeText={(matkhau) => {
-                                    this.setState({
-                                        matkhau
-                                    });
-                                }}
-                  />
-                  <Text style={styles.boldText}>Xác nhận mật khẩu*</Text>
-                  <TextInput
-                    placeholderTextColor="black"
-                    secureTextEntry
-                    style={styles.bordered}
-                    onChangeText={(xacnhanMk) => {
-                                    this.setState({
-                                        xacnhanMk
-                                    });
-                                }}
-                  />
-
                   <View style={styles.containerButton}>
                     <Text style={styles.boldText}>Kích hoạt: </Text>
                     <Switch
@@ -472,4 +460,4 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
     DvqlData: state.filterDVQLDataReducer.dvqlDataFilter,
 });
-export default connect(mapStateToProps)(ThemmoiNguoidungScreen);
+export default connect(mapStateToProps)(CapNhatNguoidungScreen);

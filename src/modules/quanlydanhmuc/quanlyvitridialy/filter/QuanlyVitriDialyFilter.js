@@ -4,16 +4,16 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import find from 'lodash/find';
-import { endPoint, screens } from '../../../api/config';
-import { createGetMethod } from '../../../api/Apis';
-import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
-import { filterType } from '../../global/Config';
-// import { GetNCCData } from '../QuanLyTaiSan';
+import { endPoint, screens } from '@app/api/config';
+import { createGetMethod } from '@app/api/Apis';
 import { 
   getTinhThanhDataAction,
   addSelectedTinhThanhAction,
   removeSelectedTinhThanhAction,
- } from '../../../redux/actions/filter.actions';
+  addSelectedQuanHuyenAction,
+  removeSelectedQuanHuyenAction,
+ } from '@app/redux/actions/filter.actions';
+import MultiSelect from '../../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 
 const QuanLyVitriDialyilterComponent = (items) => {
   const tinhThanhRef = useRef();
@@ -39,10 +39,17 @@ const QuanLyVitriDialyilterComponent = (items) => {
   useEffect(() => {
     const tinhThanh = find(items.getTinhThanhDataSelected, itemSelected => itemSelected.screen === screens.quan_ly_vi_tri_dia_ly)
       && find(items.getTinhThanhDataSelected, itemSelected => itemSelected.screen === screens.quan_ly_vi_tri_dia_ly).data;
-      console.log('tinh thanh data: ', tinhThanh);
-      setTinhThanhSelected(tinhThanh)
-      getAllQuanHuyen(tinhThanh[0])
+      if (tinhThanh) {
+        setTinhThanhSelected(tinhThanh);
+        getAllQuanHuyen(tinhThanh[0]);
+      }
   }, [items.getTinhThanhDataSelected]);
+
+  useEffect(() => {
+    const QuanHuyen = find(items.getQuanHuyenDataSelected, itemSelected => itemSelected.screen === screens.quan_ly_vi_tri_dia_ly)
+    && find(items.getQuanHuyenDataSelected, itemSelected => itemSelected.screen === screens.quan_ly_vi_tri_dia_ly).data;
+    setQuanHuyenSelected(QuanHuyen);
+  }, [items.getQuanHuyenDataSelected])
 
   const getAllTinhthanh = () => {
     const url = `${endPoint.getAllTinhthanh}`;
@@ -68,6 +75,11 @@ const getAllQuanHuyen = (idTinh) => {
   const onSelectedTinhThanhChange = (newSelectItems) => {
     items.removeSelectedTinhThanh({data: newSelectItems, screen: screens.quan_ly_vi_tri_dia_ly});
     items.addSelectedTinhThanh({data: newSelectItems, screen: screens.quan_ly_vi_tri_dia_ly});
+  }
+
+  const onSelectedQuanHuyenChange = (newSelectItems) => {
+    items.removeSelectedQuanHuyen({data: newSelectItems, screen: screens.quan_ly_vi_tri_dia_ly});
+    items.addSelectedQuanHuyen({data: newSelectItems, screen: screens.quan_ly_vi_tri_dia_ly});
   }
   
   // end SelectedChange
@@ -104,7 +116,7 @@ const getAllQuanHuyen = (idTinh) => {
             uniqueKey="id"
             displayKey="displayName"
             selectText="Chọn ..."
-            onSelectedItemsChange={(item) => setQuanHuyenSelected(item)}
+            onSelectedItemsChange={(item) => onSelectedQuanHuyenChange(item)}
             selectedItems={quanHuyenSelected}
           />
         </View>
@@ -134,7 +146,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   getTinhThanhData: state.filterTinhThanhDataReducer.tinhthanhDataFilter,
-  getTinhThanhDataSelected: state.filterTinhThanhSelectedReducer.tinhthanhFilterSelected
+  getTinhThanhDataSelected: state.filterTinhThanhSelectedReducer.tinhthanhFilterSelected,
+  getQuanHuyenDataSelected: state.filterQuanHuyenSelectedReducer.quanhuyenFilterSelected,
 });
 
 function mapDispatchToProps(dispatch) {
@@ -142,6 +155,8 @@ function mapDispatchToProps(dispatch) {
     setTinhThanhData: (item) => dispatch(getTinhThanhDataAction(item)) ,
     addSelectedTinhThanh: (item) => dispatch(addSelectedTinhThanhAction(item)),
     removeSelectedTinhThanh: (item) => dispatch(removeSelectedTinhThanhAction(item)),
+    addSelectedQuanHuyen: (item) => dispatch(addSelectedQuanHuyenAction(item)),
+    removeSelectedQuanHuyen: (item) => dispatch(removeSelectedQuanHuyenAction(item)),
   }
 };
 

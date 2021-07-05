@@ -1,81 +1,63 @@
 import {
-    Alert,
-    Modal,
     StyleSheet,
     Text,
-    Pressable,
     View,
     Dimensions,
-    KeyboardAvoidingView,
-    Platform, ScrollView,
+    ScrollView,
 } from "react-native";
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { connect } from "react-redux";
+import find from 'lodash/find';
 
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
-import { filterType } from '../../global/Config';
-import { buildTree } from '../../global/Helper';
+import { screens } from "@app/api/config";
+import MultiSelect from '../../../../libs/react-native-multiple-select/lib/react-native-multi-select';
+import { buildTree } from '../../../global/Helper';
+import {
+    addSelectedDVQLAction,
+    removeSelectedDVQLAction,
+} from '../../../../redux/actions/filter.actions';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
 
 const NguoidungFilterComponent = (items) => {
-    const [selectedDVQLItems, setDVQLItems] = useState([]);
 
-    const donViQuanLyRef = useRef();
 
     const dvqlTreeData = buildTree(items.DvqlDataFilter);
 
-    const closeMultiSelectIfOpened = (type) => {
-        switch (type) {
-           
-            default:
-                break;
-        }
-    }
-
-
-    const requestToanBoTaiSanDataByFilter = (params) => {
-
-    }
 
     // selectedChange
     const onSelectedDVQLChange = (newSelectItems) => {
-        setDVQLItems((newSelectItems), () => {
-            requestToanBoTaiSanDataByFilter({ 'DVQL_Filter': selectedDVQLItems });
-        });
+        items.removeSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_nguoi_dung});
+        items.addSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_nguoi_dung});
     }
+
+    const DvqlFilterSelected = find(items.DvqlFilterSelected, itemSelected => itemSelected.screen === screens.quan_ly_nguoi_dung) 
+    && find(items.DvqlFilterSelected, itemSelected => itemSelected.screen === screens.quan_ly_nguoi_dung).data;
 
     // end SelectedChange
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <>
-            <View>
-              <Text style={styles.titleText}>Đơn vị quản lý</Text>
-              <MultiSelect
-                ref={donViQuanLyRef}
-                isTree
-                getCollapsedNodeHeight={{ height: 200 }}
-                onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
-                items={dvqlTreeData}
-                IconRenderer={Icon}
-                searchInputPlaceholderText="Tìm kiếm..."
-                styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
-                uniqueKey="id"
-                displayKey="displayName"
-                selectText="Chọn đơn vị quản lý..."
-                onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-                selectedItems={selectedDVQLItems}
-              />
-            </View>
-          </>
-          <>
-          </>
-
+          <View>
+            <Text style={styles.titleText}>Đơn vị quản lý</Text>
+            <MultiSelect
+              isTree
+              getCollapsedNodeHeight={{ height: 200 }}
+              items={dvqlTreeData}
+              IconRenderer={Icon}
+              searchInputPlaceholderText="Tìm kiếm..."
+              styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
+              uniqueKey="id"
+              displayKey="displayName"
+              selectText="Chọn đơn vị quản lý..."
+              onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
+              selectedItems={DvqlFilterSelected}
+            />
+          </View>
         </View>
       </ScrollView>
     );
@@ -156,8 +138,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-    isShowFilter: state.filterReducer.isShowFilter,
-    screen: state.currentScreenReducer.screenName,
+    DvqlFilterSelected: state.filterDVQLSelectedReducer.dvqlFilterSelected,
 });
 
-export default connect(mapStateToProps)(NguoidungFilterComponent);
+function mapDispatchToProps(dispatch) {
+    return {
+        addSelectedDVQL: (item) => dispatch(addSelectedDVQLAction(item)),
+        removeSelectedDVQL: (item) => dispatch(removeSelectedDVQLAction(item)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NguoidungFilterComponent);
