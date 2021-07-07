@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {RNCamera} from 'react-native-camera';
-import { screens } from '@app/api/config';
-
-const axios = require('axios');
+import { screens, endPoint } from '@app/api/config';
+import { createGetMethod } from '../../api/Apis'
 
 export default class QRScanScreen extends Component {
   constructor(props) {
@@ -13,20 +12,12 @@ export default class QRScanScreen extends Component {
     };
   }
 
-  async getAsset(input) {
-    try {
-      const response = await axios.get(
-        `http://10.6.71.64:9080/api/services/app/LookupTable/GetAssetByQRCode?qrCode=${ 
-          input}`,
-      );
-      if (response.data.success) {
-        this.setState({isLight: false});
-        this.props.navigation.navigate(screens.qrScanAssetInfor, response.data.result);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    
+  getAsset(input) {
+      let url = `${endPoint.getQRCode}?`;
+      url += `qrCode=${input}`;
+      createGetMethod(url).then(res => {
+          this.props.navigation.navigate(screens.qrScanAssetInfor, res);
+      });
   }
 
   onSuccess = (e) => {

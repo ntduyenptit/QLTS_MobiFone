@@ -4,7 +4,8 @@ import { USER_LOGOUT } from './actions/user.actions';
 // ## Generator Reducer Imports
 import app from '../modules/AppState';
 import userReducer from '../modules/auth/AuthState';
-import { 
+import {
+  loadingReducer,
   toanbotaisanReducer,
   taisanhongReducer, 
   taisanhuyReducer, 
@@ -84,6 +85,7 @@ import {
   SearchReducer,
 
   // giám sát tài sản
+  loadingReducer,
   toanbotaisanReducer,
   taisanhongReducer,
   taisanhuyReducer,

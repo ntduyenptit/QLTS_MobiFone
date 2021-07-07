@@ -21,6 +21,7 @@ import {
   taisandangsudungGetData,
   taisanchuasudungGetData,
   taisanbaoduongsuachuaGetData,
+  khaibaohongmatGetData,
 
   removeToanbotaisanData,
   removeTaisanhongData,
@@ -31,9 +32,6 @@ import {
   removeTaisanchuasudungData,
   removeTaisanbaoduongsuachuaData,
   removeKhaibaohongmatData,
-
-  toanbotaisanLoading,
-  khaibaohongmatGetData
 } from '../../redux/actions/quanlytaisan.actions';
 
 let skipNumber = 0;
@@ -44,7 +42,6 @@ export function GetToanBoTaiSanData() {
   const maxCount = 10;
   const state = store.getState();
   const tab = state.currentTabReducer.tabName;
-  store.dispatch(toanbotaisanLoading());
   if (datas && datas.length > 0) {
     let url;
     switch (tab) {
@@ -566,7 +563,7 @@ const mapStateToProps = state => ({
   taisansuachuabaoduongTotal: state.taisansuachuabaoduongReducer.taisansuachuabaoduongTotal,
   baohongmatTotal: state.khaibaohongmatReducer.khaibaohongmatTotal,
 
-  isLoading: state.toanbotaisanReducer.isLoading,
+  isLoading: state.loadingReducer.isLoading,
 
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
   tab: state.currentTabReducer.tabName,

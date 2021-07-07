@@ -29,6 +29,7 @@ import {
     removeSelectedPhanLoaiTaiSanAction,
 } from '@app/redux/actions/filter.actions';
 
+let dateFix = new Date().toISOString().split('T')[0];
 
 const QuanLyGiamSatFilter = (props) => {
     const [start, setStart] = useState({});
@@ -43,6 +44,7 @@ const QuanLyGiamSatFilter = (props) => {
         if (Object.keys(start).length !== 0) {
             props.removeStartDateSelected({data: start, screen: screens.giam_sat_tai_san});
             props.addStartDateSelected({data: start, screen: screens.giam_sat_tai_san});
+            dateFix = start;
         }
       }, [start]);
 
@@ -62,6 +64,7 @@ const QuanLyGiamSatFilter = (props) => {
             const Period = getPeriod(StartDateFilterSelected.timestamp, EndDateFilterSelected.timestamp);
             setPeriod(Period);
         }
+        dateFix = StartDateFilterSelected;
     }, [props.isShowFilter]);
 
   const closeMultiSelectIfOpened = (type) => {
@@ -152,6 +155,7 @@ const QuanLyGiamSatFilter = (props) => {
           <View>
             <Text style={styles.titleText}>Thời gian</Text>
             <Calendar
+              current={dateFix}
               onDayPress={(day) => onStartDateChange(day)}
               markingType='period'
               markedDates={period}

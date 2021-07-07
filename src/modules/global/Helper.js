@@ -159,10 +159,9 @@ export const convertNguonKinhphi = (int) => {
 }
 
 export const convertLoaiTs = (int, listTs) => {
-  for (let i= 0; i< listTs.length; i++)
-    if (listTs[i].value == int) return listTs[i].text;
-    
+  return listTs.map(e => e.value === int).text || '';
 }
+
 export const convertTrangthaiTaisan = (int) => {
   switch (int) {
     case 0:

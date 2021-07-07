@@ -1,4 +1,4 @@
-import { TOANBOTAISAN_DATA, TOANBOTAISAN_FAILED, TOANBOTAISAN_LOADING, TOANBOTAISAN_REMOVE,
+import { TOANBOTAISAN_DATA, TOANBOTAISAN_FAILED, LOADING, FINISH, TOANBOTAISAN_REMOVE,
 TAISANHONG_DATA, TAISANHONG_FAILED, TAISANHONG_LOADING, TAISANHONG_REMOVE,
 TAISANMAT_DATA, TAISANMAT_FAILED, TAISANMAT_LOADING, TAISANMAT_REMOVE,
 TAISANHUY_DATA, TAISANHUY_FAILED, TAISANHUY_LOADING, TAISANHUY_REMOVE,
@@ -35,20 +35,29 @@ const initialState = {
 
 // Reducer
 
-export const toanbotaisanReducer = (state = initialState, action) => {
+export const loadingReducer = (state = initialState, action) => {
   switch (action.type) {
-    case TOANBOTAISAN_LOADING: {
+    case LOADING: {
       return {
         isLoading: true,
-        isSuccess: false,
-        ...state
       }
     }
+    case FINISH: {
+      return {
+        isLoading: false,
+      }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const toanbotaisanReducer = (state = initialState, action) => {
+  switch (action.type) {
     case TOANBOTAISAN_DATA: {
       const result = action.payload.data.result.items;
       return {
-        isLoading: false,
-        isSuccess: true,
         toanbotaisanTotal: action.payload.data.result.totalCount,
         toanbotaisanData: [...state.toanbotaisanData, ...result]
       }

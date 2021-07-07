@@ -19,7 +19,7 @@ import {
 import { getPeriod } from '../../global/Helper';
 import { screens } from "../../../api/config";
 
-
+let dateFix = new Date().toISOString().split('T')[0];
 const TheoDoiKetNoiFilter = (props) => {
     const [start, setStart] = useState({});
     const [end, setEnd] = useState({});
@@ -29,6 +29,7 @@ const TheoDoiKetNoiFilter = (props) => {
         if (Object.keys(start).length !== 0) {
             props.removeStartDateSelected({data: start, screen: screens.theo_doi_ket_noi_thiet_bi});
             props.addStartDateSelected({data: start, screen: screens.theo_doi_ket_noi_thiet_bi});
+            dateFix = start;
         }
       }, [start]);
 
@@ -79,6 +80,7 @@ const TheoDoiKetNoiFilter = (props) => {
           <View>
             <Text style={styles.titleText}>Thời gian</Text>
             <Calendar
+              current={dateFix}
               onDayPress={(day) => onStartDateChange(day)}
               markingType='period'
               markedDates={period}

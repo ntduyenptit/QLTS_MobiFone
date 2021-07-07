@@ -21,6 +21,7 @@ class QuanlyNguoidungScreen extends React.Component {
       scrollYValue: new Animated.Value(0),
       toanboNguoidungData: [],
       total: 0,
+      skipCount: 0,
     }
   }
 
@@ -37,6 +38,8 @@ class QuanlyNguoidungScreen extends React.Component {
 
   getNguoidung() {
     const { datas } = getParameters();
+    const { skipCount } = this.state;
+    const { toanboNguoidungData } = this.state;
     if (datas && datas.length > 0) {
       let url = `${endPoint.getAllNguoidung}?`;
       const textState = this.props.searchText;
@@ -51,13 +54,13 @@ class QuanlyNguoidungScreen extends React.Component {
       });
 
       url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
-      url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
-      url += `MaxResultCount=${encodeURIComponent(`${30}`)}`;
+      url += `SkipCount=${encodeURIComponent(`${skipCount}`)}&`;
+      url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
       createGetMethod(url)
         .then(res => {
           if (res.success) {
             this.setState({
-              toanboNguoidungData: res.result.items,
+              toanboNguoidungData: [...toanboNguoidungData ,...res.result.items],
               total: res.result.totalCount
             });
           }
@@ -75,6 +78,29 @@ class QuanlyNguoidungScreen extends React.Component {
     isSearch = true;
     this.getNguoidung();
   };
+
+  isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+    const paddingToBottom = 100;
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height + paddingToBottom;
+  };
+
+  isLoadMore = () => {
+    const { toanboNguoidungData, total } = this.state;
+    if (toanboNguoidungData.length < total) {
+      return true;
+    }
+    return false;
+  }
+
+  getSkipCount = () => {
+    const { toanboNguoidungData, skipCount } = this.state;
+    if (skipCount !== toanboNguoidungData.length) {
+      this.setState({
+        skipCount: toanboNguoidungData.length,
+      }, () => this.getNguoidung());
+    }
+  }
 
   render() {
     const {
@@ -119,8 +145,16 @@ class QuanlyNguoidungScreen extends React.Component {
               }}
               onScroll={Animated.event(
                 [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
-                { useNativeDriver: true },
-                () => { },          // Optional async listener
+                {
+                  useNativeDriver: true,
+                  listener: event => {
+                    if (this.isCloseToBottom(event.nativeEvent) && !this.props.isLoading && this.isLoadMore()) {
+                      setTimeout(() => {
+                        this.getSkipCount();
+                      }, 2000)
+                    }
+                  },
+                },         // Optional async listener
               )}
               contentInsetAdjustmentBehavior="automatic"
             >
@@ -144,8 +178,8 @@ class QuanlyNguoidungScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-  searchText: state.SearchReducer.searchData
+  searchText: state.SearchReducer.searchData,
+  isLoading: state.loadingReducer.isLoading,
 });
 
 export default connect(mapStateToProps)(QuanlyNguoidungScreen);

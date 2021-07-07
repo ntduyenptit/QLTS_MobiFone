@@ -17,6 +17,7 @@ module.exports = {
       }
     ],
     ["transform-remove-console", { "exclude": [ "error", "warn", "log"] }],
+    // ["transform-remove-console", { "exclude": [ "error", "warn"] }],
     'jest-hoist'
   ],
 };

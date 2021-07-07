@@ -88,8 +88,6 @@ class NguoidungDetailScreen extends React.Component {
                 text: 'OK', onPress: () => {
                     let url = `${endPoint.deleteUser}?`;
                     url += `Id=${id}`;
-                    console.log(url);
-
                     deleteMethod(url).then(res => {
                         if (res.success) {
                             Alert.alert('Xóa người dùng thành công',

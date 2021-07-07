@@ -1,3 +1,6 @@
+export const LOADING = '[LOADING]';
+export const FINISH = '[FINISH]';
+
 export const TOANBOTAISAN = '[TOANBOTAISAN]';
 export const TOANBOTAISAN_LOADING = `${TOANBOTAISAN} is loading`;
 export const TOANBOTAISAN_DATA = `${TOANBOTAISAN} Set toanbotaisan data to store`;
@@ -52,8 +55,13 @@ export const KHAIBAOHONGMAT_DATA = `${KHAIBAOHONGMAT} Set khaibaohongmat data to
 export const KHAIBAOHONGMAT_FAILED = `${KHAIBAOHONGMAT} Get khaibaohongmat data failed`
 export const KHAIBAOHONGMAT_REMOVE = `${KHAIBAOHONGMAT} Remove all khaibaohongmat`
 // toàn bộ tài sản
-export const toanbotaisanLoading = () => ({
-    type: TOANBOTAISAN_LOADING,
+export const loading = () => ({
+    type: LOADING,
+    payload: {},
+})
+
+export const finish = () => ({
+    type: FINISH,
     payload: {},
 })
 

@@ -1,7 +1,7 @@
 
 // define the api
-export const baseUrl = 'http://103.199.79.25:9080/api/';
-export const imageBaseUrl = 'http://103.199.79.25:9080/Upload/ToanBoTS';
+export const baseUrl = 'http://qlts-server.mobifone.vn/api/';
+export const imageBaseUrl = 'http://qlts-server.mobifone.vn/Upload/ToanBoTS';
 export const headerWithoutToken = ({
   'Content-Type': 'application/json',
   Accept: 'application/json'
@@ -85,6 +85,9 @@ export const endPoint = ({
 
   // Quản lý loại tài sản
   getAllLoaiTaiSan: 'services/app/LoaiTaiSan/GetAll',
+
+  // QR code
+  getQRCode: 'services/app/LookupTable/GetAssetByQRCode',
 
   // Quản lý đơn vị
   getAllDonvi:  'services/app/ToChuc/GetAll',
@@ -175,7 +178,7 @@ export const screens = ({
   quan_ly_du_tru_mua_sam: 'Quản lý dự trù mua sắm',
   quan_ly_canh_bao: 'Quản lý cảnh báo',
   // quản lý danh mục
-  quan_ly_danh_muc: 'Quản lý danh muc',
+  quan_ly_danh_muc: 'Quản lý danh mục',
   quan_ly_nha_cung_cap: 'Quản lý nhà cung cấp',
   quan_ly_vi_tri_dia_ly: 'Quản lý vị trí địa lý',
   quan_ly_loai_tai_san: 'Quản lý loại tài sản',

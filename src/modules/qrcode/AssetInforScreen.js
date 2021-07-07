@@ -1,41 +1,40 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Component} from 'react';
-import {Text, View, Image} from 'react-native';
-import {StyleSheet} from 'react-native';
-import moment from 'moment/min/moment-with-locales';
+import {Text, View, Image,StyleSheet} from 'react-native';
+import { convertTimeFormatToLocaleDate } from '@app/modules/global/Helper';
 
 export default class AssetInfoScreen extends Component {
-  currencyFormat(num) {
-    return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' VNĐ';
-  }
+  currencyFormat = (num) => `${num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')  } VNĐ`
+
   render() {
-    moment.locale('vi');
     const {params} = this.props.route;
-    console.log(params);
-    if (params != null) {
+    const data = params?.result;
+    if (data) {
+      // console.log(data);
       return (
         <View style={assetStyles.card}>
           <Image
             style={{width: '100%', height: 100}}
             source={require('../../../assets/images/icons/qr-code.png')}
-            resizeMode={'contain'}
+            resizeMode="contain"
           />
           <Text
             h1
-            style={{paddingLeft: 10, fontWeight: 'bold', paddingBottom: 10}}>
+            style={{paddingLeft: 10, fontWeight: 'bold', paddingBottom: 10}}
+          >
             Kết quả
           </Text>
           <View style={assetStyles.row}>
             <Text style={assetStyles.name}>Tên tài sản: </Text>
-            <Text style={assetStyles.text}>{params.tenTS}</Text>
+            <Text style={assetStyles.text}>{data?.tenTS}</Text>
           </View>
           <View style={assetStyles.row}>
             <Text style={assetStyles.name}>Mã tài sản: </Text>
-            <Text style={assetStyles.text}>{params.maQRCode}</Text>
+            <Text style={assetStyles.text}>{data?.maQRCode}</Text>
           </View>
           <View style={assetStyles.row}>
             <Text style={assetStyles.name}>Loại tài sản: </Text>
-            <Text style={assetStyles.text}>{params.loaiTaiSan}</Text>
+            <Text style={assetStyles.text}>{data?.loaiTaiSan}</Text>
           </View>
           <View style={assetStyles.row}>
             <Text style={assetStyles.name}>Serial number: </Text>
@@ -47,52 +46,49 @@ export default class AssetInfoScreen extends Component {
           </View>
           <View style={assetStyles.row}>
             <Text style={assetStyles.name}>Hãng sản xuất: </Text>
-            <Text style={assetStyles.text}>{params.hangSanXuat}</Text>
+            <Text style={assetStyles.text}>{data?.hangSanXuat}</Text>
           </View>
           <View style={assetStyles.row}>
             <Text style={assetStyles.name}>Nguyên giá: </Text>
             <Text style={assetStyles.text}>
-              {this.currencyFormat(Number(params.nguyenGia))}
+              {this.currencyFormat(Number(data?.nguyenGia))}
             </Text>
           </View>
           <View style={assetStyles.row}>
             <Text style={assetStyles.name}>Ngày Mua: </Text>
             <Text style={assetStyles.text}>
-              {params.ngayMua != null
-                ? moment(params.ngayMua).format('LL')
-                : ''}
+              {data?.ngayMua && convertTimeFormatToLocaleDate(data?.ngayMua)}
             </Text>
           </View>
           <View style={assetStyles.row}>
             <Text style={assetStyles.name}>Ngày hết hạn bảo hành: </Text>
             <Text style={assetStyles.text}>
-              {params.ngayBaoHanh != null
-                ? moment(params.ngayBaoHanh).format('LL')
-                : ''}
+              {data?.ngayBaoHanh && convertTimeFormatToLocaleDate(data?.ngayBaoHanh)}
             </Text>
           </View>
           <View style={assetStyles.row}>
             <Text style={assetStyles.name}>Ngày hết hạn sử dụng: </Text>
             <Text style={assetStyles.text}>
-              {params.hanSD != null ? moment(params.hanSD).format('LL') : ''}
+              {data?.hanSD && convertTimeFormatToLocaleDate(params.hanSD)}
             </Text>
           </View>
         </View>
       );
-    } else {
+    } 
       return (
         <View
           style={{
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
-          }}>
+          }}
+        >
           <Text style={{color: 'red', fontSize: 20, fontWeight: 'bold'}}>
             Không tìm thấy thông tin tài sản này!
           </Text>
         </View>
       );
-    }
+    
   }
 }
 
