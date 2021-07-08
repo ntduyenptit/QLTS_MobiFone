@@ -13,7 +13,6 @@ import getParameters from './filter/GetParameters';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
-let isSearch = false;
 class QuanlyNguoidungScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -22,7 +21,8 @@ class QuanlyNguoidungScreen extends React.Component {
       toanboNguoidungData: [],
       total: 0,
       skipCount: 0,
-    }
+    };
+    this.isSearch = false;
   }
 
   componentDidMount() {
@@ -31,7 +31,6 @@ class QuanlyNguoidungScreen extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.searchText !== this.props.searchText) {
-      isSearch = true;
       this.getNguoidung();
     }
   }
@@ -45,7 +44,9 @@ class QuanlyNguoidungScreen extends React.Component {
       const textState = this.props.searchText;
       const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_nguoi_dung)
         && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_nguoi_dung).data;
+      this.isSearch = false;
       if (textFilter) {
+        this.isSearch = true;
         url += `Keyword=${textFilter}&`
       }
 
@@ -53,12 +54,23 @@ class QuanlyNguoidungScreen extends React.Component {
         url += `ToChucIdList=${encodeURIComponent(`${e.id || e}`)}&`;
       });
 
-      url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
+      url += `IsSearch=${encodeURIComponent(`${this.isSearch}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${skipCount}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
+
+      console.log('url123: ', url);
       createGetMethod(url)
         .then(res => {
           if (res.success) {
+            if (this.isSearch) {
+              // this.clearData();
+              console.log(res.result.items);
+              this.setState({
+                toanboNguoidungData: res.result.items,
+                total: res.result.totalCount
+              });
+              return;
+            }
             this.setState({
               toanboNguoidungData: [...toanboNguoidungData ,...res.result.items],
               total: res.result.totalCount
@@ -69,18 +81,25 @@ class QuanlyNguoidungScreen extends React.Component {
     }
   }
 
+  clearData = () => {
+    this.setState({
+      toanboNguoidungData: [],
+      total: 0
+    });
+  }
+
   refresh = () => {
-    isSearch = false;
+    this.isSearch = false;
     this.getNguoidung();
   }
 
   handleFilter = () => {
-    isSearch = true;
+    this.isSearch = true;
     this.getNguoidung();
   };
 
   isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
-    const paddingToBottom = 100;
+    const paddingToBottom = 50;
     return layoutMeasurement.height + contentOffset.y >=
       contentSize.height + paddingToBottom;
   };

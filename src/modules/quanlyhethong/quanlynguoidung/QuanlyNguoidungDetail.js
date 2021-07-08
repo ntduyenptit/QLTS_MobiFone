@@ -216,7 +216,6 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = state => ({
     DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-    tab: 'Chi tiet lich xuat bao cao'
 });
 
 export default connect(mapStateToProps)(NguoidungDetailScreen);

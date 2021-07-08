@@ -1,16 +1,9 @@
 import React, {Component} from 'react';
-import QRCodeScanner from 'react-native-qrcode-scanner';
 import {RNCamera} from 'react-native-camera';
 import { screens, endPoint } from '@app/api/config';
 import { createGetMethod } from '../../api/Apis'
 
 export default class QRScanScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLight: false,
-    };
-  }
 
   getAsset(input) {
       let url = `${endPoint.getQRCode}?`;
@@ -20,22 +13,30 @@ export default class QRScanScreen extends Component {
       });
   }
 
-  onSuccess = (e) => {
-    this.getAsset(e.data);
-  };
-
   forceUpdate() {
     return (
-      <QRCodeScanner
-        onRead={this.onSuccess}
-        showMarker
-        reactivate
-        reactivateTimeout={2000}
-        flashMode={
-          this.state.isLight
-            ? RNCamera.Constants.FlashMode.torch
-            : RNCamera.Constants.FlashMode.off
-        }
+      <RNCamera
+        ref={ref => {
+        this.camera = ref;
+      }}
+        style={styles.preview}
+        type={RNCamera.Constants.Type.back}
+        flashMode={RNCamera.Constants.FlashMode.on}
+        androidCameraPermissionOptions={{
+        title: 'Permission to use camera',
+        message: 'We need your permission to use your camera',
+        buttonPositive: 'Ok',
+        buttonNegative: 'Cancel',
+      }}
+        androidRecordAudioPermissionOptions={{
+        title: 'Permission to use audio recording',
+        message: 'We need your permission to use your audio',
+        buttonPositive: 'Ok',
+        buttonNegative: 'Cancel',
+      }}
+        onGoogleVisionBarcodesDetected={({ barcodes }) => {
+        this.getAsset(barcodes);
+      }}
       />
     );
   }
@@ -43,4 +44,12 @@ export default class QRScanScreen extends Component {
   render() {
     return this.forceUpdate();
   }
+}
+
+const styles = {
+  preview: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
 }
