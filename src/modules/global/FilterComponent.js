@@ -18,7 +18,7 @@ import QuanLyTaiSanFilterComponent from '@app/modules/quanlytaisan/filter/QuanLy
 import TheoDoiKetNoiFilter from '@app/modules/giamsattaisan/filter/TheoDoiKetNoiFilter';
 import QuanLyDauDocFilter from '@app/modules/quanlydaudoc/filter/QuanLyDauDocFilter';
 import QuanLyKiemkeFilter from '@app/modules/kiemketaisan/filter/QuanlyKiemkeFilter';
-import QuanlyMuaSamFilter from '@app/modules/quanlydutrumuasam/QuanlyMuaSamFilter';
+import QuanlyMuaSamFilter from '@app/modules/quanlydutrumuasam/filter/QuanlyMuaSamFilter';
 import QuanLyCanhbaoFilter from '@app/modules/quanlycanhbao/QuanlyCanhbaoFilter';
 import BaocaoCanhbaoFilter from '@app/modules/quanlybaocao/baocaocanhbao/BaocaoCanhbaoFilter';
 import QuanlyVitriDialyFilter from '@app/modules/quanlydanhmuc/quanlyvitridialy/filter/QuanlyVitriDialyFilter';

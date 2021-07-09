@@ -394,7 +394,6 @@ export default class MultiSelect extends Component {
       displayKey
     } = this.props;
     if (item[displayKey] === '...') {
-      console.log('vao day k nao rrr');
       // selectedItems.slice(0);
       this._submitSelection();
       onSelectedItemsChange([]);

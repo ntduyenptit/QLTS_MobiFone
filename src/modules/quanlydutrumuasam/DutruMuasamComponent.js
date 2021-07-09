@@ -1,14 +1,13 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Dimensions, View } from 'react-native';
-import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
-import QuanLyKiemkeFilter from './QuanlyMuaSamFilter';
 import { createGetMethod } from '../../api/Apis';
 import { endPoint, screens } from '../../api/config';
 import LoaderComponent from '../global/LoaderComponent';
+import getParameters from './filter/GetParameters';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
@@ -25,10 +24,11 @@ class QuanlyDutruMuaSamScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.getToanTaisan(this.props.DvqlDataFilter);
+    this.getToanTaisan();
   }
 
-  getToanTaisan(datas) {
+  getToanTaisan() {
+    const { datas } = getParameters(screens.quan_ly_du_tru_mua_sam);
     if (datas && datas.length > 0) {
       let url;
       url = `${endPoint.getAllPhieuMuasam}?`;
@@ -59,7 +59,8 @@ class QuanlyDutruMuaSamScreen extends React.Component {
   };
 
   refresh = () => {
-    this.getToanTaisan(this.props.DvqlDataFilter);
+    isSearch = false;
+    this.getToanTaisan();
   }
 
   render() {
@@ -123,9 +124,4 @@ class QuanlyDutruMuaSamScreen extends React.Component {
 
 }
 
-const mapStateToProps = state => ({
-  DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-  tab: 'Quan ly du tru mua sam'
-});
-
-export default connect(mapStateToProps)(QuanlyDutruMuaSamScreen);
+export default QuanlyDutruMuaSamScreen;

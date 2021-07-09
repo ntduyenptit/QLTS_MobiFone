@@ -1,65 +1,37 @@
 import {
-    Alert,
-    Modal,
     StyleSheet,
     Text,
-    Pressable,
     View,
     Dimensions,
-    KeyboardAvoidingView,
-    Platform, ScrollView,
+    ScrollView,
 } from "react-native";
 import React, { useState, useRef } from 'react';
 import { connect } from "react-redux";
 
-
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import MultiSelect from '../../libs/react-native-multiple-select/lib/react-native-multi-select';
-import { filterType } from '../global/Config';
-import { buildTree } from '../global/Helper';
+import find from 'lodash/find';
+import { screens } from "@app/api/config";
+import MultiSelect from '@app/libs/react-native-multiple-select/lib/react-native-multi-select';
+import { buildTree } from '@app/modules/global/Helper';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
-
 const QuanLyMuaSamFilterComponent = (items) => {
-    const [selectedDVQLItems, setDVQLItems] = useState([]);
 
     const donViQuanLyRef = useRef();
 
     const dvqlTreeData = buildTree(items.DvqlDataFilter);
 
-    // const closeMultiSelectIfOpened = (type) => {
-    //     switch (type) {
-    //         case filterType.don_vi_quan_ly:
-    //             if (trangThaiRef.current && trangThaiRef.current.state.selector) {
-    //                 trangThaiRef.current._toggleSelector();
-    //             }
-    //             break;
-
-    //         case filterType.hinh_thuc:
-                
-    //             if (donViQuanLyRef.current && donViQuanLyRef.current.state.selector) {
-    //                 donViQuanLyRef.current._toggleSelector();
-    //             };
-               
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
-
-
-    const requestToanBoTaiSanDataByFilter = (params) => {
-
-    }
 
     // selectedChange
     const onSelectedDVQLChange = (newSelectItems) => {
-        setDVQLItems((newSelectItems), () => {
-            requestToanBoTaiSanDataByFilter({ 'DVQL_Filter': selectedDVQLItems });
-        });
+        items.removeSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_du_tru_mua_sam});
+        items.addSelectedDVQL({data: newSelectItems, screen: screens.quan_ly_du_tru_mua_sam});
     }
+
+    const DvqlFilterSelected = find(items.DvqlFilterSelected, itemSelected => itemSelected.screen === screens.quan_ly_du_tru_mua_sam) 
+    && find(items.DvqlFilterSelected, itemSelected => itemSelected.screen === screens.quan_ly_du_tru_mua_sam).data;
    
     // end SelectedChange
     return (
@@ -72,7 +44,6 @@ const QuanLyMuaSamFilterComponent = (items) => {
                 ref={donViQuanLyRef}
                 isTree
                 getCollapsedNodeHeight={{ height: 200 }}
-                           // onToggleList={() => closeMultiSelectIfOpened(filterType.don_vi_quan_ly)}
                 items={dvqlTreeData}
                 IconRenderer={Icon}
                 searchInputPlaceholderText="Tìm kiếm..."
@@ -81,7 +52,7 @@ const QuanLyMuaSamFilterComponent = (items) => {
                 displayKey="displayName"
                 selectText="Chọn đơn vị quản lý..."
                 onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-                selectedItems={selectedDVQLItems}
+                selectedItems={DvqlFilterSelected}
               />
             </View>
           </>

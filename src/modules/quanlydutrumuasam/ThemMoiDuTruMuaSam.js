@@ -2,24 +2,18 @@ import React from 'react'
 import { StyleSheet, View, Text, TextInput, Dimensions, Animated, SafeAreaView, FlatList, KeyboardAvoidingView, TouchableOpacity, ScrollView, Modal, Pressable, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import RNPickerSelect from 'react-native-picker-select';
 import AsyncStorage from '@react-native-community/async-storage';
+import MultiSelect from '@app/libs/react-native-multiple-select/lib/react-native-multi-select';
+import { buildTree } from '@app/modules/global/Helper';
 import { endPoint } from '../../api/config';
 import { createGetMethod, createPostMethodWithToken } from '../../api/Apis';
 import { fonts, colors } from '../../styles';
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
-let tab = '';
 const keyboardVerticalOffset = -40;
 
-const placeholder = {
-    label: 'Chọn ...',
-    value: null,
-    color: '#9EA0A4',
-};
 const toanboTaisan = [];
-
 class ThemMoiDuTruMuaSam extends React.Component {
     constructor(props) {
         super(props);
@@ -30,7 +24,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
             userLapPhieu: "",
             userId: '',
             listTaisanMuaSam: [],
-            listDonvi: this.props.DvqlDataFilter || [],
+            listDonvi: [],
             modalVisible: false,
             donGia: '',
             ghiChu: '',
@@ -80,9 +74,12 @@ class ThemMoiDuTruMuaSam extends React.Component {
                 </View>
               </TouchableOpacity>
             )
-        })
-        this.getUserDangnhap();
-        this._retrieveData();
+        });
+        Promise.all([
+            this.buildTreedvlist(),
+            this.getUserDangnhap(),
+            this._retrieveData(),
+        ]);
     }
 
     getUserDangnhap() {
@@ -158,7 +155,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
             maPhieu,
             nguoiLapPhieuId: userId,
             tenPhieu,
-            toChucId: donVi,
+            toChucId: donVi && donVi[0],
         }
 
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
@@ -167,11 +164,26 @@ class ThemMoiDuTruMuaSam extends React.Component {
                     "Thêm mới phiếu thành công",
                     "",
                     [
-                        { text: "OK", onPress: () => this.props.navigation.goBack() }
+                        { text: "OK", onPress: () => this.goBack() }
                     ]
                 );
             }
         })
+    }
+
+    buildTreedvlist() {
+        const list = buildTree(this.props.DvqlDataFilter);
+        if (list) {
+            this.setState({
+                listDonvi: list,
+            });
+        }
+    }
+
+    goBack() {
+        const { navigation, route } = this.props;
+        route.params.onGoBack();
+        navigation.goBack();
     }
 
     renderItemComponent = (data) => (
@@ -319,6 +331,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
             nhaCungCap,
             productNumber,
             soLuong,
+            donVi,
             tenTaiSan, } = this.state;
 
         return (
@@ -346,26 +359,24 @@ class ThemMoiDuTruMuaSam extends React.Component {
                         }}
               />
               <Text style={styles.boldText}>Đơn vị*: </Text>
-              <RNPickerSelect
-                placeholder={placeholder}
+              <MultiSelect
+                ref={(component) => { this.multiSelect = component }}
+                getCollapsedNodeHeight={{ height: 200 }}
+                isTree
                 items={listDonvi}
-                onValueChange={value => {
-                            this.setState({
-                                donVi: value,
-                            });
-                        }}
-
-                style={{
-                            ...pickerSelectStyles,
-                            iconContainer: {
-                                top: 10,
-                                right: 12,
-                            },
-                        }}
-                value={this.state.donVi}
-                useNativeAndroidPickerStyle={false}
-                textInputProps={{ underlineColor: 'yellow' }}
-                Icon={() => <Icon name="caret-down" size={25} color="black" />}
+                single
+                IconRenderer={Icon}
+                searchInputPlaceholderText="Tìm kiếm..."
+                styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
+                styleListContainer={listDonvi && listDonvi.length > 9 ? { height: 200 } : null}
+                uniqueKey="id"
+                displayKey="displayName"
+                selectText="Chọn ..."
+                onSelectedItemsChange={(value) => this.setState({
+                    donVi: value
+                                })}
+                selectedItems={donVi}
+                submitButtonColor="#2196F3"
               />
             </View>
             <Text style={styles.boldText}>Người lập phiếu: </Text>
@@ -544,6 +555,11 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5
     },
+    searchText: {
+        backgroundColor: 'transparent',
+        height: 50,
+        paddingLeft: 15
+    },
     listItem: {
         padding: 5,
         flex: 1,
@@ -601,30 +617,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center"
     }
-})
-
-const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-        fontSize: 10,
-        width: '100%',
-        paddingVertical: 12,
-        paddingHorizontal: 10,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 4,
-        color: 'black',
-        paddingRight: 30, // to ensure the text is never behind the icon
-    },
-    inputAndroid: {
-        fontSize: 16,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        borderWidth: 0.5,
-        borderColor: 'purple',
-        borderRadius: 8,
-        color: 'black',
-        paddingRight: 10, // to ensure the text is never behind the icon
-    },
 });
 
 const mapStateToProps = state => ({

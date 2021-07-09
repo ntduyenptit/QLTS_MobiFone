@@ -1,7 +1,9 @@
 
 // define the api
-export const baseUrl = 'http://qlts-server.mobifone.vn/api/';
-export const imageBaseUrl = 'http://qlts-server.mobifone.vn/Upload/ToanBoTS';
+// export const baseUrl = 'http://qlts-server.mobifone.vn/api/';
+// export const imageBaseUrl = 'http://qlts-server.mobifone.vn/Upload/ToanBoTS';
+export const baseUrl = 'http://10.6.71.64:9080/api/';
+export const imageBaseUrl = 'http://10.6.71.64:9080/Upload/ToanBoTS';
 export const headerWithoutToken = ({
   'Content-Type': 'application/json',
   Accept: 'application/json'
@@ -209,12 +211,14 @@ export const screens = ({
   chi_tiet_vi_tri_dia_ly: 'Xem chi tiết vị trí địa lý',
   chi_tiet_quan_ly_don_vi: 'Xem chi tiết quản lý đơn vị',
   chi_tiet_quan_ly_loai_tai_san: 'Xem chi tiết quản lý loại tài sản',
+  chi_tiet_quan_ly_phan_quyen: 'Xem chi tiết quản lý phân quyền',
   // sửa
   cap_nhat_nha_cung_cap: 'Cập nhật nhà cung cấp',
   cap_nhat_vi_tri_dia_ly: 'Cập nhật vị trí địa lý',
   cap_nhat_loai_tai_san: 'Cập nhật loại tài sản',
   cap_nhat_don_vi: 'Cập nhật đơn vị',
   cap_nhat_nguoi_dung: 'Cập nhật người dùng',
+  cap_nhat_phan_quyen: 'Cập nhật phân quyền',
   // them moi tai san
   them_moi_tai_san: "Thêm mới tài sản",
   cap_nhat_tai_san: "Cập nhật tài sản",
