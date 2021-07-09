@@ -75,7 +75,7 @@ class ThemmoiVaitroScreen extends React.Component {
                     // Alert.alert('Lỗi khi load toàn bộ tài sản!');
                 }
             })
-            .catch(err => console.log(err));
+            .catch();
     }
 
     saveNewVaitro() {
@@ -101,7 +101,8 @@ class ThemmoiVaitroScreen extends React.Component {
                 check = true;
                 break;
             }
-
+            default:
+                break;
         }
         if (check) {
             Alert.alert(

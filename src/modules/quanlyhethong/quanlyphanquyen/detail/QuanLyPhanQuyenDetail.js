@@ -5,10 +5,13 @@ import {
     Text,
     Dimensions,
     TouchableOpacity,
-    Alert
+    Alert,
+    FlatList
 } from 'react-native';
 import BulletView from '@app/modules/global/BulletView';
 import { connect } from 'react-redux';
+import CheckBox from 'react-native-check-box';
+import find from 'lodash/find';
 import { endPoint, moreMenu, screens } from '@app/api/config';
 import { createGetMethod, deleteMethod } from '@app/api/Apis';
 import MoreMenu from '../../../global/MoreComponent';
@@ -20,16 +23,14 @@ class QuanLyPhanQuyenDetailScreen extends React.Component {
         super(props);
         this.state = {
             idNguoidung: this.props.route.params.paramKey?.id,
-            chitietData: [],
-            phongBan: '',
-        }
-        this.param = {
-            param: props.route.params,
+            chitietData: this.props.route.params.paramKey,
+            roleList: [],
+            granted: this.props.route.params.paramKey?.grantedPermissions || [],
         }
     }
 
     componentDidMount() {
-        this.getchitietVaiTro();
+        this.getAllPermissions();
         this.props.navigation.setOptions({
             headerRight: () => (
               <MoreMenu listMenu={this.showMenu()} />
@@ -37,24 +38,13 @@ class QuanLyPhanQuyenDetailScreen extends React.Component {
           });
     }
  
-    getchitietVaiTro() {
-        const { idNguoidung } = this.state;
-        const array = this.props.DvqlDataFilter;
-        let url = `${endPoint.getDetailNguoidung}?`;
-        url += `Id=${encodeURIComponent(`${idNguoidung}`)}&`;
-        url += `isView=${encodeURIComponent(`${true}`)}`;
+    getAllPermissions() {
+        const url = `${endPoint.getAllPermissions}`;
         createGetMethod(url)
             .then(res => {
-                if (res) {
+                if (res.success) {
                     this.setState({
-                        chitietData: res.result,
-                    });
-                    array.forEach(e => {
-                        if (e.id === res.result.toChucId) {
-                            this.setState({
-                                phongBan: e.displayName,
-                            });
-                        }
+                        roleList: res.result.items
                     });
                 }
             })
@@ -68,16 +58,10 @@ class QuanLyPhanQuyenDetailScreen extends React.Component {
         }]
       )
 
-    convertActiveData = (data) => {
-        if (data) {
-            return "Đã kích hoạt";
-        } return "Chưa kích hoạt";
-    }
-
 
   capnhat() {
     const { idNguoidung, chitietData } = this.state;
-    this.props.navigation.navigate(screens.cap_nhat_nguoi_dung, { paramKey: chitietData, userId: idNguoidung, onGoBack: () => this.refresh() });
+    this.props.navigation.navigate(screens.cap_nhat_phan_quyen, { paramKey: chitietData, userId: idNguoidung, onGoBack: () => this.refresh() });
   }
 
   delete(id) {
@@ -90,7 +74,7 @@ class QuanLyPhanQuyenDetailScreen extends React.Component {
                     url += `Id=${id}`;
                     deleteMethod(url).then(res => {
                         if (res.success) {
-                            Alert.alert('Xóa người dùng thành công',
+                            Alert.alert('Xóa vai trò thành công',
                                 '',
                                 [
                                     { text: 'OK', onPress: this.goBack() },
@@ -115,26 +99,47 @@ class QuanLyPhanQuyenDetailScreen extends React.Component {
         navigation.goBack();
     }
 
+    renderPermission = (item) => {
+        const { roleList } = this.state;
+        const checked = find(roleList, itemSelected => itemSelected.name === item);
+        if (checked) {
+            return(
+              <View style={styles.containerTime}>
+                <CheckBox
+                  isChecked={checked}
+                  onClick={() => {}}
+                />
+                <Text style={styles.textPermission}>{checked?.displayName}</Text>
+              </View>
+            )
+        }
+        return null;
+    }
+
     render() {
-        const { chitietData, phongBan, idNguoidung } = this.state;
+        const { chitietData, granted, id } = this.state;
         return (
           <View style={styles.container}>
             <View style={{ alignItems: 'flex-start', width: deviceWidth, height: 'auto', padding: 10, flex: 1 }}>
-              <Text style={styles.title}>Thông tin chi tiết người dùng</Text>
-              <BulletView title='Họ tên' text={chitietData.name} />
-              <BulletView title='Chức vụ' text={chitietData.chucVu} />
-              <BulletView title='Đơn vị' text={phongBan} />
-              <BulletView title='Tên đăng nhập' text={chitietData.userName} />
-              <BulletView title='Email' text={chitietData.emailAddress} />
-              <BulletView title='Số điện thoại' text={chitietData.phoneNumber} />
-              <BulletView title='Kích hoạt' text={this.convertActiveData(chitietData.isActive)} />
-              <BulletView title='Vai trò' text={chitietData.roleNames} />
-              <BulletView title='Ghi chú' text={chitietData.ghiChu} />
+              <Text style={styles.title}>Thông tin phân quyền</Text>
+              <BulletView title='Tên vai trò' text={chitietData?.name} />
+              <BulletView title='Tên hiển thị' text={chitietData?.displayName} />
+              <Text style={styles.description}>Vai trò:</Text>
+              <FlatList
+                style={{flexGrow: 0}}
+                data={granted}
+                columnWrapperStyle={{justifyContent: 'space-between'}}
+                numColumns={2}
+                vert
+                keyExtractor={(item) => item.name}
+                renderItem={({ item }) => this.renderPermission(item)}
+              />
+              <BulletView title='Ghi chú' text={chitietData?.description} />
             </View>
             <View style={styles.separator} />
             <View style={styles.addToCarContainer}>
               <TouchableOpacity
-                onPress={() => this.delete(idNguoidung)}
+                onPress={() => this.delete(id)}
                 style={styles.shareButton}
               >
                 <Text style={styles.shareButtonText}>Xóa</Text>
@@ -156,6 +161,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontStyle: 'italic'
     },
+    description: {
+        fontWeight: 'bold',
+        paddingBottom: 10,
+        padding: 5,
+        fontSize: 15,
+    },
     boldText: {
         fontWeight: 'bold',
         alignItems: 'flex-start',
@@ -167,26 +178,14 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 15,
     },
-    listItem: {
-        padding: 10,
-        paddingTop: 10,
-        width: deviceWidth - 50,
-        flex: 1,
-        backgroundColor: "#FFF",
-        alignSelf: "flex-start",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        flexDirection: "row",
-        borderRadius: 5,
-        height: 200,
-    },
-    infor: {
-        marginLeft: 10,
-        justifyContent: "flex-start",
-        alignSelf: "flex-start",
+    containerTime: {
+        width: deviceWidth/2 - 10,
         height: 50,
-        width: "85%",
-        paddingBottom: 10,
+        flexDirection: 'row',
+        padding: 3
+    },
+    textPermission: {
+        width: '90%',
     },
     separator: {
         height: 2,

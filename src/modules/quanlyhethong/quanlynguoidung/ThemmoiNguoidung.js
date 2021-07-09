@@ -23,7 +23,6 @@ import { deviceWidth } from '../../global/LoaderComponent';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { buildTree } from '../../global/Helper';
 
-const tempCheckValues = [];
 class ThemmoiNguoidungScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -80,18 +79,12 @@ class ThemmoiNguoidungScreen extends React.Component {
         createGetMethod(url)
             .then(res => {
                 if (res) {
-                    // let list = res.result.items.map(e => ({
-                    //     label: e.displayName,
-                    //     value: e.id,
-                    // })),
                     this.setState({
                         roleList: res.result.items
                     });
-                } else {
-                    // Alert.alert('Lỗi khi load toàn bộ tài sản!');
                 }
             })
-            .catch(err => console.log(err));
+            .catch();
     }
 
     buildTreedvlist(data) {

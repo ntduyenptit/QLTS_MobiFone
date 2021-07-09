@@ -216,7 +216,7 @@ const loadInfo = (screen, item, props, action) => {
           </TouchableOpacity>
         </>
       );
-    case screens.quan_ly_phan_quyen:
+    case screens.chi_tiet_quan_ly_phan_quyen:
       return (
         <>
           <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color="#0080FF" size={15} />
@@ -224,7 +224,12 @@ const loadInfo = (screen, item, props, action) => {
             <Text numberOfLines={1} style={[{ fontWeight: "bold" }, styles.infoText]}>Tên vai trò: {item.displayName}</Text>
             <Text numberOfLines={1}>Tên hiển thị: {item.name}</Text>
           </View>
-
+          <TouchableOpacity
+            style={{ height: 40, width: 20, alignItems: "flex-end" }}
+            onPress={() => props.navigation.navigate(screen, { paramKey: item, tabKey: props.tab , onGoBack: () => action()})}
+          >
+            <Icon name="chevron-right" color='#0080FF' size={15} />
+          </TouchableOpacity>
         </>
       );
     case screens.chi_tiet_bao_hongmat_tai_san:

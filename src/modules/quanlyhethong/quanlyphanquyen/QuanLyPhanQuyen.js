@@ -2,11 +2,12 @@
 import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Dimensions, Text, View } from 'react-native';
 import { connect } from 'react-redux';
+import ActionButton from 'react-native-action-button';
 import SearchComponent from '../../global/SearchComponent';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
-import ActionButton from 'react-native-action-button';
+
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
@@ -24,7 +25,7 @@ class QuanlyPhanQuyenScreen extends React.Component {
     this.getNguoidung();
   }
 
-  getNguoidung(datas) {
+  getNguoidung() {
     let url;
     url = `${endPoint.getALLRoleName}?`;
     url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
@@ -33,7 +34,7 @@ class QuanlyPhanQuyenScreen extends React.Component {
     createGetMethod(url)
       .then(res => {
         if (res) {
-          console.log("Res:" + res.result.items);
+          console.log(`Res:${  res.result.items}`);
           this.setState({
             toanboData: res.result.items,
             total: res.result.totalCount
@@ -92,7 +93,7 @@ class QuanlyPhanQuyenScreen extends React.Component {
               )}
               contentInsetAdjustmentBehavior="automatic"
             >
-              {LoaderComponent(toanboData, this.props, screens.quan_ly_phan_quyen)}
+              {LoaderComponent(toanboData, this.props, screens.chi_tiet_quan_ly_phan_quyen)}
             </Animated.ScrollView>
           </SafeAreaView>
           <Text
@@ -104,7 +105,7 @@ class QuanlyPhanQuyenScreen extends React.Component {
           >Hiển thị: {toanboData.length}/{total}
           </Text>
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_vai_tro, { screen: "Thêm mới vai trò" })}></ActionButton>
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_vai_tro, { screen: "Thêm mới vai trò" })} />
       </View>
 
     );

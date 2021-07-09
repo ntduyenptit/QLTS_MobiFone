@@ -13,6 +13,7 @@ import LoaderComponent from '../global/LoaderComponent';
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
+let isSearch = false;
 class QuanlyDutruMuaSamScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -36,7 +37,7 @@ class QuanlyDutruMuaSamScreen extends React.Component {
         url += `PhongBan=${encodeURIComponent(`${e.id}`)}&`;
       });
 
-      url += `IsSearch=${encodeURIComponent(`${true}`)}&`;
+      url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
       createGetMethod(url)
@@ -52,7 +53,12 @@ class QuanlyDutruMuaSamScreen extends React.Component {
     }
   }
 
-  refresh() {
+  handleFilter = () => {
+    isSearch = true;
+    this.getToanTaisan();
+  };
+
+  refresh = () => {
     this.getToanTaisan(this.props.DvqlDataFilter);
   }
 
@@ -104,12 +110,12 @@ class QuanlyDutruMuaSamScreen extends React.Component {
               )}
               contentInsetAdjustmentBehavior="automatic"
             >
-              {LoaderComponent(toanboTaiSanData, this.props, screens.chi_tiet_du_tru_mua_sam, this.refresh())}
+              {LoaderComponent(toanboTaiSanData, this.props, screens.chi_tiet_du_tru_mua_sam, this.refresh)}
             </Animated.ScrollView>
           </SafeAreaView>
-          <FilterComponent action={this.getToanTaisan} />
+          <FilterComponent action={this.handleFilter} />
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_du_tru_mua_sam, { screen: "Thêm mới Phiếu dự trù mua sắm" }, this.refresh())} />
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_du_tru_mua_sam, { screen: "Thêm mới Phiếu dự trù mua sắm", onGoBack: () => this.refresh() })} />
       </View>
 
     );

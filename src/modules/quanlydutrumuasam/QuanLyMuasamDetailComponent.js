@@ -15,13 +15,8 @@ const deviceWidth = Dimensions.get("window").width;
 export default class QuanLyMuasamDetail extends React.Component {
   constructor(props) {
     super(props);
-
-
     this.state = {
-      chitietPhieuMuasam: [],
-    }
-    this.param = {
-      param: props.route.params,
+      chitietPhieuMuasam: this.props.route.params?.paramKey || null,
     }
   }
 
@@ -30,9 +25,9 @@ export default class QuanLyMuasamDetail extends React.Component {
   }
 
   getchitietPhieuMuasam() {
-    let url;
-    url = `${endPoint.getChitietPhieuMuasam}?`;
-    url += `input=${encodeURIComponent(`${2}`)}&`;
+    const { chitietPhieuMuasam } = this.state;
+    let url = `${endPoint.getChitietPhieuMuasam}?`;
+    url += `input=${encodeURIComponent(`${chitietPhieuMuasam?.id}`)}&`;
     url += `isView=${encodeURIComponent(`${true}`)}`;
 
     createGetMethod(url)
@@ -41,11 +36,9 @@ export default class QuanLyMuasamDetail extends React.Component {
           this.setState({
             chitietPhieuMuasam: res.result,
           });
-        } else {
-          // Alert.alert('Lỗi khi load toàn bộ tài sản!');
         }
       })
-      .catch(err => console.log(err));
+      .catch();
   }
 
   deleteThisAsset(id) {
@@ -80,13 +73,13 @@ export default class QuanLyMuasamDetail extends React.Component {
     <View style={styles.listItem}>
       <Text style={{ alignItems: "flex-start", paddingRight: 10 }}> {data.item.tenantId}</Text>
       <View style={styles.infor}>
-        <Text numberOfLines={1} style={[{ fontWeight: "bold", paddingBottom: 3 }]}>Tên tài sản: {data.item.tenTaiSan}</Text>
-        <Text numberOfLines={1} style={[{ paddingBottom: 3 }]}>ProducNumber: {data.item.productNumber}</Text>
-        <Text numberOfLines={1} style={{ paddingBottom: 3 }}>Hãng sản xuất: {data.item.hangSanXuat}</Text>
-        <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Nhà cung cấp: {data.item.nhaCungCap}</Text>
-        <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Số lượng: {data.item.soLuong}</Text>
-        <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Đơn giá: {data.item.donGia}</Text>
-        <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Ghi chú: {data.item.ghiChu}</Text>
+        <BulletView title='Tên tài sản' text={data?.item?.tenTaiSan} />
+        <BulletView title='ProducNumber' text={data?.item?.productNumber} />
+        <BulletView title='Hãng sản xuất' text={data?.item?.hangSanXuat} />
+        <BulletView title='Nhà cung cấp' text={data?.item?.nhaCungCap} />
+        <BulletView title='Số lượng' text={data?.item?.soLuong} />
+        <BulletView title='Đơn giá' text={data?.item?.donGia} />
+        <BulletView title='Ghi chú' text={data?.item?.ghiChu} />
       </View>
     </View>
   )
@@ -99,15 +92,15 @@ export default class QuanLyMuasamDetail extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Thông tin Phiếu dự trù mua sắm:</Text>
-        <BulletView title='Mã phiếu' text={chitietPhieuMuasam.maPhieu} />
-        <BulletView title='Tên phiếu' text={chitietPhieuMuasam.tenPhieu} />
-        <BulletView title='Đơn vị' text={chitietPhieuMuasam.toChucId} />
-        <BulletView title='Người lập phiếu' text={chitietPhieuMuasam.nguoiLapPhieuId} />
+        <BulletView title='Mã phiếu' text={chitietPhieuMuasam?.maPhieu} />
+        <BulletView title='Tên phiếu' text={chitietPhieuMuasam?.tenPhieu} />
+        <BulletView title='Đơn vị' text={chitietPhieuMuasam?.toChucId} />
+        <BulletView title='Người lập phiếu' text={chitietPhieuMuasam?.nguoiLapPhieuId} />
         <Text style={styles.title}>Danh sách tài sản đề xuất mua sắm</Text>
         <ScrollView style={{ height: 'auto', padding: 10 }}>
           <FlatList
             scrollEnabled={false}
-            data={chitietPhieuMuasam.listPhieuChiTiet}
+            data={chitietPhieuMuasam?.listPhieuChiTiet}
             renderItem={item => this.renderItemComponent(item)}
           />
         </ScrollView>
