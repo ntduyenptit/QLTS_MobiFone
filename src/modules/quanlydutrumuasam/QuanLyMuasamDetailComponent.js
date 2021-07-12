@@ -4,11 +4,13 @@ import {
   View,
   Text,
   Dimensions,
-  TouchableOpacity, FlatList, ScrollView, Alert,
+  TouchableOpacity, FlatList, SafeAreaView, Alert,
 } from 'react-native';
 import BulletView from '@app/modules/global/BulletView';
 import { createGetMethod, deleteMethod } from '../../api/Apis';
-import { endPoint } from '../../api/config';
+import { currencyFormat } from '@app/modules/global/Helper';
+import { endPoint, moreMenu, screens } from '../../api/config';
+import MoreMenu from '../global/MoreComponent';
 
 const deviceWidth = Dimensions.get("window").width;
 
@@ -22,6 +24,11 @@ export default class QuanLyMuasamDetail extends React.Component {
 
   componentDidMount() {
     this.getchitietPhieuMuasam();
+    this.props.navigation.setOptions({
+      headerRight: () => (
+        <MoreMenu listMenu={this.showMenu()} />
+      )
+    });
   }
 
   getchitietPhieuMuasam() {
@@ -41,6 +48,22 @@ export default class QuanLyMuasamDetail extends React.Component {
       .catch();
   }
 
+  showMenu = () => (
+    [{
+      title: moreMenu.cap_nhat,
+      action: () => this.capnhat(),
+    }]
+  )
+
+  refresh = () => {
+    this.getchitietPhieuMuasam();
+  }
+
+  capnhat() {
+    const { chitietPhieuMuasam } = this.state;
+    this.props.navigation.navigate(screens.cap_nhat_quan_ly_du_tru_mua_sam, { paramKey: chitietPhieuMuasam, idTs: chitietPhieuMuasam?.id, onGoBack: () => this.refresh() });
+  }
+
   deleteThisAsset(id) {
     Alert.alert('Bạn có chắc chắn muốn xóa không?',
       '',
@@ -55,7 +78,7 @@ export default class QuanLyMuasamDetail extends React.Component {
                 Alert.alert('Xóa phiếu mua sắm thành công',
                   '',
                   [
-                    { text: 'OK', onPress: this.props.navigation.goBack() },
+                    { text: 'OK', onPress: this.goBack() },
                   ],
                   { cancelable: false }
                 );
@@ -69,17 +92,23 @@ export default class QuanLyMuasamDetail extends React.Component {
     );
   }
 
-  renderItemComponent = (data) => (
+  goBack() {
+    const { navigation, route } = this.props;
+    route.params.onGoBack();
+    navigation.goBack();
+}
+
+  renderItemComponent = (data, index) => (
     <View style={styles.listItem}>
-      <Text style={{ alignItems: "flex-start", paddingRight: 10 }}> {data.item.tenantId}</Text>
+      <Text style={{ alignItems: "flex-start", paddingRight: 10 }}> {index + 1}</Text>
       <View style={styles.infor}>
-        <BulletView title='Tên tài sản' text={data?.item?.tenTaiSan} />
-        <BulletView title='ProducNumber' text={data?.item?.productNumber} />
-        <BulletView title='Hãng sản xuất' text={data?.item?.hangSanXuat} />
-        <BulletView title='Nhà cung cấp' text={data?.item?.nhaCungCap} />
-        <BulletView title='Số lượng' text={data?.item?.soLuong} />
-        <BulletView title='Đơn giá' text={data?.item?.donGia} />
-        <BulletView title='Ghi chú' text={data?.item?.ghiChu} />
+        <BulletView title='Tên tài sản' text={data?.tenTaiSan} />
+        <BulletView title='ProducNumber' text={data?.productNumber} />
+        <BulletView title='Hãng sản xuất' text={data?.hangSanXuat} />
+        <BulletView title='Nhà cung cấp' text={data?.nhaCungCap} />
+        <BulletView title='Số lượng' text={data?.soLuong} />
+        <BulletView title='Đơn giá' text={data?.donGia && currencyFormat(data?.donGia)} />
+        <BulletView title='Ghi chú' text={data?.ghiChu} />
       </View>
     </View>
   )
@@ -97,13 +126,13 @@ export default class QuanLyMuasamDetail extends React.Component {
         <BulletView title='Đơn vị' text={chitietPhieuMuasam?.toChucId} />
         <BulletView title='Người lập phiếu' text={chitietPhieuMuasam?.nguoiLapPhieuId} />
         <Text style={styles.title}>Danh sách tài sản đề xuất mua sắm</Text>
-        <ScrollView style={{ height: 'auto', padding: 10 }}>
+        <SafeAreaView style={{ height: 'auto', padding: 10, flex: 1 }}>
           <FlatList
             scrollEnabled={false}
             data={chitietPhieuMuasam?.listPhieuChiTiet}
-            renderItem={item => this.renderItemComponent(item)}
+            renderItem={({item, index}) => this.renderItemComponent(item, index)}
           />
-        </ScrollView>
+        </SafeAreaView>
         <View style={styles.separator} />
         <View style={styles.addToCarContainer}>
           <TouchableOpacity
@@ -122,9 +151,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    paddingBottom: 10,
+    padding: 10,
     paddingTop: 15,
-    alignSelf: 'center',
     fontSize: 18,
     fontStyle: 'italic'
   },
@@ -145,8 +173,8 @@ const styles = StyleSheet.create({
     width: deviceWidth - 50,
     flex: 1,
     backgroundColor: "#FFF",
-    alignSelf: "flex-start",
-    justifyContent: "flex-start",
+    alignSelf: "center",
+    justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
     borderRadius: 5,

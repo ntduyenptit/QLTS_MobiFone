@@ -38,6 +38,15 @@ export const convertTextToUpperCase = (text) => {
   return upperCaseText;
 };
 
+export const currencyFormat = (value) => {
+  let num = 0;
+  if (value) {
+     num = `${Number(value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')  } VND`;
+      return num;
+  }
+  return num;
+}
+
 export const convertTextToLowerCase = (text) => {
   // To convert Lower Case
   const lowerCaseText = text.toLowerCase();
@@ -158,9 +167,7 @@ export const convertNguonKinhphi = (int) => {
   }
 }
 
-export const convertLoaiTs = (int, listTs) => {
-  return listTs.map(e => e.value === int).text || '';
-}
+export const convertLoaiTs = (int, listTs) => listTs.map(e => e.value === int).text || ''
 
 export const convertTrangthaiTaisan = (int) => {
   switch (int) {

@@ -1,29 +1,31 @@
 import React from 'react'
-import { StyleSheet, View, Text, TextInput, Dimensions, Animated, SafeAreaView, FlatList, KeyboardAvoidingView, TouchableOpacity, ScrollView, Modal, Pressable, Alert } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Dimensions, SafeAreaView, FlatList, KeyboardAvoidingView, TouchableOpacity, ScrollView, Modal, Pressable, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import AsyncStorage from '@react-native-community/async-storage';
 import MultiSelect from '@app/libs/react-native-multiple-select/lib/react-native-multi-select';
 import { buildTree, currencyFormat } from '@app/modules/global/Helper';
 import CurrencyInput from 'react-native-currency-input';
-import { endPoint } from '../../api/config';
-import { createGetMethod, createPostMethodWithToken } from '../../api/Apis';
-import { fonts, colors } from '../../styles';
+import { endPoint } from '@app/api/config';
+import { createGetMethod, createPostMethodWithToken } from '@app/api/Apis';
+import { fonts, colors } from '../../../styles';
 
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 const keyboardVerticalOffset = -40;
 
-const toanboTaisan = [];
-class ThemMoiDuTruMuaSam extends React.Component {
+class UpdateDuTruMuaSam extends React.Component {
     constructor(props) {
         super(props);
+        const id = this.props.route.params?.idTs;
+        const data = this.props.route.params?.paramKey;
         this.state = {
-            maPhieu: '',
-            tenPhieu: '',
-            donVi: '',
-            userLapPhieu: "",
-            userId: '',
+            id: id || null,
+            maPhieu: data?.maPhieu || '',
+            tenPhieu: data?.tenPhieu || '',
+            donVi: [data?.toChucId] || [],
+            userLapPhieu: '',
+            userId: data?.nguoiLapPhieuId,
+            listPhieuChiTiet: data?.listPhieuChiTiet,
             listTaisanMuaSam: [],
             listDonvi: [],
             modalVisible: false,
@@ -34,9 +36,6 @@ class ThemMoiDuTruMuaSam extends React.Component {
             productNumber: '',
             soLuong: '',
             tenTaiSan: '',
-        }
-        this.screen = {
-            param: props.route.params
         }
         this.taiSan = {
             donGia: '',
@@ -51,6 +50,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
     }
 
     componentDidMount() {
+        console.log('cap_nhat 123: ', this.props.route.params);
         this.props.navigation.setOptions({
             headerRight: () => (
               <TouchableOpacity
@@ -79,37 +79,34 @@ class ThemMoiDuTruMuaSam extends React.Component {
         Promise.all([
             this.buildTreedvlist(),
             this.getUserDangnhap(),
-            this._retrieveData(),
+            this.getPhieuChiTiet(),
         ]);
     }
 
     getUserDangnhap() {
-        const url = `${endPoint.getuserDangnhap}`;
+        const { userId } = this.state;
+        const url = `${endPoint.getUserDangNhapPhieuDuTruMuaSam}?input=${userId}`;
         createGetMethod(url)
             .then(res => {
                 this.setState({
                     userLapPhieu: res.result,
-
                 })
             });
             
     }
 
-    _retrieveData = async () => {
-        try {
-          const value = await AsyncStorage.getItem('@userId');
-          if (value !== null) {
+    getPhieuChiTiet = () => {
+        const { listPhieuChiTiet } = this.state;
+        if (listPhieuChiTiet) {
             this.setState({
-                userId: value,
-            })
-          }
-        } catch (error) {
-          // Error retrieving data
+                listTaisanMuaSam: listPhieuChiTiet,
+            },() =>         console.log('list phieu chi tiet 123 : ', this.state.listTaisanMuaSam));
         }
-      };
+    };
 
       saveNewDutruMuasam() {
         const {
+            id,
             maPhieu,
             tenPhieu,
             donVi,
@@ -151,6 +148,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
             return;
         }
         const params = {
+            id,
             listDinhKem: [],
             listPhieuChiTiet: listTaisanMuaSam,
             maPhieu,
@@ -187,22 +185,34 @@ class ThemMoiDuTruMuaSam extends React.Component {
         navigation.goBack();
     }
 
-    renderItemComponent = (data) => (
+    removeItem(index) {
+        const array = [...this.state.listTaisanMuaSam]; // make a separate copy of the array
+        if (index !== -1) {
+          array.splice(index, 1);
+          this.setState({listTaisanMuaSam: array});
+        }
+    }
+
+    renderItemComponent = (data, index) => (
       <View style={styles.listItem}>
         <Icon style={{ alignItems: "flex-start", paddingRight: 10 }} name="circle" color="#0080FF" size={15} />
         <View style={styles.infor}>
-          <Text numberOfLines={1} style={[{ fontWeight: "bold", paddingBottom: 3 }]}>Product Number: {data?.item?.productNumber}</Text>
-          <Text numberOfLines={1} style={{ paddingBottom: 3 }}>Tên: {data?.item?.tenTaiSan}</Text>
-          <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Hãng sản xuất: {data?.item?.hangSanXuat}</Text>
-          <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Nhà cung cấp: {data?.item?.nhaCungCap}</Text>
-          <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Số lượng: {data?.item?.soLuong}</Text>
-          <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Đơn giá: {data?.item?.donGia && currencyFormat(data.item.donGia)}</Text>
-          <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Tổng giá: {data?.item?.soLuong && data?.item?.donGia && currencyFormat(((data.item.soLuong) * (data.item.donGia)))}</Text>
+          <Text numberOfLines={1} style={[{ fontWeight: "bold", paddingBottom: 3 }]}>Product Number: {data?.productNumber}</Text>
+          <Text numberOfLines={1} style={{ paddingBottom: 3 }}>Tên: {data?.tenTaiSan}</Text>
+          <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Hãng sản xuất: {data?.hangSanXuat}</Text>
+          <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Nhà cung cấp: {data?.nhaCungCap}</Text>
+          <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Số lượng: {data?.soLuong}</Text>
+          <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Đơn giá: {data?.donGia && currencyFormat(data.donGia)}</Text>
+          <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Tổng giá: {data?.soLuong && data?.donGia && currencyFormat(((data?.soLuong) * (data?.donGia)))}</Text>
         </View>
+        <TouchableOpacity onPress={() => this.removeItem(index)} style={{ alignItems: "flex-end", paddingRight: 20 }}>
+          <Icon name="trash" color="#FF0000" size={15} />
+        </TouchableOpacity>
       </View>
     )
 
     addTaisan(donGia, ghiChu, hangSanXuat, nhaCungCap, productNumber, soLuong, tenTaiSan, modalVisible) {
+        const { listTaisanMuaSam } = this.state;
         if (tenTaiSan === '') {
             Alert.alert(
                 "Chú ý",
@@ -311,9 +321,10 @@ class ThemMoiDuTruMuaSam extends React.Component {
                 soLuong,
                 donGia,
             }
-            toanboTaisan.push(item);
+            const array = [...listTaisanMuaSam];
+            array.push(item);
             this.setState({
-                listTaisanMuaSam: toanboTaisan,
+                listTaisanMuaSam: array,
             })
         }
         this.setState({
@@ -333,6 +344,8 @@ class ThemMoiDuTruMuaSam extends React.Component {
             productNumber,
             soLuong,
             donVi,
+            tenPhieu,
+            maPhieu,
             tenTaiSan, } = this.state;
 
         return (
@@ -343,6 +356,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
               <TextInput
                 placeholderTextColor="black"
                 style={styles.bordered}
+                defaultValue={maPhieu}
                 onChangeText={(text) => {
                             this.setState({
                                 maPhieu: text,
@@ -353,6 +367,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
               <TextInput
                 placeholderTextColor="black"
                 style={styles.bordered}
+                defaultValue={tenPhieu}
                 onChangeText={(text) => {
                             this.setState({
                                 tenPhieu: text,
@@ -396,6 +411,7 @@ class ThemMoiDuTruMuaSam extends React.Component {
                 color="black"
                 size={27}
                 onPress={() => this.setState({
+                            donGia: '',
                             modalVisible: true,
                         })}
               />
@@ -481,18 +497,6 @@ class ThemMoiDuTruMuaSam extends React.Component {
                         delimiter="."
                         precision={0}
                       />
-                      {/* <TextInput
-                        placeholderTextColor="black"
-                        style={styles.bordered}
-                        keyboardType='numeric'
-                        value={donGia}
-                        onChangeText={(text) => {
-                            const currency = numberFormat(text);
-                                            this.setState({
-                                                donGia: currency,
-                                            });
-                                        }}
-                      /> */}
                       <Text style={styles.boldText}>Mục đích sử dụng*: </Text>
                       <TextInput
                         placeholderTextColor="black"
@@ -516,13 +520,11 @@ class ThemMoiDuTruMuaSam extends React.Component {
             </View>
 
             <SafeAreaView>
-              <Animated.ScrollView>
-                <FlatList
-                  scrollEnabled={false}
-                  data={listTaisanMuaSam}
-                  renderItem={item => this.renderItemComponent(item)}
-                />
-              </Animated.ScrollView>
+              <FlatList
+                scrollEnabled={false}
+                data={listTaisanMuaSam}
+                renderItem={({item, index}) => this.renderItemComponent(item, index)}
+              />
             </SafeAreaView>
 
           </ScrollView>
@@ -592,6 +594,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignSelf: "flex-start",
         paddingBottom: 10,
+        flex: 1,
     },
     // //
     modalView: {
@@ -638,4 +641,4 @@ const mapStateToProps = state => ({
     DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
 });
 
-export default connect(mapStateToProps)(ThemMoiDuTruMuaSam);
+export default connect(mapStateToProps)(UpdateDuTruMuaSam);

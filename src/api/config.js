@@ -21,6 +21,7 @@ export const headerContainFiles = () => ({
 export const endPoint = ({
   login: 'TokenAuth/Authenticate',
   getuserDangnhap: 'services/app/ToanBoTaiSan/GetUserDangNhap',
+  getUserDangNhapPhieuDuTruMuaSam: 'services/app/PhieuDuTruMuaSam/GetUserDangNhap',
   getNguoidung: 'services/app/LookupTable/GetAllNguoiDung?Keyword=',
   // Filter
   getAllToChucTheoNguoiDung: 'services/app/LookupTable/GetAllToChucTheoNguoiDung',
@@ -219,6 +220,7 @@ export const screens = ({
   cap_nhat_don_vi: 'Cập nhật đơn vị',
   cap_nhat_nguoi_dung: 'Cập nhật người dùng',
   cap_nhat_phan_quyen: 'Cập nhật phân quyền',
+  cap_nhat_quan_ly_du_tru_mua_sam: 'Cập nhật quản lý dự trù mua sắm',
   // them moi tai san
   them_moi_tai_san: "Thêm mới tài sản",
   cap_nhat_tai_san: "Cập nhật tài sản",

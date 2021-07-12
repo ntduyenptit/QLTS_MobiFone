@@ -42,6 +42,7 @@ import LoaiTaiSanDetailScreen from '../quanlydanhmuc/quanlyloaitaisan/detail/Qua
 import QuanlyDonviScreen from '../quanlydanhmuc/quanlydonvi/QuanlyDonvi';
 import QuanLyNguoidungScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoidung';
 import CapNhatNguoiDungScreen from '../quanlyhethong/quanlynguoidung/update/CapNhatNguoidung';
+import CapNhatDuTruMuaSam from '../quanlydutrumuasam/update/UpdateDuTruMuaSam';
 import NguoidungDetailScreen from '../quanlyhethong/quanlynguoidung/QuanlyNguoidungDetail';
 import QuanLyPhanQuyenDetailScreen from '../quanlyhethong/quanlyphanquyen/detail/QuanLyPhanQuyenDetail';
 import QuanLyPhanQuyenScreen from '../quanlyhethong/quanlyphanquyen/QuanLyPhanQuyen';
@@ -242,6 +243,19 @@ const StackNavigationData = [
   {
     name: screens.cap_nhat_nguoi_dung,
     component: CapNhatNguoiDungScreen,
+    headerLeft: headerLeftComponent,
+    headerRight: null,
+    headerBackground: { source: headerBackground },
+    headerTitleStyle: {
+      fontFamily: fonts.primaryRegular,
+      color: colors.white,
+      fontSize: 18,
+      alignSelf: 'center'
+    },
+  },
+  {
+    name: screens.cap_nhat_quan_ly_du_tru_mua_sam,
+    component: CapNhatDuTruMuaSam,
     headerLeft: headerLeftComponent,
     headerRight: null,
     headerBackground: { source: headerBackground },
