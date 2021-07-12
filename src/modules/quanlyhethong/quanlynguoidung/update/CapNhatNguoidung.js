@@ -49,7 +49,6 @@ class CapNhatNguoidungScreen extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props.route.params);
         this.props.navigation.setOptions({
             headerRight: () => (
               <TouchableOpacity

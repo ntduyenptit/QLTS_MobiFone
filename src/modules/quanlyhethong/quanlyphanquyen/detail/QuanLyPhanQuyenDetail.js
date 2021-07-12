@@ -30,6 +30,7 @@ class QuanLyPhanQuyenDetailScreen extends React.Component {
     }
 
     componentDidMount() {
+        console.log('chi tiet: ', this.props.route.params.paramKey);
         this.getAllPermissions();
         this.props.navigation.setOptions({
             headerRight: () => (
@@ -51,6 +52,23 @@ class QuanLyPhanQuyenDetailScreen extends React.Component {
             .catch();
     }
 
+    getPhanQuyenNguoiDung() {
+        const { idNguoidung } = this.state;
+        const url = `${endPoint.getRoleDetail}?Id=${idNguoidung}`;
+        createGetMethod(url)
+            .then(res => {
+                if (res.success) {
+                    const data = res.result?.role;
+                    data.grantedPermissions = res.result?.grantedPermissionNames;
+                    this.setState({
+                        chitietData: data,
+                        granted: res.result?.grantedPermissionNames
+                    });
+                }
+            })
+            .catch();
+    }
+
     showMenu = () => (
         [{
           title: moreMenu.cap_nhat,
@@ -58,6 +76,9 @@ class QuanLyPhanQuyenDetailScreen extends React.Component {
         }]
       )
 
+      refresh = () => {
+        this.getPhanQuyenNguoiDung();
+      }
 
   capnhat() {
     const { idNguoidung, chitietData } = this.state;
@@ -70,7 +91,7 @@ class QuanLyPhanQuyenDetailScreen extends React.Component {
         [
             {
                 text: 'OK', onPress: () => {
-                    let url = `${endPoint.deleteUser}?`;
+                    let url = `${endPoint.deleteRole}?`;
                     url += `Id=${id}`;
                     deleteMethod(url).then(res => {
                         if (res.success) {
@@ -117,7 +138,7 @@ class QuanLyPhanQuyenDetailScreen extends React.Component {
     }
 
     render() {
-        const { chitietData, granted, id } = this.state;
+        const { chitietData, granted, idNguoidung } = this.state;
         return (
           <View style={styles.container}>
             <View style={{ alignItems: 'flex-start', width: deviceWidth, height: 'auto', padding: 10, flex: 1 }}>
@@ -139,7 +160,7 @@ class QuanLyPhanQuyenDetailScreen extends React.Component {
             <View style={styles.separator} />
             <View style={styles.addToCarContainer}>
               <TouchableOpacity
-                onPress={() => this.delete(id)}
+                onPress={() => this.delete(idNguoidung)}
                 style={styles.shareButton}
               >
                 <Text style={styles.shareButtonText}>Xóa</Text>

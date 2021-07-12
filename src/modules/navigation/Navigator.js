@@ -79,10 +79,9 @@ function CustomDrawerContent(props) {
   }, []);
 
   const changePassword = () => {
-    let url = '';
     let params = '';
 
-    url = `${endPoint.changePassword}`;
+    const url = `${endPoint.changePassword}`;
     params = {
       currentPassword: mkHientai,
       newPassword: mkMoi,

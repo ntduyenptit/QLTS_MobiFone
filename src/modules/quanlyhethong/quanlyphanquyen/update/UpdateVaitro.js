@@ -12,26 +12,30 @@ import {
     Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { endPoint } from '../../../api/config';
-import { createGetMethod, createPostMethodWithToken } from '../../../api/Apis';
-import { colors, fonts } from '../../../styles';
-import { deviceWidth } from '../../global/LoaderComponent';
-import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
+import { endPoint } from '@app/api/config';
+import { createGetMethod, createUpdateMethod } from '@app/api/Apis';
+import { colors, fonts } from '../../../../styles';
+import { deviceWidth } from '../../../global/LoaderComponent';
+import MultiSelect from '../../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 
-class ThemmoiVaitroScreen extends React.Component {
+class UpdateVaitroScreen extends React.Component {
     constructor(props) {
         super(props);
+        const id = this.props.route.params?.userId;
+        const data = this.props.route.params?.paramKey;
         this.state = {
-            tenVaitro: '',
-            tenHienthi: '',
+            id: id || null,
+            tenVaitro: data?.name || '',
+            tenHienthi: data?.displayName || '',
             chucVu: '',
-            ghiChu: '',
-            roleListID: [],
+            ghiChu: data?.description || '',
+            roleListID: data?.grantedPermissions || [],
             roleList: [],
         };
     }
 
     componentDidMount() {
+        console.log('update 333122: ', this.props.route.params);
         this.props.navigation.setOptions({
             headerRight: () => (
               <TouchableOpacity
@@ -68,8 +72,6 @@ class ThemmoiVaitroScreen extends React.Component {
                     this.setState({
                         roleList: res.result.items
                     });
-                } else {
-                    // Alert.alert('Lỗi khi load toàn bộ tài sản!');
                 }
             })
             .catch();
@@ -77,12 +79,11 @@ class ThemmoiVaitroScreen extends React.Component {
 
     saveNewVaitro() {
         const {
+            id,
             tenVaitro,
             tenHienthi,
-            chucVu,
             ghiChu,
             roleListID,
-            roleList,
         } = this.state;
         let s = '';
         let check = false;
@@ -112,38 +113,24 @@ class ThemmoiVaitroScreen extends React.Component {
             );
             return;
         }
-        const url = `${endPoint.CreateVaitro}`;
+        const url = `${endPoint.UpdateVaiTro}`;
         const params = {
+            id,
             description: ghiChu,
             displayName: tenHienthi,
             grantedPermissions: roleListID,
             name: tenVaitro,
         }
-        const urlCheck = `${`${endPoint.checkExitVaitro}?` + 'roleName='}${  tenVaitro  }&displayRoleName=${  tenHienthi  }&id=0`;
-        createPostMethodWithToken(urlCheck, null).then((res) => {
-            if (!res.success) {
+        createUpdateMethod(url, JSON.stringify(params)).then((res) => {
+            if (res.success) {
                 Alert.alert(
                     '',
-                    'Người dùng đã tồn tại',
+                    'Cập nhật vai trò thành công',
                     [
-                        { text: 'OK', style: "cancel", },
+                        { text: 'OK', onPress: this.goBack() },
                     ],
-
                 );
-            } else {
-                createPostMethodWithToken(url, JSON.stringify(params)).then((response) => {
-                    if (response.success) {
-                        Alert.alert(
-                            '',
-                            'Thêm mới thành công',
-                            [
-                                { text: 'OK', onPress: this.goBack() },
-                            ],
-        
-                        );
-        
-                    }
-                })
+
             }
         })
     }
@@ -158,6 +145,9 @@ class ThemmoiVaitroScreen extends React.Component {
         const {
             roleListID,
             roleList,
+            tenVaitro,
+            tenHienthi,
+            ghiChu
         } = this.state;
         return (
           <Animated.View>
@@ -169,10 +159,11 @@ class ThemmoiVaitroScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     placeholder="Nhập tên"
+                    defaultValue={tenVaitro}
                     style={styles.bordered}
-                    onChangeText={(tenVaitro) => {
+                    onChangeText={(text) => {
                                     this.setState({
-                                        tenVaitro,
+                                        tenVaitro: text,
                                     });
                                 }}
                   />
@@ -180,9 +171,10 @@ class ThemmoiVaitroScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(tenHienthi) => {
+                    defaultValue={tenHienthi}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        tenHienthi
+                                        tenHienthi: text
                                     });
                                 }}
                   />
@@ -209,9 +201,10 @@ class ThemmoiVaitroScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={[styles.bordered, {height: 80}]}
-                    onChangeText={(ghiChu) => {
+                    defaultValue={ghiChu}
+                    onChangeText={(text) => {
                                     this.setState({
-                                        ghiChu
+                                        ghiChu: text
                                     });
                                 }}
                   />
@@ -309,4 +302,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ThemmoiVaitroScreen;
+export default UpdateVaitroScreen;

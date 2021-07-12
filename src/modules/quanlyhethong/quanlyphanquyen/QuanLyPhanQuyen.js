@@ -23,27 +23,33 @@ class QuanlyPhanQuyenScreen extends React.Component {
 
   componentDidMount() {
     this.getNguoidung();
+    this.willFocusSubscription = this.props.navigation.addListener(
+      'focus',
+      () => {
+        this.getNguoidung();
+      }
+    );
   }
 
   getNguoidung() {
-    let url;
-    url = `${endPoint.getALLRoleName}?`;
+    let url = `${endPoint.getALLRoleName}?`;
     url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
     url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
-    url += `MaxResultCount=${encodeURIComponent(`${30}`)}`;
+    url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
     createGetMethod(url)
       .then(res => {
         if (res) {
-          console.log(`Res:${  res.result.items}`);
           this.setState({
             toanboData: res.result.items,
             total: res.result.totalCount
           });
-        } else {
-          // Alert.alert('Lỗi khi load toàn bộ tài sản!');
         }
       })
-      .catch(err => console.log(err));
+      .catch();
+  }
+
+  refresh = () => {
+    this.getNguoidung();
   }
 
   render() {
@@ -93,7 +99,7 @@ class QuanlyPhanQuyenScreen extends React.Component {
               )}
               contentInsetAdjustmentBehavior="automatic"
             >
-              {LoaderComponent(toanboData, this.props, screens.chi_tiet_quan_ly_phan_quyen)}
+              {LoaderComponent(toanboData, this.props, screens.chi_tiet_quan_ly_phan_quyen, this.refresh)}
             </Animated.ScrollView>
           </SafeAreaView>
           <Text
@@ -105,7 +111,7 @@ class QuanlyPhanQuyenScreen extends React.Component {
           >Hiển thị: {toanboData.length}/{total}
           </Text>
         </Animated.View>
-        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_vai_tro, { screen: "Thêm mới vai trò" })} />
+        <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_vai_tro, { screen: "Thêm mới vai trò", onGoBack: () => this.refresh() })} />
       </View>
 
     );

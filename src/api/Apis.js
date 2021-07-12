@@ -47,6 +47,27 @@ export function createPostMethodWithToken(endPoint, params) {
         );
 }
 
+export function createUpdateMethod(endPoint, params) {
+    store.dispatch(loading());
+    return _getStorageValue().then(token => 
+        // eslint-disable-next-line no-undef
+         fetch(`${baseUrl}${endPoint}`, {
+            method: 'PUT',
+            headers: headers(token),
+            body: params
+        })
+            .then(res => {
+                store.dispatch(finish());
+                return res.json();
+            })
+            .then(data => data)
+            .catch(err => {
+                store.dispatch(finish());
+                console.log(err);
+            })
+        );
+}
+
 export function createPostMultiFiles(endPoint, params) {
     store.dispatch(loading());
       // eslint-disable-next-line no-undef

@@ -50,7 +50,6 @@ class UpdateDuTruMuaSam extends React.Component {
     }
 
     componentDidMount() {
-        console.log('cap_nhat 123: ', this.props.route.params);
         this.props.navigation.setOptions({
             headerRight: () => (
               <TouchableOpacity
@@ -206,7 +205,7 @@ class UpdateDuTruMuaSam extends React.Component {
           <Text numberOfLines={1} tyle={{ paddingBottom: 3 }}>Tổng giá: {data?.soLuong && data?.donGia && currencyFormat(((data?.soLuong) * (data?.donGia)))}</Text>
         </View>
         <TouchableOpacity onPress={() => this.removeItem(index)} style={{ alignItems: "flex-end", paddingRight: 20 }}>
-          <Icon name="trash" color="#FF0000" size={15} />
+          <Icon name="trash" color="#FF0000" size={20} />
         </TouchableOpacity>
       </View>
     )

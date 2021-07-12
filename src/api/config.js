@@ -1,9 +1,9 @@
 
 // define the api
-// export const baseUrl = 'http://qlts-server.mobifone.vn/api/';
-// export const imageBaseUrl = 'http://qlts-server.mobifone.vn/Upload/ToanBoTS';
-export const baseUrl = 'http://10.6.71.64:9080/api/';
-export const imageBaseUrl = 'http://10.6.71.64:9080/Upload/ToanBoTS';
+export const baseUrl = 'http://qlts-server.mobifone.vn/api/';
+export const imageBaseUrl = 'http://qlts-server.mobifone.vn/Upload/ToanBoTS';
+// export const baseUrl = 'http://10.6.71.64:9080/api/';
+// export const imageBaseUrl = 'http://10.6.71.64:9080/Upload/ToanBoTS';
 export const headerWithoutToken = ({
   'Content-Type': 'application/json',
   Accept: 'application/json'
@@ -104,6 +104,7 @@ export const endPoint = ({
   getALLRoleName: 'services/app/Role/GetAll',
   getMailServerEdit: 'services/app/MailServer/GetForEdit',
   getAllPermissions: 'services/app/Role/GetAllPermissions',
+  getRoleDetail: 'services/app/Role/GetRoleForEdit',
   // getAllTS
   TsMatgetAll: 'services/app/TaiSanMat/GetAllTaiSan',
   TsHonggetAll: 'services/app/TaiSanHong/GetAllTaiSan',
@@ -133,6 +134,7 @@ export const endPoint = ({
   CreateTaiSanSuaChuaBaoDuong: 'services/app/TaiSanSuaChuaBaoDuong/CreateTaiSanSuaChuaBaoDuong',
   CreateTaiSanHuy: 'services/app/TaiSanHuy/CreateTaiSanHuy',
   CreateVaitro:'services/app/Role/Create',
+  UpdateVaiTro: 'services/app/Role/Update',
   checkExitVaitro: 'services/app/Role/CheckExist',
   creatReaderdidong: 'services/app/DauDocTheRFID/CreateOrEdit',
   creatReadercodinh: 'services/app/AngTenRFID/CreateOrEdit',
@@ -162,6 +164,7 @@ export const endPoint = ({
   deleteNhaCC: 'services/app/NhaCungCap/Delete',
   deleteLoaiTs: 'services/app/LoaiTaiSan/Delete',
   deleteUser: 'services/app/User/Delete',
+  deleteRole: 'services/app/Role/Delete',
 });
 
 // Quản lý màn hình

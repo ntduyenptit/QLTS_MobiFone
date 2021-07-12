@@ -74,11 +74,15 @@ class NguoidungDetailScreen extends React.Component {
         } return "Chưa kích hoạt";
     }
 
+    refresh = () => {
+        this.getchitietNguoidung();
+      }
 
   capnhat() {
     const { idNguoidung, chitietData } = this.state;
     this.props.navigation.navigate(screens.cap_nhat_nguoi_dung, { paramKey: chitietData, userId: idNguoidung, onGoBack: () => this.refresh() });
   }
+  
 
   delete(id) {
     Alert.alert('Bạn có chắc chắn muốn xóa không?',
