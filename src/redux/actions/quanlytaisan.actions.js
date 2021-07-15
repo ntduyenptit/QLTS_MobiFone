@@ -1,5 +1,6 @@
 export const LOADING = '[LOADING]';
 export const FINISH = '[FINISH]';
+export const REFRESH = '[REFRESH]';
 
 export const TOANBOTAISAN = '[TOANBOTAISAN]';
 export const TOANBOTAISAN_LOADING = `${TOANBOTAISAN} is loading`;
@@ -63,6 +64,11 @@ export const loading = () => ({
 export const finish = () => ({
     type: FINISH,
     payload: {},
+})
+
+export const refresh = params => ({
+    type: REFRESH,
+    params,
 })
 
 export const toanbotaisanGetData = (data) => ({

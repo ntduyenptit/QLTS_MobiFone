@@ -2,8 +2,12 @@ import { applyMiddleware, createStore, compose } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import thunkMiddleware from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
 import { createLogger } from 'redux-logger';
 import reducer from './reducer';
+import rootSaga from './sagas';
+
+const sagaMiddleware = createSagaMiddleware();
 
 const enhancers = [
   applyMiddleware(
@@ -14,6 +18,7 @@ const enhancers = [
       predicate: () => __DEV__,
     }),
   ),
+  applyMiddleware(sagaMiddleware),
 ];
 
 /* eslint-disable no-undef */
@@ -35,4 +40,5 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, reducer);
 export const store = createStore(persistedReducer, {}, enhancer);
 export const persistor = persistStore(store);
+sagaMiddleware.run(rootSaga);
 export default store;

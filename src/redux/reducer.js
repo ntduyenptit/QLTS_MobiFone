@@ -100,6 +100,7 @@ import {
 const rootReducer = (state, action) => {
   // when a logout action is dispatched it will reset redux state
   if (action.type === USER_LOGOUT) {
+    console.log('co vao day k nao 777 log out');
     state = undefined
   }
   

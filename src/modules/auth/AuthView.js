@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, Modal, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image } from 'react-native';
 import { endPoint, screens } from '@app/api/config';
-import { createPostMethodWithoutToken } from '@app/api/Apis'
+import { createPostMethodWithoutToken } from '@app/api/Apis';
 import save from '../../localStorage/saveLogin';
 
 export default class AuthViewContainer extends React.Component {
@@ -10,29 +10,25 @@ export default class AuthViewContainer extends React.Component {
     this.state = {
       email: 'admin',
       password: '123qwe',
-      modalVisible: false,
     };
   }
 
   signIn(userNameOrEmailAddress, password) {
     createPostMethodWithoutToken(endPoint.login, JSON.stringify({ userNameOrEmailAddress, password }))
       .then(res => {
-        if (res) {
-          save.saveLogin(res.result.accessToken, userNameOrEmailAddress, res.result.userId);
-          
-          this.props.userLogin(res.result.accessToken);
+        if (res.success) {
+          Promise.all([
+            save.saveLogin(res.result.accessToken, userNameOrEmailAddress, res.result.userId),
+            this.props.userLogin(res.result.accessToken),
+          ]);
         } else {
-          Alert.alert('SignIn failed!');
+          Alert.alert(res?.error?.details);
         }
       })
       .catch();
   }
-  forgotPassword() {
-
-  }
 
   render() {
-    const { modalVisible } = this.state;
     return (
       <View style={styles.container}>
         <Image source={require('../../../assets/images/icon.png')} style={styles.iconImage} />
@@ -59,7 +55,7 @@ export default class AuthViewContainer extends React.Component {
         <TouchableOpacity style={styles.loginBtn} onPress={() => this.signIn(this.state.email, this.state.password)}>
           <Text style={styles.loginText}>Đăng nhập</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.forgotpassBtn} onPress = { () => this.props.navigation.navigate(screens.forgot_password)} >
+        <TouchableOpacity style={styles.forgotpassBtn} onPress={() => this.props.navigation.navigate(screens.forgot_password)}>
           <Text style={styles.forgotpassBtn}>Quên mật khẩu</Text>
         </TouchableOpacity>
         

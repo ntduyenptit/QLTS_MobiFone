@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import find from 'lodash/find';
 import SearchComponent from '../../global/SearchComponent';
 import FilterComponent from '../../global/FilterComponent';
-import QuanLyGiamSatFilter from '../filter/QuanlyGiamsatTSFilter';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
@@ -41,8 +40,7 @@ class GiamSatTaiSanScreen extends React.Component {
   getToanTaisan() {
     const { datas, startdate, enddate, chieudichuyen, phanloaitaisan } = getParameters();
     if (datas && datas.length > 0) {
-      let url;
-      url = `${endPoint.getLichsuRavaoAngten}?`;
+      let url = `${endPoint.getLichsuRavaoAngten}?`;
       const textState = this.props.searchText;
       const textFilter = find(textState, itemSelected => itemSelected.screen === screens.giam_sat_tai_san)
         && find(textState, itemSelected => itemSelected.screen === screens.giam_sat_tai_san).data;
@@ -77,8 +75,6 @@ class GiamSatTaiSanScreen extends React.Component {
       url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${this.state.skipCount}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
-
-      console.log(url);
       createGetMethod(url)
         .then(res => {
           if (res) {

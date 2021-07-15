@@ -48,7 +48,7 @@ export default compose(
     componentDidMount() {
       const setHeaderOptions=()=> { 
         this.props.navigation.dangerouslyGetParent().setOptions({headerRight: () => headerRightComponent()}); };
-      this.props.navigation.addListener('focus', setHeaderOptions); 
+      this.props.navigation.addListener('focus', setHeaderOptions);
       if (!isLoadData()) {
         GetToanBoTaiSanData();
       }

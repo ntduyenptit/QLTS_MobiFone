@@ -5,11 +5,11 @@ export const imageBaseUrl = 'http://qlts-server.mobifone.vn/Upload/ToanBoTS';
 // export const baseUrl = 'http://10.6.71.64:9080/api/';
 // export const imageBaseUrl = 'http://10.6.71.64:9080/Upload/ToanBoTS';
 export const headerWithoutToken = ({
-  'Content-Type': 'application/json',
-  Accept: 'application/json'
+  'Content-Type': 'application/json-patch+json',
+  Accept: 'text/plain'
 });
 export const headers = (token) => ({
-  'Authorization': `Bearer ${token}`, 
+  Authorization: `Bearer ${token}`, 
   'Content-Type': 'application/json',
   Accept: 'application/json'
 });
