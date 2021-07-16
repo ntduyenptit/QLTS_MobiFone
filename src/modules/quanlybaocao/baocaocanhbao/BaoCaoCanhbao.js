@@ -45,21 +45,20 @@ class BaocaoCanhbaoScreen extends React.PureComponent {
             url += `isSearch=${encodeURIComponent(`${isSearch}`)}`;
             createGetMethod(url)
                 .then(res => {
-                    if (res) {
+                    if (res.success) {
                         this.setState({
                             toanboData: res.result,
                         });
-                        const arr = res.result;
-                        for (let i = 0; i < arr.length; i++) {
-                            if (arr[i].isCheck) {
-                                this.setState({
-                                    totalData1: arr[i].taiSanRa,
-                                    totalData2: arr[i].taiSanVao,
-                                    totalData3: arr[i].batDauKiemKe,
-                                    totalData4: arr[i].ketThucKiemKe,
-                                });
-                            }
+                        res.result.forEach(e => {
+                          if (e.isCheck) {
+                            this.setState({
+                                totalData1: e.taiSanRa,
+                                totalData2: e.taiSanVao,
+                                totalData3: e.batDauKiemKe,
+                                totalData4: e.ketThucKiemKe,
+                            });
                         }
+                        });
                     }
                 })
                 .catch();

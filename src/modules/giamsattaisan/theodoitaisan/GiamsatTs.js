@@ -21,7 +21,7 @@ class GiamSatTaiSanScreen extends React.Component {
       scrollYValue: new Animated.Value(0),
       toanboTaiSanData: [],
       total: 0,
-      skipCount: 0
+      skipCount: 0,
     }
     this.getToanTaisan = this.getToanTaisan.bind(this);
     this.isCloseToBottom = this.isCloseToBottom.bind(this);
@@ -77,10 +77,12 @@ class GiamSatTaiSanScreen extends React.Component {
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
       createGetMethod(url)
         .then(res => {
-          if (res) {
+          if (res.success) {
             this.setState({
-              toanboTaiSanData: res.result.items,
-              total: res.result.totalCount
+              toanboTaiSanData: res.result.items || [],
+              total: res.result.totalCount || 0
+            }, () => {
+              isSearch = false;
             });
           } 
           

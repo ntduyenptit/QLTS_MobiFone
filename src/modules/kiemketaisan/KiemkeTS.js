@@ -75,6 +75,8 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
             this.setState({
               toanboTaiSanData: res.result.items,
               total: res.result.totalCount
+            }, () => {
+              isSearch = false;
             });
           }
         })
