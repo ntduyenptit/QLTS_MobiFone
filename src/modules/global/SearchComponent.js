@@ -57,7 +57,7 @@ const SearchComponent = (props) => {
               store.dispatch(removeSearch({ data: text, screen, tab }));
             store.dispatch(addSearch({ data: text, screen, tab }));
           } else if (action) {
-            setTimeout(() => action(text), 1000);
+            action(text);
             } else {
               store.dispatch(removeSearch({ data: text, screen }));
             store.dispatch(addSearch({ data: text, screen }));

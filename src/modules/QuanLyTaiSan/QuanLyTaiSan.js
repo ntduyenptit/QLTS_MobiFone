@@ -208,6 +208,10 @@ const QuanLyTaiSan = (state) => {
   )
 
   useEffect(() => {
+    count = 0;
+  }, [state.tab]);
+
+  useEffect(() => {
     if (!state.isLoading && skipCount > 0) {
       skipNumber = skipCount;
       count = 0;
