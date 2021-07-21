@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import BulletView from '../../global/BulletView';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import MoreMenu from '../../global/MoreComponent';
-import { buildTree, convertLoaiTs, convertNguonKinhphi, getTextNCC, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
+import { buildTree, convertLoaiTs, convertMaSuDung, currencyFormat, convertNguonKinhphi, getTextNCC, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
 import { createGetMethod, createPostMethodWithToken, deleteMethod } from '../../../api/Apis';
 import { deviceWidth, deviceHeight } from '../../global/LoaderComponent';
 import { endPoint, imageBaseUrl, screens, tabs, moreMenu } from '../../../api/config';
@@ -519,13 +519,13 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
               <BulletView title='Vị trí tài sản' text={paramTS?.viTriTS || paramTS?.viTriTaiSan} />
               <BulletView title='Trạng thái' text={paramTS?.trangThai} />
               <BulletView title='Ngày mua' text={taisan.ngayMua && convertTimeFormatToLocaleDate(taisan.ngayMua)} />
-              <BulletView title='Nguyên giá' text={taisan.nguyenGia} />
+              <BulletView title='Nguyên giá' text={currencyFormat(taisan.nguyenGia)} />
               <BulletView title='Ngày hết hạn bảo hành' text={taisan.ngayBaoHanh && convertTimeFormatToLocaleDate(taisan.ngayBaoHanh)} />
               <BulletView title='Ngày hết hạn sử dụng' text={taisan.hanSD && convertTimeFormatToLocaleDate(taisan.hanSD)} />
               <BulletView title='Thời gian trích khấu hao' text={taisan.thoiGianChietKhauHao} />
               {/* <BulletView title='Thời gian hết khấu hao' text={taisan.ngayMua && taisan.thoiGianChietKhauHao && addYearToDate(taisan.ngayMua, taisan.thoiGianChietKhauHao)} /> */}
               <BulletView title='Nguồn kinh phí' text={taisan.nguonKinhPhiId && convertNguonKinhphi(taisan.nguonKinhPhiId)} />
-              <BulletView title='Mã sử dụng' text={taisan.dropdownMultiple} />
+              <BulletView title='Mã sử dụng' text={convertMaSuDung(taisan.dropdownMultiple)} />
 
             </View>
           </View>

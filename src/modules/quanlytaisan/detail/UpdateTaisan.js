@@ -22,7 +22,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { endPoint } from '../../../api/config';
-import { convertDateToIOSString, addYearToDate, getLinkFile, convertTimeFormatToLocaleDate, convertNguonKinhphi, getTextNCC, convertLoaiTs } from '../../global/Helper';
+import { convertDateToIOSString, currencyFormat, addYearToDate, getLinkFile, convertTimeFormatToLocaleDate, convertNguonKinhphi, getTextNCC, convertLoaiTs, convertMaSuDung } from '../../global/Helper';
 import { createGetMethod, createPostMethodWithToken, createPostMultiFiles } from '../../../api/Apis';
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
@@ -410,7 +410,7 @@ class TaomoiTaisanScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    defaultValue={taisan?.nguyenGia}
+                    defaultValue={currencyFormat(taisan?.nguyenGia)}
                     onChangeText={(price) => {
                                     this.setState({
                                         nguyenGia: price,
@@ -563,7 +563,7 @@ class TaomoiTaisanScreen extends React.Component {
                     styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
                     uniqueKey="id"
                     displayKey="displayName"
-                    selectText={taisan?.dropdownMultiple}
+                    selectText={taisan?.dropdownMultiple && convertMaSuDung(taisan?.dropdownMultiple)}
                     onSelectedItemsChange={(item) => this.setState({
                                     maSudung: item,
                                 })}

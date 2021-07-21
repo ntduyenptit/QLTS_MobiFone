@@ -154,6 +154,19 @@ export const convertTrangThai = (int) => {
   }
 }
 
+export const convertMaSuDung = (text) => {
+  switch (text) {
+    case "1":
+      return "RFID";
+    case "2":
+      return "Barcode";
+    case "3":
+      return "QR Code";
+    default:
+      return null;
+  }
+}
+
 export const convertNguonKinhphi = (int) => {
   switch (int) {
     case 1:
@@ -279,8 +292,11 @@ export const getPercent = (value, total) => {
 }
 
 export const convertDateFormatTo = (date) => {
-  const newDate = new Date(`${date.toString().split('GMT')[0]} UTC`).toISOString().split('.')[0];
-  return newDate;
+  if (isEmpty(date)) {
+    const newDate = new Date(`${date.toString().split('GMT')[0]} UTC`).toISOString().split('.')[0];
+    return newDate;
+  }
+  return null;
 }
 
 export const currentDate = () => new Date(`${new Date().toString().split('GMT')[0]} UTC`).toISOString().split('.')[0];
@@ -395,7 +411,7 @@ export const convertTimeToIOSString = (time) => {
 }
 
 export const addYearToDate = (date, num) => {
-  if (date && num != 0) {
+  if (date && num !== 0) {
     const number = convertDateFormatTo(moment(date,"DD, MM YYYY"));
     const d = new Date(number);
       const year = d.getFullYear() + Number(num);
