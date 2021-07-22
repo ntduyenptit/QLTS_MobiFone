@@ -249,23 +249,23 @@ const QuanLyTaiSan = (state) => {
   function LoaderComponentByTab() {
     switch (state.tab) {
       case tabs.toan_bo_tai_san:
-        return LoaderComponent(state.toanbotaisanData, state, screens.chi_tiet_tai_san, refresh);
+        return LoaderComponent(state.toanbotaisanData, state, screens.chi_tiet_tai_san, refreshData);
       case tabs.tai_san_mat:
-        return LoaderComponent(state.taisanmatData, state, screens.chi_tiet_tai_san, refresh);
+        return LoaderComponent(state.taisanmatData, state, screens.chi_tiet_tai_san, refreshData);
       case tabs.tai_san_hong:
-        return LoaderComponent(state.taisanhongData, state, screens.chi_tiet_tai_san, refresh);
+        return LoaderComponent(state.taisanhongData, state, screens.chi_tiet_tai_san, refreshData);
       case tabs.tai_san_thanh_ly:
-        return LoaderComponent(state.taisanthanhlyData, state, screens.chi_tiet_tai_san, refresh);
+        return LoaderComponent(state.taisanthanhlyData, state, screens.chi_tiet_tai_san, refreshData);
       case tabs.tai_san_chua_su_dung:
-        return LoaderComponent(state.taisanchuasudungData, state, screens.chi_tiet_tai_san, refresh);
+        return LoaderComponent(state.taisanchuasudungData, state, screens.chi_tiet_tai_san, refreshData);
       case tabs.tai_san_dang_su_dung:
-        return LoaderComponent(state.taisandangsudungData, state, screens.chi_tiet_tai_san, refresh);
+        return LoaderComponent(state.taisandangsudungData, state, screens.chi_tiet_tai_san, refreshData);
       case tabs.tai_san_huy:
-        return LoaderComponent(state.taisanhuyData, state, screens.chi_tiet_tai_san, refresh);
+        return LoaderComponent(state.taisanhuyData, state, screens.chi_tiet_tai_san, refreshData);
       case tabs.tai_san_sua_chua_bao_duong:
-        return LoaderComponent(state.taisansuachuabaoduongData, state, screens.chi_tiet_tai_san, refresh);
+        return LoaderComponent(state.taisansuachuabaoduongData, state, screens.chi_tiet_tai_san, refreshData);
       case tabs.bao_hong_mat_tai_san:
-        return LoaderComponent(state.baohongmatData, state, screens.chi_tiet_bao_hongmat_tai_san, refresh);
+        return LoaderComponent(state.baohongmatData, state, screens.chi_tiet_bao_hongmat_tai_san, refreshData);
       default:
         break;
     }
@@ -420,17 +420,17 @@ const QuanLyTaiSan = (state) => {
   const LoadScreenThemmoi = () => {
     switch (state.tab) {
       case tabs.toan_bo_tai_san:
-        return props.navigation.navigate(screens.them_moi_tai_san, { screen: "toàn bộ tài sản", onGoBack: () => refresh() });
+        return props.navigation.navigate(screens.them_moi_tai_san, { screen: "toàn bộ tài sản", onGoBack: () => refreshData() });
       case tabs.tai_san_mat:
-        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản mất", onGoBack: () => refresh() });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản mất", onGoBack: () => refreshData() });
       case tabs.tai_san_hong:
-        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản hỏng", onGoBack: () => refresh() });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản hỏng", onGoBack: () => refreshData() });
       case tabs.tai_san_huy:
-        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản hủy", onGoBack: () => refresh() });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản hủy", onGoBack: () => refreshData() });
       case tabs.tai_san_thanh_ly:
-        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản thanh lý", onGoBack: () => refresh() });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản thanh lý", onGoBack: () => refreshData() });
       case tabs.tai_san_sua_chua_bao_duong:
-        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản sửa chữa/bảo dưỡng", onGoBack: () => refresh() });
+        return props.navigation.navigate(screens.khai_bao_tai_san, { screen: "tài sản sửa chữa/bảo dưỡng", onGoBack: () => refreshData() });
       default:
         return null;
     }

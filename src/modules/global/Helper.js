@@ -180,7 +180,10 @@ export const convertNguonKinhphi = (int) => {
   }
 }
 
-export const convertLoaiTs = (int, listTs) => listTs.map(e => e.value === int).text || ''
+export const convertLoaiTs = (int, listTs) => listTs.map(e => {
+  if (e.value && e.value === int) return e.text;
+  return ''; 
+})
 
 export const convertTrangthaiTaisan = (int) => {
   switch (int) {
@@ -401,10 +404,15 @@ export const convertFormatDate = (date) => {
   return `${newDate.getUTCDate()  }/${  newDate.getMonth() + 1}`;
 }
 
-export const convertDateToIOSString = (date) => {
-  const dt = convertDateFormatTo(moment(date,"DD, MM YYYY"));
-  return dt;
+export const convertDateRToIOSString = (date, formatType) => {
+  if (!formatType) {
+    formatType = "DD-MM-YYYY";
+  }
+  const dt = moment(date, formatType);
+  const e = dt.format("YYYY-MM-DDTHH:MM:SS");
+  return e;
 }
+
 export const convertTimeToIOSString = (time) => {
   const dt = (moment(time).format().toISOString());
   return dt;

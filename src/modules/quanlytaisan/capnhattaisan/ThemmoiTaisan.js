@@ -22,7 +22,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { endPoint } from '../../../api/config';
-import { convertDateToIOSString, addYearToDate, getLinkFile } from '../../global/Helper';
+import { convertDateRToIOSString, addYearToDate, getLinkFile } from '../../global/Helper';
 import { createGetMethod, createPostMethodWithToken, createPostMultiFiles } from '../../../api/Apis';
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
@@ -194,9 +194,9 @@ class TaomoiTaisanScreen extends React.Component {
                         listFile: [],
                         listHA: images,
                         loaiTS: loaiTaisan&&loaiTaisan[0],
-                        ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
-                        hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
-                        ngayMua: ngayMua && convertDateToIOSString(ngayMua),
+                        ngayBaoHanh: ngayHetBh && convertDateRToIOSString(ngayHetBh),
+                        hanSD: ngayHetSd && convertDateRToIOSString(ngayHetSd),
+                        ngayMua: ngayMua && convertDateRToIOSString(ngayMua),
                         nguonKinhPhiId: nguonKinhphi && nguonKinhphi[0],
                         nguyenGia,
                         nhaCC: nhaCungcap&&nhaCungcap[0],
@@ -229,9 +229,9 @@ class TaomoiTaisanScreen extends React.Component {
                 listFile: [],
                 listHA: [],
                 loaiTS: loaiTaisan&&loaiTaisan[0],
-                ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
-                hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
-                ngayMua: ngayMua && convertDateToIOSString(ngayMua),
+                ngayBaoHanh: ngayHetBh && convertDateRToIOSString(ngayHetBh),
+                hanSD: ngayHetSd && convertDateRToIOSString(ngayHetSd),
+                ngayMua: ngayMua && convertDateRToIOSString(ngayMua),
                 nguonKinhPhiId: nguonKinhphi && nguonKinhphi[0],
                 nguyenGia,
                 nhaCC: nhaCungcap&&nhaCungcap[0],

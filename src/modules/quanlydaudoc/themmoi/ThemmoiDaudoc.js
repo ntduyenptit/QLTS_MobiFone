@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import MultiSelect from '@app/libs/react-native-multiple-select/lib/react-native-multi-select';
 import { endPoint, } from '@app/api/config';
 import { createPostMethodWithToken } from '@app/api/Apis';
-import { convertDateToIOSString } from '@app/modules/global/Helper';
+import { convertDateRToIOSString } from '@app/modules/global/Helper';
 import { colors, fonts } from '../../../styles';
 
 let tab = '';
@@ -117,11 +117,11 @@ class ThemmoiDaudocScreen extends React.Component {
             url = `${endPoint.creatReaderdidong}`;
             params = {
                 ghiChu,
-                hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
+                hanSD: ngayHetSd && convertDateRToIOSString(ngayHetSd),
                 hangSanXuat: hangSx,
                 loaiTS: loaiTaisanId,
-                ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
-                ngayMua: ngayMua && convertDateToIOSString(ngayMua),
+                ngayBaoHanh: ngayHetBh && convertDateRToIOSString(ngayHetBh),
+                ngayMua: ngayMua && convertDateRToIOSString(ngayMua),
                 nguyenGia,
                 nhaCC: nhaCungcap[0],
                 productNumber: PN,
@@ -132,11 +132,11 @@ class ThemmoiDaudocScreen extends React.Component {
             url = `${endPoint.creatReadercodinh}`;
             params = {
                 ghiChu,
-                hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
+                hanSD: ngayHetSd && convertDateRToIOSString(ngayHetSd),
                 hangSanXuat: hangSx,
                 loaiTS: loaiTaisanId,
-                ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
-                ngayMua: ngayMua && convertDateToIOSString(ngayMua),
+                ngayBaoHanh: ngayHetBh && convertDateRToIOSString(ngayHetBh),
+                ngayMua: ngayMua && convertDateRToIOSString(ngayMua),
                 nguyenGia,
                 nhaCC: nhaCungcap[0],
                 productNumber: PN,
@@ -145,6 +145,7 @@ class ThemmoiDaudocScreen extends React.Component {
                 tenTS,
             }
         }
+
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
             if (res.success) {
                 Alert.alert(
@@ -209,7 +210,8 @@ class ThemmoiDaudocScreen extends React.Component {
             ngayMua,
             ngayHetBh,
             ngayHetSd,
-            nhaCungcap
+            nhaCungcap,
+            nguyenGia
         } = this.state;
         const { screen } = this.props.route.params;
         tab = screen;
@@ -288,9 +290,10 @@ class ThemmoiDaudocScreen extends React.Component {
                   <TextInput
                     placeholderTextColor="black"
                     style={styles.bordered}
-                    onChangeText={(years) => {
+                    keyboardType="numeric"
+                    onChangeText={(value) => {
                                     this.setState({
-                                        nguyenGia: years,
+                                        nguyenGia: value,
                                     });
                                 }}
                   />

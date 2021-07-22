@@ -18,7 +18,7 @@ import { getLTSDataFilter, getMSDDataFilter, getNCCDataFilter } from '@app/modul
 import { getLTSDataAction, getMSDDataAction, getNCCDataAction } from '@app/redux/actions/filter.actions';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { endPoint } from '../../../api/config';
-import { convertDateToIOSString } from '../../global/Helper';
+import { convertDateRToIOSString } from '../../global/Helper';
 import { createPostMethodWithToken } from '../../../api/Apis';
 import { colors, fonts } from '../../../styles';
 import { deviceWidth } from '../../global/LoaderComponent';
@@ -137,9 +137,9 @@ class UpdateDaudocCoDinhScreen extends React.Component {
             id: idTaisan,
             hangSanXuat: hangSx,
             loaiTS: 2,
-            ngayBaoHanh: ngayHetBh && convertDateToIOSString(ngayHetBh),
-            hanSD: ngayHetSd && convertDateToIOSString(ngayHetSd),
-            ngayMua: ngayMua && convertDateToIOSString(ngayMua),
+            ngayBaoHanh: ngayHetBh && convertDateRToIOSString(ngayHetBh),
+            hanSD: ngayHetSd && convertDateRToIOSString(ngayHetSd),
+            ngayMua: ngayMua && convertDateRToIOSString(ngayMua),
             nguyenGia,
             nhaCC: nhaCungcap && nhaCungcap[0],
             noiDungChotGia: "",

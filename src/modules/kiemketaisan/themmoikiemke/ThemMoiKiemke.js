@@ -8,12 +8,9 @@ import { endPoint } from '../../../api/config';
 import { createGetMethod, createPostMethodWithToken } from '../../../api/Apis';
 import { colors, fonts } from '../../../styles';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
-import { convertDateToIOSString } from '../../global/Helper';
+import { convertDateRToIOSString } from '../../global/Helper';
 
 const deviceWidth = Dimensions.get("window").width;
-let tab = '';
-const tempCheckValues = [];
-
 class ThemmoiDotKiemke extends React.Component {
     constructor(props) {
         super(props);
@@ -128,10 +125,11 @@ class ThemmoiDotKiemke extends React.Component {
             doiKiemKeIdList: this.convertList(userKiemke),
             maKiemKe: maKiemke,
             tenKiemKe: tenKiemke,
-            thoiGianBatDauDuKien: dateBatdau && convertDateToIOSString(dateBatdau),
-            thoiGianKetThucDuKien: dateKethuc && convertDateToIOSString(dateKethuc),
+            thoiGianBatDauDuKien: dateBatdau && convertDateRToIOSString(dateBatdau, 'DD-MM-YYYY'),
+            thoiGianKetThucDuKien: dateKethuc && convertDateRToIOSString(dateKethuc, 'DD-MM-YYYY'),
             trangThaiId: 0,
         }
+
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
             if (res.success) {
                 Alert.alert('Thêm mới đợt kiểm kê thành công',
@@ -190,7 +188,7 @@ class ThemmoiDotKiemke extends React.Component {
     };
 
     render() {
-        const { scrollYValue,
+        const {
             toanboUser,
             dateBatdau,
             dateKethuc,
@@ -198,20 +196,6 @@ class ThemmoiDotKiemke extends React.Component {
             bophanKiemkeList,
             userKiemke
         } = this.state;
-        const { screen } = this.props.route.params;
-        tab = screen;
-        const clampedScroll = Animated.diffClamp(
-            Animated.add(
-                scrollYValue.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, 1],
-                    extrapolateLeft: 'clamp',
-                }),
-                new Animated.Value(0),
-            ),
-            0,
-            50,
-        )
         return (
           <ScrollView style={styles.container}>
             <Text style={styles.boldText}>Tên đợt kiểm kê*</Text>
@@ -326,6 +310,7 @@ class ThemmoiDotKiemke extends React.Component {
                 items={toanboUser}
                 uniqueKey="id"
                 ref={(component) => { this.multiSelect = component }}
+                styleDropdownMenuSubsection={[styles.searchText, styles.bordered]}
                 onSelectedItemsChange={(item) => this.onSelectedItemsChange(item)}
                 selectedItems={userKiemke}
                 IconRenderer={Icon}
@@ -371,6 +356,11 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         padding: 5,
     },
+    searchText: {
+        backgroundColor: 'transparent',
+        height: 50,
+        paddingLeft: 15
+    },
     bordered: {
         borderWidth: 0.5,
         borderBottomWidth: 0.5,
@@ -378,14 +368,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingHorizontal: 20,
         height: 40,
-        marginLeft: 3,
-    },
-    borderedContent: {
-        borderWidth: 0.5,
-        height: 50,
-        borderColor: 'black',
-        borderRadius: 10,
-        paddingHorizontal: 10,
+        marginLeft: 5,
+        marginRight: 5
     },
     borderedContentSuachuabaoduong: {
         borderWidth: 0.5,
@@ -393,13 +377,6 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderRadius: 10,
         paddingHorizontal: 10,
-    },
-    button2: {
-        padding: 5,
-        marginRight: 5,
-        height: 20,
-        borderRadius: 5,
-        backgroundColor: "red",
     },
     listItem: {
         padding: 5,

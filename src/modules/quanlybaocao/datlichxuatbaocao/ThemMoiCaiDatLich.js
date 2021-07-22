@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { createGetMethod, createPostMethodWithToken } from '../../../api/Apis';
 import { endPoint, } from '../../../api/config';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
-import { buildTree, convertDateFormatTo, convertDateToIOSString, convertFormatDate, convertTimeFormatToLocaleDateFullTime, convertTimeToIOSString } from '../../global/Helper';
+import { buildTree, convertDateFormatTo, convertDateRToIOSString, convertFormatDate, convertTimeFormatToLocaleDateFullTime, convertTimeToIOSString } from '../../global/Helper';
 import { colors, fonts } from '../../../styles';
 
 export const deviceWidth = Dimensions.get('window').width;

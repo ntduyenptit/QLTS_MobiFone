@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import BulletView from '../../global/BulletView';
 import MultiSelect from '../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import MoreMenu from '../../global/MoreComponent';
-import { buildTree, convertLoaiTs, convertMaSuDung, currencyFormat, convertNguonKinhphi, getTextNCC, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
+import { buildTree, convertDateRToIOSString, convertLoaiTs, convertMaSuDung, currencyFormat, convertNguonKinhphi, getTextNCC, convertTextToLowerCase, convertTimeFormatToLocaleDate } from '../../global/Helper';
 import { createGetMethod, createPostMethodWithToken, deleteMethod } from '../../../api/Apis';
 import { deviceWidth, deviceHeight } from '../../global/LoaderComponent';
 import { endPoint, imageBaseUrl, screens, tabs, moreMenu } from '../../../api/config';
@@ -292,58 +292,83 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
     navigation.goBack();
   }
 
-  commit(phanLoai, tittle) {
+  commit(phanLoai, title) {
     const {
       donvi,
       datetime,
       noidung,
       paramTS
     } = this.state;
-
-    let url = '';
-    let params = '';
-
-    url = `${endPoint.capphatTS}`;
-    params = {
-      PhongBan: donvi[0],
-      ngayKhaiBao: datetime,
-      noiDung: noidung,
-      noiDungKhaiBao: noidung,
-      phanLoaiId: phanLoai,
-      phieuTaiSanChiTietList: [{ taiSanId: paramTS?.id }],
-      thoiGianKhaiBao: datetime,
-      toChucDuocNhanId: donvi[0],
+    let s = '';
+    let check = false;
+    switch ("") {
+        case donvi:
+            {
+              if (phanLoai !== 4) {
+                s = "đơn vị";
+                check = true;
+              }
+                break;
+            }
+        case datetime: {
+            s = "thời gian điều chuyển";
+            check = true;
+            break;
+        }
+        default:
+            break;
     }
-
-    createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
-      if (res.success) {
+    if (check) {
         Alert.alert(
-          '',
-          `${tittle  } thành công`,
-          [
-            { text: 'OK', onPress: this.goBack() },
-          ],
+            '',
+            `Hãy nhập ${  s}`,
+            [
+                { text: 'OK', style: "cancel" },
+            ],
 
-        );
-
+        ); 
+    } else {
+      const url = `${endPoint.capphatTS}`;
+      const params = {
+        PhongBan: donvi[0],
+        ngayKhaiBao: datetime && convertDateRToIOSString(datetime, 'DD-MM-YYYY'),
+        noiDung: noidung,
+        noiDungKhaiBao: noidung,
+        phanLoaiId: phanLoai,
+        phieuTaiSanChiTietList: [{ taiSanId: paramTS?.id }],
+        thoiGianKhaiBao: datetime && convertDateRToIOSString(datetime, 'DD-MM-YYYY'),
+        toChucDuocNhanId: donvi[0],
       }
-    })
+  
+      createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
+        if (res.success) {
+          this.setState({ modalVisible: false });
+          Alert.alert(
+            '',
+            `${title  } thành công`,
+            [
+              { text: 'OK', onPress: this.goBack() },
+            ],
+          );
+  
+        }
+      })
+    }
   }
 
-  commitMenuItem(tittle) {
-    this.setState({ modalVisible: false })
-    switch (tittle) {
+  commitMenuItem(title) {
+    switch (title) {
       case "Khai báo sử dụng":
-        this.commit(4, tittle);
+        this.commit(4, title);
         break;
       case "Điều chuyển":
-        this.commit(2, tittle);
+        this.commit(2, title);
         break;
       case "Cấp phát":
-        this.commit(1, tittle);
+        this.commit(1, title);
         break;
       case "Thu hồi":
-        this.commit(3, tittle);
+        this.commit(3, title);
         break;
       default:
         break;
@@ -383,17 +408,21 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
               confirmBtnText="Chọn"
               cancelBtnText="Thoát"
               customStyles={{
-                dateIcon: {
-                  // display: 'none',
-                  position: 'absolute',
-                  right: 0,
-                  top: 0,
-                  marginLeft: 0,
-                },
-                dateInput: {
-                  marginLeft: 5,
-                },
-              }}
+                        dateIcon: {
+                            position: 'absolute',
+                            right: 0,
+                            top: 0,
+                        },
+                        dateInput: {
+                            marginLeft: 5,
+                        },
+                        datePickerCon: { backgroundColor: 'black'}
+                    }}
+              onDateChange={(date) => {
+                        this.setState({
+                          datetime: date,
+                        });
+                    }}
             />
             <Text style={styles.boldText}>Nội dung {convertTextToLowerCase(title)}: </Text>
             <TextInput
@@ -439,17 +468,21 @@ class QuanLyTaiSanDetailComponent extends React.PureComponent {
               confirmBtnText="Chọn"
               cancelBtnText="Thoát"
               customStyles={{
-                dateIcon: {
-                  // display: 'none',
-                  position: 'absolute',
-                  right: 0,
-                  top: 0,
-                  marginLeft: 0,
-                },
-                dateInput: {
-                  marginLeft: 5,
-                },
-              }}
+                        dateIcon: {
+                            position: 'absolute',
+                            right: 0,
+                            top: 0,
+                        },
+                        dateInput: {
+                            marginLeft: 5,
+                        },
+                        datePickerCon: { backgroundColor: 'black'}
+                    }}
+              onDateChange={(date) => {
+                        this.setState({
+                          datetime: date,
+                        });
+                    }}
             />
             <Text style={styles.boldText}>Nội dung {title}: </Text>
             <TextInput
