@@ -12,6 +12,7 @@ import {
   TT_FILTER,
   TTSD_FILTER,
   TINHTHANH_FILTER,
+  LVKD_FILTER,
 
   DVQL_SELECTED_ADD,
   TT_SELECTED_ADD,
@@ -28,6 +29,7 @@ import {
   TTKK_SELECTED_ADD,
   TINHTHANH_SELECTED_ADD,
   QUANHUYEN_SELECTED_ADD,
+  LVKD_SELECTED,
 
   DVQL_SELECTED_REMOVE,
   TT_SELECTED_REMOVE,
@@ -196,6 +198,19 @@ export const filterNCCDataReducer = (state = initialState, action) => {
   }
 }
 
+export const filterLVKDDataReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case LVKD_FILTER: {
+      return {
+        lvkdDataFilter: action.payload
+      }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
 export const filterMSDDataReducer = (state = initialState, action) => {
   switch (action.type) {
     case MSD_FILTER: {
@@ -287,6 +302,21 @@ export const filterTTSelectedReducer = (state = initialState, action) => {
           ...state,
           ttFilterSelected: state.ttFilterSelected.filter((item) => item.screen !== action.payload.screen)
         }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+
+export const filterLVKDSelectedReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case LVKD_SELECTED: {
+      return {
+        ...state,
+        lvkdFilterSelected: [...state.ttFilterSelected, action.payload],
+      }
     }
     default: {
       return state

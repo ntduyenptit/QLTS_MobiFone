@@ -9,6 +9,7 @@ export const HIDE_MORE = `${MORE} Hide more modal`;
 export const DVQL_FILTER = `${FILTER} Get DON_VI_QUAN_LY data`;
 export const LTS_FILTER = `${FILTER} Get LOAI_TAI_SAN data`;
 export const NCC_FILTER = `${FILTER} Get NHA_CUNG_CAP data`;
+export const LVKD_FILTER = `${FILTER} Get LINH_VUC_KINH_DOANH data`;
 export const MSD_FILTER = `${FILTER} Get MA_SU_DUNG data`;
 export const TT_FILTER = `${FILTER} Get TRANG_THAI data`;
 export const TTSD_FILTER = `${FILTER} Get TRANG_THAI_SU_DUNG data`;
@@ -23,6 +24,8 @@ export const LTS_SELECTED_REMOVE = `${FILTER} Remove LOAI_TAI_SAN selected`;
 
 export const NCC_SELECTED_ADD = `${FILTER} Add NHA_CUNG_CAP selected`;
 export const NCC_SELECTED_REMOVE = `${FILTER} Remove NHA_CUNG_CAP selected`;
+
+export const LVKD_SELECTED = `${FILTER} Add LINH_VUC_KINH_DOANH selected`;
 
 export const MSD_SELECTED_ADD = `${FILTER} Add MA_SU_DUNG selected`;
 export const MSD_SELECTED_REMOVE = `${FILTER} Remove MA_SU_DUNG selected`;
@@ -142,6 +145,17 @@ export const addSelectedNCCAction = (data) => ({
 
 export const removeSelectedNCCAction = (data) => ({
     type: NCC_SELECTED_REMOVE,
+    payload: data
+});
+
+// lĩnh vực kinh doanh
+export const getLVKDDataAction = (data) => ({
+    type: LVKD_FILTER,
+    payload: data
+});
+
+export const addSelectedLVKDAction = (data) => ({
+    type: LVKD_SELECTED,
     payload: data
 });
 

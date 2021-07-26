@@ -22,7 +22,7 @@ import QuanlyMuaSamFilter from '@app/modules/quanlydutrumuasam/filter/QuanlyMuaS
 import QuanLyCanhbaoFilter from '@app/modules/quanlycanhbao/QuanlyCanhbaoFilter';
 import BaocaoCanhbaoFilter from '@app/modules/quanlybaocao/baocaocanhbao/BaocaoCanhbaoFilter';
 import QuanlyVitriDialyFilter from '@app/modules/quanlydanhmuc/quanlyvitridialy/filter/QuanlyVitriDialyFilter';
-import QuanlyNhaCungCapFilter from '@app/modules/quanlydanhmuc/quanlynhacungcap/QuanlyNhaCungCapFilter';
+import QuanlyNhaCungCapFilter from '@app/modules/quanlydanhmuc/quanlynhacungcap/filter/QuanlyNhaCungCapFilter';
 import QuanLyNguoidungFilter from '@app/modules/quanlyhethong/quanlynguoidung/filter/QuanlyNguoidungFilter'; 
 import { store } from "../../redux/store";
 import { hideFilter } from "../../redux/actions/filter.actions";
