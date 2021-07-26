@@ -95,7 +95,6 @@ class CapNhatDonViScreen extends React.Component {
             diachiId,
             ghiChu,
             id,
-            diachiList,
         } = this.state;
         let s = '';
         let check = false;
@@ -146,13 +145,11 @@ class CapNhatDonViScreen extends React.Component {
             viTriDiaLyId: diachiId[0],
         }
 
-        console.log(params);
-
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
             if (res.success) {
                 Alert.alert(
                     '',
-                    'Thêm mới đơn vị thành công',
+                    'Cập nhật đơn vị thành công',
                     [
                         { text: 'OK', onPress: this.goBack() },
                     ],

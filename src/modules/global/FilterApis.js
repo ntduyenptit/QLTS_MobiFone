@@ -15,3 +15,6 @@ export const getDVQLDataFilter = () => createGetMethod(endPoint.getAllToChucTheo
 
   // Tình trạng sử dụng
   export const getTTSDDataFilter = () => createGetMethod(endPoint.getAllTrangThaiSuDung)
+
+  // Lĩnh vực kinh doanh
+  export const getLVKDDDataFilter = () => createGetMethod(endPoint.getLinhVucKinhDoanh)

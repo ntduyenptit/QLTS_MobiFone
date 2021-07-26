@@ -2,24 +2,31 @@ import { screens } from '@app/api/config';
 import React, { useRef, useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { getLVKDDDataFilter } from '@app/modules/global/FilterApis';
 import { connect } from 'react-redux';
 import MultiSelect from '../../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { 
   addSelectedLVKDAction,
  } from '../../../../redux/actions/filter.actions';
-import store from '../../../../redux/store';
+ import { getLVKDDataAction } from '@app/redux/actions/filter.actions';
 
 const QuanLyNCCFilterComponent = (items) => {
 
   const nhaCungCapRef = useRef();
 
   useEffect(() => {
-    
+    if (!items.lvkdDataFilter) {
+      getLVKDDDataFilter().then(res => {
+        if (res) {
+          items.setLVKDDataAction(res.result);
+        }
+      })
+    }
   }, []);
 
   // selectedChange
   const onSelectedLVKDChange = (newSelectItems) => {
-    items.addSelectedLVKD({data: newSelectItems, screen: screens.quan_ly_nha_cung_cap});
+    items.addSelectedLVKD(newSelectItems);
   }
   
   // end SelectedChange
@@ -30,7 +37,7 @@ const QuanLyNCCFilterComponent = (items) => {
           <Text style={styles.titleText}>Lĩnh vực kinh doanh</Text>
           <MultiSelect
             ref={nhaCungCapRef}
-            items={items.NccDataFilter}
+            items={items.LvkdDataFilter}
             IconRenderer={Icon}
             single
             styleListContainer={items.NccDataFilter && items.NccDataFilter.length > 9 ? { height: 200 } : null}
@@ -67,14 +74,15 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  NccDataFilter: state.filterNCCDataReducer.nccDataFilter,
+  LvkdDataFilter: state.filterLVKDDataReducer.lvkdDataFilter,
 
-  lvkdFilterSelected: state.filterNCCSelectedReducer.nccFilterSelected,
+  lvkdFilterSelected: state.filterLVKDSelectedReducer.lvkdFilterSelected,
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     addSelectedLVKD: (item) => dispatch(addSelectedLVKDAction(item)),
+    setLVKDDataAction: (items) => dispatch(getLVKDDataAction(items))
   }
 };
 

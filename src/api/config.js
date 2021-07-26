@@ -78,6 +78,9 @@ export const endPoint = ({
   getNhaCungcap: 'services/app/NhaCungCap/GetAll',
   getViewNhacungcap: 'services/app/NhaCungCap/GetForEdit',
 
+  // Lĩnh vực kinh doanh
+  getLinhVucKinhDoanh: 'services/app/LookupTable/GetAllLinhVucKinhDoanh',
+
   // Quản lý vị trí địa lý
   getAllVitriDialy: 'services/app/ViTriDiaLy/GetAll',
   getAllTinhthanh: 'services/app/ViTriDiaLy/GetAllDtoTinhThanh',

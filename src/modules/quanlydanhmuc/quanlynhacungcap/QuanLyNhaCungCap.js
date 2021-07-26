@@ -9,10 +9,12 @@ import FilterComponent from '../../global/FilterComponent';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
+import getParameters from './filter/GetParameters';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
+let isSearch = false;
 class QuanLyNhaCungCapScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -36,34 +38,41 @@ class QuanLyNhaCungCapScreen extends React.Component {
 
     getAllNhacungcapData() {
         let url = `${endPoint.getNhaCungcap}?`;
+        const linhVucKinhDoanh = getParameters()?.linhVucKinhDoanh;
         const textState = this.props?.searchText;
         const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_nha_cung_cap)
           && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_nha_cung_cap).data;
         if (textFilter) {
           url += `Keyword=${textFilter}&`
-          url += `IsSearch=${encodeURIComponent(`${true}`)}&`;
-        } else {
-            url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
         }
+        if (linhVucKinhDoanh && linhVucKinhDoanh.length > 0) {
+          url += `LinhVuc=${linhVucKinhDoanh[0]}&`
+        }
+        url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
         url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
         url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
         createGetMethod(url)
             .then(res => {
-                if (res) {
+                if (res.success) {
                     this.setState({
                         nhacungcapData: res.result.items,
                         total: res.result.totalCount
                     });
-                } else {
-                    // Alert.alert('Lỗi khi load toàn bộ tài sản!');
                 }
             })
             .catch();
     }
 
     refresh = () => {
+      isSearch = false;
          this.getAllNhacungcapData();
     }
+
+    handleFilter = () => {
+      isSearch = true;
+      this.getAllNhacungcapData();
+    };
+
 
     render() {
         const {
@@ -124,7 +133,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
                         }}
               >Hiển thị: {nhacungcapData.length}/{total}
               </Text>
-              <FilterComponent action={this.getAllNhacungcapData} />
+              <FilterComponent action={this.handleFilter} />
             </Animated.View>
             <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_nha_cung_cap, { screen: "Thêm mới nhà cung cấp" , onGoBack: () => this.refresh()})} />
           </View>

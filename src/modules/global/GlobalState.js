@@ -59,6 +59,7 @@ const initialState = {
     dvqlDataFilter: [],
     ltsDataFilter: [],
     nccDataFilter: [],
+    lvkdDataFilter: [],
     msdDataFilter: [],
     ttDataFilter: [],
     ttsdDataFilter: [],
@@ -315,7 +316,7 @@ export const filterLVKDSelectedReducer = (state = initialState, action) => {
     case LVKD_SELECTED: {
       return {
         ...state,
-        lvkdFilterSelected: [...state.ttFilterSelected, action.payload],
+        lvkdFilterSelected: action.payload,
       }
     }
     default: {

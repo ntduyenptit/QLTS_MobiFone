@@ -49,8 +49,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
   getToanBoDauDocCoDinhData() {
     const { datas, tinhtrangsudung } = getParameters(screens.quan_ly_dau_doc_co_dinh);
     if (datas && datas.length > 0) {
-      let url;
-      url = `${endPoint.getDaudocCodinh}?`;
+      let url = `${endPoint.getDaudocCodinh}?`;
 
       const textState = this.props.searchText;
       const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_co_dinh)
