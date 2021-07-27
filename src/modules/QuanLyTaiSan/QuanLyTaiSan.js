@@ -120,7 +120,7 @@ export function GetToanBoTaiSanData() {
       if (tab === tabs.tai_san_dang_su_dung || tab === tabs.tai_san_chua_su_dung) {
         url += `LoaiTaiSanId=${encodeURIComponent(`${loaitaisan}`)}&`;
       }
-      if (tab === tabs.tai_san_mat) {
+      if (tab === tabs.tai_san_mat || tab === tabs.tai_san_huy) {
         url += `LoaiTaiSan=${encodeURIComponent(`${loaitaisan}`)}&`;
       } else {
         url += `LoaiTS=${encodeURIComponent(`${loaitaisan}`)}&`;

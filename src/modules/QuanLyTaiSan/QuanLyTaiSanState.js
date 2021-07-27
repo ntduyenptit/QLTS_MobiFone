@@ -353,7 +353,7 @@ export const khaibaohongmatReducer = (state = initialState, action) => {
         isLoading: false,
         isSuccess: true,
         khaibaohongmatTotal: action.payload.data.result.totalCount,
-        khaibaohongmatData: [...state.taisansuachuabaoduongData, ...result]
+        khaibaohongmatData: [...state.khaibaohongmatData, ...result]
       }
     }
     case KHAIBAOHONGMAT_REMOVE: {

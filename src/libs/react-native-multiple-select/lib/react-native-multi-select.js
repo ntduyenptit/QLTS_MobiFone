@@ -664,22 +664,27 @@ export default class MultiSelect extends Component {
   }
 
   _find = (array, searchTerm, listResult, isCallBack = false) => {
+    let datas;
+    if (array.length === 2) {
+      datas = array[1];
+    } else {
+      datas = array;
+    }
     let list = [];
     if (isCallBack) {
       list = listResult;
     }
-    if (this._filterItemsPartialTest(array, searchTerm) != []) {
-      if (this._filterItemsPartialTest(array, searchTerm).length > 0) {
-        list.push(this._filterItemsPartialTest(array, searchTerm));
+
+
+    if (this._filterItemsPartialTest(datas, searchTerm) !== []) {
+      if (this._filterItemsPartialTest(datas, searchTerm).length > 0) {
+        list.push(this._filterItemsPartialTest(datas, searchTerm));
       }
     }
-
-    if (array.length === 1) {
-      return array[0];
-    }
-    if (array.children !== []) {
-      if (array.children.length > 0) {
-        array.children.forEach(e => {
+    
+    if (datas.children) {
+      if (datas.children.length > 0) {
+        datas.children.forEach(e => {
           this._find(e, searchTerm, list, true);
         })
       }

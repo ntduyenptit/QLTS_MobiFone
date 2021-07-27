@@ -146,6 +146,7 @@ export const endPoint = ({
   // check exit user
   checkExitUser: 'services/app/User/CheckExist?',
   creatUser: 'services/app/User/Create',
+  updateUser: 'services/app/User/Update',
   // Upload
   ToanBoTSUpload: 'Upload/ToanBoTSUpload',
   editTsSuachua: 'services/app/TaiSanSuaChuaBaoDuong/EditTaiSanSuaChuaBaoDuong',

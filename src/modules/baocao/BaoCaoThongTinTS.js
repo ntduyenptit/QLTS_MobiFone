@@ -1,16 +1,17 @@
 import React from 'react'
-import { PieChart } from 'react-native-svg-charts'
-import { Text } from 'react-native-svg'
+import { tabs } from '@app/api/config';
 import { View } from 'react-native';
 import PieChartView from '@app/modules/dashboard/PieChartView';
 import { getPercent } from '@app/modules/global/Helper';
 import { connect } from 'react-redux';
 import colorDetail from './detailColor';
+import { GetToanBoTaiSanData } from '../global/GlobalApis';
 
 class BaoCaoThongTinTS extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      toanbotaisanTotal: 0,
       taisanthanhlyTotal: 0,
       taisanmatTotal: 0,
       taisanhongTotal: 0,
@@ -21,92 +22,70 @@ class BaoCaoThongTinTS extends React.PureComponent {
     }
   }
 
-  setData() {
-    const total = this.props.toanbotaisanTotal;
-    const tsdangsd =  getPercent(this.props.taisandangsudungTotal, total);
-    const tschuasd = getPercent(this.props.taisanchuasudungTotal, total);
-    const tsmat = getPercent(this.props.taisanmatTotal, total);
-    const tshong = getPercent(this.props.taisanhongTotal, total);
-    const tssuachua = getPercent(this.props.taisansuachuabaoduongTotal, total);
-    const tsthanhly = getPercent(this.props.taisanthanhlyTotal, total);
-    const tshuy = getPercent(this.props.taisanhuyTotal, total);
-    this.setState({
-      toanbotaisanTotal: this.props.toanbotaisanTotal,
-      taisanthanhlyTotal: tsthanhly,
-      taisanmatTotal: tsmat,
-      taisanhongTotal: tshong,
-      taisanhuyTotal: tshuy,
-      taisanchuasudungTotal: tschuasd,
-      taisandangsudungTotal: tsdangsd,
-      taisansuachuabaoduongTotal: tssuachua,
-    })
+  componentDidMount() {
+    Promise.all([
+      this.getTaiSanData({ datas: this.props.donViQuanLy, tab: tabs.toan_bo_tai_san }).then(response => this.setState({ toanbotaisanTotal: response.result.totalCount })),
+      this.getTaiSanData({ datas: this.props.donViQuanLy, tab: tabs.tai_san_chua_su_dung }).then(response => this.setState({ taisanchuasudungTotal: response.result.totalCount })),
+      this.getTaiSanData({ datas: this.props.donViQuanLy, tab: tabs.tai_san_dang_su_dung }).then(response => this.setState({ taisandangsudungTotal: response.result.totalCount })),
+      this.getTaiSanData({ datas: this.props.donViQuanLy, tab: tabs.tai_san_hong }).then(response => this.setState({ taisanhongTotal: response.result.totalCount })),
+      this.getTaiSanData({ datas: this.props.donViQuanLy, tab: tabs.tai_san_huy }).then(response => this.setState({ taisanhuyTotal: response.result.totalCount })),
+      this.getTaiSanData({ datas: this.props.donViQuanLy, tab: tabs.tai_san_mat }).then(response => this.setState({ taisanmatTotal: response.result.totalCount })),
+      this.getTaiSanData({ datas: this.props.donViQuanLy, tab: tabs.tai_san_sua_chua_bao_duong }).then(response => this.setState({ taisansuachuabaoduongTotal: response.result.totalCount })),
+      this.getTaiSanData({ datas: this.props.donViQuanLy, tab: tabs.tai_san_thanh_ly }).then(response => this.setState({ taisanthanhlyTotal: response.result.totalCount })),
+    ]);
   }
 
-  componentDidMount() {
-    this.setData();
+  getTaiSanData = async (parameters) => {
+    try {
+      const response = await GetToanBoTaiSanData(parameters);
+      return response
+    }
+    catch (error) {
+      return null;
+    }
   }
 
   render() {
-    const { taisanthanhlyTotal, taisanmatTotal, taisanhuyTotal, taisanhongTotal, taisanchuasudungTotal, taisandangsudungTotal, taisansuachuabaoduongTotal } = this.state;
+    const { taisanthanhlyTotal, taisanmatTotal, taisanhuyTotal, taisanhongTotal, taisanchuasudungTotal, taisandangsudungTotal, taisansuachuabaoduongTotal, toanbotaisanTotal } = this.state;
     const data = [
       {
         key: 1,
-        value: taisanchuasudungTotal || 0,
+        value: getPercent(taisanchuasudungTotal, toanbotaisanTotal) || 0,
         fill: '#600080',
 
       },
       {
         key: 2,
-        value: taisanmatTotal || 0,
+        value: getPercent(taisanmatTotal, toanbotaisanTotal) || 0,
         fill: '#9900cc'
       },
       {
         key: 3,
-        value: taisanhuyTotal,
+        value: getPercent(taisanhuyTotal, toanbotaisanTotal),
         fill: '#0000FF'
       },
       {
         key: 4,
-        value: taisandangsudungTotal || 0,
+        value: getPercent(taisandangsudungTotal, toanbotaisanTotal) || 0,
         fill: '#FF0000'
       },
       {
         key: 5,
-        value: taisanhongTotal || 0,
+        value: getPercent(taisanhongTotal, toanbotaisanTotal) || 0,
         fill: '#29088A'
       },
       {
         key: 6,
-        value: taisansuachuabaoduongTotal || 0,
+        value: getPercent(taisansuachuabaoduongTotal, toanbotaisanTotal) || 0,
         fill: '#8A2908'
       },
       {
         key: 7,
-        value: taisanthanhlyTotal || 0,
+        value: getPercent(taisanthanhlyTotal, toanbotaisanTotal) || 0,
 
         fill: '#FFBF00'
       }
-
     ];
-    const Labels = ({ slices, height, width }) => slices.map((slice, index) => {
-      const { labelCentroid, pieCentroid, data } = slice;
-      if (data.value > 0)
-        return (
-          <Text
-            key={index}
-            x={pieCentroid[0]}
-            y={pieCentroid[1]}
-            fill="white"
-            textAnchor="middle"
-            alignmentBaseline="middle"
-            fontSize={15}
-            stroke="black"
-            strokeWidth={0.2}
-          >
-            {`${data.value}%`}
-          </Text>
-        )
-    })
 
 
     return (
@@ -117,7 +96,7 @@ class BaoCaoThongTinTS extends React.PureComponent {
           clickChartPart={() => {}}
         />
         <View style={{ marginTop: 5 }}>
-          {colorDetail(this.props.toanbotaisanTotal,this.props.taisanchuasudungTotal,this.props.taisanmatTotal,this.props.taisanhuyTotal,this.props.taisansuachuabaoduongTotal,this.props.taisanthanhlyTotal,this.props.taisandangsudungTotal,this.props.taisanhongTotal)}
+          {colorDetail(toanbotaisanTotal, taisanchuasudungTotal, taisanmatTotal, taisanhuyTotal, taisansuachuabaoduongTotal, taisanthanhlyTotal, taisandangsudungTotal, taisanhongTotal)}
         </View>
 
       </View>
@@ -128,6 +107,7 @@ class BaoCaoThongTinTS extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
+  donViQuanLy: state.filterDVQLDataReducer.dvqlDataFilter,
   toanbotaisanTotal: state.toanbotaisanReducer.toanbotaisanTotal,
   taisanthanhlyTotal: state.taisanthanhlyReducer.taisanthanhlyTotal,
   taisanmatTotal: state.taisanmatReducer.taisanmatTotal,

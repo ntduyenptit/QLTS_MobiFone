@@ -104,6 +104,8 @@ const QuanLyTaiSanFilterComponent = (items) => {
   && find(items.MsdFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
   const HtFilterSelected = find(items.HtFilterSelected, itemSelected => itemSelected.tab === items.tab) 
   && find(items.HtFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
+  const khaiBaoFilterSelected = find(items.KbFilterSelected, itemSelected => itemSelected.tab === items.tab) 
+  && find(items.KbFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
   const TtFilterSelected = find(items.TtFilterSelected, itemSelected => itemSelected.tab === items.tab) 
   && find(items.TtFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
 
@@ -283,7 +285,7 @@ const QuanLyTaiSanFilterComponent = (items) => {
                 displayKey="displayName"
                 selectText="Chọn khai báo..."
                 onSelectedItemsChange={(item) => onSelectedKBChange(item)}
-                selectedItems={HtFilterSelected}
+                selectedItems={khaiBaoFilterSelected}
               />
             </View>
           </>

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import React from 'react';
 import {
     Animated,
@@ -11,19 +10,16 @@ import {
     TouchableOpacity,
     Alert,
     Switch,
-    FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import CheckBox from 'react-native-check-box'
 import { connect } from 'react-redux';
 import { endPoint } from '@app/api/config';
-import { createGetMethod, createPostMethodWithToken } from '@app/api/Apis';
+import { createGetMethod, createUpdateMethod } from '@app/api/Apis';
 import { colors, fonts } from '../../../../styles';
 import { deviceWidth } from '../../../global/LoaderComponent';
 import MultiSelect from '../../../../libs/react-native-multiple-select/lib/react-native-multi-select';
 import { buildTree } from '../../../global/Helper';
 
-const tempCheckValues = [];
 class CapNhatNguoidungScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -37,14 +33,11 @@ class CapNhatNguoidungScreen extends React.Component {
             email: data?.emailAddress || '',
             tendangnhap: data?.userName || '',
             sdt: data?.phoneNumber || '',
-            matkhau: '',
-            xacnhanMk: '',
             kichHoat: data?.isActive || false,
             ghiChu: data?.ghiChu || '',
             roleListID: [],
             dvList: [],
             roleList: [],
-            checkBoxChecked: [],
         };
     }
 
@@ -52,7 +45,7 @@ class CapNhatNguoidungScreen extends React.Component {
         this.props.navigation.setOptions({
             headerRight: () => (
               <TouchableOpacity
-                onPress={() => this.saveNewNguoidung()}
+                onPress={() => this.updateNewNguoidung()}
                 style={{
                         paddingHorizontal: 16,
                         paddingVertical: 12,
@@ -96,11 +89,11 @@ class CapNhatNguoidungScreen extends React.Component {
         if (list) {
             this.setState({
                 dvList: list,
-            }, () => console.log(list));
+            });
         }
     }
 
-    saveNewNguoidung() {
+    updateNewNguoidung() {
         const {
             id,
             hoten,
@@ -109,8 +102,6 @@ class CapNhatNguoidungScreen extends React.Component {
             email,
             tendangnhap,
             sdt,
-            matkhau,
-            xacnhanMk,
             kichHoat,
             ghiChu,
             roleListID
@@ -140,17 +131,6 @@ class CapNhatNguoidungScreen extends React.Component {
                 check = true;
                 break;
             }
-            case matkhau:
-                {
-                    s = "mật khẩu";
-                    check = true;
-                    break;
-                }
-            case xacnhanMk: {
-                s = "xác nhận mật khẩu";
-                check = true;
-                break;
-            }
             default:
                 break;
         }
@@ -165,7 +145,7 @@ class CapNhatNguoidungScreen extends React.Component {
             );
             return;
         }
-        const url = `${endPoint.creatUser}`;
+        const url = `${endPoint.updateUser}`;
         const params = {
             id,
             chucVu,
@@ -173,40 +153,31 @@ class CapNhatNguoidungScreen extends React.Component {
             ghiChu,
             isActive: kichHoat,
             name: hoten,
-            password: matkhau,
             phoneNumber: sdt,
             roleNames: roleListID,
             surname: hoten,
             toChucId: donviID[0],
             userName: tendangnhap,
         }
-        const urlCheck = `${`${endPoint.checkExitUser}?` + 'userName='}${  tendangnhap  }&emailAddress=${  email}`;
-        createPostMethodWithToken(urlCheck, null).then((res) => {
-            if (!res.success) {
-                Alert.alert(
-                    '',
-                    'Người dùng đã tồn tại',
-                    [
-                        { text: 'OK', style: "cancel", },
-                    ],
-
-                );
-                
-            }
-        })
-        createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
+        createUpdateMethod(url, JSON.stringify(params)).then((res) => {
             if (res.success) {
                 Alert.alert(
                     '',
-                    'Thêm mới thành công',
+                    'Cập nhật thành công',
                     [
-                        { text: 'OK', onPress: this.props.navigation.goBack() },
+                        { text: 'OK', onPress: this.goBack() },
                     ],
 
                 );
 
             }
         })
+    }
+
+    goBack() {
+        const { navigation, route } = this.props;
+        route.params.onGoBack();
+        navigation.goBack();
     }
 
     render() {
