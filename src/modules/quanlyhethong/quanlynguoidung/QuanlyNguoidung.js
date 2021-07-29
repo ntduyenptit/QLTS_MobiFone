@@ -160,9 +160,7 @@ class QuanlyNguoidungScreen extends React.Component {
                   useNativeDriver: true,
                   listener: event => {
                     if (this.isCloseToBottom(event.nativeEvent) && !this.props.isLoading && this.isLoadMore()) {
-                      setTimeout(() => {
                         this.getSkipCount();
-                      }, 2000)
                     }
                   },
                 },         // Optional async listener

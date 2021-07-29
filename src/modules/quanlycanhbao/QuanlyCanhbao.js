@@ -20,7 +20,8 @@ class QuanlyCanhbaoScreen extends React.Component {
     this.state = {
       scrollYValue: new Animated.Value(0),
       toanboData: [],
-      total: '',
+      total: 0,
+      skipCount: 0,
     }
   }
 
@@ -42,6 +43,7 @@ class QuanlyCanhbaoScreen extends React.Component {
   }
 
   getdsCanhbao() {
+    const { toanboData, skipCount } = this.state;
     const { datas, startdate, enddate, hoatdong, nguoiguithongbao } = getParameters();
     if (datas && datas.length > 0) {
       let url = `${endPoint.getAllDanhsachCanhbao}?`;
@@ -70,18 +72,50 @@ class QuanlyCanhbaoScreen extends React.Component {
   }
 
       url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
-      url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
+      url += `SkipCount=${encodeURIComponent(`${skipCount}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
 
       createGetMethod(url)
         .then(res => {
-          if (res) {
-            this.setState({
-              toanboData: res.result.items,
-              total: res.result.totalCount
-            });
+          if (res.success) {
+            if (isSearch || toanboData !== []) {
+              this.setState({
+                skipCount: 0,
+                toanboData: res.result.items,
+                total: res.result.totalCount
+              });
+            }
+            if (skipCount > 0) {
+              this.setState({
+                toanboData: [...toanboData ,...res.result.items],
+                total: res.result.totalCount
+              });
+            }
           }
         })
+    }
+  }
+
+  isLoadMore = () => {
+    const { toanboData, total } = this.state;
+    if (toanboData.length === total) {
+        return false;
+      }
+      return true;
+  }
+
+  isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+    const paddingToBottom = 50;
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height + paddingToBottom;
+  };
+
+  getSkipCount = () => {
+    const { toanboData, skipCount } = this.state;
+    if (skipCount !== toanboData.length) {
+      this.setState({
+        skipCount: toanboData.length,
+      }, () => this.getdsCanhbao());
     }
   }
 
@@ -127,9 +161,16 @@ class QuanlyCanhbaoScreen extends React.Component {
             }}
             onScroll={Animated.event(
               [{ nativeEvent: { contentOffset: { y: scrollYValue } } }],
-              { useNativeDriver: true },
-              () => { },          // Optional async listener
+              {
+                useNativeDriver: true,
+                listener: event => {
+                  if (this.isCloseToBottom(event.nativeEvent) && !this.props.isLoading && this.isLoadMore()) {
+                    this.getSkipCount();
+                  }
+                },
+              },
             )}
+            scrollEventThrottle={500}
             contentInsetAdjustmentBehavior="automatic"
           >
             {LoaderComponent(toanboData, this.props, screens.quan_ly_canh_bao)}
@@ -151,6 +192,7 @@ class QuanlyCanhbaoScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  isLoading: state.loadingReducer.isLoading,
   isShowFilter: state.filterReducer.isShowFilter,
   searchText: state.SearchReducer.searchData,
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
