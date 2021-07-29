@@ -233,14 +233,16 @@ function CustomDrawerContent(props) {
           );
         })}
         <View style={styles.divider} />
-        <TouchableOpacity style={styles.logout} onPress={signOut}>
-          <Icon
-            name="sign-out"
-            size={17}
-            color='#0080FF'
-          />
-          <Text style={{ marginLeft: 15 }}>Đăng xuất</Text>
-        </TouchableOpacity>
+        <SafeAreaView>
+          <TouchableOpacity style={styles.logout} onPress={signOut}>
+            <Icon
+              name="sign-out"
+              size={17}
+              color='#0080FF'
+            />
+            <Text style={{ marginLeft: 15 }}>Đăng xuất</Text>
+          </TouchableOpacity>
+        </SafeAreaView>
       </DrawerContentScrollView>
     </View>
   );

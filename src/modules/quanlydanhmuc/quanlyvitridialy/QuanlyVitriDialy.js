@@ -39,6 +39,12 @@ class QuanLyNhaCungCapScreen extends React.Component {
       isSearch = true;
       this.getAllVitriData();
     }
+    if (prevProps.isShowFilter !== this.props.isShowFilter) {
+      isSearch = true;
+      this.getAllVitriData();
+    } else {
+      isSearch = false;
+    }
   }
 
   componentWillUnmount() {
@@ -80,11 +86,6 @@ class QuanLyNhaCungCapScreen extends React.Component {
     isSearch = false;
     this.getAllVitriData();
   }
-
-  handleFilter = () => {
-    isSearch = true;
-    this.getAllVitriData();
-  };
 
   render() {
     const {
@@ -145,7 +146,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
             }}
           >Hiển thị: {vitridialyData.length}/{total}
           </Text>
-          <FilterComponent action={this.handleFilter} />
+          <FilterComponent />
         </Animated.View>
         <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_vi_tri_dia_ly, { screen: "Thêm mới vị trí địa lý", onGoBack: () => this.refresh() })} />
       </View>
@@ -155,6 +156,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  isShowFilter: state.filterReducer.isShowFilter,
   searchText: state.SearchReducer.searchData,
 });
 

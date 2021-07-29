@@ -1,7 +1,9 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar, Dimensions, View } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Dimensions, View, Text } from 'react-native';
+import { connect } from 'react-redux';
 import ActionButton from 'react-native-action-button';
+import find from 'lodash/find';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
 import { createGetMethod } from '../../api/Apis';
@@ -19,7 +21,7 @@ class QuanlyDutruMuaSamScreen extends React.Component {
     this.state = {
       scrollYValue: new Animated.Value(0),
       toanboTaiSanData: [],
-      total: '',
+      total: 0,
     }
   }
 
@@ -27,36 +29,55 @@ class QuanlyDutruMuaSamScreen extends React.Component {
     this.getToanTaisan();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.searchText !== this.props.searchText) {
+      isSearch = true;
+      this.getToanTaisan();
+    }
+    if (prevProps.isShowFilter !== this.props.isShowFilter) {
+      isSearch = true;
+      this.getToanTaisan();
+    } else {
+      isSearch = false;
+    }
+  }
+
   getToanTaisan() {
     const { datas } = getParameters(screens.quan_ly_du_tru_mua_sam);
     if (datas && datas.length > 0) {
-      let url;
-      url = `${endPoint.getAllPhieuMuasam}?`;
+      let url = `${endPoint.getAllPhieuMuasam}?`;
+
+      const textState = this.props?.searchText;
+      const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_du_tru_mua_sam)
+        && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_du_tru_mua_sam).data;
+      if (textFilter) {
+        url += `Keyword=${textFilter}&`
+      }
 
       datas.forEach(e => {
-        url += `PhongBan=${encodeURIComponent(`${e.id}`)}&`;
+        if (e.id) {
+          url += `PhongBan=${encodeURIComponent(`${e.id}`)}&`;
+        } else {
+          url += `PhongBan=${encodeURIComponent(`${e}`)}&`;
+        }
       });
 
       url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
+
       createGetMethod(url)
         .then(res => {
           if (res) {
             this.setState({
               toanboTaiSanData: res.result.items,
-              total: `${res.result.items.length}/${res.result.totalCount}`
+              total: res.result.totalCount,
             });
           }
         })
         .catch();
     }
   }
-
-  handleFilter = () => {
-    isSearch = true;
-    this.getToanTaisan();
-  };
 
   refresh = () => {
     isSearch = false;
@@ -88,7 +109,7 @@ class QuanlyDutruMuaSamScreen extends React.Component {
           <SafeAreaView>
             <SearchComponent
               clampedScroll={clampedScroll}
-              total={total}
+              screen={screens.quan_ly_du_tru_mua_sam}
             />
             <Animated.ScrollView
               showsVerticalScrollIndicator={false}
@@ -114,14 +135,27 @@ class QuanlyDutruMuaSamScreen extends React.Component {
               {LoaderComponent(toanboTaiSanData, this.props, screens.chi_tiet_du_tru_mua_sam, this.refresh)}
             </Animated.ScrollView>
           </SafeAreaView>
-          <FilterComponent action={this.handleFilter} />
+          <FilterComponent />
         </Animated.View>
+        <Text
+          style={{
+              bottom: 20,
+              right: 20,
+              position: 'absolute',
+            }}
+        >Hiển thị: {toanboTaiSanData ? toanboTaiSanData.length : 0}/{total}
+        </Text>
         <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_du_tru_mua_sam, { screen: "Thêm mới Phiếu dự trù mua sắm", onGoBack: () => this.refresh() })} />
       </View>
 
     );
   }
-
 }
 
-export default QuanlyDutruMuaSamScreen;
+const mapStateToProps = state => ({
+  isShowFilter: state.filterReducer.isShowFilter,
+  searchText: state.SearchReducer.searchData
+});
+
+
+export default connect(mapStateToProps)(QuanlyDutruMuaSamScreen);

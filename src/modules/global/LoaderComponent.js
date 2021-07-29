@@ -268,7 +268,7 @@ function LoaderComponent(array, props, screen, action) {
     );
   }
   return (
-    <TouchableOpacity onPress={() => GetToanBoTaiSanData({ datas: props.DvqlDataFilter, tab: props.tab })}><Text>Không có dữ liệu</Text></TouchableOpacity>
+    <TouchableOpacity><Text>Không có dữ liệu</Text></TouchableOpacity>
   );
 }
 

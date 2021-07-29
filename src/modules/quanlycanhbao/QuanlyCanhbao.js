@@ -1,17 +1,19 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
-import { Animated, SafeAreaView, StatusBar, Dimensions } from 'react-native';
+import { Animated, SafeAreaView, StatusBar, Dimensions, Text } from 'react-native';
 import { connect } from 'react-redux';
+import find from 'lodash/find';
 import SearchComponent from '../global/SearchComponent';
 import FilterComponent from '../global/FilterComponent';
-import QuanLyCanhbaoFilter from './QuanlyCanhbaoFilter';
 import { createGetMethod } from '../../api/Apis';
 import { endPoint, screens } from '../../api/config';
 import LoaderComponent from '../global/LoaderComponent';
+import getParameters from './filter/GetParameters';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
+let isSearch = false;
 class QuanlyCanhbaoScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -23,29 +25,63 @@ class QuanlyCanhbaoScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.getdsCanhbao(this.props.DvqlDataFilter);
+    this.getdsCanhbao();
   }
 
-  getdsCanhbao(datas) {
-    if (datas && datas.length > 0) {
-      let url;
-      url = `${endPoint.getAllDanhsachCanhbao}?`;
+  componentDidUpdate(prevProps){
+    if ( prevProps.searchText !== this.props.searchText ) {
+      isSearch = true;
+      this.getdsCanhbao();
+    }
+    if (prevProps.isShowFilter !== this.props.isShowFilter) {
+      isSearch = true;
+      this.getdsCanhbao();
+    } else {
+      isSearch = false;
+    }
+  }
 
-      url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
+  getdsCanhbao() {
+    const { datas, startdate, enddate, hoatdong, nguoiguithongbao } = getParameters();
+    if (datas && datas.length > 0) {
+      let url = `${endPoint.getAllDanhsachCanhbao}?`;
+
+      const textState = this.props.searchText;
+      const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_canh_bao)
+        && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_canh_bao).data;
+      if (textFilter) {
+        url += `NoiDung=${textFilter}&`
+      }
+
+      if (startdate) {
+        url += `ThoiGianFrom=${encodeURIComponent(`${startdate.dateString}`)}&`;
+    }
+
+    if (enddate) {
+      url += `ThoiGianTo=${encodeURIComponent(`${enddate.dateString}`)}&`;
+  }
+
+  if (hoatdong) {
+    url += `HoatDong=${encodeURIComponent(`${hoatdong}`)}&`;
+  }
+
+  if (nguoiguithongbao) {
+    url += `TaiKhoanId=${encodeURIComponent(`${nguoiguithongbao}`)}&`;
+  }
+
+      url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${0}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
+
       createGetMethod(url)
         .then(res => {
           if (res) {
             this.setState({
               toanboData: res.result.items,
-              total: `${res.result.items.length}/${res.result.totalCount}`
+              total: res.result.totalCount
             });
-          } else {
-            // Alert.alert('Lỗi khi load toàn bộ tài sản!');
           }
         })
-        .catch(err => console.log(err));
     }
   }
 
@@ -73,7 +109,7 @@ class QuanlyCanhbaoScreen extends React.Component {
         <SafeAreaView>
           <SearchComponent
             clampedScroll={clampedScroll}
-            total={total}
+            screen={screens.quan_ly_canh_bao}
           />
           <Animated.ScrollView
             showsVerticalScrollIndicator={false}
@@ -99,7 +135,15 @@ class QuanlyCanhbaoScreen extends React.Component {
             {LoaderComponent(toanboData, this.props, screens.quan_ly_canh_bao)}
           </Animated.ScrollView>
         </SafeAreaView>
-        <FilterComponent action={this.getdsCanhbao} />
+        <Text
+          style={{
+            bottom: 20,
+            right: 20,
+            position: 'absolute',
+          }}
+        >Hiển thị: {toanboData ? toanboData.length : 0}/{total}
+        </Text>
+        <FilterComponent />
       </Animated.View>
     );
   }
@@ -107,8 +151,9 @@ class QuanlyCanhbaoScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  isShowFilter: state.filterReducer.isShowFilter,
+  searchText: state.SearchReducer.searchData,
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-  tab: 'Quan ly canh bao'
 });
 
 export default connect(mapStateToProps)(QuanlyCanhbaoScreen);

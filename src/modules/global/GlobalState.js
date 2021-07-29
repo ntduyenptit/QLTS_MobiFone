@@ -24,14 +24,17 @@ import {
   KB_SELECTED_ADD,
   STARTDATE_SELECTED_ADD,
   ENDDATE_SELECTED_ADD,
+  USER_SEND_NOTI_SELECTED_ADD,
   CHIEU_DI_CHUYEN_SELECTED_ADD,
   PLTS_SELECTED_ADD,
   TTKK_SELECTED_ADD,
   TINHTHANH_SELECTED_ADD,
   QUANHUYEN_SELECTED_ADD,
   LVKD_SELECTED,
+  ACTION_SELECTED_ADD,
 
   DVQL_SELECTED_REMOVE,
+  USER_SEND_NOTI_SELECTED_REMOVE,
   TT_SELECTED_REMOVE,
   LTS_SELECTED_REMOVE,
   NCC_SELECTED_REMOVE,
@@ -46,6 +49,7 @@ import {
   TTKK_SELECTED_REMOVE,
   TINHTHANH_SELECTED_REMOVE,
   QUANHUYEN_SELECTED_REMOVE,
+  ACTION_SELECTED_REMOVE,
  } from '../../redux/actions/filter.actions'
 import { screens, tabs } from '../../api/config';
 import { CURRENT_SCREEN, CURRENT_TAB } from '../../redux/actions/screen.actions';
@@ -78,6 +82,7 @@ const initialState = {
     ttkkFilterSelected: [],
     tinhthanhFilterSelected: [],
     quanhuyenFilterSelected: [],
+    actionFilterSelected: [],
 
     searchData: [],
 }
@@ -530,6 +535,46 @@ export const filterEndDateSelectedReducer = (state = initialState, action) => {
         return {
           ...state,
           enddateFilterSelected: state.enddateFilterSelected.filter((item) => item.screen !== action.payload.screen)
+        }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const filterWhoSendNotiSelectedReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case USER_SEND_NOTI_SELECTED_ADD: {
+      return {
+        ...state,
+        ngtbFilterSelected: action.payload
+      }
+    }
+    case USER_SEND_NOTI_SELECTED_REMOVE: {
+        return {
+          ...state,
+          ngtbFilterSelected: []
+        }
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export const filterActionSelectedReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ACTION_SELECTED_ADD: {
+      return {
+        ...state,
+        actionFilterSelected: [...state.actionFilterSelected, action.payload]
+      }
+    }
+    case ACTION_SELECTED_REMOVE: {
+        return {
+          ...state,
+          actionFilterSelected: state.actionFilterSelected.filter((item) => item.screen !== action.payload.screen)
         }
     }
     default: {

@@ -5,7 +5,7 @@ import {
     Dimensions,
     ScrollView,
 } from "react-native";
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { connect } from "react-redux";
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -13,6 +13,11 @@ import find from 'lodash/find';
 import { screens } from "@app/api/config";
 import MultiSelect from '@app/libs/react-native-multiple-select/lib/react-native-multi-select';
 import { buildTree } from '@app/modules/global/Helper';
+import {
+    addSelectedDVQLAction,
+
+    removeSelectedDVQLAction,
+} from '../../../redux/actions/filter.actions';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
@@ -134,13 +139,18 @@ const styles = StyleSheet.create({
     component: {
 
     }
-
 });
 
 const mapStateToProps = state => ({
     DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-    isShowFilter: state.filterReducer.isShowFilter,
-    screen: state.currentScreenReducer.screenName,
+    DvqlFilterSelected: state.filterDVQLSelectedReducer.dvqlFilterSelected,
 });
 
-export default connect(mapStateToProps)(QuanLyMuaSamFilterComponent);
+function mapDispatchToProps(dispatch) {
+    return {
+        addSelectedDVQL: (item) => dispatch(addSelectedDVQLAction(item)),
+        removeSelectedDVQL: (item) => dispatch(removeSelectedDVQLAction(item)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuanLyMuaSamFilterComponent);

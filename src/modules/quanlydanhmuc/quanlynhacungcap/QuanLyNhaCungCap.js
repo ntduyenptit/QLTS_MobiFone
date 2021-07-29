@@ -32,7 +32,14 @@ class QuanLyNhaCungCapScreen extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.searchText !== this.props.searchText) {
+          isSearch = true;
           this.getAllNhacungcapData();
+        }
+        if (prevProps.isShowFilter !== this.props.isShowFilter) {
+          isSearch = true;
+          this.getAllNhacungcapData();
+        } else {
+          isSearch = false;
         }
       }
 
@@ -67,11 +74,6 @@ class QuanLyNhaCungCapScreen extends React.Component {
       isSearch = false;
          this.getAllNhacungcapData();
     }
-
-    handleFilter = () => {
-      isSearch = true;
-      this.getAllNhacungcapData();
-    };
 
 
     render() {
@@ -133,7 +135,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
                         }}
               >Hiển thị: {nhacungcapData.length}/{total}
               </Text>
-              <FilterComponent action={this.handleFilter} />
+              <FilterComponent />
             </Animated.View>
             <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_nha_cung_cap, { screen: "Thêm mới nhà cung cấp" , onGoBack: () => this.refresh()})} />
           </View>
@@ -143,6 +145,7 @@ class QuanLyNhaCungCapScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
+    isShowFilter: state.filterReducer.isShowFilter,
     searchText: state.SearchReducer.searchData,
     NCCDataFilter: state.filterNCCDataReducer.nccDataFilter,
 });

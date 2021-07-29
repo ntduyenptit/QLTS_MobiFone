@@ -10,6 +10,7 @@ import { createGetMethod } from '../../../api/Apis';
 import { endPoint } from '../../../api/config';
 import getParameters from './filter/GetParameters';
 
+let isSearch = false;
 class BaocaoCanhbaoScreen extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -19,7 +20,6 @@ class BaocaoCanhbaoScreen extends React.PureComponent {
             totalData2: '',
             totalData3: '',
             totalData4: '',
-            isSearch: false,
         }
     }
 
@@ -27,8 +27,16 @@ class BaocaoCanhbaoScreen extends React.PureComponent {
         this.getdsBaocao();
     }
 
+    componentDidUpdate(prevProps) {
+      if (prevProps.isShowFilter !== this.props.isShowFilter) {
+        isSearch = true;
+        this.getToanTaisan();
+      } else {
+        isSearch = false;
+      }
+    }
+
     getdsBaocao() {
-        const { isSearch } = this.state;
         const { datas, startdate, enddate } = getParameters();
         if (datas && datas.length > 0) {
             let url;
@@ -64,14 +72,6 @@ class BaocaoCanhbaoScreen extends React.PureComponent {
                 .catch();
         }
     }
-
-    handleFilter = () => {
-        this.setState({
-          isSearch: true,
-        }, () => {
-          this.getdsBaocao();
-        });
-      };
 
     render() {
         const { toanboData, totalData1, totalData2, totalData3, totalData4 } = this.state;
@@ -158,7 +158,7 @@ class BaocaoCanhbaoScreen extends React.PureComponent {
               {DetailBaocaoCanhbao(toanboData)}
             </Animated.ScrollView>
 
-            <FilterComponent action={this.handleFilter} />
+            <FilterComponent />
           </Animated.View>
         )
     }

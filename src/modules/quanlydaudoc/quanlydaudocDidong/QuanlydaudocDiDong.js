@@ -15,6 +15,7 @@ import {
 } from '@app/redux/actions/filter.actions';
 import getParameters from '../filter/GetParameters';
 
+let isSearch = false;
 class QuanLyDauDocDiDongScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -22,7 +23,6 @@ class QuanLyDauDocDiDongScreen extends React.Component {
       scrollYValue: new Animated.Value(0),
       daudocdidongData: [],
       total: 0,
-      isSearch: false,
     }
   }
 
@@ -37,16 +37,21 @@ class QuanLyDauDocDiDongScreen extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.searchText !== this.props.searchText) {
+      isSearch = true;
       this.getToanBoDauDocDiDongData({ datas: this.props.DvqlDataFilter });
+    }
+    if (prevProps.isShowFilter !== this.props.isShowFilter) {
+      isSearch = true;
+      this.getToanBoDauDocCoDinhData();
+    } else {
+      isSearch = false;
     }
   }
 
   getToanBoDauDocDiDongData() {
-    const { isSearch } = this.state;
     const { datas, tinhtrangsudung } = getParameters(screens.quan_ly_dau_doc_di_dong);
     if (datas && datas.length > 0) {
-      let url;
-      url = `${endPoint.getDaudocDidong}?`;
+      let url = `${endPoint.getDaudocDidong}?`;
       const textState = this.props?.searchText;
       const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_di_dong)
         && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_dau_doc_di_dong).data;
@@ -82,18 +87,9 @@ class QuanLyDauDocDiDongScreen extends React.Component {
   }
 
   refresh = () => {
-    this.setState({
-      isSearch: false,
-    });
+    isSearch = false;
     this.getToanBoDauDocDiDongData();
   }
-
-  handleFilter = () => {
-    this.setState({
-      isSearch: true,
-    });
-    this.getToanBoDauDocDiDongData();
-  };
 
   render() {
     const {
@@ -155,9 +151,7 @@ class QuanLyDauDocDiDongScreen extends React.Component {
             }}
           >Hiển thị: {daudocdidongData.length}/{total}
           </Text>
-          <FilterComponent
-            action={this.handleFilter}
-          />
+          <FilterComponent />
         </Animated.View>
         <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_dau_doc, { screen: "Thêm mới đầu đọc di động", onGoBack: () => this.refresh() })} />
       </View>
@@ -167,6 +161,7 @@ class QuanLyDauDocDiDongScreen extends React.Component {
 };
 
 const mapStateToProps = state => ({
+  isShowFilter: state.filterReducer.isShowFilter,
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
   TtsdDataFilter: state.filterTTSDDataReducer.ttsdDataFilter,
   searchText: state.SearchReducer.searchData

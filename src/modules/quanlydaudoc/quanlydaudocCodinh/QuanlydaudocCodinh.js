@@ -44,6 +44,12 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
       isSearch = true;
       this.getToanBoDauDocCoDinhData();
     }
+    if (prevProps.isShowFilter !== this.props.isShowFilter) {
+      isSearch = true;
+      this.getToanBoDauDocCoDinhData();
+    } else {
+      isSearch = false;
+    }
   }
 
   getToanBoDauDocCoDinhData() {
@@ -91,11 +97,6 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
     isSearch = false;
     this.getToanBoDauDocCoDinhData();
   }
-
-  handleFilter = () => {
-    isSearch = true;
-    this.getToanBoDauDocCoDinhData();
-  };
 
   render() {
     const {
@@ -156,9 +157,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
             }}
           >Hiển thị: {daudoccodinhData.length}/{total}
           </Text>
-          <FilterComponent
-            action={this.handleFilter}
-          />
+          <FilterComponent />
         </Animated.View>
         <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_dau_doc, { screen: "Thêm mới đầu đọc cố định", onGoBack: () => this.refresh() })} />
       </View>
@@ -168,6 +167,7 @@ class QuanLyDauDocCoDinhScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  isShowFilter: state.filterReducer.isShowFilter,
   TtsdDataFilter: state.filterTTSDDataReducer.ttsdDataFilter,
   searchText: state.SearchReducer.searchData
 });

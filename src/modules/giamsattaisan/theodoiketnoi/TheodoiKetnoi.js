@@ -7,11 +7,12 @@ import FilterComponent from '../../global/FilterComponent';
 import { createGetMethod } from '../../../api/Apis';
 import { endPoint, screens } from '../../../api/config';
 import LoaderComponent from '../../global/LoaderComponent';
-import TheoDoiKetNoiFilter from '../filter/TheoDoiKetNoiFilter';
+import getParameters from '../filter/GetTheoDoiKetNoiParameters';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
 
+let isSearch = false;
 class TheoDoiKetNoiScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -25,26 +26,32 @@ class TheoDoiKetNoiScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.getToanTaisan({ datas: this.props.DvqlDataFilter });
+    this.getToanTaisan();
   }
 
   componentDidUpdate(prevProps){
-    if ( prevProps.searchText !== this.props.searchText ) {
-      this.getToanTaisan({datas: this.props.DvqlDataFilter});
+    if (prevProps.searchText !== this.props.searchText) {
+      isSearch = true;
+      this.getToanTaisan();
+    }
+    if (prevProps.isShowFilter !== this.props.isShowFilter) {
+      isSearch = true;
+      this.getToanTaisan();
+    } else {
+      isSearch = false;
     }
   }
 
-  getToanTaisan(parameters) {
-    const { datas, startdate, enddate } = parameters;
+  getToanTaisan() {
+    const { datas, startdate, enddate } = getParameters();
     if (datas && datas.length > 0) {
-      let url;
-      url = `${endPoint.getToanboThietbi}?`;
+      let url = `${endPoint.getToanboThietbi}?`;
 
       if (startdate) {
-        url += `StartDate=${encodeURIComponent(`${startdate}`)}&`;
+        url += `StartDate=${encodeURIComponent(`${startdate.dateString}`)}&`;
       }
       if (enddate) {
-        url += `EndDate=${encodeURIComponent(`${enddate}`)}&`;
+        url += `EndDate=${encodeURIComponent(`${enddate.dateString}`)}&`;
       }
       datas.forEach(e => {
         if (e.id) {
@@ -54,19 +61,19 @@ class TheoDoiKetNoiScreen extends React.Component {
         }
       });
 
-      url += `IsSearch=${encodeURIComponent(`${false}`)}&`;
+      url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${this.state.skipCount}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
+
       createGetMethod(url)
         .then(res => {
-          if (res) {
+          if (res.success) {
             this.setState({
               toanboTaiSanData: res.result.items,
               total: res.result.totalCount
             });
           }
-        })
-        .catch(err => console.log(err));
+        });
     }
   }
 
@@ -145,9 +152,7 @@ class TheoDoiKetNoiScreen extends React.Component {
           }}
         >Hiển thị: {toanboTaiSanData.length}/{total}
         </Text>
-        <FilterComponent
-          action={this.getToanTaisan}
-        />
+        <FilterComponent />
       </Animated.View>
     );
   }
@@ -155,6 +160,7 @@ class TheoDoiKetNoiScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  isShowFilter: state.filterReducer.isShowFilter,
   DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
   searchText: state.SearchReducer.searchData
 });

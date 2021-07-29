@@ -97,7 +97,6 @@ const FilterComponent = (props) => (
           style={[styles.button, styles.buttonClose]}
           onPress={() => {
                 store.dispatch(hideFilter());
-                props.action();
               }}
         >
           <Text style={styles.textStyle}>Xong</Text>

@@ -1,4 +1,7 @@
 import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
+import TaiSanMat from '../quanlytaisan/taisanmat/TaiSanMat';
+import TaiSanHong from '../quanlytaisan/taisanhong/TaiSanHong';
+import TaiSanThanhLy from '../quanlytaisan/taisanthanhly/TaiSanThanhLy';
 import PagesScreen from '../pages/PagesViewContainer';
 import { tabs } from '../../api/config';
 
@@ -14,23 +17,23 @@ const tabNavigationData = [
     name: tabs.toan_bo_tai_san,
     component: QuanLyTaiSanScreen,
     icon: tbts,
-    tittle: "Toàn bộ tài sản",
+    title: "Toàn bộ tài sản",
   },
  
   {
     name: tabs.tai_san_mat,
-    component: QuanLyTaiSanScreen,
+    component: TaiSanMat,
     icon: tsmat,
-    tittle: "Tài sản mất",
+    title: "Tài sản mất",
   },
   {
     name: tabs.tai_san_hong,
-    component: QuanLyTaiSanScreen,
+    component: TaiSanHong,
     icon: tshong,
   },
   {
     name: tabs.tai_san_thanh_ly,
-    component: QuanLyTaiSanScreen,
+    component: TaiSanThanhLy,
     icon: tsthanhly,
   },
   {

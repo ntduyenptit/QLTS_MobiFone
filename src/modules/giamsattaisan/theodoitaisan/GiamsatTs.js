@@ -33,7 +33,14 @@ class GiamSatTaiSanScreen extends React.Component {
 
   componentDidUpdate(prevProps){
     if ( prevProps.searchText !== this.props.searchText ) {
+      isSearch = true;
       this.getToanTaisan();
+    }
+    if (prevProps.isShowFilter !== this.props.isShowFilter) {
+      isSearch = true;
+      this.getToanTaisan();
+    } else {
+      isSearch = false;
     }
   }
 
@@ -101,11 +108,6 @@ class GiamSatTaiSanScreen extends React.Component {
     isSearch = false;
     this.getToanTaisan();
   }
-
-  handleFilter = () => {
-    isSearch = true;
-    this.getToanTaisan();
-  };
 
   render() {
     const {
@@ -180,9 +182,7 @@ class GiamSatTaiSanScreen extends React.Component {
           }}
         >Hiển thị: {toanboTaiSanData.length}/{total}
         </Text>
-        <FilterComponent
-          action={this.handleFilter}
-        />
+        <FilterComponent />
       </Animated.View>
     );
   }

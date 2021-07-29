@@ -71,6 +71,11 @@ import { screens, tabs } from '../../api/config';
 
 import SpeechControlScreen from '../SpeechToText/speechtotext';
 import QuanLyDonViDetailScreen from '../quanlydanhmuc/quanlydonvi/detail/QuanLyDonViDetail';
+import TaiSanDangSuDung from '../quanlytaisan/taisandangsudung/TaiSanDangSuDung';
+import TaiSanChuaSuDung from '../quanlytaisan/taisanchuasudung/TaiSanChuaSuDung';
+import TaiSanSuaChuaBaoDuong from '../quanlytaisan/taisansuachuabaoduong/TaiSanSuaChuaBaoDuong';
+import BaoHongMatTaiSan from '../quanlytaisan/baohongmattaisan/BaoHongMatTaiSan';
+import TaiSanHuy from '../quanlytaisan/taisanhuy/TaiSanHuy';
 
 const headerLeftComponent = (props) => (
   <TouchableOpacity
@@ -634,7 +639,7 @@ const StackNavigationData = [
   },
   {
     name: tabs.tai_san_dang_su_dung,
-    component: QuanLyTaiSanScreen,
+    component: TaiSanDangSuDung,
     headerLeft: headerLeftComponent,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -647,7 +652,7 @@ const StackNavigationData = [
   },
   {
     name: tabs.tai_san_chua_su_dung,
-    component: QuanLyTaiSanScreen,
+    component: TaiSanChuaSuDung,
     headerLeft: headerLeftComponent,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -660,7 +665,7 @@ const StackNavigationData = [
   },
   {
     name: tabs.tai_san_sua_chua_bao_duong,
-    component: QuanLyTaiSanScreen,
+    component: TaiSanSuaChuaBaoDuong,
     headerLeft: headerLeftComponent,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -673,7 +678,7 @@ const StackNavigationData = [
   },
   {
     name: tabs.tai_san_huy,
-    component: QuanLyTaiSanScreen,
+    component: TaiSanHuy,
     headerLeft: headerLeftComponent,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },
@@ -686,7 +691,7 @@ const StackNavigationData = [
   },
   {
     name: tabs.bao_hong_mat_tai_san,
-    component: QuanLyTaiSanScreen,
+    component: BaoHongMatTaiSan,
     headerLeft: headerLeftComponent,
     headerRight: headerRightComponent,
     headerBackground: { source: headerBackground },

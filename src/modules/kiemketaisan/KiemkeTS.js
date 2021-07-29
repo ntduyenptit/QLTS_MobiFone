@@ -31,6 +31,12 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
     if (prevProps.searchText !== this.props.searchText) {
       this.getToanTaisan();
     }
+    if (prevProps.isShowFilter !== this.props.isShowFilter) {
+      isSearch = true;
+      this.getToanTaisan();
+    } else {
+      isSearch = false;
+    }
   }
 
   getToanTaisan() {
@@ -88,11 +94,6 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
     isSearch = false;
     this.getToanTaisan();
   }
-
-  handleFilter = () => {
-    isSearch = true;
-    this.getToanTaisan();
-  };
 
   render() {
     const {
@@ -153,9 +154,7 @@ class QuanlyKiemkeTaiSanScreen extends React.Component {
             }}
           >Hiển thị: {toanboTaiSanData.length}/{total}
           </Text>
-          <FilterComponent
-            action={this.handleFilter}
-          />
+          <FilterComponent />
         </Animated.View>
         <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_kiem_ke, { screen: "Thêm mới đợt kiểm kê", onGoBack: () => this.refresh() })} />
       </View>

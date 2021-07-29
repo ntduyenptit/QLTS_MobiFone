@@ -1,5 +1,6 @@
 import { tabs } from '../../api/config';
 import QuanLyTaiSanScreen from '../quanlytaisan/QuanLyTaiSanContainer';
+import TaiSanDangSuDung from '../quanlytaisan/taisandangsudung/TaiSanDangSuDung';
 
 const tsdangsd = require('../../../assets/images/pages/chuasd.png');
 const tschuasd = require('../../../assets/images/pages/dangsd.png');
@@ -11,7 +12,7 @@ const baohongmat = require('../../../assets/images/pages/baohm.png');
 const tabPagesViewData = [
     {
       name: tabs.tai_san_dang_su_dung,
-      component: QuanLyTaiSanScreen,
+      component: TaiSanDangSuDung,
       icon: tsdangsd,
     },
    

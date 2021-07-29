@@ -4,18 +4,7 @@ import { USER_LOGOUT } from './actions/user.actions';
 // ## Generator Reducer Imports
 import app from '../modules/AppState';
 import userReducer from '../modules/auth/AuthState';
-import {
-  loadingReducer,
-  toanbotaisanReducer,
-  taisanhongReducer, 
-  taisanhuyReducer, 
-  taisanthanhlyReducer,
-  taisanmatReducer,
-  taisandangsudungReducer,
-  taisanchuasudungReducer,
-  taisansuachuabaoduongReducer,
-  khaibaohongmatReducer
-} from '../modules/quanlytaisan/QuanLyTaiSanState';
+import loadingReducer from '../modules/quanlytaisan/QuanLyTaiSanState';
 import { 
   filterReducer,
   moreReducer,
@@ -26,6 +15,8 @@ import {
   filterLVKDDataReducer,
   filterTTSDDataReducer,
   filterTinhThanhDataReducer,
+  filterWhoSendNotiSelectedReducer,
+  filterActionSelectedReducer,
 
   filterDVQLSelectedReducer,
   filterLTSSelectedReducer,
@@ -63,6 +54,7 @@ import {
   filterTTSDDataReducer,
   filterTinhThanhDataReducer,
   filterLVKDDataReducer,
+  filterActionSelectedReducer,
 
   // filter selected
   filterDVQLSelectedReducer,
@@ -81,6 +73,7 @@ import {
   filterTinhThanhSelectedReducer,
   filterQuanHuyenSelectedReducer,
   filterLVKDSelectedReducer,
+  filterWhoSendNotiSelectedReducer,
 
 
   currentScreenReducer,
@@ -90,15 +83,6 @@ import {
 
   // giám sát tài sản
   loadingReducer,
-  toanbotaisanReducer,
-  taisanhongReducer,
-  taisanhuyReducer,
-  taisanthanhlyReducer,
-  taisanmatReducer,
-  taisandangsudungReducer,
-  taisanchuasudungReducer,
-  taisansuachuabaoduongReducer,
-  khaibaohongmatReducer
 });
 
 const rootReducer = (state, action) => {

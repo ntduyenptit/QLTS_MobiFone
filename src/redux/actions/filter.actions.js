@@ -25,6 +25,9 @@ export const LTS_SELECTED_REMOVE = `${FILTER} Remove LOAI_TAI_SAN selected`;
 export const NCC_SELECTED_ADD = `${FILTER} Add NHA_CUNG_CAP selected`;
 export const NCC_SELECTED_REMOVE = `${FILTER} Remove NHA_CUNG_CAP selected`;
 
+export const USER_SEND_NOTI_SELECTED_ADD = `${FILTER} Add USER_SEND_NOTI selected`;
+export const USER_SEND_NOTI_SELECTED_REMOVE = `${FILTER} Remove USER_SEND_NOTI selected`;
+
 export const LVKD_SELECTED = `${FILTER} Add LINH_VUC_KINH_DOANH selected`;
 
 export const MSD_SELECTED_ADD = `${FILTER} Add MA_SU_DUNG selected`;
@@ -44,6 +47,9 @@ export const TTKK_SELECTED_REMOVE = `${FILTER} Remove TINH_TRANG_KIEM_KE selecte
 
 export const HT_SELECTED_ADD = `${FILTER} Add HINH_THUC selected`;
 export const HT_SELECTED_REMOVE = `${FILTER} Remove HINH_THUC selected`;
+
+export const ACTION_SELECTED_ADD = `${FILTER} Add HOAT_DONG selected`;
+export const ACTION_SELECTED_REMOVE = `${FILTER} Remove HOAT_DONG selected`;
 
 export const TINHTHANH_SELECTED_ADD = `${FILTER} Add TINH_THANH selected`;
 export const TINHTHANH_SELECTED_REMOVE = `${FILTER} Remove TINH_THANH selected`;
@@ -261,6 +267,29 @@ export const removeSelectedEndDateAction = (data) => ({
     payload: data
 });
 
+// người thông báo
+export const addSelectedWhoToSendNotiAction = (data) => ({
+    type: USER_SEND_NOTI_SELECTED_ADD,
+    payload: data
+});
+
+export const removeSelectedWhoToSendNotiAction = (data) => ({
+    type: USER_SEND_NOTI_SELECTED_REMOVE,
+    payload: data
+});
+
+// hoạt động
+export const addSelectedActivityAction = (data) => ({
+    type: ACTION_SELECTED_ADD,
+    payload: data
+});
+
+export const removeSelectedActivityAction = (data) => ({
+    type: ACTION_SELECTED_REMOVE,
+    payload: data
+});
+
+// chiều di chuyển
 export const addSelectedChieuDiChuyenAction = (data) => ({
     type: CHIEU_DI_CHUYEN_SELECTED_ADD,
     payload: data

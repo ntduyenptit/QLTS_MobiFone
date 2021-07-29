@@ -14,10 +14,14 @@ import {
     addSelectedDVQLAction,
     addSelectedStartDateAction,
     addSelectedEndDateAction,
+    addSelectedWhoToSendNotiAction,
+    addSelectedActivityAction,
 
+    removeSelectedActivityAction,
     removeSelectedDVQLAction,
     removeSelectedStartDateAction,
-    removeSelectedEndDateAction
+    removeSelectedEndDateAction,
+    removeSelectedWhoToSendNotiAction
 } from '@app/redux/actions/filter.actions';
 import { endPoint, screens } from '../../api/config';
 import { createGetMethod } from '../../api/Apis';
@@ -32,8 +36,6 @@ export const deviceHeight = Dimensions.get('window').height;
 const QuanLyMuaSamFilterComponent = (items) => {
     const [username, setUser] = useState([]);
     const [actions, setActions] = useState([]);
-    const [userSelected, setUserSelected] = useState();
-    const [actionSelected, setActionSelected] = useState();
 
     const [start, setStart] = useState({});
     const [end, setEnd] = useState({});
@@ -134,6 +136,9 @@ const QuanLyMuaSamFilterComponent = (items) => {
 
     const DvqlFilterSelected = find(items.DvqlFilterSelected, itemSelected => itemSelected.screen === screens.quan_ly_canh_bao) 
     && find(items.DvqlFilterSelected, itemSelected => itemSelected.screen === screens.quan_ly_canh_bao).data;
+    const NGTBFilterSelected = items.userSelected;
+    const ActionFilterSelected = find(items.actionSelected, itemSelected => itemSelected.screen === screens.quan_ly_canh_bao) 
+    && find(items.actionSelected, itemSelected => itemSelected.screen === screens.quan_ly_canh_bao).data;
 
     // selectedChange
     const onSelectedDVQLChange = (newSelectItems) => {
@@ -142,11 +147,13 @@ const QuanLyMuaSamFilterComponent = (items) => {
     }
 
     const onSelectedNGTBChange = (newSelectItems) => {
-      setUserSelected(newSelectItems);
+      items.removeWhoSendNotiSelected(newSelectItems);
+      items.addWhoSendNotiSelected(newSelectItems);
     }
 
     const onSelectedHoatDongChange = (newSelectItems) => {
-      setActionSelected(newSelectItems);
+      items.removeActionSelected({data: newSelectItems, screen: screens.quan_ly_canh_bao});
+      items.addActionSelected({data: newSelectItems, screen: screens.quan_ly_canh_bao});
     }
 
     // end SelectedChange
@@ -187,7 +194,7 @@ const QuanLyMuaSamFilterComponent = (items) => {
                 displayKey="userName"
                 selectText="Chọn ..."
                 onSelectedItemsChange={(item) => onSelectedNGTBChange(item)}
-                selectedItems={userSelected}
+                selectedItems={NGTBFilterSelected}
               />
             </View>
             <View>
@@ -212,7 +219,7 @@ const QuanLyMuaSamFilterComponent = (items) => {
                 displayKey="displayName"
                 selectText="Chọn ..."
                 onSelectedItemsChange={(item) => onSelectedHoatDongChange(item)}
-                selectedItems={actionSelected}
+                selectedItems={ActionFilterSelected}
               />
             </View>
           </>
@@ -241,6 +248,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
+    userSelected: state.filterWhoSendNotiSelectedReducer.ngtbFilterSelected,
+    actionSelected: state.filterActionSelectedReducer.actionFilterSelected,
     isShowFilter: state.filterReducer.isShowFilter,
     screen: state.currentScreenReducer.screenName,
 });
@@ -252,6 +261,12 @@ function mapDispatchToProps(dispatch) {
 
         addStartDateSelected: (item) => dispatch(addSelectedStartDateAction(item)),
         removeStartDateSelected: (item) => dispatch(removeSelectedStartDateAction(item)),
+
+        addWhoSendNotiSelected: (item) => dispatch(addSelectedWhoToSendNotiAction(item)),
+        removeWhoSendNotiSelected: (item) => dispatch(removeSelectedWhoToSendNotiAction(item)),
+
+        addActionSelected: (item) => dispatch(addSelectedActivityAction(item)),
+        removeActionSelected: (item) => dispatch(removeSelectedActivityAction(item)),
 
         addEndDateSelected: (item) => dispatch(addSelectedEndDateAction(item)),
         removeEndDateSelected: (item) => dispatch(removeSelectedEndDateAction(item)),

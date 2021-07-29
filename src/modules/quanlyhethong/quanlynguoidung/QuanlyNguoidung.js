@@ -13,6 +13,8 @@ import getParameters from './filter/GetParameters';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const deviceHeight = Dimensions.get('window').height;
+
+let isSearch = false;
 class QuanlyNguoidungScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -22,7 +24,6 @@ class QuanlyNguoidungScreen extends React.Component {
       total: 0,
       skipCount: 0,
     };
-    this.isSearch = false;
   }
 
   componentDidMount() {
@@ -31,22 +32,26 @@ class QuanlyNguoidungScreen extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.searchText !== this.props.searchText) {
+      isSearch = true;
       this.getNguoidung();
+    }
+    if (prevProps.isShowFilter !== this.props.isShowFilter) {
+      isSearch = true;
+      this.getNguoidung();
+    } else {
+      isSearch = false;
     }
   }
 
   getNguoidung() {
     const { datas } = getParameters();
-    const { skipCount } = this.state;
-    const { toanboNguoidungData } = this.state;
+    const { skipCount, toanboNguoidungData } = this.state;
     if (datas && datas.length > 0) {
       let url = `${endPoint.getAllNguoidung}?`;
       const textState = this.props.searchText;
       const textFilter = find(textState, itemSelected => itemSelected.screen === screens.quan_ly_nguoi_dung)
         && find(textState, itemSelected => itemSelected.screen === screens.quan_ly_nguoi_dung).data;
-      this.isSearch = false;
       if (textFilter) {
-        this.isSearch = true;
         url += `Keyword=${textFilter}&`
       }
 
@@ -54,49 +59,36 @@ class QuanlyNguoidungScreen extends React.Component {
         url += `ToChucIdList=${encodeURIComponent(`${e.id || e}`)}&`;
       });
 
-      url += `IsSearch=${encodeURIComponent(`${this.isSearch}`)}&`;
+      url += `IsSearch=${encodeURIComponent(`${isSearch}`)}&`;
       url += `SkipCount=${encodeURIComponent(`${skipCount}`)}&`;
       url += `MaxResultCount=${encodeURIComponent(`${10}`)}`;
 
-      console.log('url123: ', url);
       createGetMethod(url)
         .then(res => {
           if (res.success) {
-            if (this.isSearch) {
-              // this.clearData();
-              console.log(res.result.items);
+            if (isSearch || toanboNguoidungData !== []) {
               this.setState({
+                skipCount: 0,
                 toanboNguoidungData: res.result.items,
                 total: res.result.totalCount
               });
-              return;
             }
-            this.setState({
-              toanboNguoidungData: [...toanboNguoidungData ,...res.result.items],
-              total: res.result.totalCount
-            });
+            if (skipCount > 0) {
+              this.setState({
+                toanboNguoidungData: [...toanboNguoidungData ,...res.result.items],
+                total: res.result.totalCount
+              });
+            }
           }
         })
         .catch();
     }
   }
 
-  clearData = () => {
-    this.setState({
-      toanboNguoidungData: [],
-      total: 0
-    });
-  }
-
   refresh = () => {
     this.isSearch = false;
     this.getNguoidung();
   }
-
-  handleFilter = () => {
-    this.isSearch = true;
-    this.getNguoidung();
-  };
 
   isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
     const paddingToBottom = 50;
@@ -182,13 +174,13 @@ class QuanlyNguoidungScreen extends React.Component {
           </SafeAreaView>
           <Text
             style={{
-              bottom: 5,
-              right: 5,
+              bottom: 20,
+              right: 20,
               position: 'absolute',
             }}
           >Hiển thị: {toanboNguoidungData.length}/{total}
           </Text>
-          <FilterComponent action={this.handleFilter} />
+          <FilterComponent />
         </Animated.View>
         <ActionButton buttonColor="rgba(231,76,60,1)" position='right' onPress={() => this.props.navigation.navigate(screens.them_moi_nguoi_dung, { screen: "Thêm mới người dùng" })} />
       </View>
@@ -197,6 +189,7 @@ class QuanlyNguoidungScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  isShowFilter: state.filterReducer.isShowFilter,
   searchText: state.SearchReducer.searchData,
   isLoading: state.loadingReducer.isLoading,
 });
