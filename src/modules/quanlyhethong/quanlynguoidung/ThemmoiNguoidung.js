@@ -152,7 +152,7 @@ class ThemmoiNguoidungScreen extends React.Component {
         if (check) {
             Alert.alert(
                 '',
-                `Hãy nhập ${  s}`,
+                `Hãy nhập ${s}`,
                 [
                     { text: 'OK', style: "cancel" },
                 ],
@@ -174,7 +174,7 @@ class ThemmoiNguoidungScreen extends React.Component {
             toChucId: donviID[0],
             userName: tendangnhap,
         }
-        const urlCheck = `${`${endPoint.checkExitUser}?` + 'userName='}${  tendangnhap  }&emailAddress=${  email}`;
+        const urlCheck = `${`${endPoint.checkExitUser}?` + 'userName='}${tendangnhap}&emailAddress=${email}`;
         createPostMethodWithToken(urlCheck, null).then((res) => {
             if (!res.success) {
                 Alert.alert(
@@ -185,7 +185,7 @@ class ThemmoiNguoidungScreen extends React.Component {
                     ],
 
                 );
-                
+
             }
         })
         createPostMethodWithToken(url, JSON.stringify(params)).then((res) => {
@@ -199,6 +199,19 @@ class ThemmoiNguoidungScreen extends React.Component {
 
                 );
 
+            } else if (res.error) {
+                if (res.error.details) {
+                    Alert.alert(
+                        'Không thành công',
+                        res.error.details,
+                    );
+                }
+                else if (res.error.message) {
+                    Alert.alert(
+                        'Không thành công',
+                        res.error.message,
+                    );
+                }
             }
         })
     }
@@ -349,7 +362,7 @@ class ThemmoiNguoidungScreen extends React.Component {
                   <Text style={styles.boldText}>Ghi chú</Text>
                   <TextInput
                     placeholderTextColor="black"
-                    style={[styles.bordered, {height: 60}]}
+                    style={[styles.bordered, { height: 60 }]}
                     multiline
                     onChangeText={(ghiChu) => {
                                     this.setState({

@@ -430,7 +430,6 @@ const pickerSelectStyles = StyleSheet.create({
 
 const mapStateToProps = state => ({
     DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
-    toanbotaisanData: state.toanbotaisanReducer.toanbotaisanData,
     tokenUser: state.userReducer.token,
 });
 

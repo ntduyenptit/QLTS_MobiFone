@@ -108,14 +108,6 @@ class BaoCaoThongTinTS extends React.PureComponent {
 
 const mapStateToProps = state => ({
   donViQuanLy: state.filterDVQLDataReducer.dvqlDataFilter,
-  toanbotaisanTotal: state.toanbotaisanReducer.toanbotaisanTotal,
-  taisanthanhlyTotal: state.taisanthanhlyReducer.taisanthanhlyTotal,
-  taisanmatTotal: state.taisanmatReducer.taisanmatTotal,
-  taisanhongTotal: state.taisanhongReducer.taisanhongTotal,
-  taisanhuyTotal: state.taisanhuyReducer.taisanhuyTotal,
-  taisanchuasudungTotal: state.taisanchuasudungReducer.taisanchuasudungTotal,
-  taisandangsudungTotal: state.taisandangsudungReducer.taisandangsudungTotal,
-  taisansuachuabaoduongTotal: state.taisansuachuabaoduongReducer.taisansuachuabaoduongTotal,
 });
 
 export default connect(mapStateToProps)(BaoCaoThongTinTS);

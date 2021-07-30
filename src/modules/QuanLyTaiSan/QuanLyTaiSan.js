@@ -99,7 +99,7 @@ const QuanLyTaiSan = (state) => {
       createGetMethod(url)
         .then(res => {
           if (res.success) {
-            if (isSearch || taisan !== []) {
+            if (isSearch || taisan === []) {
               setSkipCount(0);
               setTaiSan(res.result.items);
               setTotal(res.result.totalCount);

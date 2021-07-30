@@ -167,7 +167,7 @@ class QuanlyNguoidungScreen extends React.Component {
               )}
               contentInsetAdjustmentBehavior="automatic"
             >
-              {LoaderComponent(toanboNguoidungData, this.props, screens.chi_tiet_nguoi_dung)}
+              {LoaderComponent(toanboNguoidungData, this.props, screens.chi_tiet_nguoi_dung, this.refresh)}
             </Animated.ScrollView>
           </SafeAreaView>
           <Text
