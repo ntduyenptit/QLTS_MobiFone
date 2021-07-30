@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import React from 'react';
 import { Animated, SafeAreaView, StatusBar, Dimensions, Text } from 'react-native';
 import { connect } from 'react-redux';
@@ -45,6 +44,7 @@ class GiamSatTaiSanScreen extends React.Component {
   }
 
   getToanTaisan() {
+    const { toanboTaiSanData, skipCount } = this.state;
     const { datas, startdate, enddate, chieudichuyen, phanloaitaisan } = getParameters();
     if (datas && datas.length > 0) {
       let url = `${endPoint.getLichsuRavaoAngten}?`;
@@ -85,14 +85,20 @@ class GiamSatTaiSanScreen extends React.Component {
       createGetMethod(url)
         .then(res => {
           if (res.success) {
-            this.setState({
-              toanboTaiSanData: res.result.items || [],
-              total: res.result.totalCount || 0
-            }, () => {
-              isSearch = false;
-            });
+            if (isSearch || toanboTaiSanData !== []) {
+              this.setState({
+                skipCount: 0,
+                toanboTaiSanData: res.result.items,
+                total: res.result.totalCount
+              });
+            }
+            if (skipCount > 0) {
+              this.setState({
+                toanboTaiSanData: [...toanboTaiSanData ,...res.result.items],
+                total: res.result.totalCount
+              });
+            }
           } 
-          
         })
         .catch();
     }
@@ -107,6 +113,23 @@ class GiamSatTaiSanScreen extends React.Component {
   refresh = () => {
     isSearch = false;
     this.getToanTaisan();
+  }
+
+  isLoadMore = () => {
+    const { toanboTaiSanData, total } = this.state;
+    if (toanboTaiSanData.length < total) {
+        return true;
+      }
+      return false;
+  }
+
+  getSkipCount = () => {
+    const { toanboTaiSanData, skipCount } = this.state;
+    if (skipCount !== toanboTaiSanData.length) {
+      this.setState({
+        skipCount: toanboTaiSanData.length,
+      }, () => this.getToanTaisan());
+    }
   }
 
   render() {
@@ -154,21 +177,12 @@ class GiamSatTaiSanScreen extends React.Component {
               {
                 useNativeDriver: true,
                 listener: event => {
-                  if (this.isCloseToBottom(event.nativeEvent)) {
-                    setTimeout(() => {
-                      this.setState({
-                        skipCount: toanboTaiSanData.length,
-                      }, () => {
-                        if (toanboTaiSanData.length < total) {
-                          this.refresh();
-                        }
-                      })
-                    }, 2000)
+                  if (this.isCloseToBottom(event.nativeEvent) && this.isLoadMore()) {
+                      this.getSkipCount();
                   }
                 },
               }
             )}
-            scrollEventThrottle={500}
             contentInsetAdjustmentBehavior="automatic"
           >
             {LoaderComponent(toanboTaiSanData, this.props, screens.giam_sat_tai_san)}
@@ -176,8 +190,8 @@ class GiamSatTaiSanScreen extends React.Component {
         </SafeAreaView>
         <Text
           style={{
-            bottom: 5,
-            right: 5,
+            bottom: 20,
+            right: 20,
             position: 'absolute',
           }}
         >Hiển thị: {toanboTaiSanData.length}/{total}
@@ -191,6 +205,7 @@ class GiamSatTaiSanScreen extends React.Component {
 
 const mapStateToProps = state => ({
   searchText: state.SearchReducer.searchData,
+  isShowFilter: state.filterReducer.isShowFilter,
 });
 
 export default connect(mapStateToProps)(GiamSatTaiSanScreen);
