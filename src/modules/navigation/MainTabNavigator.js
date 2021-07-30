@@ -23,7 +23,7 @@ export default function BottomTabs() {
               store.dispatch(setCurrentTab(tabName));
             },
           }}
-          tittle = {item.tittle}
+          tittle={item.tittle}
           options={{
             tabBarIcon: ({ focused }) => (
               <View style={styles.tabBarItemContainer}>

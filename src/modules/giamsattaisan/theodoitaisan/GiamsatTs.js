@@ -190,7 +190,7 @@ class GiamSatTaiSanScreen extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  searchText: state.SearchReducer.searchData
+  searchText: state.SearchReducer.searchData,
 });
 
 export default connect(mapStateToProps)(GiamSatTaiSanScreen);

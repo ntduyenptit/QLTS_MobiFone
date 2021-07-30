@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform
 } from "react-native";
-import React from 'react';
+import React, {useEffect} from 'react';
 import { connect } from "react-redux";
 import { screens } from "@app/api/config";
 import QuanLyGiamSatFilter from '@app/modules/giamsattaisan/filter/QuanlyGiamsatTSFilter';
@@ -30,81 +30,85 @@ import { deviceWidth, deviceHeight } from './LoaderComponent';
 
 const keyboardVerticalOffset = Platform.OS === 'ios' ? -50 : 0
 
-const getFilterForScreen = (screen) => {
-  switch (screen) {
-    case screens.quan_ly_tai_san: {
-      return <QuanLyTaiSanFilterComponent />
-    }
-    case screens.giam_sat_tai_san: {
-      return <QuanLyGiamSatFilter />
-    }
-    case screens.theo_doi_ket_noi_thiet_bi: {
-      return <TheoDoiKetNoiFilter />
-    }
-    case screens.quan_ly_dau_doc_di_dong:
-    case screens.quan_ly_dau_doc_co_dinh: {
-      return <QuanLyDauDocFilter />
-    }
-    case screens.quan_ly_kiem_ke_tai_san: {
-      return <QuanLyKiemkeFilter />
-    }
-    case screens.quan_ly_du_tru_mua_sam: {
-      return <QuanlyMuaSamFilter />
-    }
-    case screens.quan_ly_canh_bao: {
-      return <QuanLyCanhbaoFilter />
-    }
-    case screens.quan_ly_nha_cung_cap: {
-      return <QuanlyNhaCungCapFilter />
-    }
-    case screens.bao_cao_canh_bao: {
-      return <BaocaoCanhbaoFilter />
-    }
-    case screens.quan_ly_vi_tri_dia_ly: {
-      return <QuanlyVitriDialyFilter />
-    }
-    case screens.quan_ly_nguoi_dung: {
-      return <QuanLyNguoidungFilter />
-    }
-    default: {
-      return null;
+const FilterComponent = (props) => {
+  useEffect(() => {
+    getFilterForScreen();
+  }, [props.screen])
+
+  const getFilterForScreen = () => {
+    switch (props.screen) {
+      case screens.quan_ly_tai_san: {
+        return <QuanLyTaiSanFilterComponent />
+      }
+      case screens.giam_sat_tai_san: {
+        return <QuanLyGiamSatFilter />
+      }
+      case screens.theo_doi_ket_noi_thiet_bi: {
+        return <TheoDoiKetNoiFilter />
+      }
+      case screens.quan_ly_dau_doc_di_dong:
+      case screens.quan_ly_dau_doc_co_dinh: {
+        return <QuanLyDauDocFilter />
+      }
+      case screens.quan_ly_kiem_ke_tai_san: {
+        return <QuanLyKiemkeFilter />
+      }
+      case screens.quan_ly_du_tru_mua_sam: {
+        return <QuanlyMuaSamFilter />
+      }
+      case screens.quan_ly_canh_bao: {
+        return <QuanLyCanhbaoFilter />
+      }
+      case screens.quan_ly_nha_cung_cap: {
+        return <QuanlyNhaCungCapFilter />
+      }
+      case screens.bao_cao_canh_bao: {
+        return <BaocaoCanhbaoFilter />
+      }
+      case screens.quan_ly_vi_tri_dia_ly: {
+        return <QuanlyVitriDialyFilter />
+      }
+      case screens.quan_ly_nguoi_dung: {
+        return <QuanLyNguoidungFilter />
+      }
+      default: {
+        return null;
+      }
     }
   }
-}
-
-const FilterComponent = (props) => (
-  <Modal
-    animationType="slide"
-    transparent
-    visible={props.isShowFilter}
-    onRequestClose={() => {
+  return (
+    <Modal
+      animationType="slide"
+      transparent
+      visible={props.isShowFilter}
+      onRequestClose={() => {
           Alert.alert("Modal has been closed.");
         }}
-  >
-    <KeyboardAvoidingView
-      behavior='position'
-      keyboardVerticalOffset={keyboardVerticalOffset}
-      style={styles.modalView}
     >
-      <View style={styles.underLine}>
-        <Text style={styles.titleStyle}>Bộ lọc</Text>
-      </View>
-      <View style={styles.container}>
-        {getFilterForScreen(props.screen)}
-      </View>
-      <View style={{ width: deviceWidth - 100, alignItems: 'center' }}>
-        <Pressable
-          style={[styles.button, styles.buttonClose]}
-          onPress={() => {
+      <KeyboardAvoidingView
+        behavior='position'
+        keyboardVerticalOffset={keyboardVerticalOffset}
+        style={styles.modalView}
+      >
+        <View style={styles.underLine}>
+          <Text style={styles.titleStyle}>Bộ lọc</Text>
+        </View>
+        <View style={styles.container}>
+          {getFilterForScreen()}
+        </View>
+        <View style={{ width: deviceWidth - 100, alignItems: 'center' }}>
+          <Pressable
+            style={[styles.button, styles.buttonClose]}
+            onPress={() => {
                 store.dispatch(hideFilter());
               }}
-        >
-          <Text style={styles.textStyle}>Xong</Text>
-        </Pressable>
-      </View>
-    </KeyboardAvoidingView>
-  </Modal>
-      )
+          >
+            <Text style={styles.textStyle}>Xong</Text>
+          </Pressable>
+        </View>
+      </KeyboardAvoidingView>
+    </Modal>
+      )}
 
 
 const styles = StyleSheet.create({

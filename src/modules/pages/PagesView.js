@@ -2,9 +2,8 @@ import React, {useEffect} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList, Dimensions } from 'react-native';
 
 import { colors, fonts } from '../../styles';
-import { store } from '../../redux/store';
-import { setCurrentTab } from '../../redux/actions/screen.actions';
 import tabPagesViewData from './tabPagesViewData';
+import { navigate } from '@app/modules/global/NavigationHelper';
 
 const { width } = Dimensions.get('window');
 const itemWidth = (width - 12) / 3;
@@ -24,8 +23,7 @@ export default function PagesScreen(props) {
         renderItem={({item}) => (
           <TouchableOpacity
             onPress={() => {
-            store.dispatch(setCurrentTab(item.name));
-            props.navigation.navigate(item.name)
+            navigate({name: item.name, type: 'tab'});
             }}
             style={styles.item}
           >

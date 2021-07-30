@@ -30,7 +30,7 @@ class BaocaoCanhbaoScreen extends React.PureComponent {
     componentDidUpdate(prevProps) {
       if (prevProps.isShowFilter !== this.props.isShowFilter) {
         isSearch = true;
-        this.getToanTaisan();
+        this.getdsBaocao();
       } else {
         isSearch = false;
       }
@@ -91,14 +91,14 @@ class BaocaoCanhbaoScreen extends React.PureComponent {
             },
             {
                 value: totalData3,
-                label: 'Bắt đầu kiểm kê',
+                label: 'Bắt đầu kk',
                 svg: {
                     fill: '#FFBF00',
                 },
             },
             {
                 value: totalData4,
-                label: 'Kết thúc kiểm kê',
+                label: 'Kết thúc kk',
                 svg: {
                     fill: '#0000FF',
                 },
@@ -166,6 +166,7 @@ class BaocaoCanhbaoScreen extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
+  isShowFilter: state.filterReducer.isShowFilter,
     DvqlDataFilter: state.filterDVQLDataReducer.dvqlDataFilter,
   });
 

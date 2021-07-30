@@ -9,6 +9,7 @@ import { getDVQLDataAction } from '../../redux/actions/filter.actions';
 import { store } from '../../redux/store';
 import { currentDate, getDateFromLastMonth, getPercent, getDates, convertFormatDate } from '../global/Helper';
 import { getGSTSDashboard, GetToanBoTaiSanData } from '../global/GlobalApis';
+import { navigate } from '../global/NavigationHelper';
 
 class DashBoard extends React.Component {
   constructor(props) {
@@ -31,7 +32,7 @@ class DashBoard extends React.Component {
     this.props.navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate(screens.qrScanAssetScreen)}
+          onPress={() => navigate({name: screens.qrScanAssetScreen})}
           style={{
             paddingHorizontal: 16,
             paddingVertical: 12,
@@ -129,7 +130,7 @@ class DashBoard extends React.Component {
   }
 
   Speech = () => {
-    this.props.navigation.navigate(screens.speechControl);
+    navigate({name: screens.speechControl});
   }
 
   render() {
@@ -269,13 +270,13 @@ class DashBoard extends React.Component {
               )}
             </View>
           </View>
-          <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate(screens.quan_ly_tai_san)}>
+          <TouchableOpacity style={styles.btn} onPress={() => navigate({name: screens.quan_ly_tai_san})}>
             <Text style={styles.showDetailBtn}>Xem chi tiết</Text>
           </TouchableOpacity>
           <View>
             <Text style={styles.chart_title}>Lịch sử ra vào của tài sản trong 30 ngày gần nhất</Text>
             <LineChartView data={lineChartDatas} />
-            <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate(screens.giam_sat_tai_san)}>
+            <TouchableOpacity style={styles.btn} onPress={() => navigate({name: screens.giam_sat_tai_san})}>
               <Text style={styles.showDetailBtn}>Xem chi tiết</Text>
             </TouchableOpacity>
           </View>

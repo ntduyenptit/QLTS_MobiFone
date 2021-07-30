@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
@@ -109,187 +109,459 @@ const QuanLyTaiSanFilterComponent = (items) => {
   const TtFilterSelected = find(items.TtFilterSelected, itemSelected => itemSelected.tab === items.tab) 
   && find(items.TtFilterSelected, itemSelected => itemSelected.tab === items.tab).data;
 
+  useEffect(() => {
+    renderFilterForEachTab();
+  }, [items.tab]);
+
+  const renderFilterForEachTab = () => {
+    switch (items.tab) {
+      case tabs.toan_bo_tai_san:
+        return (
+          <View style={styles.container}>
+            <View>
+              <Text style={styles.titleText}>Đơn vị quản lý</Text>
+              <MultiSelect
+                ref={donViQuanLyRef}
+                isHasSelectAll
+                isTree
+                getCollapsedNodeHeight={{ height: 200 }}
+                onToggleList={() => closeMultiSelectIfOpened()}
+                items={dvqlTreeData}
+                IconRenderer={Icon}
+                searchInputPlaceholderText="Tìm kiếm..."
+                styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
+                uniqueKey="id"
+                displayKey="displayName"
+                selectText="Chọn đơn vị quản lý..."
+                onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
+                selectedItems={DvqlFilterSelected}
+              />
+            </View>
+            <View>
+              <Text style={styles.titleText}>Loại tài sản</Text>
+              <MultiSelect
+                ref={loaiTaiSanRef}
+                isHasSelectAll
+                isTree
+                onToggleList={() => closeMultiSelectIfOpened()}
+                items={items.LtsDataFilter}
+                IconRenderer={Icon}
+                styleListContainer={items.LtsDataFilter && items.LtsDataFilter.length > 9 ? { height: 200 } : null}
+                single
+                searchInputPlaceholderText="Tìm kiếm..."
+                uniqueKey="value"
+                displayKey="text"
+                selectText="Chọn loại tài sản..."
+                onSelectedItemsChange={(item) => onSelectedLTSChange(item)}
+                selectedItems={LtsFilterSelected}
+              />
+            </View>
+            <View>
+              <Text style={styles.titleText}>Nhà cung cấp</Text>
+              <MultiSelect
+                ref={nhaCungCapRef}
+                isHasSelectAll
+                onToggleList={() => closeMultiSelectIfOpened()}
+                items={items.NccDataFilter}
+                IconRenderer={Icon}
+                single
+                styleListContainer={items.NccDataFilter && items.NccDataFilter.length > 9 ? { height: 200 } : null}
+                searchInputPlaceholderText="Tìm kiếm..."
+                uniqueKey="id"
+                displayKey="displayName"
+                selectText="Chọn nhà cung cấp..."
+                onSelectedItemsChange={(item) => onSelectedNCCChange(item)}
+                selectedItems={NccFilterSelected}
+              />
+            </View>
+            <View>
+              <Text style={styles.titleText}>Mã sử dụng</Text>
+              <MultiSelect
+                ref={maSuDungRef}
+                isHasSelectAll
+                onToggleList={() => closeMultiSelectIfOpened()}
+                items={items.MsdDataFilter}
+                IconRenderer={Icon}
+                single
+                styleListContainer={items.MsdDataFilter && items.MsdDataFilter.length > 9 ? { height: 200 } : null}
+                searchInputPlaceholderText="Tìm kiếm..."
+                uniqueKey="id"
+                displayKey="displayName"
+                selectText="Chọn mã sử dụng..."
+                onSelectedItemsChange={(item) => onSelectedMSDChange(item)}
+                selectedItems={MsdFilterSelected}
+              />
+            </View>
+          </View>
+        );
+        case tabs.tai_san_chua_su_dung:
+          return (
+            <View style={styles.container}>
+              <View>
+                <Text style={styles.titleText}>Đơn vị quản lý</Text>
+                <MultiSelect
+                  ref={donViQuanLyRef}
+                  isHasSelectAll
+                  isTree
+                  getCollapsedNodeHeight={{ height: 200 }}
+                  onToggleList={() => closeMultiSelectIfOpened()}
+                  items={dvqlTreeData}
+                  IconRenderer={Icon}
+                  searchInputPlaceholderText="Tìm kiếm..."
+                  styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
+                  uniqueKey="id"
+                  displayKey="displayName"
+                  selectText="Chọn đơn vị quản lý..."
+                  onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
+                  selectedItems={DvqlFilterSelected}
+                />
+              </View>
+              <View>
+                <Text style={styles.titleText}>Loại tài sản</Text>
+                <MultiSelect
+                  ref={loaiTaiSanRef}
+                  isHasSelectAll
+                  isTree
+                  onToggleList={() => closeMultiSelectIfOpened()}
+                  items={items.LtsDataFilter}
+                  IconRenderer={Icon}
+                  styleListContainer={items.LtsDataFilter && items.LtsDataFilter.length > 9 ? { height: 200 } : null}
+                  single
+                  searchInputPlaceholderText="Tìm kiếm..."
+                  uniqueKey="value"
+                  displayKey="text"
+                  selectText="Chọn loại tài sản..."
+                  onSelectedItemsChange={(item) => onSelectedLTSChange(item)}
+                  selectedItems={LtsFilterSelected}
+                />
+              </View>
+              <View>
+                <Text style={styles.titleText}>Nhà cung cấp</Text>
+                <MultiSelect
+                  ref={nhaCungCapRef}
+                  isHasSelectAll
+                  onToggleList={() => closeMultiSelectIfOpened()}
+                  items={items.NccDataFilter}
+                  IconRenderer={Icon}
+                  single
+                  styleListContainer={items.NccDataFilter && items.NccDataFilter.length > 9 ? { height: 200 } : null}
+                  searchInputPlaceholderText="Tìm kiếm..."
+                  uniqueKey="id"
+                  displayKey="displayName"
+                  selectText="Chọn nhà cung cấp..."
+                  onSelectedItemsChange={(item) => onSelectedNCCChange(item)}
+                  selectedItems={NccFilterSelected}
+                />
+              </View>
+              <View>
+                <Text style={styles.titleText}>Mã sử dụng</Text>
+                <MultiSelect
+                  ref={maSuDungRef}
+                  isHasSelectAll
+                  onToggleList={() => closeMultiSelectIfOpened()}
+                  items={items.MsdDataFilter}
+                  IconRenderer={Icon}
+                  single
+                  styleListContainer={items.MsdDataFilter && items.MsdDataFilter.length > 9 ? { height: 200 } : null}
+                  searchInputPlaceholderText="Tìm kiếm..."
+                  uniqueKey="id"
+                  displayKey="displayName"
+                  selectText="Chọn mã sử dụng..."
+                  onSelectedItemsChange={(item) => onSelectedMSDChange(item)}
+                  selectedItems={MsdFilterSelected}
+                />
+              </View>
+            </View>
+          );
+          case tabs.tai_san_dang_su_dung:
+            return (
+              <View style={styles.container}>
+                <View>
+                  <Text style={styles.titleText}>Đơn vị quản lý</Text>
+                  <MultiSelect
+                    ref={donViQuanLyRef}
+                    isHasSelectAll
+                    isTree
+                    getCollapsedNodeHeight={{ height: 200 }}
+                    onToggleList={() => closeMultiSelectIfOpened()}
+                    items={dvqlTreeData}
+                    IconRenderer={Icon}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText="Chọn đơn vị quản lý..."
+                    onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
+                    selectedItems={DvqlFilterSelected}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.titleText}>Loại tài sản</Text>
+                  <MultiSelect
+                    ref={loaiTaiSanRef}
+                    isHasSelectAll
+                    isTree
+                    onToggleList={() => closeMultiSelectIfOpened()}
+                    items={items.LtsDataFilter}
+                    IconRenderer={Icon}
+                    styleListContainer={items.LtsDataFilter && items.LtsDataFilter.length > 9 ? { height: 200 } : null}
+                    single
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    uniqueKey="value"
+                    displayKey="text"
+                    selectText="Chọn loại tài sản..."
+                    onSelectedItemsChange={(item) => onSelectedLTSChange(item)}
+                    selectedItems={LtsFilterSelected}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.titleText}>Nhà cung cấp</Text>
+                  <MultiSelect
+                    ref={nhaCungCapRef}
+                    isHasSelectAll
+                    onToggleList={() => closeMultiSelectIfOpened()}
+                    items={items.NccDataFilter}
+                    IconRenderer={Icon}
+                    single
+                    styleListContainer={items.NccDataFilter && items.NccDataFilter.length > 9 ? { height: 200 } : null}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText="Chọn nhà cung cấp..."
+                    onSelectedItemsChange={(item) => onSelectedNCCChange(item)}
+                    selectedItems={NccFilterSelected}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.titleText}>Mã sử dụng</Text>
+                  <MultiSelect
+                    ref={maSuDungRef}
+                    isHasSelectAll
+                    onToggleList={() => closeMultiSelectIfOpened()}
+                    items={items.MsdDataFilter}
+                    IconRenderer={Icon}
+                    single
+                    styleListContainer={items.MsdDataFilter && items.MsdDataFilter.length > 9 ? { height: 200 } : null}
+                    searchInputPlaceholderText="Tìm kiếm..."
+                    uniqueKey="id"
+                    displayKey="displayName"
+                    selectText="Chọn mã sử dụng..."
+                    onSelectedItemsChange={(item) => onSelectedMSDChange(item)}
+                    selectedItems={MsdFilterSelected}
+                  />
+                </View>
+              </View>
+            );
+            case tabs.tai_san_sua_chua_bao_duong:
+              return (
+                <View style={styles.container}>
+                  <View>
+                    <Text style={styles.titleText}>Đơn vị quản lý</Text>
+                    <MultiSelect
+                      ref={donViQuanLyRef}
+                      isHasSelectAll
+                      isTree
+                      getCollapsedNodeHeight={{ height: 200 }}
+                      onToggleList={() => closeMultiSelectIfOpened()}
+                      items={dvqlTreeData}
+                      IconRenderer={Icon}
+                      searchInputPlaceholderText="Tìm kiếm..."
+                      styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
+                      uniqueKey="id"
+                      displayKey="displayName"
+                      selectText="Chọn đơn vị quản lý..."
+                      onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
+                      selectedItems={DvqlFilterSelected}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.titleText}>Loại tài sản</Text>
+                    <MultiSelect
+                      ref={loaiTaiSanRef}
+                      isHasSelectAll
+                      isTree
+                      onToggleList={() => closeMultiSelectIfOpened()}
+                      items={items.LtsDataFilter}
+                      IconRenderer={Icon}
+                      styleListContainer={items.LtsDataFilter && items.LtsDataFilter.length > 9 ? { height: 200 } : null}
+                      single
+                      searchInputPlaceholderText="Tìm kiếm..."
+                      uniqueKey="value"
+                      displayKey="text"
+                      selectText="Chọn loại tài sản..."
+                      onSelectedItemsChange={(item) => onSelectedLTSChange(item)}
+                      selectedItems={LtsFilterSelected}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.titleText}>Nhà cung cấp</Text>
+                    <MultiSelect
+                      ref={nhaCungCapRef}
+                      isHasSelectAll
+                      onToggleList={() => closeMultiSelectIfOpened()}
+                      items={items.NccDataFilter}
+                      IconRenderer={Icon}
+                      single
+                      styleListContainer={items.NccDataFilter && items.NccDataFilter.length > 9 ? { height: 200 } : null}
+                      searchInputPlaceholderText="Tìm kiếm..."
+                      uniqueKey="id"
+                      displayKey="displayName"
+                      selectText="Chọn nhà cung cấp..."
+                      onSelectedItemsChange={(item) => onSelectedNCCChange(item)}
+                      selectedItems={NccFilterSelected}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.titleText}>Hình thức</Text>
+                    <MultiSelect
+                      ref={hinhThucRef}
+                      isHasSelectAll
+                      onToggleList={() => closeMultiSelectIfOpened()}
+                      items={hinhThucData}
+                      IconRenderer={Icon}
+                      single
+                      searchInputPlaceholderText="Tìm kiếm..."
+                      uniqueKey="id"
+                      displayKey="displayName"
+                      selectText="Chọn hình thức..."
+                      onSelectedItemsChange={(item) => onSelectedHTChange(item)}
+                      selectedItems={HtFilterSelected}
+                    />
+                  </View>
+                  <View>
+                    <Text style={styles.titleText}>Trạng thái</Text>
+                    <MultiSelect
+                      ref={trangThaiRef}
+                      isHasSelectAll
+                      onToggleList={() => closeMultiSelectIfOpened()}
+                      items={trangThaiData}
+                      IconRenderer={Icon}
+                      single
+                      searchInputPlaceholderText="Tìm kiếm..."
+                      uniqueKey="id"
+                      displayKey="displayName"
+                      selectText="Chọn trạng thái..."
+                      onSelectedItemsChange={(item) => onSelectedTTChange(item)}
+                      selectedItems={TtFilterSelected}
+                    />
+                  </View>
+                </View>
+              );
+              case tabs.tai_san_mat:
+                case tabs.tai_san_hong:
+                  case tabs.tai_san_thanh_ly:
+                    case tabs.tai_san_huy:
+                return(
+                  <View style={styles.container}>
+                    <View>
+                      <Text style={styles.titleText}>Đơn vị quản lý</Text>
+                      <MultiSelect
+                        ref={donViQuanLyRef}
+                        isHasSelectAll
+                        isTree
+                        getCollapsedNodeHeight={{ height: 200 }}
+                        onToggleList={() => closeMultiSelectIfOpened()}
+                        items={dvqlTreeData}
+                        IconRenderer={Icon}
+                        searchInputPlaceholderText="Tìm kiếm..."
+                        styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
+                        uniqueKey="id"
+                        displayKey="displayName"
+                        selectText="Chọn đơn vị quản lý..."
+                        onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
+                        selectedItems={DvqlFilterSelected}
+                      />
+                    </View>
+                    <View>
+                      <Text style={styles.titleText}>Loại tài sản</Text>
+                      <MultiSelect
+                        ref={loaiTaiSanRef}
+                        isHasSelectAll
+                        isTree
+                        onToggleList={() => closeMultiSelectIfOpened()}
+                        items={items.LtsDataFilter}
+                        IconRenderer={Icon}
+                        styleListContainer={items.LtsDataFilter && items.LtsDataFilter.length > 9 ? { height: 200 } : null}
+                        single
+                        searchInputPlaceholderText="Tìm kiếm..."
+                        uniqueKey="value"
+                        displayKey="text"
+                        selectText="Chọn loại tài sản..."
+                        onSelectedItemsChange={(item) => onSelectedLTSChange(item)}
+                        selectedItems={LtsFilterSelected}
+                      />
+                    </View>
+                    <View>
+                      <Text style={styles.titleText}>Nhà cung cấp</Text>
+                      <MultiSelect
+                        ref={nhaCungCapRef}
+                        isHasSelectAll
+                        onToggleList={() => closeMultiSelectIfOpened()}
+                        items={items.NccDataFilter}
+                        IconRenderer={Icon}
+                        single
+                        styleListContainer={items.NccDataFilter && items.NccDataFilter.length > 9 ? { height: 200 } : null}
+                        searchInputPlaceholderText="Tìm kiếm..."
+                        uniqueKey="id"
+                        displayKey="displayName"
+                        selectText="Chọn nhà cung cấp..."
+                        onSelectedItemsChange={(item) => onSelectedNCCChange(item)}
+                        selectedItems={NccFilterSelected}
+                      />
+                    </View>
+                  </View>
+                );
+                case tabs.bao_hong_mat_tai_san:
+                  return(
+                    <View style={styles.container}>
+                      <View>
+                        <Text style={styles.titleText}>{tabs.bao_hong_mat_tai_san ? `Đơn vị khai báo` : `Đơn vị quản lý`}</Text>
+                        <MultiSelect
+                          ref={donViQuanLyRef}
+                          isHasSelectAll
+                          isTree
+                          getCollapsedNodeHeight={{ height: 200 }}
+                          onToggleList={() => closeMultiSelectIfOpened()}
+                          items={dvqlTreeData}
+                          IconRenderer={Icon}
+                          searchInputPlaceholderText="Tìm kiếm..."
+                          styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
+                          uniqueKey="id"
+                          displayKey="displayName"
+                          selectText="Chọn đơn vị quản lý..."
+                          onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
+                          selectedItems={DvqlFilterSelected}
+                        />
+                      </View>
+                      <View>
+                        <Text style={styles.titleText}>Khai báo</Text>
+                        <MultiSelect
+                          isHasSelectAll
+                          ref={khaibaoRef}
+                          onToggleList={() => closeMultiSelectIfOpened()}
+                          items={KhaiBaoData}
+                          IconRenderer={Icon}
+                          single
+                          searchInputPlaceholderText="Tìm kiếm..."
+                          uniqueKey="id"
+                          displayKey="displayName"
+                          selectText="Chọn khai báo..."
+                          onSelectedItemsChange={(item) => onSelectedKBChange(item)}
+                          selectedItems={khaiBaoFilterSelected}
+                        />
+                      </View>
+                    </View>
+                  );
+                  default:
+                    return null;
+    }
+  }
+
   // end SelectedChange
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        {(items.tab === tabs.toan_bo_tai_san
-          || items.tab === tabs.tai_san_chua_su_dung
-          || items.tab === tabs.tai_san_dang_su_dung
-          || items.tab === tabs.tai_san_sua_chua_bao_duong
-          || items.tab === tabs.tai_san_mat
-          || items.tab === tabs.tai_san_hong
-          || items.tab === tabs.tai_san_thanh_ly
-          || items.tab === tabs.tai_san_huy
-          || items.tab === tabs.bao_hong_mat_tai_san
-        ) && (
-        <>
-          <View>
-            <Text style={styles.titleText}>{tabs.bao_hong_mat_tai_san ? `Đơn vị khai báo` : `Đơn vị quản lý`}</Text>
-            <MultiSelect
-              ref={donViQuanLyRef}
-              isHasSelectAll
-              isTree
-              getCollapsedNodeHeight={{ height: 200 }}
-              onToggleList={() => closeMultiSelectIfOpened()}
-              items={dvqlTreeData}
-              IconRenderer={Icon}
-              searchInputPlaceholderText="Tìm kiếm..."
-              styleListContainer={dvqlTreeData && dvqlTreeData.length > 9 ? { height: 200 } : null}
-              uniqueKey="id"
-              displayKey="displayName"
-              selectText="Chọn đơn vị quản lý..."
-              onSelectedItemsChange={(item) => onSelectedDVQLChange(item)}
-              selectedItems={DvqlFilterSelected}
-            />
-          </View>
-        </>
-          )}
-        {(items.tab === tabs.toan_bo_tai_san
-          || items.tab === tabs.tai_san_chua_su_dung
-          || items.tab === tabs.tai_san_dang_su_dung
-          || items.tab === tabs.tai_san_sua_chua_bao_duong
-          || items.tab === tabs.tai_san_mat
-          || items.tab === tabs.tai_san_hong
-          || items.tab === tabs.tai_san_thanh_ly
-          || items.tab === tabs.tai_san_huy
-        ) && (
-        <>
-          <View>
-            <Text style={styles.titleText}>Loại tài sản</Text>
-            <MultiSelect
-              ref={loaiTaiSanRef}
-              isHasSelectAll
-              isTree
-              onToggleList={() => closeMultiSelectIfOpened()}
-              items={items.LtsDataFilter}
-              IconRenderer={Icon}
-              styleListContainer={items.LtsDataFilter && items.LtsDataFilter.length > 9 ? { height: 200 } : null}
-              single
-              searchInputPlaceholderText="Tìm kiếm..."
-              uniqueKey="value"
-              displayKey="text"
-              selectText="Chọn loại tài sản..."
-              onSelectedItemsChange={(item) => onSelectedLTSChange(item)}
-              selectedItems={LtsFilterSelected}
-            />
-          </View>
-        </>
-          )}
-        {(items.tab === tabs.toan_bo_tai_san
-          || items.tab === tabs.tai_san_chua_su_dung
-          || items.tab === tabs.tai_san_dang_su_dung
-          || items.tab === tabs.tai_san_sua_chua_bao_duong
-          || items.tab === tabs.tai_san_mat
-          || items.tab === tabs.tai_san_hong
-          || items.tab === tabs.tai_san_thanh_ly
-          || items.tab === tabs.tai_san_huy
-        ) && (
-        <>
-          <View>
-            <Text style={styles.titleText}>Nhà cung cấp</Text>
-            <MultiSelect
-              ref={nhaCungCapRef}
-              isHasSelectAll
-              onToggleList={() => closeMultiSelectIfOpened()}
-              items={items.NccDataFilter}
-              IconRenderer={Icon}
-              single
-              styleListContainer={items.NccDataFilter && items.NccDataFilter.length > 9 ? { height: 200 } : null}
-              searchInputPlaceholderText="Tìm kiếm..."
-              uniqueKey="id"
-              displayKey="displayName"
-              selectText="Chọn nhà cung cấp..."
-              onSelectedItemsChange={(item) => onSelectedNCCChange(item)}
-              selectedItems={NccFilterSelected}
-            />
-          </View>
-        </>
-          )}
-        {(items.tab === tabs.toan_bo_tai_san
-          || items.tab === tabs.tai_san_chua_su_dung
-          || items.tab === tabs.tai_san_dang_su_dung
-        ) && (
-        <>
-          <View>
-            <Text style={styles.titleText}>Mã sử dụng</Text>
-            <MultiSelect
-              ref={maSuDungRef}
-              isHasSelectAll
-              onToggleList={() => closeMultiSelectIfOpened()}
-              items={items.MsdDataFilter}
-              IconRenderer={Icon}
-              single
-              styleListContainer={items.MsdDataFilter && items.MsdDataFilter.length > 9 ? { height: 200 } : null}
-              searchInputPlaceholderText="Tìm kiếm..."
-              uniqueKey="id"
-              displayKey="displayName"
-              selectText="Chọn mã sử dụng..."
-              onSelectedItemsChange={(item) => onSelectedMSDChange(item)}
-              selectedItems={MsdFilterSelected}
-            />
-          </View>
-        </>
-          )}
-        {items.tab === tabs.tai_san_sua_chua_bao_duong && (
-          <>
-            <View>
-              <Text style={styles.titleText}>Hình thức</Text>
-              <MultiSelect
-                ref={hinhThucRef}
-                isHasSelectAll
-                onToggleList={() => closeMultiSelectIfOpened()}
-                items={hinhThucData}
-                IconRenderer={Icon}
-                single
-                searchInputPlaceholderText="Tìm kiếm..."
-                uniqueKey="id"
-                displayKey="displayName"
-                selectText="Chọn hình thức..."
-                onSelectedItemsChange={(item) => onSelectedHTChange(item)}
-                selectedItems={HtFilterSelected}
-              />
-            </View>
-            <View>
-              <Text style={styles.titleText}>Trạng thái</Text>
-              <MultiSelect
-                ref={trangThaiRef}
-                isHasSelectAll
-                onToggleList={() => closeMultiSelectIfOpened()}
-                items={trangThaiData}
-                IconRenderer={Icon}
-                single
-                searchInputPlaceholderText="Tìm kiếm..."
-                uniqueKey="id"
-                displayKey="displayName"
-                selectText="Chọn trạng thái..."
-                onSelectedItemsChange={(item) => onSelectedTTChange(item)}
-                selectedItems={TtFilterSelected}
-              />
-            </View>
-          </>
-        )}
-        {items.tab === tabs.bao_hong_mat_tai_san && (
-          <>
-            <View>
-              <Text style={styles.titleText}>Khai báo</Text>
-              <MultiSelect
-                isHasSelectAll
-                ref={khaibaoRef}
-                onToggleList={() => closeMultiSelectIfOpened()}
-                items={KhaiBaoData}
-                IconRenderer={Icon}
-                single
-                searchInputPlaceholderText="Tìm kiếm..."
-                uniqueKey="id"
-                displayKey="displayName"
-                selectText="Chọn khai báo..."
-                onSelectedItemsChange={(item) => onSelectedKBChange(item)}
-                selectedItems={khaiBaoFilterSelected}
-              />
-            </View>
-          </>
-        )}
+        {renderFilterForEachTab()}
       </View>
     </ScrollView>
   );

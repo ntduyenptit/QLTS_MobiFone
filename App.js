@@ -3,6 +3,7 @@ import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { NavigationContainer } from '@react-navigation/native';
+import {navigationRef} from '@app/modules/global/NavigationHelper';
 import { colors } from './src/styles';
 
 import { store, persistor } from './src/redux/store';
@@ -13,7 +14,9 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer
+        ref={navigationRef}
+      >
         <PersistGate
           loading={
             // eslint-disable-next-line react/jsx-wrap-multilines
